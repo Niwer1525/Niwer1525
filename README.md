@@ -1,4 +1,4 @@
-# Hello there <img src="https://thumbs.gfycat.com/NegligibleSaneKid.webp" alt="drawing" style="width:50px;"/>
+# Hello there
 
 ### Little human age of 19 Y.O
 - 🔭 I’m currently working on WayZ a Minecraft Multi-Servers project see more at https://hunterz.fr/
