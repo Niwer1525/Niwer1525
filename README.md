@@ -1,7 +1,7 @@
 # Hello there
 
 ## Who I am?!
-- My name is Erwin, I'm a little human of 19 Y.O
+- My name is Erwin AKA Niwer
 - I've spent near 10 years on my computer creating projects, learning programmation by myself
 - Want to see more?<br>
    -> Go to: https://niwer1525.github.io/Niwer1525/
