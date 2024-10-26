@@ -1,0 +1,36 @@
+{
+    "_comment": "Buttons",
+    "btn.about": "About",
+    "btn.timeline": "Time line",
+    "btn.skills": "Skills",
+    "btn.projects": "Projects",
+    "btn.download_cv": "Download CV",
+    "btn.contact": "Contact",
+    "btn.send": "Send",
+
+    "btn.readmore": "Read more",
+    "btn.seemore": "See more",
+
+    "_comment": "Other",
+    "made_by": "Made with ❤️ by Niwer",
+    "content_aboute_me": "Hello there!<br>I’m <span>Erwin</span>, also known by my pseudonym <span>Niwer</span> and I'm from <span>Belgium</span>.<br><br>I have nearly 10 years of Self-taught experience in programming. I have developed a deep passion for computers, both in playing and programming. My expertise lies in <span>Java</span> and <span>web development</span>, where I enjoy creating innovative and efficient solutions. Whether it’s building robust applications or exploring new technologies, I am always eager to take on new challenges and expand my skill set.",
+    "title.timeline": "&#10094;Timeline&#10095;",
+    "title.skills": "&#10094;Skills&#10095;",
+    "title.projects": "&#10094;Projects&#10095;",
+
+    "_comment": "Form",
+    "form.title": "You have a project? Want to talk about it ?<br> Or maybe you have questions about me?",
+
+    "_comment": "Projects/Articles",
+    "project.title.wayz": "Minecraft WayZ",
+    "project.desc.wayz": "WayZ is a Minecraft mod made first for a Zombie post-apocalypse server. Secondly the mod has been updated to be community friendly and to be used in any server. It's include a lot of unique features like a custom<span> crafting system</span>, a custom <span> zombie system</span>, a custom <span> 3D Orineted bouding box collisions system</span>, a custom <span>fast loading content-packs system</span> and so much more !",
+
+    "project.title.web_showcase": "Web showcase project",
+    "project.desc.web_showcase": "A website made for my web courses using PHP, HTML and CSS. It include a <span>article/news system</span>, a <span>team system</span>, a <span>department system</span>, a <span>contact form</span> and a much more !",
+    
+    "project.title.integrative_activity": "Integrative Activity",
+    "project.desc.integrative_activity": "A small game inspired by <a class=\"underline\" href=\"https://www.lutanho.net/play/hex.html\" target=\"_blank\">HEX</a>. Made for my java courses. This include a <span>bridge system</span>, <span>red and blue players</span> and <span>preview system</span> !",
+
+    "project.title.gaspar": "Gaspar AI Discord Bot",
+    "project.desc.gaspar": "A discord.js bot that include an <span>AI system</span> that can talk with you. It's <span>configurable</span> and can be used in any server."
+}
