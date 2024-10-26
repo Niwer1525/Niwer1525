@@ -1,0 +1,36 @@
+{
+    "_comment": "Buttons",
+    "btn.about": "À propos",
+    "btn.timeline": "Ligne du temps",
+    "btn.skills": "Compétences",
+    "btn.projects": "Projets",
+    "btn.download_cv": "Télécharger CV",
+    "btn.contact": "Contact",
+    "btn.send": "Envoyer",
+
+    "btn.readmore": "Lire plus",
+    "btn.seemore": "Voir plus",
+
+    "_comment": "Other",
+    "made_by": "Fait avec ❤️ par Niwer",
+    "content_aboute_me": "Bonjour !<br>Je suis <span>Erwin</span>, aussi connu sous mon pseudonyme <span>Niwer</span> et je viens de <span>Belgique</span>.<br><br>J'ai près de 10 ans d'expérience autodidacte en programmation. J'ai développé une passion profonde pour les ordinateurs, à la fois en jouant et en programmant. Mon expertise se situe dans le <span>Java</span> et le <span>développement web</span>, où j'aime créer des solutions innovantes et efficaces. Que ce soit pour construire des applications robustes ou explorer de nouvelles technologies, je suis toujours prêt à relever de nouveaux défis et à élargir mes compétences.",
+    "title.timeline": "&#10094;Ligne du temps&#10095;",
+    "title.skills": "&#10094;Compétences&#10095;",
+    "title.projects": "&#10094;Projets&#10095;",
+
+    "_comment": "Form",
+    "form.title": "Vous avez un projet ? Vous voulez en parler ?<br> Ou peut-être avez-vous des questions à mon sujet ?",
+    
+    "_comment": "Projects/Articles",
+    "project.title.wayz": "Minecraft WayZ",
+    "project.desc.wayz": "WayZ est un mod Minecraft créé d'abord pour un serveur post-apocalyptique de zombies. Ensuite, le mod a été mis à jour pour être convivial pour la communauté et être utilisé dans n'importe quel serveur. Il inclut de nombreuses fonctionnalités uniques telles qu'un <span>système de craft personnalisé</span>, un <span>système de zombies personnalisé</span>, un <span>système de collisions de boîtes de collision 3D orientées personnalisé</span>, un <span>système de chargement rapide de packs de contenu personnalisé</span> et bien plus encore !",
+
+    "project.title.web_showcase": "Projet vitrine web",
+    "project.desc.web_showcase": "Un site web réalisé pour mes cours web en utilisant PHP, HTML et CSS. Il inclut un <span>système d'articles/nouvelles</span>, un <span>système d'équipe</span>, un <span>système de département</span>, un <span>formulaire de contact</span> et bien plus encore !",
+    
+    "project.title.integrative_activity": "Activité intégrative",
+    "project.desc.integrative_activity": "Un petit jeu inspiré de <a class=\"underline\" href=\"https://www.lutanho.net/play/hex.html\" target=\"_blank\">HEX</a>. Réalisé pour mes cours de java. Cela inclut un <span>système de pont</span>, des <span>joueurs rouges et bleus</span> et un <span>système de prévisualisation</span> !",
+
+    "project.title.gaspar": "Gaspar AI Discord Bot",
+    "project.desc.gaspar": "Un bot discord.js qui inclut un <span>système d'IA</span> qui peut discuter avec vous. Il est <span>configurable</span> et peut être utilisé dans n'importe quel serveur."
+}

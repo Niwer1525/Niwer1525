@@ -1,0 +1,22 @@
+<div id="contact-popup">
+    <form action="mailto:clonatack@gmail.com" method="post" enctype="text/plain">
+        <button type="button" id="close" onclick="hideContactPopup()">X</button>
+        <h2 data-i18n="form.title">
+            You have a project? Want to talk about it ?<br>
+            Or maybe you have questions about me?
+        </h2>
+        <label>
+            <i class="fa fa-user"></i>
+            <input type="text" name="name" placeholder="Name" required>
+        </label>
+        <label>
+            <i class="fa fa-envelope"></i>
+            <input type="email" name="email" placeholder="Email" required>
+        </label>
+        <label>
+            <i class="fa fa-comment"></i>
+            <textarea name="message" placeholder="Message" required></textarea>
+        </label>
+        <button type="submit" data-i18n="btn.send">Send</button>
+    </form>
+</div>

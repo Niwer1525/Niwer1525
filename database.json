@@ -1,0 +1,32 @@
+{
+    "_comment": "Since Github supports only static websites, I can't use a SQL database. So, I'm using a JSON file to store the data.",
+    "projects": [
+        {
+            "name": "wayz",
+            "image": "wayz.webp",
+            "linkType": "see",
+            "link": "https://www.youtube.com/watch?v=ovDb41z2TuQ&list=PL2uFPy064gi_Rz8ndkNubAYFySzAdpvOt"
+        },
+        {
+            "name": "web_showcase",
+            "video_id": "R0O3X-5hgCw?si=xkCtjhy48-1Jushk",
+            "linkType": "read",
+            "link": "https://github.com/Niwer1525/Web-showcase-ASBL"
+        },
+        {
+            "name": "integrative_activity",
+            "image": "hexgame.webp",
+            "linkType": "read",
+            "link": "https://github.com/Niwer1525/BAC1_Integrative_activity"
+        },
+        {
+            "name": "gaspar",
+            "image": "gaspar.webp",
+            "linkType": "read",
+            "link": "https://github.com/Niwer1525/Gaspar-AI-Discord-Bot"
+        }
+    ],
+    "timeline": [
+
+    ]
+}
