@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let file = document.getElementById('projects');
     file.innerHTML = `<h2 data-i18n="title.projects">Projects</h2>`; // Add "page" title
     
-    fetch('../database.json').then(response => response.json()).then(data => {
+    fetch('https://niwer1525.github.io/Niwer1525/database.json').then(response => response.json()).then(data => {
         let grid = document.createElement('div');
         grid.classList.add('projects-grid');
         
