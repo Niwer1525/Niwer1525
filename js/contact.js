@@ -1,14 +1,7 @@
-function showContactPopup() {
-    var popup = document.getElementById("contact-popup");
-    popup.style.display = "flex";
-}
+const popup = () => document.getElementById("contact-popup");
 
-function hideContactPopup() {
-    var popup = document.getElementById("contact-popup");
-    popup.style.display = "none";
-}
+function showContactPopup() { popup().style.display = "flex"; }
 
-function isContactPopupVisible() {
-    var popup = document.getElementById("contact-popup");
-    return popup.style.display === "flex";
-}
+function hideContactPopup() { popup().style.display = "none"; }
+
+function isContactPopupVisible() { return popup().style.display === "flex"; }
