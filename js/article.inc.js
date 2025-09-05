@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             articleHTML += `</header><p data-i18n="project.desc.${project.name}">Description</p><footer>`;
             // Add links (if there are links)
             if (project.links && typeof project.links === 'object') {
-                for (const [type, link] of Object.entries(project.links)) articleHTML += `<a href="${link}" target="_blank" data-i18n="btn.${type}more">${type === 'read' ? 'Read more' : 'See more'}</a>`;
+                for (const [link, type] of Object.entries(project.links)) articleHTML += `<a href="${link}" target="_blank" data-i18n="btn.${type}">'See more'}</a>`;
             }
             articleHTML += `</footer></article>`;
             grid.innerHTML += articleHTML;
