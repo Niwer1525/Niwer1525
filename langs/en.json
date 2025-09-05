@@ -8,8 +8,9 @@
     "btn.contact": "Contact",
     "btn.send": "Send",
 
-    "btn.readmore": "Read more",
-    "btn.seemore": "See more",
+    "btn.read": "Read more",
+    "btn.see": "See more",
+    "btn.play": "Play",
 
     "_comment": "Other",
     "made_by": "Made with ❤️ by Niwer",
@@ -32,5 +33,14 @@
     "project.desc.integrative_activity": "A small game inspired by <a class=\"underline\" href=\"https://www.lutanho.net/play/hex.html\" target=\"_blank\">HEX</a>. Made for my java courses. This include a <span>bridge system</span>, <span>red and blue players</span> and <span>preview system</span> !",
 
     "project.title.gaspar": "Gaspar AI Discord Bot",
-    "project.desc.gaspar": "A discord.js bot that include an <span>AI system</span> that can talk with you. It's <span>configurable</span> and can be used in any server."
+    "project.desc.gaspar": "A discord.js bot that include an <span>AI system</span> that can talk with you. It's <span>configurable</span> and can be used in any server.",
+
+    "project.title.glsl_obfuscator": "GLSL Obfuscator (Lib/Gradle plugin)",
+    "project.desc.glsl_obfuscator": "This is an open-source GLSL obfuscator written in Java. It can be used as a Java library or as a Gradle plugin. It includes many features such as <span>variable renaming</span>, <span>GLSL code minification</span>, and much more.",
+
+    "project.title.open_vanilla": "Open Vanilla",
+    "project.desc.open_vanilla": "A Bukkit/Spigot plugin designed to create an enhanced Vanilla Minecraft experience. It includes features such as <span>homes</span>, a <span>hub</span>, administrator commands like <span>/invsee, /ec, /broadcast</span>, a currency system, and much more.",
+    
+    "project.title.interpol_red_notice_finder": "Interpol Red Notice Finder",
+    "project.desc.interpol_red_notice_finder": "This is a small web game (HTML/CSS/JS) in which you have to guess the crimes committed by the displayed person. The game uses Interpol’s public API to fetch criminal data."
 }

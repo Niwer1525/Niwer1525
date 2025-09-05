@@ -8,8 +8,9 @@
     "btn.contact": "Contact",
     "btn.send": "Envoyer",
 
-    "btn.readmore": "Lire plus",
-    "btn.seemore": "Voir plus",
+    "btn.read": "Lire plus",
+    "btn.see": "Voir plus",
+    "btn.play": "Jouer",
 
     "_comment": "Other",
     "made_by": "Fait avec ❤️ par Niwer",
@@ -32,5 +33,14 @@
     "project.desc.integrative_activity": "Un petit jeu inspiré de <a class=\"underline\" href=\"https://www.lutanho.net/play/hex.html\" target=\"_blank\">HEX</a>. Réalisé pour mes cours de java. Cela inclut un <span>système de pont</span>, des <span>joueurs rouges et bleus</span> et un <span>système de prévisualisation</span> !",
 
     "project.title.gaspar": "Gaspar AI Discord Bot",
-    "project.desc.gaspar": "Un bot discord.js qui inclut un <span>système d'IA</span> qui peut discuter avec vous. Il est <span>configurable</span> et peut être utilisé dans n'importe quel serveur."
+    "project.desc.gaspar": "Un bot discord.js qui inclut un <span>système d'IA</span> qui peut discuter avec vous. Il est <span>configurable</span> et peut être utilisé dans n'importe quel serveur.",
+
+    "project.title.glsl_obfuscator": "GLSL Obfuscator (Lib/Gradle plugin)",
+    "project.desc.glsl_obfuscator": "Il s'agit d'un obfuscateur GLSL open-source écrit en Java. Il peut être utilisé comme une bibliothèque Java ou comme un plugin Gradle. Il inclut de nombreuses fonctionnalités telles que le <span>renommage des variables</span>, la <span>minification du code GLSL</span> et bien plus encore.",
+
+    "project.title.open_vanilla": "Open Vanilla",
+    "project.desc.open_vanilla": "Un plugin bukkit/spigot visant à créer une expérience Minecraft Vanilla améliorée. Il inclut des fonctionnalités telles que des <span>homes</span>, un <span>hub</span>, des commandes administrateur tels que <span>/invsee, /ec, /broadcast</span>, un système monétaire et bien plus encore.",
+    
+    "project.title.interpol_red_notice_finder": "Interpol Red Notice Finder",
+    "project.desc.interpol_red_notice_finder": "Il s'agit d'un petit jeu web (HTML/CSS/JS) dans lequel vous devez deviner les crimes commis par la personne affichée. Ce jeu utilise l'API publique d'Interpol pour récupérer les données des criminels."
 }

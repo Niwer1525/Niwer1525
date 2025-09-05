@@ -2,21 +2,43 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Portfolio of Erwin Redoté, a passionate developer.">
+        <meta name="keywords" content="Erwin Redoté, portfolio, web development, programming">
+        <meta name="author" content="Erwin Redoté">
         <title>Erwin Redoté - Niwer</title>
         <link rel="shortcut icon" href="./assets/avatar.webp">
         <link rel="stylesheet" href="./css/main.css">
-        <link rel="stylesheet" href="./css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="./js/main.js"></script>
         <script src="./js/contact.js"></script>
         <script src="./js/i18n.js"></script>
     </head>
     <body>
         <header>
-            <script src="./js/nav.inc.js"></script>
+            <!-- Basic Navigation -->
+            <nav>
+                <ul id="nav-links">
+                    <li><a href="#presentation" data-i18n="btn.about">About</a></li>
+                    <!-- <li><a href="#timeline" onclick="smoothScroll('timeline')" data-i18n="btn.timeline">Time line</a></li> -->
+                    <li><a href="#skills" data-i18n="btn.skills">Skills</a></li>
+                    <li><a href="#projects" data-i18n="btn.projects">Projects</a></li>
+                    <!-- <li><a class="cv-download" href="NOPE" data-i18n="btn.download_cv">Download CV</a></li> -->
+                    <li><a class="cv-download" href="#pagefooter" onclick="showContactPopup()" data-i18n="btn.contact">Contact</a></li>
+                    <li>
+                        <a href="index.html" onclick="changeLanguage('en')">
+                            <img src="./assets/icons/united-kingdom.webp" alt="united_kingdom_logo">
+                        </a>
+                        <a href="index.html" onclick="changeLanguage('fr')">
+                            <img src="./assets/icons/france.webp" alt="france_logo">
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </header>
         <main>
             <!-- Waves -->
             <div class="wave_down"></div>
-            <!-- <div class="wave_up"></div> -->
             <!-- Presentation -->
             <section id="presentation">
                 <div>
@@ -31,16 +53,40 @@
             </section> -->
             <!-- Skills -->
             <section id="skills">
-                <script src="./js/skills.inc.js"></script>
+                <h2 data-i18n="title.skills">Skills</h2>
+                <div class="wave_blob"></div>
+                <div class="skills-grid">
+                    <!-- Game/App dev -->
+                    <div class="skills-card"><img src="./assets/skills/java.webp" alt="Java">Java</div>
+                    <div class="skills-card"><img src="./assets/skills/csharp.webp" alt="C#">C#</div>
+                    <div class="skills-card"><img src="./assets/skills/opengl.webp" alt="OpenGL">OpenGL</div>
+                    <!-- Web tech -->
+                    <div class="skills-card"><img src="./assets/skills/html.webp" alt="HTML">HTML</div>
+                    <div class="skills-card"><img src="./assets/skills/css.webp" alt="CSS">CSS</div>
+                    <div class="skills-card"><img src="./assets/skills/javascript.webp" alt="JavaScript">Java Script</div>
+                    <div class="skills-card"><img src="./assets/skills/php.webp" alt="PHP">PHP</div>
+                    <div class="skills-card"><img src="./assets/skills/nodejs.webp" alt="NodeJS">NodeJS</div>
+                    <div class="skills-card"><img src="./assets/skills/threejs.webp" alt="ThreeJS">ThreeJS</div>
+                    <!-- Scripting -->
+                    <div class="skills-card"><img src="./assets/skills/python.webp" alt="Python">Python</div>
+                    <!-- Tools -->
+                    <div class="skills-card"><img src="./assets/skills/github.webp" alt="Github">Github</div>
+                    <div class="skills-card"><img src="./assets/skills/terminal.webp" alt="Linux CLI">Linux CLI</div>
+                </div>
+                <br><br>
+                <div class="div-center">
+                    <img class="wakatime-stats" src="https://wakatime.com/share/@6e76cd44-0f28-4a63-8aa4-fdacc7db9439/401d354a-9975-4137-ac37-1fafed4e86aa.png" alt="Wakatime languages">
+                </div>
             </section>
             <!-- Projects -->
             <section id="projects">
-                <script src="./js/article.inc.js"></script>
+                <script src="./js/article.inc.js" defer></script>
             </section>
-            <script src="./js/contact.inc.js"></script>
+            <!-- Contact popup -->
+            <script src="./js/contact.inc.js" defer></script>
         </main>
         <footer id="pagefooter">
-            <script src="./js/footer.inc.js"></script>
+            <script src="./js/footer.inc.js" defer></script>
         </footer>
     </body>
 </html>
