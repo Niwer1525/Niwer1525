@@ -5,6 +5,10 @@
             You have a project? Want to talk about it ?<br>
             Or maybe you have questions about me?
         </h2>
+        <h3>
+            This form may not work due to Github Pages limitations.<br>
+            If so, please contact me on discord !
+        </h3>
         <label>
             <i class="fa fa-user"></i>
             <input type="text" name="name" placeholder="Name" required>
@@ -17,6 +21,12 @@
             <i class="fa fa-comment"></i>
             <textarea name="message" placeholder="Message" required></textarea>
         </label>
-        <button type="submit" data-i18n="btn.send">Send</button>
+        <div>
+            <button type="submit" data-i18n="btn.send">Send</button>
+            <a class="link-button" onclick="copyDiscordId()" title="Copy Discord ID to clipboard">
+                <i class="fa-brands fa-discord"></i>
+                Discord
+            </a>
+        </div>
     </form>
 </div>

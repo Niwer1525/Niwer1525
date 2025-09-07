@@ -18,10 +18,18 @@
     "title.timeline": "&#10094;Ligne du temps&#10095;",
     "title.skills": "&#10094;Compétences&#10095;",
     "title.projects": "&#10094;Projets&#10095;",
+    "explore.github": "Et ce ne sont que les principaux ! Explorez mon github pour en voir plus.",
 
     "_comment": "Form",
     "form.title": "Vous avez un projet ? Vous voulez en parler ?<br> Ou peut-être avez-vous des questions à mon sujet ?",
     
+    "_comment": "Timeline",
+    "timeline.born": "Je suis né !",
+    "timeline.first_computer": "Mon premier ordinateur, mon premier serveur Minecraft qui m'a donné une passion pour la programmation et ma première vidéo youtube !",
+    "timeline.secondary_school": "Début du lycée en fillière générale (sciences économiques et informatique de gestion)",
+    "timeline.programming_studies": "Début des études en programmation",
+    "timeline.technician_training": "Début d'une formation de technicien informatique",
+
     "_comment": "Projects/Articles",
     "project.title.wayz": "Minecraft WayZ",
     "project.desc.wayz": "WayZ est un mod Minecraft créé d'abord pour un serveur post-apocalyptique de zombies. Ensuite, le mod a été mis à jour pour être convivial pour la communauté et être utilisé dans n'importe quel serveur. Il inclut de nombreuses fonctionnalités uniques telles qu'un <span>système de craft personnalisé</span>, un <span>système de zombies personnalisé</span>, un <span>système de collisions de boîtes de collision 3D orientées personnalisé</span>, un <span>système de chargement rapide de packs de contenu personnalisé</span> et bien plus encore !",
