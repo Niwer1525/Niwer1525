@@ -10,16 +10,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     let projectsElement = document.getElementById('projects');
     projectsElement.innerHTML = `<h2 data-i18n="title.projects">Projects</h2>`; // Add "page" title
     
-    await fetch('https://niwer1525.github.io/Niwer1525/database.json').then(response => response.json()).then(data => {
+    await fetch(websiteURL + '/database.json').then(response => response.json()).then(data => {
         let grid = document.createElement('div');
         grid.classList.add('projects-grid');
         
         data.projects.forEach(project => {
             let articleHTML = `<article><header><h2 data-i18n="project.title.${project.name}">Title</h2>`;
             if (project.video_id || project.image) articleHTML += appendImageOrVideo(project); // If there's an image or a video, add it
-            articleHTML += `</header><p data-i18n="project.desc.${project.name}">Description</p><footer>`;
-            // Add links (if there are links)
-            if (project.links && typeof project.links === 'object') {
+            articleHTML += `</header><p data-i18n="project.desc.${project.name}">Description</p>`;
+
+            /* Tags */
+            if (project.tags && Array.isArray(project.tags)) articleHTML += `<p class="project-tags">${project.tags.map(tag => `#${tag}`).join(', ')}</p>`;
+
+            /* Footer */
+            articleHTML += `<footer>`;
+            if (project.links && typeof project.links === 'object') { // Add links (if there are links)
                 for (const [link, type] of Object.entries(project.links)) articleHTML += `<a href="${link}" target="_blank" data-i18n="btn.${type}">'See more'}</a>`;
             }
             articleHTML += `</footer></article>`;
@@ -29,5 +34,5 @@ document.addEventListener('DOMContentLoaded', async () => {
         projectsElement.appendChild(grid);
     });
 
-    projectsElement.innerHTML +- `<p>And this is only the main ones ! Explore my github for more</p>`;
+    projectsElement.innerHTML += `<p class="explore-github" data-i18n="explore.github">And this is only the main ones ! Explore my github for more.</p>`;
 });

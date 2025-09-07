@@ -18,9 +18,17 @@
     "title.timeline": "&#10094;Timeline&#10095;",
     "title.skills": "&#10094;Skills&#10095;",
     "title.projects": "&#10094;Projects&#10095;",
+    "explore.github": "And this is only the main ones ! Explore my github for more.",
 
     "_comment": "Form",
     "form.title": "You have a project? Want to talk about it ?<br> Or maybe you have questions about me?",
+
+    "_comment": "Timeline",
+    "timeline.born": "I'm Born !",
+    "timeline.first_computer": "My first computer, my first Minecraft server that will give me a passion for programming and my first youtube video !",
+    "timeline.secondary_school": "Secondary School Begins (General line - economic sciences and management IT)",
+    "timeline.programming_studies": "Starting programming studies",
+    "timeline.technician_training": "Start of an IT technician training course",
 
     "_comment": "Projects/Articles",
     "project.title.wayz": "Minecraft WayZ",
