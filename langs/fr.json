@@ -34,6 +34,9 @@
     "project.title.wayz": "Minecraft WayZ",
     "project.desc.wayz": "WayZ est un mod Minecraft créé d'abord pour un serveur post-apocalyptique de zombies. Ensuite, le mod a été mis à jour pour être convivial pour la communauté et être utilisé dans n'importe quel serveur. Il inclut de nombreuses fonctionnalités uniques telles qu'un <span>système de craft personnalisé</span>, un <span>système de zombies personnalisé</span>, un <span>système de collisions de boîtes de collision 3D orientées personnalisé</span>, un <span>système de chargement rapide de packs de contenu personnalisé</span> et bien plus encore !",
 
+    "project.title.wayz_launcher": "Lanceur de WayZ",
+    "project.desc.wayz_launcher": "Le WayZ Launcher est un lanceur personnalisé pour le WayZ. Il simplifie l'installation et la gestion du mod principal et des mods supplémentaires (Sodium, Iris, etc.), garantissant que les joueurs ont la meilleure expérience possible. Le lanceur est maintenant open-source avec certaines fonctionnalités supprimées (mise à jour automatique et autres fonctionnalités nécessitant un réseau).",
+
     "project.title.web_showcase": "Projet vitrine web",
     "project.desc.web_showcase": "Un site web réalisé pour mes cours web en utilisant PHP, HTML et CSS. Il inclut un <span>système d'articles/nouvelles</span>, un <span>système d'équipe</span>, un <span>système de département</span>, un <span>formulaire de contact</span> et bien plus encore !",
     

@@ -8,6 +8,12 @@
             "tags": ["java", "fabric", "gradle" ]
         },
         {
+            "name": "wayz_launcher",
+            "video_id": "SocKuHWuOe8",
+            "links": { "https://github.com/Niwer1525/WayZ-Launcher": "read" },
+            "tags": ["java", "javaFx", "gradle"]
+        },
+        {
             "name": "web_showcase",
             "video_id": "R0O3X-5hgCw?si=xkCtjhy48-1Jushk",
             "links": { "https://github.com/Niwer1525/Web-showcase-ASBL": "read" },
