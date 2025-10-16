@@ -33,6 +33,9 @@
     "_comment": "Projects/Articles",
     "project.title.wayz": "Minecraft WayZ",
     "project.desc.wayz": "WayZ is a Minecraft mod made first for a Zombie post-apocalypse server. Secondly the mod has been updated to be community friendly and to be used in any server. It's include a lot of unique features like a custom<span> crafting system</span>, a custom <span> zombie system</span>, a custom <span> 3D Orineted bouding box collisions system</span>, a custom <span>fast loading content-packs system</span> and so much more !",
+    
+    "project.title.wayz_launcher": "Launcher of Minecraft WayZ",
+    "project.desc.wayz_launcher": "The WayZ Launcher is a custom launcher for the WayZ. It simplifies the installation and management of the main mod and the additionnal ones (Sodium, Iris, etc), ensuring that players have the best experience possible. The Launcher is open-source now with some removed features (auto-updater and other network required things).",
 
     "project.title.web_showcase": "Web showcase project",
     "project.desc.web_showcase": "A website made for my web courses using PHP, HTML and CSS. It include a <span>article/news system</span>, a <span>team system</span>, a <span>department system</span>, a <span>contact form</span> and a much more !",

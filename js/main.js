@@ -1,4 +1,4 @@
-const isDev = window.location.hostname === 'localhost';
+const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 const websiteURL = isDev ? './' : 'https://niwer1525.github.io/Niwer1525/';
 
 function copyDiscordId() {
