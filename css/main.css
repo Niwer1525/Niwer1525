@@ -548,6 +548,17 @@ form h3 {
     to { transform: translateY(0); opacity: 1; }
 }
 
+.timeline a {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: inline-block;
+    color: var(--hover-color);
+    text-decoration: underline;
+    text-align: center;
+    z-index: 3;
+    padding: 0.25rem 0.5rem;
+}
 .timeline {
     position: relative;
     width: 80vw;
