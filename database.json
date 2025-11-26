@@ -40,14 +40,6 @@
             "name": "open_vanilla",
             "links": { "https://github.com/Niwer1525/OpenVanilla": "read" },
             "tags": ["java", "bukkit"]
-        },
-        {
-            "name": "interpol_red_notice_finder",
-            "links": {
-                "https://github.com/Niwer1525/InterpolRedNoticeFinder": "read",
-                "https://niwer1525.github.io/InterpolRedNoticeFinder/": "play"
-            },
-            "tags": ["html", "css", "javascript"]
         }
     ]
 }

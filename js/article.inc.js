@@ -9,8 +9,12 @@ function appendImageOrVideo(project) {
 document.addEventListener('DOMContentLoaded', async () => {
     let projectsElement = document.getElementById('projects');
     projectsElement.innerHTML = `<h2 data-i18n="title.projects">Projects</h2>`; // Add "page" title
+    projectsElement.innerHTML += `<h3 data-i18n="projects.loading" id="loading-projects-indicator">Loading projects...</h3>`;
     
-    await fetch(websiteURL + '/database.json').then(response => response.json()).then(data => {
+    try {
+        const response = await fetch(websiteURL + '/database.json');
+        const data = await response.json();
+
         let grid = document.createElement('div');
         grid.classList.add('projects-grid');
         
@@ -31,8 +35,22 @@ document.addEventListener('DOMContentLoaded', async () => {
             grid.innerHTML += articleHTML;
         });
 
-        projectsElement.appendChild(grid);
-    });
+        let loadingIndicator = document.getElementById('loading-projects-indicator');
+        if (loadingIndicator) loadingIndicator.remove();
 
-    projectsElement.innerHTML += `<p class="explore-github" data-i18n="explore.github">And this is only the main ones ! Explore my github for more.</p>`;
+        projectsElement.appendChild(grid);
+    } catch (error) {
+        console.error('Error fetching or processing projects:', error);
+        let loadingIndicator = document.getElementById('loading-projects-indicator');
+        if (loadingIndicator) {
+            loadingIndicator.textContent = 'Error loading projects.';
+            loadingIndicator.setAttribute('data-i18n', 'projects.error');
+        }
+    }
+
+    const exploreGithub = document.createElement('p');
+    exploreGithub.className = 'explore-github';
+    exploreGithub.setAttribute('data-i18n', 'explore.github');
+    exploreGithub.textContent = 'And this is only the main ones ! Explore my github for more.';
+    projectsElement.appendChild(exploreGithub);
 });
