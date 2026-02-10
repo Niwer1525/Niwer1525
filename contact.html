@@ -1,14 +1,16 @@
 <div id="contact-popup">
-    <form action="mailto:clonatack@gmail.com" method="post" enctype="text/plain">
+    <form id="contact-form">
+        <input type="hidden" name="access_key" value="f18de961-019b-4e2a-ad3d-dffbb5136e1f">
         <button type="button" id="close" onclick="hideContactPopup()">X</button>
         <h2 data-i18n="form.title">
-            You have a project? Want to talk about it ?<br>
-            Or maybe you have questions about me?
+            Got a project or questions?<br>
+            Let's talk!
         </h2>
-        <h3 data-i18n="form.subtitle">
+        <!-- The form should be fixed thank to Web3Forms -->
+        <!-- <h3 data-i18n="form.subtitle">
             This form may not work due to Github Pages limitations.<br>
             If so, please contact me on discord !
-        </h3>
+        </h3> -->
         <label>
             <i class="fa fa-user"></i>
             <input type="text" name="name" placeholder="Name" required>
@@ -23,7 +25,7 @@
         </label>
         <div>
             <button type="submit" data-i18n="btn.send">Send</button>
-            <a class="link-button" onclick="copyDiscordId()" title="Copy Discord ID to clipboard">
+            <a class="link-button" onclick="copyDiscordId()" title="📋 Discord ID">
                 <i class="fa-brands fa-discord"></i>
                 Discord
             </a>

@@ -3,8 +3,7 @@
 ## Who I am?!
 - My name is Erwin AKA Niwer
 - I've spent near 10 years on my computer creating projects, learning programmation by myself
-- Want to see more?<br>
-   -> Go to: https://niwer1525.github.io/Niwer1525/
+- Want to learn more? Check out my [Portfolio](https://niwer1525.github.io/Niwer1525/)
 
 - My favorite :<br><br>
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
@@ -17,6 +16,20 @@
 ![C#](https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=c-sharp&logoColor=white)
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 
+- API, Libraries & Tools :<br><br>
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+![three.js](https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=three.js&logoColor=white)
+![OpenGL](https://img.shields.io/badge/OpenGL-%23FFFFFF.svg?style=for-the-badge&logo=opengl)
+![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
+![MySQL](https://img.shields.io/badge/mysql-%2307405e.svg?style=for-the-badge&logo=mysql&logoColor=white)
+![PhpMyAdmin](https://img.shields.io/badge/phpmyadmin-%2307405e.svg?style=for-the-badge&logo=phpmyadmin&logoColor=white)
+
+- Other skills :
+   - IT Technician
+   - Basics of Networking
+   - Linux/Unix, Windows CLI
+   - And bunch of other things that I can't remember right now
+
 - See every languages (Since Jul 20 2023 - Powered by Wakatime) :<br><br>
 <div align="center">
    <kbd>
@@ -26,9 +39,3 @@
    </kbd>
 </div>
 <br>
-
-- API, Libraries & Tools :<br><br>
-![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
-![three.js](https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=three.js&logoColor=white)
-![OpenGL](https://img.shields.io/badge/OpenGL-%23FFFFFF.svg?style=for-the-badge&logo=opengl)
-![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
