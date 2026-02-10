@@ -9,10 +9,8 @@
         <title>Erwin Redoté - Niwer</title>
         <link rel="shortcut icon" href="./assets/avatar.webp">
         <link rel="stylesheet" href="./css/main.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <script src="./js/main.js" defer></script>
-        <script src="./js/contact.js" defer></script>
-        <script src="./js/i18n.js" defer></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
     </head>
     <body>
         <header>
@@ -20,12 +18,12 @@
             <nav>
                 <ul id="nav-links">
                     <li><a href="#presentation" data-i18n="btn.about">About</a></li>
-                    <!-- <li><a href="#timeline" onclick="smoothScroll('timeline')" data-i18n="btn.timeline">Time line</a></li> -->
+                    <li><a href="#storyline" data-i18n="btn.timeline">Time line</a></li>
                     <li><a href="#skills" data-i18n="btn.skills">Skills</a></li>
                     <li><a href="#projects" data-i18n="btn.projects">Projects</a></li>
-                    <!-- <li><a class="cv-download" href="NOPE" data-i18n="btn.download_cv">Download CV</a></li> -->
-                    <li><a class="cv-download" href="#pagefooter" onclick="showContactPopup()" data-i18n="btn.contact">Contact</a></li>
-                    <li>
+                    <!-- <li><a href="notAvalibleYet" target="_blank" data-i18n="btn.download_cv">Download CV</a></li> -->
+                    <li><a href="#" onclick="showContactPopup()" data-i18n="btn.contact">Contact</a></li>
+                    <li class="languages-grid">
                         <a href="index.html" onclick="changeLanguage('en')">
                             <img draggable="false" src="./assets/icons/united-kingdom.webp" alt="united_kingdom_logo">
                         </a>
@@ -37,17 +35,15 @@
             </nav>
         </header>
         <main>
-            <!-- Waves -->
-            <!-- <div class="wave_down"></div> -->
             <!-- Presentation -->
             <section id="presentation">
                 <div>
                     <h1>REDOTÉ Erwin</h1>
                     <p data-i18n="content_aboute_me">About me...</p>
                 </div>
-                <img draggable="false" src="./assets/avatar.webp" alt="REDOTÉ Erwin">
+                <img draggable="false" src="./assets/profile.webp" alt="REDOTÉ Erwin">
             </section>
-            <!-- Story time line TODO -->
+            <!-- Education timeline -->
             <section id="storyline">
                 <h2 data-i18n="title.timeline">Time line</h2>
                 <div class="timeline">
@@ -91,7 +87,10 @@
                         <div class="bubble-content">
                             <h3><span data-i18n="month.november">November</span> 2025 🎓</h3>
                             <p data-i18n="timeline.marketing_fundamentals_course">Marketing Fundamentals Course Completed</p>
-                            <a href="https://skillshop.exceedlms.com/student/award/TPVJfLDJEF3gGqJZZ6vnW548" target="_blank" rel="noopener noreferrer">Certificate Link</a>
+                            <a href="https://skillshop.exceedlms.com/student/award/TPVJfLDJEF3gGqJZZ6vnW548" target="_blank" rel="noopener noreferrer">
+                                Verify
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -102,21 +101,24 @@
                 <div class="wave_blob"></div>
                 <div class="skills-grid">
                     <!-- Game/App dev -->
-                    <div class="skills-card"><img draggable="false" src="./assets/skills/java.webp" alt="Java">Java</div>
-                    <div class="skills-card"><img draggable="false" src="./assets/skills/csharp.webp" alt="C#">C#</div>
-                    <div class="skills-card"><img draggable="false" src="./assets/skills/opengl.webp" alt="OpenGL">OpenGL</div>
+                    <div class="skills-card"><i class="fa-brands fa-java skill-icon"></i>Java</div>
+                    <div class="skills-card"><i class="devicon-csharp-plain skill-icon"></i>C#</div>
+                    <div class="skills-card"><i class="devicon-opengl-plain skill-icon"></i>OpenGL</div>
                     <!-- Web tech -->
-                    <div class="skills-card"><img draggable="false" src="./assets/skills/html.webp" alt="HTML">HTML</div>
-                    <div class="skills-card"><img draggable="false" src="./assets/skills/css.webp" alt="CSS">CSS</div>
-                    <div class="skills-card"><img draggable="false" src="./assets/skills/javascript.webp" alt="JavaScript">Java Script</div>
-                    <div class="skills-card"><img draggable="false" src="./assets/skills/php.webp" alt="PHP">PHP</div>
-                    <div class="skills-card"><img draggable="false" src="./assets/skills/nodejs.webp" alt="NodeJS">NodeJS</div>
-                    <div class="skills-card"><img draggable="false" src="./assets/skills/threejs.webp" alt="ThreeJS">ThreeJS</div>
+                    <div class="skills-card"><i class="fa-brands fa-html5 skill-icon"></i>HTML</div>
+                    <div class="skills-card"><i class="fa-brands fa-css3-alt skill-icon"></i>CSS</div>
+                    <div class="skills-card"><i class="fa-brands fa-square-js skill-icon"></i>Java Script</div>
+                    <div class="skills-card"><i class="fa-brands fa-php skill-icon"></i>PHP</div>
+                    <div class="skills-card"><i class="fa-brands fa-node-js skill-icon"></i>NodeJS</div>
+                    <div class="skills-card"><i class="devicon-threejs-original skill-icon"></i>ThreeJS</div>
                     <!-- Scripting -->
-                    <div class="skills-card"><img draggable="false" src="./assets/skills/python.webp" alt="Python">Python</div>
+                    <div class="skills-card"><i class="fa-brands fa-python skill-icon"></i>Python</div>
                     <!-- Tools -->
-                    <div class="skills-card"><img draggable="false" src="./assets/skills/github.webp" alt="Github">Github</div>
-                    <div class="skills-card"><img draggable="false" src="./assets/skills/terminal.webp" alt="Linux CLI">Linux CLI</div>
+                    <div class="skills-card"><i class="fa-solid fa-code-branch skill-icon"></i>Git</div>
+                    <div class="skills-card"><i class="fa-brands fa-github skill-icon"></i>Github</div>
+                    <div class="skills-card"><i class="fa-brands fa-linux skill-icon"></i>Linux/Unix CLI</div>
+                    <div class="skills-card"><i class="devicon-sqlite-plain skill-icon"></i>SQLite</div>
+                    <div class="skills-card"><i class="devicon-mysql-plain skill-icon"></i>MySQL</div>
                 </div>
                 <br><br>
                 <div class="div-center">
@@ -125,13 +127,24 @@
             </section>
             <!-- Projects -->
             <section id="projects">
-                <script src="./js/article.inc.js" defer></script>
+                <h2 data-i18n="title.projects">Projects</h2>
+                <!-- <h3 data-i18n="projects.loading" id="loading-projects-indicator">Loading projects...</h3> -->
+                <div id="projects-grid" class="projects-grid">
+                    <!-- There will be projects -->
+                </div>
+                <a class="explore-github" data-i18n="explore.github" href="https://github.com/niwer1525" target="_blank" rel="noopener noreferrer">
+                    Explore my GitHub for more
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
             </section>
             <!-- Contact popup -->
-            <script src="./js/contact.inc.js" defer></script>
         </main>
-        <footer id="pagefooter">
-            <script src="./js/footer.inc.js" defer></script>
-        </footer>
+        <footer id="pagefooter"></footer>
+        <!-- Inc scripts -->
+        <script src="./js/article.inc.js" defer></script>
+        <script src="./js/contact.inc.js" defer></script>
+        <script src="./js/footer.inc.js" defer></script>
+        <script src="./js/main.js" defer></script>
+        <script src="./js/i18n.js" defer></script>
     </body>
 </html>

@@ -8,9 +8,9 @@
     "btn.contact": "Contact",
     "btn.send": "Envoyer",
 
-    "btn.read": "Lire plus",
-    "btn.see": "Voir plus",
-    "btn.play": "Jouer",
+    "btn.read": "Lire plus <i class=\"fa-solid fa-arrow-up-right-from-square\"></i>",
+    "btn.see": "Voir plus <i class=\"fa-solid fa-arrow-up-right-from-square\"></i>",
+    "btn.play": "Jouer <i class=\"fa-solid fa-arrow-up-right-from-square\"></i>",
 
     "_comment": "Months",
     "month.january": "Janvier",
@@ -32,10 +32,10 @@
     "title.timeline": "&#10094;Ligne du temps&#10095;",
     "title.skills": "&#10094;Compétences&#10095;",
     "title.projects": "&#10094;Projets&#10095;",
-    "explore.github": "Et ce ne sont que les principaux ! Explorez mon github pour en voir plus.",
+    "explore.github": "Explorez mon Github pour en voir plus.",
 
     "_comment": "Form",
-    "form.title": "Vous avez un projet ? Vous voulez en parler ?<br> Ou peut-être avez-vous des questions à mon sujet ?",
+    "form.title": "Vous avez un projet ou des questions ?<br>Parlons-en !",
     "form.subtitle": "Ce formulaire peut ne pas fonctionner en raison des limitations de Github Pages.<br> Si c'est le cas, veuillez me contacter sur discord !",
     
     "_comment": "Timeline",
