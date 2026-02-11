@@ -556,6 +556,12 @@ form h3 {
     text-align: center;
     margin-bottom: 1.5rem;
 }
+form>div {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
 
 label {
     display: flex;
@@ -633,19 +639,50 @@ footer p {
     z-index: 3000;
 }
 
-/* Decorative Blobs if 'sober' permits, keep it invisible or subtle */
-.wave_blob, .wave_down {
-    display: none; /* Removing old blobs for cleaner look */
+/* Mobile Menu Toggle */
+#menu-toggle { display: none; }
+.menu-icon {
+    display: none;
+    left: 2rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-primary);
+    justify-content: center;
+    background-color: transparent;
 }
 
 /* Responsiveness */
 @media (max-width: 768px) {
+    /* Mobile Menu Logic */
+    .menu-icon {
+        display: flex;
+        position: absolute;
+        z-index: 1010;
+    }
+
+    /* Transform the list into a full-screen menu */
     nav > ul {
-        gap: 1rem;
+        position: fixed;
+        top: var(--nav-height);
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - var(--nav-height));
+        background: rgba(5, 5, 5, 0.98);
+        flex-direction: column;
+        justify-content: center;
+        gap: 2.5rem;
+        transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1); /* Smooth easeOut */
+        border-top: 1px solid var(--border-color);
+        padding-bottom: 3rem;
     }
-    nav > ul > li > a {
-        font-size: 0.85rem;
-    }
+
+    /* Open state */
+    #menu-toggle:checked ~ #nav-links { left: 0; }
+
+    /* Rotate/Switch icon */
+    #menu-toggle:checked + .menu-icon .fa-bars::before { content: "\f00d"; /* fa-xmark from fontawesome */ }
+    
+    nav > ul > li > a { font-size: 1.5rem; }
     
     #presentation {
         flex-direction: column-reverse;
@@ -655,9 +692,7 @@ footer p {
     
     #presentation h1 { font-size: 2.5rem; }
     
-    .timeline::before {
-        left: 20px;
-    }
+    .timeline::before { left: 20px; }
     
     .timeline-bubble {
         width: 100%;
@@ -671,19 +706,13 @@ footer p {
         right: auto !important;
     }
 
-    .timeline-bubble.left, .timeline-bubble.right {
-        left: 0;
-    }
+    .timeline-bubble.left, .timeline-bubble.right { left: 0; }
 
-    .skills-grid {
-        gap: 1rem;
-    }
+    .skills-grid { gap: 1rem; }
     .skills-card {
         width: 100px;
         padding: 1rem;
         font-size: 0.85rem;
     }
-    .skill-icon {
-        font-size: 2rem;
-    }
+    .skill-icon { font-size: 2rem; }
 }
