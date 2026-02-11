@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <p data-i18n="project.desc.${project.name}">Description</p>
                         ${project.tags && Array.isArray(project.tags) ? `<p class="project-tags">${project.tags.map(tag => `#${tag}`).join(', ')}</p>` : ''}
                         <footer>
-                            ${project.links && typeof project.links === 'object' ? Object.entries(project.links).map(([link, type]) => `<a href="${link}" target="_blank" data-i18n="btn.${type}">See more<i class="fa-solid fa-arrow-up-right-from-square"></i></a>`).join('') : ''}
+                            ${project.links && typeof project.links === 'object' ? Object.entries(project.links).map(([link, type]) => `<a href="${link}" target="_blank" data-i18n="btn.${type}">See more <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`).join('') : ''}
                         </footer>
                     </article>
                 `;
