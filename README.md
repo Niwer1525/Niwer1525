@@ -1,9 +1,13 @@
 # Hello there
 
-## Who I am?!
+## About me
 - My name is Erwin AKA Niwer
+
 - I've spent near 10 years on my computer creating projects, learning programmation by myself
+
 - Want to learn more? Check out my [Portfolio](https://niwer1525.github.io/Niwer1525/)
+
+- [![wakatime](https://wakatime.com/badge/user/6e76cd44-0f28-4a63-8aa4-fdacc7db9439.svg)](https://wakatime.com/@6e76cd44-0f28-4a63-8aa4-fdacc7db9439)
 
 ## Skills
 <!-- My beloved ones -->
@@ -32,19 +36,9 @@
    - And bunch of other things that I can't remember right now
 
 ## Stats
-- See every languages (Since Jul 20 2023 - Powered by Wakatime) :<br>
 <div align="center">
    <kbd>
-      <a href="https://wakatime.com">
-         <img src="https://wakatime.com/share/@6e76cd44-0f28-4a63-8aa4-fdacc7db9439/401d354a-9975-4137-ac37-1fafed4e86aa.png" style="border-radius:50%" />
-      </a>
-   </kbd>
-</div>
-<br>
-- More Github stats :<br>
-<div align="center">
-   <kbd>
-      <a href="https://git.io/streak-stats"><img src="https://nirzak-streak-stats.vercel.app?user=Niwer1525&theme=dark&hide_border=true&hide_current_streak=true" alt="GitHub Streak" /></a>
+      <img src="https://nirzak-streak-stats.vercel.app?user=Niwer1525&theme=dark&hide_border=true&hide_current_streak=true" alt="GitHub Streak" />
    </kbd>
    <kbd>
       <picture>
@@ -59,6 +53,9 @@
          <img src="https://github-readme-stats-eight-theta.vercel.app/api?username=Niwer1525&show_icons=true&hide_border=true&include_all_commits=true&count_private=true"/>
       </picture>
    </kbd>
+   <kdb>
+      <img src="https://github-readme-stats-eight-theta.vercel.app/api/top-langs/?username=Niwer1525&layout=compact&theme=dark" alt="GitHub Streak"/>
+   </kdb>
 </div>
 
 ## Contact & Socials

@@ -11,14 +11,19 @@
         <link rel="stylesheet" href="./css/main.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
-            // Prevent theme flash on page load
             (() => {
                 try {
+                    // Prevent theme flash on page load
                     const PREF = localStorage.getItem('theme-preference') || 'system';
                     const SYSTEM_DARK = window.matchMedia('(prefers-color-scheme: dark)').matches;
                     const RESOLVED = PREF === 'system' ? (SYSTEM_DARK ? 'dark' : 'light') : PREF;
                     document.documentElement.setAttribute('data-theme', RESOLVED);
+
+                    // Prevent language flash on page load
+                    const LANG = localStorage.getItem('language') || 'en';
+                    document.documentElement.setAttribute('lang', LANG);
                 } catch (_) {}
             })();
         </script>
@@ -35,6 +40,7 @@
                     <li><a href="#presentation" data-i18n="btn.about">About</a></li>
                     <li><a href="#storyline" data-i18n="btn.timeline">Time line</a></li>
                     <li><a href="#skills" data-i18n="btn.skills">Skills</a></li>
+                    <li><a href="#github-stats" data-i18n="btn.github_stats">GitHub Stats</a></li>
                     <li><a href="#projects" data-i18n="btn.projects">Projects</a></li>
                     <!-- <li><a href="notAvalibleYet" target="_blank" data-i18n="btn.download_cv">Download CV</a></li> -->
                     <li><a href="#" onclick="showContactPopup()" data-i18n="btn.contact">Contact</a></li>
@@ -72,6 +78,12 @@
                         <div class="bubble-content">
                             <h3><span data-i18n="month.august">August</span> 2004 🎉</h3>
                             <p data-i18n="timeline.born">I'm Born !</p>
+                        </div>
+                    </div>
+                    <div class="timeline-bubble left">
+                        <div class="bubble-content">
+                            <h3>🎮 2011</h3>
+                            <p data-i18n="timeline.first_device">Got my first technical device, a Playstation 2 that was from my father</p>
                         </div>
                     </div>
                     <div class="timeline-bubble right">
@@ -138,9 +150,50 @@
                     <div class="skills-card"><i class="devicon-sqlite-plain skill-icon"></i>SQLite</div>
                     <div class="skills-card"><i class="devicon-mysql-plain skill-icon"></i>MySQL</div>
                 </div>
-                <br><br>
-                <div class="div-center">
-                    <img draggable="false" class="wakatime-stats" src="https://wakatime.com/share/@6e76cd44-0f28-4a63-8aa4-fdacc7db9439/401d354a-9975-4137-ac37-1fafed4e86aa.png" alt="Wakatime languages">
+            </section>
+            <!-- Github stats -->
+            <section id="github-stats">
+                <h2 data-i18n="title.github_stats">GitHub Stats</h2>
+                <div class="github-stats-grid">
+                    <!-- Hours spent -->
+                    <div class="large-card-container">
+                        <a class="github-card large-card" href="https://wakatime.com/Niwer" target="_blank" rel="noopener noreferrer">
+                            <span id="coding-time">0h</span>
+                            <p data-i18n="github_stats.coding_time">
+                                Spent Coding Time<span id="coding-time-start-date">Since 2023</span>
+                            </p>
+                            <i class="top-right-external-link fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
+                    </div>
+                    <!-- Other stats -->
+                    <div class="github-card">
+                        <span id="total-commits">0</span>
+                        <p data-i18n="github_stats.total_commits">Total Commits</p>
+                    </div>
+                    <div class="github-card">
+                        <span id="contributions">0</span>
+                        <p data-i18n="github_stats.contributions">Contributions</p>
+                    </div>
+                    <!-- <div class="github-card">
+                        <span id="streak">0</span>
+                        <p data-i18n="github_stats.streak">Longest Weekly Streak</p>
+                    </div> -->
+                    <div class="github-card">
+                        <span id="total-issues">0</span>
+                        <p data-i18n="github_stats.total_issues">Total Issues</p>
+                    </div>
+                    <div class="github-card">
+                        <span id="total-prs">0</span>
+                        <p data-i18n="github_stats.total_prs">Total PRs</p>
+                    </div>
+                    <div class="github-card">
+                        <span id="total-stars">0</span>
+                        <p data-i18n="github_stats.total_stars">Total Stars</p>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <div id="waka-language-filters" class="waka-language-filters"></div>
+                    <canvas id="waka-chart" class="wakatime-stats"></canvas>
                 </div>
             </section>
             <!-- Projects -->
@@ -155,15 +208,15 @@
                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
                 </a>
             </section>
-            <!-- Contact popup -->
         </main>
         <footer id="info"></footer>
         <!-- Inc scripts -->
         <script src="./js/i18n.js" defer></script> <!-- Load first to ensure languages are loaded -->
         <script src="./js/main.js" defer></script> <!-- Load main script -->
+        <script src="./js/stats.js" defer></script> <!-- Load stats script -->
+        <script src="./js/theme.js" defer></script> <!-- Load theme script -->
         <script src="./js/article.inc.js" defer></script>
         <script src="./js/contact.inc.js" defer></script>
         <script src="./js/footer.inc.js" defer></script>
     </body>
-
 </html>

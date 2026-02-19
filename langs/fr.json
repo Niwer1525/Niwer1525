@@ -4,6 +4,7 @@
     "btn.timeline": "Ligne du temps",
     "btn.skills": "Compétences",
     "btn.projects": "Projets",
+    "btn.github_stats": "Statistiques",
     "btn.download_cv": "Télécharger CV",
     "btn.contact": "Contact",
     "btn.send": "Envoyer",
@@ -32,6 +33,7 @@
     "title.timeline": "&#10094;Ligne du temps&#10095;",
     "title.skills": "&#10094;Compétences&#10095;",
     "title.projects": "&#10094;Projets&#10095;",
+    "title.github_stats": "&#10094;Statistiques&#10095;",
     "explore.github": "Explorez mon Github pour en voir plus.",
 
     "_comment": "Form",
@@ -40,12 +42,22 @@
     
     "_comment": "Timeline",
     "timeline.born": "Je suis né !",
+    "timeline.first_device": "J'ai reçu mon premier appareil technique, une Playstation 2 qui appartenait à mon père",
     "timeline.first_computer": "Mon premier ordinateur, mon premier serveur Minecraft qui m'a donné une passion pour la programmation et ma première vidéo youtube !",
     "timeline.secondary_school": "Début du secondaire (Fillière générale - sciences économiques et informatique de gestion)",
     "timeline.end_secondary_school": "Obtention du CESS (Diplôme de fin d'études secondaires) orienté en informatique de gestion et sciences économiques",
     "timeline.programming_studies": "Début des études en programmation",
     "timeline.technician_training": "Début d'une formation de technicien informatique",
     "timeline.marketing_fundamentals_course": "Cours sur les concepts fondamentaux du marketing terminé",
+
+    "_comment": "Stats",
+    "github_stats.coding_time": "Temps passé à coder depuis <span id=\"coding-time-start-date\">2023</span>",
+    "github_stats.total_commits": "Total des commits",
+    "github_stats.contributions": "Contributions",
+    "github_stats.streak": "Plus longue série hebdomadaire",
+    "github_stats.total_issues": "Total des issues",
+    "github_stats.total_prs": "Total des PRs",
+    "github_stats.total_stars": "Total des étoiles",
 
     "_comment": "Projects/Articles",
     "projects.loading": "Chargement des projets...",

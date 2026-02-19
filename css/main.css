@@ -376,7 +376,7 @@ button:active, .link-button:active {
     background: var(--surface-glass-hover);
 }
 
-.bubble-content h3 {
+.bubble-content h3, .bubble-content span {
     font-size: 1.25rem;
     color: var(--accent-color);
     margin-bottom: 0.5rem;
@@ -400,15 +400,15 @@ button:active, .link-button:active {
     text-shadow: var(--glow-text);
 }
 
-/* Skills */
-.skills-grid {
+/* Skills & Stats */
+.skills-grid, .github-stats-grid {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 1.5rem;
 }
 
-.skills-card {
+.skills-card, .github-card {
     background: var(--surface-glass);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
@@ -423,39 +423,94 @@ button:active, .link-button:active {
     cursor: default;
 }
 
-.skills-card:hover {
+.github-card {
+    width: 180px;
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 1rem;
+}
+.github-card>span {
+    font-size: 4.5rem;
+}
+.large-card-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.large-card {
+    width: 60%;
+    padding: 2rem;
+    cursor: pointer;
+    position: relative;
+}
+.top-right-external-link {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+}
+
+.skills-card:hover, .github-card:hover {
     border-color: var(--accent-color);
     box-shadow: 0 4px 20px rgba(216, 180, 254, 0.15);
     transform: translateY(-5px);
     background: var(--surface-glass-hover);
 }
-
 .skill-icon {
     font-size: 3rem;
     color: var(--text-primary);
     transition: color 0.3s;
 }
-
 .skills-card:hover .skill-icon {
     color: var(--accent-color);
     filter: drop-shadow(0 0 5px var(--accent-glow));
 }
 
+.chart-container {
+    max-width: 600px;
+    margin: 2rem auto;
+}
+.waka-language-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+.waka-filter-chip {
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-color);
+    background: var(--surface-glass);
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-speed);
+}
+.waka-filter-chip:hover {
+    border-color: var(--accent-color);
+    color: var(--text-primary);
+}
+.waka-filter-chip.is-unselected {
+    opacity: 0.45;
+    filter: saturate(0.25);
+}
+.waka-filter-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
 .wakatime-stats {
-    margin-top: 3rem;
+    margin-top: 1.25rem;
     border-radius: var(--border-radius);
     border: 1px solid var(--border-color);
-    opacity: 0.8;
-    transition: opacity 0.3s;
-}
-
-.wakatime-stats:hover {
-    opacity: 1;
-}
-
-.div-center {
-    display: flex;
-    justify-content: center;
+    opacity: 0.95;
+    transition: opacity 0.3s, border-color 0.3s;
 }
 
 /* Projects */
@@ -745,11 +800,12 @@ footer p {
 
     .timeline-bubble.left, .timeline-bubble.right { left: 0; }
 
-    .skills-grid { gap: 1rem; }
-    .skills-card {
+    .skills-grid, .github-card { gap: 1rem; }
+    .skills-card, .github-card {
         width: 100px;
         padding: 1rem;
         font-size: 0.85rem;
     }
     .skill-icon { font-size: 2rem; }
+    .github-card>span { font-size: 1.5rem; }
 }
