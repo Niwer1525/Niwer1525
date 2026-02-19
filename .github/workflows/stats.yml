@@ -17,7 +17,7 @@ jobs:
         run: |
           curl -H "Authorization: bearer ${{ secrets.STATS_TOKEN }}" \
           -X POST \
-          -d '{ "query": "query { user(login: \"${{ github.repository_owner }}\") { contributionsCollection { totalCommitContributions totalIssueContributions totalPullRequestContributions totalRepositoriesWithContributedCommits contributionCalendar { totalContributions } } pullRequests(states: MERGED) { totalCount } repositories(first: 100, ownerAffiliations: OWNER) { nodes { stargazerCount } } } }" }' \
+          -d '{ "query": "query { user(login: \"${{ github.repository_owner }}\") { pullRequests { totalCount } issues { totalCount } repositories(first: 100, ownerAffiliations: OWNER) { nodes { stargazerCount name defaultBranchRef { target { ... on Commit { history { totalCount } } } } } } contributionsCollection { contributionCalendar { totalContributions } } } }" }' \
           https://api.github.com/graphql \
           -o github-stats.json
 
