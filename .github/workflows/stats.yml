@@ -3,26 +3,30 @@ name: Update GitHub Stats
 on:
   schedule:
     - cron: '0 * * * *' # Runs every hour
-  workflow_dispatch: # Allows you to run it manually
+  workflow_dispatch: # Allows you to run it manually via the Actions tab
 
 jobs:
-  update:
+  update-stats:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      # 1. Pull the code so the robot can see your files
+      - uses: actions/checkout@v4
 
-      - name: Fetch Stats
+      # 2. Fetch data using GraphQL to get all-time history
+      - name: Fetch Stats from GitHub API
         run: |
-          curl -H "Authorization: bearer ${{ secrets.STATS_TOKEN }}" \
+          curl -H "Authorization: bearer ${{ secrets.MY_STATS_TOKEN }}" \
           -X POST \
-          -d '{ "query": "query { user(login: \"${{ github.repository_owner }}\") { contributionsCollection { totalCommitContributions } pullRequests { totalCount } issues { totalCount } repositories(first: 100, ownerAffiliations: OWNER) { nodes { stargazerCount } } } }" }' \
+          -d '{ "query": "query { user(login: \"${{ github.repository_owner }}\") { openIssues: issues(states: OPEN) { totalCount } pullRequests(states: MERGED) { totalCount } repositories(first: 100, ownerAffiliations: OWNER) { nodes { stargazerCount name defaultBranchRef { target { ... on Commit { history { totalCount } } } } } } } }" }' \
           https://api.github.com/graphql \
           -o github-stats.json
 
-      - name: Commit and Push
+      # 3. Save the new JSON file back to your repository
+      - name: Commit and Push changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add github-stats.json
-          git commit -m "Update stats data" || exit 0
+          # Only commit if the file actually changed to avoid empty error messages
+          git commit -m "Automated update of GitHub stats" || exit 0
           git push
