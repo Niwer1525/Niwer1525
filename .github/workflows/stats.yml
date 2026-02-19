@@ -1,0 +1,28 @@
+name: Update GitHub Stats
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Runs every hour
+  workflow_dispatch: # Allows you to run it manually
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Fetch Stats
+        run: |
+          curl -H "Authorization: bearer ${{ secrets.GITHUB_TOKEN }}" \
+          -X POST \
+          -d '{ "query": "query { user(login: \"${{ github.repository_owner }}\") { contributionsCollection { totalCommitContributions } pullRequests { totalCount } issues { totalCount } repositories(first: 100) { nodes { stargazerCount } } } }" }' \
+          https://api.github.com/graphql \
+          -o github-stats.json
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add github-stats.json
+          git commit -m "Update stats data" || exit 0
+          git push
