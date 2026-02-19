@@ -14,12 +14,15 @@ jobs:
 
       - name: Fetch WakaTime Data
         env:
-          WAKA_USER: ${{ secrets.WAKATIME_USERNAME }}
+          WAKA_KEY: ${{ secrets.WAKATIME_API_KEY }}
         run: |
-          # Using environement variable
-          curl "https://wakatime.com/api/v1/users/${WAKA_USER}/all_time_since_today" \
+          # On encode la clé en base64 pour l'authentification Basic
+          AUTH=$(echo -n "$WAKA_KEY" | base64)
+          
+          curl -H "Authorization: Basic $AUTH" \
+          "https://wakatime.com/api/v1/users/current/all_time_since_today" \
           -o wakatime.json
-
+          
       - name: Commit and Push if changed
         run: |
           git config --global user.name "github-actions[bot]"
