@@ -1,1 +1,5 @@
-{"data":{"user":{"contributionsCollection":{"totalCommitContributions":69},"pullRequests":{"totalCount":10},"issues":{"totalCount":107},"repositories":{"nodes":[{"stargazerCount":0},{"stargazerCount":0},{"stargazerCount":0},{"stargazerCount":1},{"stargazerCount":2},{"stargazerCount":1},{"stargazerCount":1},{"stargazerCount":1},{"stargazerCount":0},{"stargazerCount":1},{"stargazerCount":2},{"stargazerCount":2},{"stargazerCount":0},{"stargazerCount":0},{"stargazerCount":0},{"stargazerCount":1}]}}}}
+{
+  "message": "Bad credentials",
+  "documentation_url": "https://docs.github.com/rest",
+  "status": "401"
+}
