@@ -13,7 +13,7 @@ jobs:
 
       - name: Fetch Stats
         run: |
-          curl -H "Authorization: bearer ${{ secrets.GITHUB_TOKEN }}" \
+          curl -H "Authorization: bearer ${{ secrets.STATS_TOKEN }}" \
           -X POST \
           -d '{ "query": "query { user(login: \"${{ github.repository_owner }}\") { contributionsCollection { totalCommitContributions } pullRequests { totalCount } issues { totalCount } repositories(first: 100) { nodes { stargazerCount } } } }" }' \
           https://api.github.com/graphql \
