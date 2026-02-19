@@ -2,7 +2,6 @@
     Get data from Github Actions generated JSON files and display them in the stats section.
     E.G : https://raw.githubusercontent.com/Niwer1525/Niwer1525/main/github_full_stats.json
 */
-const GITHUB_USERNAME = 'Niwer1525';
 
 /* WakaTime chart variables */
 const DEFAULT_LANGUAGE_COLOR = '#cccccc';
