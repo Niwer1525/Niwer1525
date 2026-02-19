@@ -11,6 +11,17 @@
         <link rel="stylesheet" href="./css/main.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+        <script>
+            // Prevent theme flash on page load
+            (() => {
+                try {
+                    const PREF = localStorage.getItem('theme-preference') || 'system';
+                    const SYSTEM_DARK = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    const RESOLVED = PREF === 'system' ? (SYSTEM_DARK ? 'dark' : 'light') : PREF;
+                    document.documentElement.setAttribute('data-theme', RESOLVED);
+                } catch (_) {}
+            })();
+        </script>
     </head>
     <body>
         <header>
@@ -27,6 +38,12 @@
                     <li><a href="#projects" data-i18n="btn.projects">Projects</a></li>
                     <!-- <li><a href="notAvalibleYet" target="_blank" data-i18n="btn.download_cv">Download CV</a></li> -->
                     <li><a href="#" onclick="showContactPopup()" data-i18n="btn.contact">Contact</a></li>
+                    <li>
+                        <button id="theme-toggle" type="button" aria-label="Theme mode" title="Theme mode">
+                            <i class="fa-solid fa-circle-half-stroke"></i>
+                            <span id="theme-toggle-label">System</span>
+                        </button>
+                    </li>
                     <li class="languages-grid">
                         <a href="index.html" onclick="changeLanguage('en')">
                             <img draggable="false" src="./assets/icons/united-kingdom.webp" alt="united_kingdom_logo">
@@ -105,7 +122,6 @@
                 <div class="skills-grid">
                     <!-- Game/App dev -->
                     <div class="skills-card"><i class="fa-brands fa-java skill-icon"></i>Java</div>
-                    <div class="skills-card"><i class="devicon-csharp-plain skill-icon"></i>C#</div>
                     <div class="skills-card"><i class="devicon-opengl-plain skill-icon"></i>OpenGL</div>
                     <!-- Web tech -->
                     <div class="skills-card"><i class="fa-brands fa-html5 skill-icon"></i>HTML</div>
@@ -114,12 +130,11 @@
                     <div class="skills-card"><i class="fa-brands fa-php skill-icon"></i>PHP</div>
                     <div class="skills-card"><i class="fa-brands fa-node-js skill-icon"></i>NodeJS</div>
                     <div class="skills-card"><i class="devicon-threejs-original skill-icon"></i>ThreeJS</div>
-                    <!-- Scripting -->
-                    <div class="skills-card"><i class="fa-brands fa-python skill-icon"></i>Python</div>
                     <!-- Tools -->
                     <div class="skills-card"><i class="fa-solid fa-code-branch skill-icon"></i>Git</div>
                     <div class="skills-card"><i class="fa-brands fa-github skill-icon"></i>Github</div>
                     <div class="skills-card"><i class="fa-brands fa-linux skill-icon"></i>Linux/Unix CLI</div>
+                    <div class="skills-card"><i class="devicon-gradle-plain skill-icon"></i>Gradle</div>
                     <div class="skills-card"><i class="devicon-sqlite-plain skill-icon"></i>SQLite</div>
                     <div class="skills-card"><i class="devicon-mysql-plain skill-icon"></i>MySQL</div>
                 </div>
