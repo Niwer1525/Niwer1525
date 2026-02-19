@@ -1,0 +1,47 @@
+{
+  "user": "Niwer1525",
+  "generated_at": "2026-02-19T23:07:44.958834",
+  "years": {
+    "2022": {
+      "commits": 4,
+      "pull_requests": 0,
+      "issues": 0,
+      "reviews": 0,
+      "private_contributions": 11,
+      "total_combined": 16
+    },
+    "2023": {
+      "commits": 29,
+      "pull_requests": 2,
+      "issues": 11,
+      "reviews": 0,
+      "private_contributions": 210,
+      "total_combined": 257
+    },
+    "2024": {
+      "commits": 62,
+      "pull_requests": 1,
+      "issues": 4,
+      "reviews": 0,
+      "private_contributions": 95,
+      "total_combined": 167
+    },
+    "2025": {
+      "commits": 56,
+      "pull_requests": 0,
+      "issues": 1,
+      "reviews": 0,
+      "private_contributions": 86,
+      "total_combined": 146
+    },
+    "2026": {
+      "commits": 24,
+      "pull_requests": 0,
+      "issues": 4,
+      "reviews": 0,
+      "private_contributions": 22,
+      "total_combined": 50
+    }
+  },
+  "all_time_stars": 12
+}
