@@ -13,10 +13,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Fetch All-Time WakaTime Data
+        env:
+          WAKA_KEY: ${{ secrets.WAKATIME_API_KEY }}
         run: |
-          # The "all_time" range gives you the full career breakdown
-          curl "https://wakatime.com/api/v1/users/current/stats/all_time?api_key=${{ secrets.WAKATIME_API_KEY }}" \
-          -o wakatime-chart.json
+          AUTH=$(echo -n "$WAKA_KEY" | base64)
+          
+          curl -H "Authorization: Basic $AUTH" \
+          "https://wakatime.com/api/v1/users/current/stats/all_time" \
+          -o wakatime.json
 
       - name: Commit and Push JSON
         run: |
