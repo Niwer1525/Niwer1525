@@ -1,0 +1,32 @@
+name: Update WakaTime Stats
+
+on:
+  schedule:
+    - cron: '0 */6 * * *' # Executing every 6 hours
+  workflow_dispatch:      # Allow manual launching too
+
+jobs:
+  update-stats:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Fetch WakaTime Data
+        env:
+          WAKA_KEY: ${{ secrets.WAKATIME_API_KEY }}
+        run: |
+          # On encode la clé en base64 pour l'authentification Basic
+          AUTH=$(echo -n "$WAKA_KEY" | base64)
+          
+          curl -H "Authorization: Basic $AUTH" \
+          "https://wakatime.com/api/v1/users/current/all_time_since_today" \
+          -o wakatime.json
+          
+      - name: Commit and Push if changed
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add wakatime.json
+          # Check if there's modification preventing workflow crash
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update WakaTime stats" && git push)
