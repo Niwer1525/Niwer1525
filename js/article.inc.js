@@ -6,15 +6,6 @@ function appendImageOrVideo(project) {
     return `<img draggable="false" src="assets/${project.image}" alt="Image of ${project.name}">`
 }
 
-/**
- * Removes extra whitespace and newlines from the HTML string to optimize it for faster rendering.
- * @param {*} html The HTML string to be trimmed and minified.
- * @returns {string} The trimmed and minified HTML string.
- */
-function trimAndMinifyHTML(html) {
-    return html.trim().replace(/\s+/g, ' ');
-}
-
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const BASE_URL = (typeof WEBSITE_URL !== 'undefined') ? WEBSITE_URL : '';

@@ -1,60 +1,6 @@
 /* Environement variables */
 const IS_DEV_ENV = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-const WEBSITE_URL = IS_DEV_ENV ? './' : 'https://niwer1525.github.io/Niwer1525/';
-
-/* Theme variables */
-const THEME_STORAGE_KEY = 'theme-preference';
-const THEME_MODES = ['system', 'dark', 'light'];
-const SYSTEM_THEME_QUERY = window.matchMedia('(prefers-color-scheme: dark)');
-
-function getStoredThemePreference() {
-    const VALUE = localStorage.getItem(THEME_STORAGE_KEY) || 'system';
-    return THEME_MODES.includes(VALUE) ? VALUE : 'system';
-}
-
-function getResolvedTheme(mode) {
-    if (mode === 'system') return SYSTEM_THEME_QUERY.matches ? 'dark' : 'light';
-    return mode;
-}
-
-function applyTheme(mode = getStoredThemePreference()) {
-    const RESOLVED = getResolvedTheme(mode);
-    document.documentElement.setAttribute('data-theme', RESOLVED);
-    updateThemeToggleUI(mode, RESOLVED);
-}
-
-function updateThemeToggleUI(mode, resolved) {
-    const LABEL = document.getElementById('theme-toggle-label');
-    const ICON = document.querySelector('#theme-toggle i');
-    if (!LABEL || !ICON) return;
-
-    LABEL.textContent = mode.charAt(0).toUpperCase() + mode.slice(1);
-
-    ICON.className = 'fa-solid';
-    if (mode === 'system') ICON.classList.add('fa-circle-half-stroke');
-    else if (resolved === 'dark') ICON.classList.add('fa-moon');
-    else ICON.classList.add('fa-sun');
-}
-
-function cycleThemeMode() {
-    const CURRENT = getStoredThemePreference();
-    const CURRENT_INDEX = THEME_MODES.indexOf(CURRENT);
-    const NEXT = THEME_MODES[(CURRENT_INDEX + 1) % THEME_MODES.length];
-    localStorage.setItem(THEME_STORAGE_KEY, NEXT);
-    applyTheme(NEXT);
-    createNotification(`Theme: ${NEXT}`);
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    applyTheme();
-
-    const THEME_TOGGLE = document.getElementById('theme-toggle');
-    if (THEME_TOGGLE) THEME_TOGGLE.addEventListener('click', cycleThemeMode);
-});
-
-SYSTEM_THEME_QUERY.addEventListener('change', () => {
-    if (getStoredThemePreference() === 'system') applyTheme('system');
-});
+const WEBSITE_URL = IS_DEV_ENV ? './' : `https://niwer1525.github.io/${GITHUB_USERNAME}/`;
 
 function copyDiscordId() {
     navigator.clipboard.writeText('niwerbis').then(() => createNotification('Discord ID copied to clipboard!'));
@@ -112,3 +58,40 @@ document.addEventListener('submit', function(e) {
         .then(() => form.reset());
     }
 });
+
+/**
+ * Utility function to get a CSS variable's value
+ * @param {*} name - The name of the CSS variable (e.g., '--accent-color')
+ * @returns {string} The value of the CSS variable, or an empty string if not found
+ */
+function getCSSVar(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+/**
+ * Utility function to get an element by ID and set its text content
+ * @param {*} id - The ID of the element to find
+ * @param {*} content - The text content to set on the element
+ */
+function getElementByIdAndSetContent(id, content) {
+    const ELEMENT = document.getElementById(id);
+    if(ELEMENT) ELEMENT.textContent = content;
+}
+
+/**
+ * Removes extra whitespace and newlines from the HTML string to optimize it for faster rendering.
+ * @param {*} html The HTML string to be trimmed and minified.
+ * @returns {string} The trimmed and minified HTML string.
+ */
+function trimAndMinifyHTML(html) {
+    return html.trim().replace(/\s+/g, ' ');
+}
+
+/**
+ * Escapes special HTML characters in a string to prevent XSS vulnerabilities when inserting user-generated content into the DOM.
+ * @param {*} value - The string value to be escaped for safe HTML insertion.
+ * @returns {string} The escaped string, safe for HTML insertion.
+ */
+function escapeHtml(value) {
+    return String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
+}
