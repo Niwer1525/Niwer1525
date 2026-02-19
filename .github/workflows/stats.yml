@@ -1,32 +1,35 @@
-name: Update GitHub Stats
+name: Update My GitHub Stats
 
 on:
   schedule:
-    - cron: '0 * * * *' # Runs every hour
-  workflow_dispatch: # Allows you to run it manually via the Actions tab
+    - cron: '0 */6 * * *' # Executing every 6 hours
+  workflow_dispatch:    # Allows you to click a button to run it manually
 
 jobs:
-  update-stats:
+  build:
     runs-on: ubuntu-latest
+    
     steps:
-      # 1. Pull the code so the robot can see your files
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      # 2. Fetch data using GraphQL to get all-time history
-      - name: Fetch Stats from GitHub API
-        run: |
-          curl -H "Authorization: bearer ${{ secrets.STATS_TOKEN }}" \
-          -X POST \
-          -d '{ "query": "query { user(login: \"${{ github.repository_owner }}\") { pullRequests { totalCount } issues { totalCount } repositories(first: 100, ownerAffiliations: OWNER) { nodes { stargazerCount name defaultBranchRef { target { ... on Commit { history { totalCount } } } } } } contributionsCollection { contributionCalendar { totalContributions } } } }" }' \
-          https://api.github.com/graphql \
-          -o github-stats.json
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
 
-      # 3. Save the new JSON file back to your repository
-      - name: Commit and Push changes
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run stats script
+        env:
+          GH_TOKEN: ${{ secrets.STATS_TOKEN }}
+        run: python fetch_stats.py
+
+      - name: Commit and push changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add github-stats.json
-          # Only commit if the file actually changed to avoid empty error messages
-          git commit -m "Automated update of GitHub stats" || exit 0
+          git add github_full_stats.json
+          git commit -m "chore: update stats [skip ci]" || echo "No changes to commit"
           git push
