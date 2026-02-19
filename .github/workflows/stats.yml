@@ -15,7 +15,7 @@ jobs:
       # 2. Fetch data using GraphQL to get all-time history
       - name: Fetch Stats from GitHub API
         run: |
-          curl -H "Authorization: bearer ${{ secrets.MY_STATS_TOKEN }}" \
+          curl -H "Authorization: bearer ${{ secrets.STATS_TOKEN }}" \
           -X POST \
           -d '{ "query": "query { user(login: \"${{ github.repository_owner }}\") { openIssues: issues(states: OPEN) { totalCount } pullRequests(states: MERGED) { totalCount } repositories(first: 100, ownerAffiliations: OWNER) { nodes { stargazerCount name defaultBranchRef { target { ... on Commit { history { totalCount } } } } } } } }" }' \
           https://api.github.com/graphql \
