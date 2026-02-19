@@ -83,7 +83,7 @@ async function getGitHubStats() {
 async function getWakatimeData() {
     try {
         const RESPONSE = await fetch(`https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_USERNAME}/main/wakatime.json`);
-        if (!RESPONSE.ok) throw new Error('Could not fetch WakaTime data');
+        if (!RESPONSE.ok) throw new Error('Could not fetch WakaTime data', GITHUB_USERNAME);
         
         const DATA = await RESPONSE.json();
         const TOTAL_SECONDS = DATA.data.total_seconds;
@@ -96,7 +96,7 @@ async function getWakatimeData() {
 async function renderWakaChart() {
     try {
         const RESPONSE = await fetch(`https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_USERNAME}/main/wakatime-chart.json`);
-        if (!RESPONSE.ok) throw new Error('Could not fetch WakaTime chart data');
+        if (!RESPONSE.ok) throw new Error('Could not fetch WakaTime chart data', GITHUB_USERNAME);
 
         const RESULT = await RESPONSE.json();
         wakaLanguagesCache = RESULT.data.languages || [];
