@@ -1,16 +1,18 @@
+let currentLang = null;
+let currentLangData = null;
+
 // Load the saved or default language on page load.
-window.addEventListener('DOMContentLoaded', async (event) => {
-    const LANG = localStorage.getItem('language') || 'en';
-    const LANG_DATA = await fetchLanguageData(LANG);
-    await updateContent(LANG_DATA);
+window.addEventListener('DOMContentLoaded', async () => {
+    await applyLanguage();
 });
 
 /**
  * Update the content of the page with the provided language data.
  * @param {*} langData The language data to update the page with.
  */
-async function updateContent(langData) {
-    const elements = document.querySelectorAll('[data-i18n]');
+async function updateContent(langData, root = document) {
+    if (!langData) return;
+    const elements = root.querySelectorAll('[data-i18n]');
     elements.forEach(element => element.innerHTML = langData[element.dataset.i18n]);
 }
 
@@ -37,13 +39,25 @@ async function fetchLanguageData(lang) {
     }
 }
 
+async function applyLanguage(root = document) {
+    const lang = localStorage.getItem('language') || 'en';
+
+    if (currentLang !== lang || !currentLangData) {
+        currentLangData = await fetchLanguageData(lang);
+        currentLang = lang;
+    }
+
+    await updateContent(currentLangData, root);
+}
+
 /**
  * Change the language of the page.
  * @param {*} lang The language to change to.
  */
 async function changeLanguage(lang) {
     await setLanguagePreference(lang);
-    
-    const langData = await fetchLanguageData(lang);
-    await updateContent(langData);
+    currentLang = null; // force refresh cache when language changes
+    await applyLanguage();
 }
+
+window.applyLanguage = applyLanguage;
