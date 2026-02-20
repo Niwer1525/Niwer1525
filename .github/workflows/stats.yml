@@ -3,7 +3,7 @@ name: Update My GitHub Stats
 on:
   schedule:
     - cron: '0 */6 * * *' # Executing every 6 hours
-  workflow_dispatch:    # Allows you to click a button to run it manually
+  workflow_dispatch:
 
 jobs:
   build:

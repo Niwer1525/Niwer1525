@@ -166,10 +166,10 @@ function ensureWakaLanguageFiltersUI(languages) {
 function getFilteredWakaLanguages() {
     const SELECTED_LANGUAGES = getStoredVisibleLanguages(wakaLanguagesCache);
     const VISIBLE_LANGUAGES = wakaLanguagesCache.filter(language => SELECTED_LANGUAGES.has(language.name) && LANGUAGES_COLORS[language.name]); // Only include languages that are selected and have a defined color
-    const OTHER_PERCENT = VISIBLE_LANGUAGES.filter(language => language.percent < 1).reduce((accumulator, current) => accumulator + current.percent, 0);
 
     /* Compute all "other" languages */
-    if (OTHER_PERCENT > 0) VISIBLE_LANGUAGES.push({ name: 'Not shown', percent: OTHER_PERCENT });
+    const OTHER_PERCENT = wakaLanguagesCache.filter(language => !LANGUAGES_COLORS[language.name] && SELECTED_LANGUAGES.has(language.name)).reduce((accumulator, current) => accumulator + current.percent, 0);
+    if (OTHER_PERCENT > 0) VISIBLE_LANGUAGES.push({ name: 'Not shown / Other', percent: OTHER_PERCENT });
 
     return VISIBLE_LANGUAGES;
 }
@@ -184,7 +184,6 @@ function renderFilteredWakaChart() {
     const LANGUAGES = getFilteredWakaLanguages();
     const TEXT_PRIMARY = getCSSVar('--text-primary');
     const TEXT_SECONDARY = getCSSVar('--text-secondary');
-    const BORDER_COLOR = getCSSVar('--border-color');
 
     if (wakaChartInstance) wakaChartInstance.destroy(); // Destroy previous chart instance before creating a new one to avoid memory leaks and ensure proper re-rendering
     wakaChartInstance = new Chart(CONTEXT, {
@@ -195,14 +194,18 @@ function renderFilteredWakaChart() {
                 data: LANGUAGES.map(language => language.percent),
                 backgroundColor: LANGUAGES.map(language => LANGUAGES_COLORS[language.name] || DEFAULT_LANGUAGE_COLOR),
                 hoursData: LANGUAGES.map(language => language.text || ''),
-                borderColor: BORDER_COLOR,
-                borderWidth: 1,
-                cutout : 200,
+                borderWidth: 0,
+                cutout : '70%',
                 radius: '90%',
-                hoverOffset: 60
+                hoverOffset: (context) => {
+                    const CHART_WIDTH = context?.chart?.width || 0;
+                    return Math.max(10, Math.min(36, Math.round(CHART_WIDTH * 0.06)));
+                }
             }]
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: true,
             animation: { duration: 250 },
             plugins: {
                 legend: { display: false }, // We have our own legend in the filters, so we hide the default one
@@ -211,8 +214,6 @@ function renderFilteredWakaChart() {
                     titleColor: TEXT_PRIMARY,
                     titleFont: { size: 14, weight: 'bold' },
                     bodyColor: TEXT_SECONDARY,
-                    borderColor: BORDER_COLOR,
-                    borderWidth: 1,
                     callbacks: {
                         label: (item) => { 
                             const HOURS = item.dataset.hoursData?.[item.dataIndex] ?? 0;

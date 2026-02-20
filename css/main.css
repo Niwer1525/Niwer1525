@@ -431,6 +431,12 @@ button:active, .link-button:active {
 }
 .github-card>span {
     font-size: 4.5rem;
+    line-height: 1;
+    display: block;
+}
+.github-card p {
+    margin: 0;
+    line-height: 1.35;
 }
 .large-card-container {
     width: 100%;
@@ -439,9 +445,13 @@ button:active, .link-button:active {
 }
 .large-card {
     width: 60%;
-    padding: 2rem;
+    padding: 2rem 3rem 2rem 2rem;
     cursor: pointer;
     position: relative;
+}
+.large-card > span {
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    padding-right: 1.25rem;
 }
 .top-right-external-link {
     position: absolute;
@@ -504,13 +514,6 @@ button:active, .link-button:active {
     height: 8px;
     border-radius: 50%;
     display: inline-block;
-}
-.wakatime-stats {
-    margin-top: 1.25rem;
-    border-radius: var(--border-radius);
-    border: 1px solid var(--border-color);
-    opacity: 0.95;
-    transition: opacity 0.3s, border-color 0.3s;
 }
 
 /* Projects */
@@ -737,7 +740,7 @@ footer p {
     background-color: transparent;
 }
 
-/* Optional: tighter button in nav */
+/* Tighter button in nav */
 #theme-toggle {
     padding: 0.55rem 1rem;
     font-size: 0.9rem;
@@ -808,4 +811,14 @@ footer p {
     }
     .skill-icon { font-size: 2rem; }
     .github-card>span { font-size: 1.5rem; }
+
+    .large-card {
+        width: 100%;
+        padding: 1.25rem 2.5rem 1.25rem 1.25rem;
+    }
+
+    .top-right-external-link {
+        top: 8px;
+        right: 8px;
+    }
 }
