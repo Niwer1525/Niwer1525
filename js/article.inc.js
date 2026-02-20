@@ -6,6 +6,19 @@ function appendImageOrVideo(project) {
     return `<img draggable="false" src="assets/${project.image}" alt="Image of ${project.name}">`
 }
 
+function formatDefaultTitle(projectName) {
+    return projectName.replace(/[-_]+/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+}
+
+function formatDefaultButtonName(type) {
+    switch(type.toLowerCase()) {
+        case 'read': return 'Read more';
+        case 'see': return 'See more';
+        case 'play': return 'Play';
+        default: return "Read more";
+    }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const BASE_URL = (typeof WEBSITE_URL !== 'undefined') ? WEBSITE_URL : '';
@@ -23,13 +36,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             DATA.projects.forEach(project => {
                 allArticlesHTML += `<article>
                     <header>
-                        <h2 data-i18n="project.title.${project.name}">Title</h2>
+                        <h2 data-i18n="project.title.${project.name}">${formatDefaultTitle(project.name)}</h2>
                         ${project.video_id || project.image ? appendImageOrVideo(project) : ''}
                     </header>
-                    <p data-i18n="project.desc.${project.name}">Description</p>
+                    <p data-i18n="project.desc.${project.name}">Loading description . . .</p>
                     ${project.tags && Array.isArray(project.tags) ? `<p class="project-tags">${project.tags.map(tag => `#${tag}`).join(', ')}</p>` : ''}
                     <footer>
-                        ${project.links && typeof project.links === 'object' ? Object.entries(project.links).map(([link, type]) => `<a href="${link}" target="_blank" data-i18n="btn.${type}">See more <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`).join('') : ''}
+                        ${project.links && typeof project.links === 'object' ? Object.entries(project.links).map(([link, type]) => `<a href="${link}" target="_blank" data-i18n="btn.${type}">${formatDefaultButtonName(type)} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`).join('') : ''}
                     </footer>
                 </article>`;
             });

@@ -10,15 +10,8 @@ window.addEventListener('DOMContentLoaded', async (event) => {
  * @param {*} langData The language data to update the page with.
  */
 async function updateContent(langData) {
-    // document.querySelectorAll('[data-i18n]').forEach(element => {
-    //     const key = element.getAttribute('data-i18n');
-    //     element.innerHTML = langData[key];
-    // });
-
     const elements = document.querySelectorAll('[data-i18n]');
-    elements.forEach(element => {
-        element.innerHTML = langData[element.dataset.i18n];
-    });
+    elements.forEach(element => element.innerHTML = langData[element.dataset.i18n]);
 }
 
 /**

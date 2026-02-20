@@ -29,7 +29,7 @@
 
     "_comment": "Other",
     "made_by": "Fait avec ❤️ par Niwer",
-    "content_aboute_me": "Bonjour !<br>Je suis <span>Erwin</span>, aussi connu sous mon pseudonyme <span>Niwer</span> et je viens de <span>Belgique</span>.<br><br>J'ai près de 10 ans d'expérience autodidacte en programmation. J'ai développé une passion profonde pour les ordinateurs, à la fois en jouant et en programmant. Mon expertise se situe dans le <span>Java</span> et le <span>développement web</span>, où j'aime créer des solutions innovantes et efficaces. Que ce soit pour construire des applications robustes ou explorer de nouvelles technologies, je suis toujours prêt à relever de nouveaux défis et à élargir mes compétences.",
+    "content_aboute_me": "Yo, je suis <span>Erwin</span> (alias <span>Niwer</span>).<br><br>Programmeur autodidacte avec près de 8 ans d'expérience. Spécialiste en <span>Java</span> et dans le <span>développement web</span>, dévéloppant des applications robustes et explorant de nouvelles technologies. Toujours avide de nouveaux défis !",
     "title.timeline": "&#10094;Ligne du temps&#10095;",
     "title.skills": "&#10094;Compétences&#10095;",
     "title.projects": "&#10094;Projets&#10095;",
@@ -42,12 +42,12 @@
     
     "_comment": "Timeline",
     "timeline.born": "Je suis né !",
-    "timeline.first_device": "J'ai reçu mon premier appareil technique, une Playstation 2 qui appartenait à mon père",
-    "timeline.first_computer": "Mon premier ordinateur, mon premier serveur Minecraft qui m'a donné une passion pour la programmation et ma première vidéo youtube !",
+    "timeline.first_device": "J'ai eu ma première console, une Playstation 2 appartenant à mon père",
+    "timeline.first_computer": "Premier ordinateur, première vidéo youtube, et bien sûr premier serveur Minecraft qui m'a donné une passion pour la programmation !",
     "timeline.secondary_school": "Début du secondaire (Fillière générale - sciences économiques et informatique de gestion)",
     "timeline.end_secondary_school": "Obtention du CESS (Diplôme de fin d'études secondaires) orienté en informatique de gestion et sciences économiques",
-    "timeline.programming_studies": "Début des études en programmation",
-    "timeline.technician_training": "Début d'une formation de technicien informatique",
+    "timeline.programming_studies": "Début d'études en programmation",
+    "timeline.technician_training": "Formation de technicien informatique",
     "timeline.marketing_fundamentals_course": "Cours sur les concepts fondamentaux du marketing terminé",
 
     "_comment": "Stats",
@@ -57,7 +57,7 @@
     "github_stats.streak": "Plus longue série hebdomadaire",
     "github_stats.total_issues": "Total des issues",
     "github_stats.total_prs": "Total des PRs",
-    "github_stats.total_stars": "Total des étoiles",
+    "github_stats.total_stars": "Total des Stars",
 
     "_comment": "Projects/Articles",
     "projects.loading": "Chargement des projets...",

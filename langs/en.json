@@ -29,7 +29,7 @@
 
     "_comment": "Other",
     "made_by": "Made with ❤️ by Niwer",
-    "content_aboute_me": "Hello there!<br>I’m <span>Erwin</span>, also known by my pseudonym <span>Niwer</span> and I'm from <span>Belgium</span>.<br><br>I have nearly 10 years of Self-taught experience in programming. I have developed a deep passion for computers, both in playing and programming. My expertise lies in <span>Java</span> and <span>web development</span>, where I enjoy creating innovative and efficient solutions. Whether it’s building robust applications or exploring new technologies, I am always eager to take on new challenges and expand my skill set.",
+    "content_aboute_me": "Hi, I'm <span>Erwin</span> (aka <span>Niwer</span>).<br><br>Self-taught programmer with 8+ years of experience. I specialize in <span>Java</span> and <span>web development</span>, building robust applications and exploring new technologies. Always eager for new challenges.",
     "title.timeline": "&#10094;Timeline&#10095;",
     "title.skills": "&#10094;Skills&#10095;",
     "title.projects": "&#10094;Projects&#10095;",
@@ -42,13 +42,13 @@
 
     "_comment": "Timeline",
     "timeline.born": "I'm Born !",
-    "timeline.first_device": "Got my first technical device, a Playstation 2 that was from my father",
-    "timeline.first_computer": "My first computer, my first Minecraft server that will give me a passion for programming and my first youtube video !",
+    "timeline.first_device": "Got my first device, a Playstation 2 from my father",
+    "timeline.first_computer": "First computer, first youtube video, Of course first Minecraft server giving me a passion for programming !",
     "timeline.secondary_school": "Secondary School Begins (General line - economic sciences and management IT)",
     "timeline.end_secondary_school": "Obtained CESS (End of secondary school diploma) oriented in management IT and economic sciences",
-    "timeline.programming_studies": "Starting programming studies",
-    "timeline.technician_training": "Start of an IT technician training course",
-    "timeline.marketing_fundamentals_course": "Marketing Fundamentals Course Completed",
+    "timeline.programming_studies": "Start of programming studies",
+    "timeline.technician_training": "IT technician training course",
+    "timeline.marketing_fundamentals_course": "Marketing Fundamentals Course Completed !",
 
     "_comment": "Stats",
     "github_stats.coding_time": "Spent Coding Time Since <span id=\"coding-time-start-date\">2023</span>",
