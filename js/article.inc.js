@@ -1,9 +1,9 @@
 function appendImageOrVideo(project) {
-    let useYoutubeVideoAsPreview = project.video_id !== undefined;
-    if(useYoutubeVideoAsPreview)
+    const USE_VIDEO_AS_PREV = project.video_id !== undefined;
+    if(USE_VIDEO_AS_PREV)
         return `<iframe src="https://www.youtube.com/embed/${project.video_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
     
-    return `<img draggable="false" src="assets/${project.image}" alt="Image of ${project.name}">`
+    return `<img loading="lazy" draggable="false" src="assets/${project.image}" alt="Image of ${project.name}">`
 }
 
 function formatDefaultTitle(projectName) {
@@ -48,6 +48,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         }
         GRID.innerHTML = trimAndMinifyHTML(allArticlesHTML);
+
+        /* Re-translate injected HTML */
+        await applyLanguage(GRID);
     } catch (error) {
         console.error('Error fetching projects:', error);
     }
