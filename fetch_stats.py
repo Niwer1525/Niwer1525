@@ -4,17 +4,35 @@ import requests
 from datetime import datetime
 
 # CONFIGURATION
-TOKEN = os.getenv("GH_TOKEN")
+TOKEN = os.getenv("GH_TOKEN") or os.getenv("STATS_TOKEN")  # Support both GH_TOKEN and STATS_TOKEN env vars
 HEADERS = {"Authorization": f"Bearer {TOKEN}"}
 URL = "https://api.github.com/graphql"
 
+if not TOKEN:
+  raise RuntimeError("GH_TOKEN is not set. Please export GH_TOKEN with a valid GitHub personal access token.")
+
 def run_query(query, variables):
-    response = requests.post(URL, json={'query': query, 'variables': variables}, headers=HEADERS)
-    return response.json()
+  response = requests.post(URL, json={'query': query, 'variables': variables}, headers=HEADERS)
+
+  if response.status_code != 200:
+    raise RuntimeError(f"GitHub GraphQL request failed: HTTP {response.status_code} - {response.text}")
+
+  payload = response.json()
+  if "errors" in payload and payload["errors"]:
+    errors = "; ".join(err.get("message", str(err)) for err in payload["errors"])
+    raise RuntimeError(f"GitHub GraphQL returned errors: {errors}")
+
+  if "data" not in payload:
+    raise RuntimeError(f"GitHub GraphQL response missing 'data': {payload}")
+
+  return payload
 
 # 1. Fetch User Info (Join Date)
 user_info = run_query("{ viewer { login createdAt } }", {})
-viewer = user_info['data']['viewer']
+viewer = user_info.get('data', {}).get('viewer')
+if not viewer:
+  raise RuntimeError(f"Unable to read viewer info from response: {user_info}")
+
 username = viewer['login']
 start_year = datetime.strptime(viewer['createdAt'], "%Y-%m-%dT%H:%M:%SZ").year
 current_year = datetime.now().year
@@ -50,7 +68,9 @@ for year in range(start_year, current_year + 1):
     """
     
     result = run_query(query, {"from": from_date, "to": to_date})
-    data = result['data']['viewer']['contributionsCollection']
+    data = result.get('data', {}).get('viewer', {}).get('contributionsCollection')
+    if not data:
+      raise RuntimeError(f"Missing contributions data for year {year}: {result}")
     
     all_stats["years"][year] = {
         "commits": data['totalCommitContributions'],
@@ -75,7 +95,11 @@ stars_query = """
 }
 """
 stars_data = run_query(stars_query, {})
-total_stars = sum(repo['stargazerCount'] for repo in stars_data['data']['viewer']['repositories']['nodes'])
+repos = stars_data.get('data', {}).get('viewer', {}).get('repositories', {}).get('nodes')
+if repos is None:
+  raise RuntimeError(f"Missing repositories data in stars response: {stars_data}")
+
+total_stars = sum(repo['stargazerCount'] for repo in repos)
 all_stats["all_time_stars"] = total_stars
 
 # OUTPUT
