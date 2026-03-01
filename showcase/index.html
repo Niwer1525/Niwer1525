@@ -1,0 +1,124 @@
+<!-- Showcase index - Showcase is a simple timeline like displaying all existing domains and sub-domains for my site (niwer.dev) -->
+<!-- Note : There's no translation here -->
+<!-- Note² : If you use CTRL+P or CTRL+S the page will be saved as an image for socials publication (Such as instagram, Facebook, Twitter, etc) -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Niwer.dev showcase</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+        <link rel="stylesheet" href="./showcase.css">
+    </head>
+    <body>
+        <main>
+            <section>
+                <!-- Main website -->
+                <div class="bubble">
+                    <div class="bubble-content">
+                        <i class="fa-solid fa-globe"></i>
+                        <a href="https://niwer.dev">niwer.dev</a>
+                    </div>
+                </div>
+                <!-- Malt -->
+                <div class="bubble">
+                    <div class="bubble-content">
+                        <i class="fa-solid fa-briefcase"></i>
+                        <a href="https://malt.niwer.dev" target="_blank">malt.niwer.dev</a> / <a href="https://fr.malt.niwer.dev" target="_blank">fr.malt.niwer.dev</a>
+                    </div>
+                </div>
+                <!-- Github -->
+                <div class="bubble">
+                    <div class="bubble-content">
+                        <i class="fa-brands fa-github"></i>
+                        <a href="https://git.niwer.dev" target="_blank">git.niwer.dev</a>
+                    </div>
+                </div>
+                <!-- Wakatime -->
+                <div class="bubble">
+                    <div class="bubble-content">
+                        <i class="fa-solid fa-clock"></i>
+                        <a href="https://wakatime.niwer.dev" target="_blank">wakatime.niwer.dev</a>
+                    </div>
+                </div>
+                <!-- Stackoverflow -->
+                <div class="bubble">
+                    <div class="bubble-content">
+                        <i class="fa-brands fa-stack-overflow"></i>
+                        <a href="https://stackoverflow.niwer.dev" target="_blank">stackoverflow.niwer.dev</a>
+                    </div>
+                </div>
+                <!-- Youtube -->
+                <div class="bubble">
+                    <div class="bubble-content">
+                        <i class="fa-brands fa-youtube"></i>
+                        <a href="https://youtube.niwer.dev" target="_blank">youtube.niwer.dev</a>
+                    </div>
+                </div>
+                <!-- Modrinth -->
+                <div class="bubble">
+                    <div class="bubble-content">
+                        <i class="fa-solid fa-box"></i>
+                        <a href="https://modrinth.niwer.dev" target="_blank">modrinth.niwer.dev</a>
+                    </div>
+                </div>
+                <!-- Contact mail -->
+                <div class="bubble">
+                    <div class="bubble-content">
+                        <i class="fa-solid fa-envelope"></i>
+                        <a href="mailto:contact@niwer.dev" target="_blank">contact@niwer.dev</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+        <script>
+            /* Save as image */
+            async function exportShowcaseAsImage(options = {}) {
+                const section = document.querySelector('main > section');
+                if (!section || typeof html2canvas === 'undefined') return;
+
+                const outputWidth = options.width || 1080;
+                const outputHeight = options.height || 1920;
+                const padding = options.padding || 64;
+                const captureScale = Math.min(window.devicePixelRatio || 1, options.maxCaptureScale || 2);
+
+                const sourceCanvas = await html2canvas(section, { backgroundColor: null, useCORS: true, scale: captureScale });
+
+                const outputCanvas = document.createElement('canvas');
+                outputCanvas.width = outputWidth;
+                outputCanvas.height = outputHeight;
+
+                const context = outputCanvas.getContext('2d');
+                const pageBackground = getComputedStyle(document.body).backgroundColor || '#111';
+                context.fillStyle = pageBackground;
+                context.fillRect(0, 0, outputWidth, outputHeight);
+
+                const availableWidth = Math.max(1, outputWidth - (padding * 2));
+                const availableHeight = Math.max(1, outputHeight - (padding * 2));
+                const fitRatio = Math.min(availableWidth / sourceCanvas.width, availableHeight / sourceCanvas.height);
+
+                const drawWidth = Math.round(sourceCanvas.width * fitRatio);
+                const drawHeight = Math.round(sourceCanvas.height * fitRatio);
+                const drawX = Math.round((outputWidth - drawWidth) / 2);
+                const drawY = Math.round((outputHeight - drawHeight) / 2);
+
+                context.drawImage(sourceCanvas, drawX, drawY, drawWidth, drawHeight);
+
+                const link = document.createElement('a');
+                link.download = `niwer-showcase-${outputWidth}x${outputHeight}.png`;
+                link.href = outputCanvas.toDataURL('image/png');
+                link.click();
+            }
+
+            window.addEventListener('keydown', function(e) {
+                const key = (e.key || '').toLowerCase();
+                const isSaveShortcut = (e.ctrlKey || e.metaKey) && (key === 's' || key === 'p');
+                if (!isSaveShortcut || e.repeat) return;
+
+                e.preventDefault();
+                exportShowcaseAsImage({ width: 1080, height: 1920, padding: 72 });
+            });
+        </script>
+    </body>
+</html>
