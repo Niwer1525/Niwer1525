@@ -10,35 +10,35 @@
         {
             "name": "wayz_launcher",
             "video_id": "SocKuHWuOe8",
-            "links": { "https://github.com/Niwer1525/WayZ-Launcher": "read" },
+            "links": { "https://git.niwer.dev/WayZ-Launcher": "read" },
             "tags": ["java", "javaFx", "gradle"]
         },
         {
             "name": "web_showcase",
             "video_id": "R0O3X-5hgCw?si=xkCtjhy48-1Jushk",
-            "links": { "https://github.com/Niwer1525/Web-showcase-ASBL": "read" },
+            "links": { "https://git.niwer.dev/Web-showcase-ASBL": "read" },
             "tags": ["html", "php", "phpMyAdmin", "css", "js"]
         },
         {
             "name": "integrative_activity",
             "image": "hexgame.webp",
-            "links": { "https://github.com/Niwer1525/BAC1_Integrative_activity": "read" },
+            "links": { "https://git.niwer.dev/BAC1_Integrative_activity": "read" },
             "tags": ["java"]
         },
         {
             "name": "gaspar",
             "image": "gaspar.webp",
-            "links": { "https://github.com/Niwer1525/Gaspar-AI-Discord-Bot": "read" },
+            "links": { "https://git.niwer.dev/Gaspar-AI-Discord-Bot": "read" },
             "tags": ["python", "discord.js", "nodejs", "javascript"]
         },
         {
             "name": "glsl_obfuscator",
-            "links": { "https://github.com/Niwer1525/glsl_obfuscator": "read" },
+            "links": { "https://git.niwer.dev/glsl_obfuscator": "read" },
             "tags": ["java", "gradle"]
         },
         {
             "name": "open_vanilla",
-            "links": { "https://github.com/Niwer1525/OpenVanilla": "read" },
+            "links": { "https://git.niwer.dev/OpenVanilla": "read" },
             "tags": ["java", "bukkit"]
         }
     ]

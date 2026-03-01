@@ -5,7 +5,7 @@
 
 - I've spent near 10 years on my computer creating projects, learning programmation by myself
 
-- Want to learn more? Check out my [Portfolio](https://niwer1525.github.io/Niwer1525/)
+- Want to learn more? Check out my [Portfolio](https://niwer.dev)
 
 - [![wakatime](https://wakatime.com/badge/user/6e76cd44-0f28-4a63-8aa4-fdacc7db9439.svg)](https://wakatime.com/@6e76cd44-0f28-4a63-8aa4-fdacc7db9439)
 

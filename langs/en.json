@@ -7,7 +7,8 @@
     "btn.github_stats": "Statistics",
     "btn.download_cv": "Download CV",
     "btn.contact": "Contact",
-    "btn.send": "Send",
+    "btn.send": "<i class=\"fa fa-paper-plane\"></i> Send",
+    "btn.open_email": "<i class=\"fa fa-envelope\"></i> Open email application",
 
     "btn.read": "Read more <i class=\"fa-solid fa-arrow-up-right-from-square\"></i>",
     "btn.see": "See more <i class=\"fa-solid fa-arrow-up-right-from-square\"></i>",
