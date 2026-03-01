@@ -7,6 +7,10 @@ function copyDiscordId() {
     navigator.clipboard.writeText('niwerbis').then(() => createNotification('Discord ID copied to clipboard!'));
 }
 
+function copyEmail() {
+    navigator.clipboard.writeText('contact@niwer.dev').then(() => createNotification('Email copied to clipboard!'));
+}
+
 /**
  * Creates a temporary notification at the bottom of the screen.
  * @param {string} message - The message to display in the notification.

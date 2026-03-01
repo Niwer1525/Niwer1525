@@ -605,6 +605,18 @@ article footer {
     justify-content: center;
     align-items: center;
 }
+.email-link {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    font-style: italic;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    text-align: center;
+}
+.email-link:hover {
+    color: var(--accent-color);
+    text-shadow: var(--glow-text);
+}
 
 form {
     background: var(--menu-bg);
