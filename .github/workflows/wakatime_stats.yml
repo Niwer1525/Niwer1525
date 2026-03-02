@@ -31,11 +31,9 @@ jobs:
           # Move the generated stats file to a temporary location
           mv wakatime.json /tmp/wakatime.json
 
-          # Temporary switch to a new orphan branch to avoid affecting the main branch history
-          git checkout --orphan data-temp
-
-          # Remove all files from the new branch
-          git rm -rf .
+          # Fetch the existing 'data' branch to ensure we have the latest changes
+          git fetch origin data
+          git checkout data || git checkout --orphan data
 
           # Move the generated stats file to the root of the repository
           mv /tmp/wakatime.json .
