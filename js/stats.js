@@ -1,6 +1,6 @@
 /* 
     Get data from Github Actions generated JSON files and display them in the stats section.
-    E.G : https://raw.githubusercontent.com/Niwer1525/Niwer1525/main/github_full_stats.json
+    E.G : https://raw.githubusercontent.com/Niwer1525/Niwer1525/data/github_full_stats.json
 */
 
 /* WakaTime chart variables */
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
  */
 async function getGitHubStats() {
     try {
-        const RESPONSE = await fetch(`https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_USERNAME}/main/github_full_stats.json`);
+        const RESPONSE = await fetch(`https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_USERNAME}/data/github_full_stats.json`);
         const RESULT = await RESPONSE.json();
         const YEARS = Object.values(RESULT.years); // Years have key as year and value as an object with contributions, commits, prs, issues
 
@@ -82,7 +82,7 @@ async function getGitHubStats() {
 
 async function getWakatimeData() {
     try {
-        const RESPONSE = await fetch(`https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_USERNAME}/main/wakatime.json`);
+        const RESPONSE = await fetch(`https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_USERNAME}/data/wakatime.json`);
         if (!RESPONSE.ok) throw new Error('Could not fetch WakaTime data', GITHUB_USERNAME);
         
         const DATA = await RESPONSE.json();
@@ -95,7 +95,7 @@ async function getWakatimeData() {
 
 async function renderWakaChart() {
     try {
-        const RESPONSE = await fetch(`https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_USERNAME}/main/wakatime-chart.json`);
+        const RESPONSE = await fetch(`https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_USERNAME}/data/wakatime-chart.json`);
         if (!RESPONSE.ok) throw new Error('Could not fetch WakaTime chart data', GITHUB_USERNAME);
 
         const RESULT = await RESPONSE.json();
