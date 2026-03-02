@@ -816,7 +816,9 @@ footer p {
         right: auto !important;
     }
 
-    .timeline-bubble.left, .timeline-bubble.right { left: 0; }
+    .timeline-bubble:nth-child(odd), .timeline-bubble:nth-child(even) {
+        left: 0;
+    }
 
     .skills-grid, .github-card { gap: 1rem; }
     .skills-card, .github-card {
