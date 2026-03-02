@@ -1,9 +1,9 @@
-name: Update My GitHub Stats
+name: Update GitHub Stats
 
 on:
   schedule:
-    - cron: '0 */6 * * *' # Executing every 6 hours
-  workflow_dispatch:
+    - cron: '0 */12 * * *' # Executing every 12 hours
+  workflow_dispatch: # Allows manual trigger
 
 jobs:
   build:
@@ -30,6 +30,18 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Temporary switch to a new orphan branch to avoid affecting the main branch history
+          git checkout --orphan data-temp
+
+          # Remove all files from the new branch
+          git rm -rf .
+
+          # Move the generated stats file to the root of the repository
           git add github_full_stats.json
-          git commit -m "chore: update stats [skip ci]" || echo "No changes to commit"
+
+          # Commit changes if there are any, otherwise exit without error
+          git commit -m "Update Github stats" || exit 0
+
+          # Push the changes to the 'data' branch, force updating it
           git push origin HEAD:data --force
