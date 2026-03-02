@@ -27,11 +27,17 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
+          # Move the generated stats file to a temporary location
+          mv wakatime-chart.json /tmp/wakatime-chart.json
+
           # Temporary switch to a new orphan branch to avoid affecting the main branch history
           git checkout --orphan data-temp
 
           # Remove all files from the new branch
           git rm -rf .
+
+          # Move the generated stats file to the root of the repository
+          mv /tmp/wakatime-chart.json .
 
           # Move the generated stats file to the root of the repository
           git add wakatime-chart.json
