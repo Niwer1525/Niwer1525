@@ -72,6 +72,12 @@
     "project.title.web_showcase": "Web showcase project",
     "project.desc.web_showcase": "A website made for my web courses using PHP, HTML and CSS. It include a <span>article/news system</span>, a <span>team system</span>, a <span>department system</span>, a <span>contact form</span> and a much more !",
     
+    "project.title.lumen": "Lumen",
+    "project.desc.lumen": "Lumen is a lightweight, extensible, pure Java logging system. Simple <span>console and file logs</span> or <span>custom processors</span>. Available via <span>JitPack</span>. It's perfect for debugging and printing logs in your Java applications.",
+    
+    "project.title.queryon": "Queryon",
+    "project.desc.queryon": "Queryon is a pure Java SQL builder and parser powered by <span>SQLite</span>. Streamline database interactions with a <span>fluent API and seamless object mapping</span>. Available via <span>JitPack</span>, it's the perfect tool for Java developers seeking efficient and intuitive database management.",
+    
     "project.title.integrative_activity": "Integrative Activity",
     "project.desc.integrative_activity": "A small game inspired by <a class=\"underline\" href=\"https://www.lutanho.net/play/hex.html\" target=\"_blank\">HEX</a>. Made for my java courses. This include a <span>bridge system</span>, <span>red and blue players</span> and <span>preview system</span> !",
 

@@ -17,7 +17,17 @@
             "name": "web_showcase",
             "video_id": "R0O3X-5hgCw?si=xkCtjhy48-1Jushk",
             "links": { "https://git.niwer.dev/Web-showcase-ASBL": "read" },
-            "tags": ["html", "php", "phpMyAdmin", "css", "js"]
+            "tags": ["html", "php", "phpMyAdmin", "mySQL", "css", "js"]
+        },
+        {
+            "name": "lumen",
+            "links": { "https://git.niwer.dev/Lumen": "read" },
+            "tags": ["java", "CI/CD", "maven", "gradle"]
+        },
+        {
+            "name": "queryon",
+            "links": { "https://git.niwer.dev/Queryon": "read" },
+            "tags": ["java", "sqlite", "CI/CD", "maven", "gradle"]
         },
         {
             "name": "integrative_activity",

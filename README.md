@@ -60,4 +60,4 @@
 
 ## Contact & Socials
 [![Discord](https://img.shields.io/badge/Discord-%235865F2.svg?logo=discord&logoColor=white)](https://discord.com/users/312636481782939648)
-[![email](https://img.shields.io/badge/Email-D14836?logo=gmail&logoColor=white)](https://niwer1525.github.io/Niwer1525/#info)
+[![email](https://img.shields.io/badge/Email-D14836?logo=gmail&logoColor=white)](https://niwer.dev/#links)
