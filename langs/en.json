@@ -1,9 +1,14 @@
 {
+    "_comment": "Copyright Licence",
+    "licence": "Copyright (c) 2026 Erwin Redoté (Niwer). All rights reserved.<br><br>This repository and all its contents (including but not limited to source code, design, graphics, texts, and images) are the exclusive intellectual property of Erwin Redoté.<br><br>No part of this project may be copied, reproduced, modified, or redistributed in any form or by any means without prior written permission from the author. Any unauthorized use of this work constitutes a violation of copyright laws.",
+
     "_comment": "Buttons",
+    "btn.back": "Back",
     "btn.about": "About",
     "btn.timeline": "Time line",
     "btn.skills": "Skills",
     "btn.projects": "Projects",
+    "btn.gists": "Gists",
     "btn.github_stats": "Statistics",
     "btn.download_cv": "Download CV",
     "btn.contact": "Contact",
@@ -27,15 +32,19 @@
     "month.october": "October",
     "month.november": "November",
     "month.december": "December",
+    "date.today": "Today",
 
     "_comment": "Other",
     "made_by": "Made with ❤️ by Niwer",
-    "content_aboute_me": "Hi, I'm <span>Erwin</span> (aka <span>Niwer</span>).<br><br>Self-taught programmer with 8+ years of experience. I specialize in <span>Java</span> and <span>web development</span>, building robust applications and exploring new technologies. Always eager for new challenges.",
+    "copyright": "Copyright - All rights reserved",
+    "content_aboute_me": "Hi, I'm <span>Erwin</span> (aka <span>Niwer</span>).<br><br>Self-taught developer with 8+ years of experience. I specialize in <span>Java</span> and <span>web development</span>, building robust applications and exploring new technologies. Always eager for new challenges.",
+    "title.copyright": "Copyright",
     "title.timeline": "&#10094;Timeline&#10095;",
     "title.skills": "&#10094;Skills&#10095;",
     "title.projects": "&#10094;Projects&#10095;",
     "title.github_stats": "&#10094;Statistics&#10095;",
     "explore.github": "Explore my github for more",
+    "explore.gists": "See my other Gists",
 
     "_comment": "Form",
     "form.title": "Got a project or questions?<br>Let's talk!",
@@ -50,6 +59,7 @@
     "timeline.programming_studies": "Start of programming studies",
     "timeline.technician_training": "IT technician training course",
     "timeline.marketing_fundamentals_course": "Marketing Fundamentals Course Completed !",
+    "timeline.today": "I'm now <strong id=\"current_age\">21</strong> years old and I'm working as a freelance developer !",
 
     "_comment": "Stats",
     "github_stats.coding_time": "Spent Coding Time Since <span id=\"coding-time-start-date\">2023</span>",
@@ -90,6 +100,6 @@
     "project.title.open_vanilla": "Open Vanilla",
     "project.desc.open_vanilla": "A Bukkit/Spigot plugin designed to create an enhanced Vanilla Minecraft experience. It includes features such as <span>homes</span>, a <span>hub</span>, administrator commands like <span>/invsee, /ec, /broadcast</span>, a currency system, and much more.",
     
-    "project.title.interpol_red_notice_finder": "Interpol Red Notice Finder",
-    "project.desc.interpol_red_notice_finder": "This is a small web game (HTML/CSS/JS) in which you have to guess the crimes committed by the displayed person. The game uses Interpol’s public API to fetch criminal data."
+    "project.title.bake_n_go": "Bake N' Go",
+    "project.desc.bake_n_go": "All-in-one order management for bakeries. Streamlines customer orders, inventory tracking, and pickup scheduling via a responsive web-app."
 }

@@ -1,4 +1,6 @@
 :root {
+    /* CSS Copyright - Made by Niwer */
+
     /* Color Palette - OLED Theme */
     --bg-color: #000000;
     --surface-color: #0a0a0a;
@@ -229,7 +231,7 @@ nav > ul > li > a > img:hover {
 }
 
 /* Components: Buttons (Sober & Clean) */
-button, .link-button, .explore-github {
+button, .link-button, input[type="number"] {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -248,7 +250,7 @@ button, .link-button, .explore-github {
     text-decoration: none;
 }
 
-button:hover, .link-button:hover, .explore-github:hover {
+button:hover, .link-button:hover, input[type="number"]:hover, .explore-github:hover {
     background: rgba(216, 180, 254, 0.15); /* Tint of accent */
     border-color: var(--accent-color);
     transform: translateY(-2px);
@@ -256,8 +258,29 @@ button:hover, .link-button:hover, .explore-github:hover {
     color: var(--text-primary);
 }
 
-button:active, .link-button:active {
+button:active, .link-button:active, input[type="number"]:active {
     transform: scale(0.98);
+}
+
+input[type="number"] {
+    width: 200px;
+}
+
+/* Style number input spinners - WebKit (Chrome, Safari, Edge) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    display: none;
+}
+
+/* Firefox spinner */
+input[type="number"]::-moz-number-spin-up, input[type="number"]::-moz-number-spin-down {
+    display: none;
+}
+input[type="number"]:focus {
+    outline: none;
+    background: rgba(216, 180, 254, 0.15);
+    border-color: var(--accent-color);
+    box-shadow: 0 4px 12px rgba(216, 180, 254, 0.2);
 }
 
 /* Presentation Section */
@@ -517,7 +540,7 @@ button:active, .link-button:active {
 }
 
 /* Projects */
-.projects-grid {
+.articles-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 2rem;
@@ -591,6 +614,102 @@ article footer {
     font-family: monospace;
 }
 
+/* Gists */
+.gist-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.gist-card header {
+    padding: 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    text-align: justify;
+}
+
+.gist-card header p {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Language progress bar */
+.gist-language-bar {
+    display: flex;
+    height: 8px;
+    border-radius: 0;
+    overflow: hidden;
+    background: var(--border-color);
+    flex-shrink: 0;
+    margin-top: auto;
+}
+
+.gist-language-segment {
+    transition: opacity 0.2s ease;
+    cursor: pointer;
+}
+
+.gist-language-segment:hover {
+    opacity: 0.85;
+    filter: brightness(1.1);
+}
+
+/* Language legend */
+.gist-language-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--surface-glass);
+    flex-shrink: 0;
+}
+
+.gist-language-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.gist-language-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+/* Gist info (files and date) */
+.gist-info {
+    display: flex;
+    gap: 1.5rem;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-color);
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.gist-file-count,
+.gist-date {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.gist-file-count i,
+.gist-date i {
+    opacity: 0.7;
+}
+
 /* Contact Modal (Glass) */
 #contact-popup {
     display: none; /* JS toggles flex */
@@ -644,7 +763,7 @@ form #close {
     padding: 0.5rem;
     cursor: pointer;
 }
-form #close:hover { color: #fff; transform: none; box-shadow: none; }
+form #close:hover { color: var(--text-primary); transform: none; box-shadow: none; }
 
 form h2 {
     font-size: 1.5rem;

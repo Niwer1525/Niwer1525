@@ -1,4 +1,5 @@
 {
+    "_comment": "Copyright - Made by Niwer",
     "_comment": "Since Github supports only static websites, I can't use a SQL database. So, I'm using a JSON file to store the data.",
     "projects": [
         {
@@ -50,6 +51,12 @@
             "name": "open_vanilla",
             "links": { "https://git.niwer.dev/OpenVanilla": "read" },
             "tags": ["java", "bukkit"]
+        },
+        {
+            "name": "bake_n_go",
+            "video_id": "Tjjix8cpBXg",
+            "links": { "https://git.niwer.dev/BakeNGo": "read" },
+            "tags": ["java", "javalin", "queryon", "lumen", "gradle", "html", "css", "js", "SQLite"]
         }
     ]
 }

@@ -48,6 +48,7 @@ async function applyLanguage(root = document) {
     }
 
     await updateContent(currentLangData, root);
+    getElementByIdAndSetContent('current_age', calculateCurrentAge()); // Update the age after language is applied, in case it was changed by i18n
 }
 
 /**

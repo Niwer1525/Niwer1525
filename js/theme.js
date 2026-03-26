@@ -12,16 +12,35 @@ document.addEventListener('DOMContentLoaded', () => {
     if (THEME_TOGGLE) THEME_TOGGLE.addEventListener('click', cycleThemeMode);
 });
 
+/**
+ * Retrieves the stored theme preference from localStorage.
+ * 
+ * @returns {string} The stored theme mode ('system', 'dark', or 'light').
+ * @author Niwer
+ */
 function getStoredThemePreference() {
     const VALUE = localStorage.getItem(THEME_STORAGE_KEY) || 'system';
     return THEME_MODES.includes(VALUE) ? VALUE : 'system';
 }
 
+/**
+ * Resolves the theme mode based on the system preference.
+ * 
+ * @param {*} mode The theme mode to resolve ('system', 'dark', or 'light').
+ * @returns {string} The resolved theme ('dark' or 'light').
+ * @author Niwer
+ */
 function getResolvedTheme(mode) {
     if (mode === 'system') return SYSTEM_THEME_QUERY.matches ? 'dark' : 'light';
     return mode;
 }
 
+/**
+ * Applies the specified theme to the document.
+ * 
+ * @param {*} mode The theme mode to apply ('system', 'dark', or 'light').
+ * @author Niwer
+ */
 function applyTheme(mode = getStoredThemePreference()) {
     const RESOLVED = getResolvedTheme(mode);
     document.documentElement.setAttribute('data-theme', RESOLVED);
@@ -29,6 +48,13 @@ function applyTheme(mode = getStoredThemePreference()) {
     renderWakaChart();
 }
 
+/**
+ * Updates the UI for the theme toggle based on the current theme mode and resolved theme.
+ * 
+ * @param {*} mode The current theme mode ('system', 'dark', or 'light').
+ * @param {*} resolved The resolved theme based on system preference ('dark' or 'light').
+ * @author Niwer
+ */
 function updateThemeToggleUI(mode, resolved) {
     const LABEL = document.getElementById('theme-toggle-label');
     const ICON = document.querySelector('#theme-toggle i');
@@ -42,6 +68,11 @@ function updateThemeToggleUI(mode, resolved) {
     else ICON.classList.add('fa-sun');
 }
 
+/**
+ * Cycles through the theme modes and applies the next mode.
+ * 
+ * @author Niwer
+ */
 function cycleThemeMode() {
     const CURRENT = getStoredThemePreference();
     const CURRENT_INDEX = THEME_MODES.indexOf(CURRENT);

@@ -1,3 +1,4 @@
+<!-- Copyright - Made by Niwer -->
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -42,8 +43,9 @@
                     <li><a href="#skills" data-i18n="btn.skills">Skills</a></li>
                     <li><a href="#stats" data-i18n="btn.github_stats">Statistics</a></li>
                     <li><a href="#projects" data-i18n="btn.projects">Projects</a></li>
+                    <li><a href="#gists" data-i18n="btn.gists">Gists</a></li>
                     <!-- <li><a href="notAvalibleYet" target="_blank" data-i18n="btn.download_cv">Download CV</a></li> -->
-                    <li><a href="#links" onclick="showContactPopup()" data-i18n="btn.contact">Contact</a></li>
+                    <li><a href="#links" data-i18n="btn.contact">Contact</a></li>
                     <li>
                         <button id="theme-toggle" type="button" aria-label="Theme mode" title="Theme mode">
                             <i class="fa-solid fa-circle-half-stroke"></i>
@@ -78,7 +80,7 @@
                 <div class="timeline">
                     <div class="timeline-bubble">
                         <div class="bubble-content">
-                            <h3><span data-i18n="month.august">August</span> 2004 🎉</h3>
+                            <h3>2004 🎉</h3>
                             <p data-i18n="timeline.born">I'm Born !</p>
                         </div>
                     </div>
@@ -128,6 +130,12 @@
                             </a>
                         </div>
                     </div>
+                    <div class="timeline-bubble">
+                        <div class="bubble-content">
+                            <h3><span data-i18n="date.today">Today</span></h3>
+                            <p data-i18n="timeline.today">I'm now <strong id="current_age">21</strong> years old!</p>
+                        </div>
+                    </div>
                 </div>
             </section>
             <!-- Skills -->
@@ -147,10 +155,13 @@
                     <!-- Tools -->
                     <div class="skills-card"><i class="fa-solid fa-code-branch skill-icon"></i>Git</div>
                     <div class="skills-card"><i class="fa-brands fa-github skill-icon"></i>Github</div>
-                    <div class="skills-card"><i class="fa-brands fa-linux skill-icon"></i>Linux/Unix CLI</div>
+                    <div class="skills-card"><i class="fa-brands fa-linux skill-icon"></i>Linux CLI</div>
                     <div class="skills-card"><i class="devicon-gradle-plain skill-icon"></i>Gradle</div>
                     <div class="skills-card"><i class="devicon-sqlite-plain skill-icon"></i>SQLite</div>
                     <div class="skills-card"><i class="devicon-mysql-plain skill-icon"></i>MySQL</div>
+                    <!-- IDEs -->
+                    <div class="skills-card"><i class="devicon-eclipse-plain skill-icon"></i>Eclipse</div>
+                    <div class="skills-card"><i class="devicon-visualstudio-plain skill-icon"></i>VS Code</div>
                 </div>
             </section>
             <!-- Github stats -->
@@ -201,14 +212,23 @@
             <!-- Projects -->
             <section id="projects">
                 <h2 data-i18n="title.projects">Projects</h2>
-                <!-- <h3 data-i18n="projects.loading" id="loading-projects-indicator">Loading projects...</h3> -->
-                <div id="projects-grid" class="projects-grid">
+                <div id="projects-grid" class="articles-grid">
                     <!-- There will be projects -->
                 </div>
-                <a class="explore-github" data-i18n="explore.github" href="https://git.niwer.dev?tab=repositories" target="_blank" rel="noopener noreferrer">
+                <a class="link-button" data-i18n="explore.github" href="https://git.niwer.dev?tab=repositories" target="_blank" rel="noopener noreferrer">
                     Explore my GitHub for more
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
                 </a>
+            </section>
+            <!-- Gists -->
+            <section id="gists">
+                <h2>Gists</h2>
+                <div id="gists-grid" class="articles-grid">
+                    <!-- There will be gists -->
+                </div>
+                <a class="link-button" data-i18n="explore.gists" href="https://gist.niwer.dev" target="_blank" rel="noopener noreferrer">
+                    See my other Gists
+                </a>
+                <input type="number" id="gists-limit" min="1" max="100" value="6" placeholder="Number of gists to show">
             </section>
         </main>
         <footer id="info"></footer>
@@ -218,6 +238,7 @@
         <script src="./js/stats.js" defer></script> <!-- Load stats script -->
         <script src="./js/theme.js" defer></script> <!-- Load theme script -->
         <script src="./js/article.inc.js" defer></script>
+        <script src="./js/gists.inc.js" defer></script>
         <script src="./js/contact.inc.js" defer></script>
         <script src="./js/footer.inc.js" defer></script>
     </body>

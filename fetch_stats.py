@@ -1,3 +1,5 @@
+# Copyright - Made by Niwer
+
 import os
 import json
 import requests

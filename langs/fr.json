@@ -1,9 +1,14 @@
 {
+    "_comment": "Copyright Licence",
+    "licence": "Copyright (c) 2026 Erwin Redoté (Niwer). Tous droits réservés.<br><br>Ce dépôt et l'ensemble de son contenu (incluant, sans s'y limiter, le code source, le design, les graphismes, les textes et les images) sont la propriété intellectuelle exclusive de Erwin Redoté.<br><br>Toute reproduction, représentation, modification ou diffusion, en tout ou partie, de ce projet, sous quelque forme ou par quelque moyen que ce soit, est sclictement interdite sans l'autorisation écrite préalable de l'auteur. Toute utilisation non autorisée constitue une violation des droits d'auteur.",
+
     "_comment": "Buttons",
+    "btn.back": "Retour",
     "btn.about": "À propos",
     "btn.timeline": "Ligne du temps",
     "btn.skills": "Compétences",
     "btn.projects": "Projets",
+    "btn.gists": "Gists",
     "btn.github_stats": "Statistiques",
     "btn.download_cv": "Télécharger CV",
     "btn.contact": "Contact",
@@ -27,15 +32,19 @@
     "month.october": "Octobre",
     "month.november": "Novembre",
     "month.december": "Décembre",
+    "date.today": "Aujourd'hui",
 
     "_comment": "Other",
     "made_by": "Fait avec ❤️ par Niwer",
-    "content_aboute_me": "Yo, je suis <span>Erwin</span> (alias <span>Niwer</span>).<br><br>Programmeur autodidacte avec près de 8 ans d'expérience. Spécialiste en <span>Java</span> et dans le <span>développement web</span>, dévéloppant des applications robustes et explorant de nouvelles technologies. Toujours avide de nouveaux défis !",
+    "copyright": "Copyright - Tous droits réservés",
+    "content_aboute_me": "Yo, je suis <span>Erwin</span> (alias <span>Niwer</span>).<br><br>Développeur autodidacte avec près de 8 ans d'expérience. Spécialiste en <span>Java</span> et dans le <span>développement web</span>, développant des applications robustes et explorant de nouvelles technologies. Toujours avide de nouveaux défis !",
+    "title.copyright": "Droits d'auteur",
     "title.timeline": "&#10094;Ligne du temps&#10095;",
     "title.skills": "&#10094;Compétences&#10095;",
     "title.projects": "&#10094;Projets&#10095;",
     "title.github_stats": "&#10094;Statistiques&#10095;",
     "explore.github": "Explorez mon Github pour en voir plus.",
+    "explore.gists": "Voir mes autres Gists",
 
     "_comment": "Form",
     "form.title": "Vous avez un projet ou des questions ?<br>Parlons-en !",
@@ -50,6 +59,7 @@
     "timeline.programming_studies": "Début d'études en programmation",
     "timeline.technician_training": "Formation de technicien informatique",
     "timeline.marketing_fundamentals_course": "Cours sur les concepts fondamentaux du marketing terminé",
+    "timeline.today": "Aujourd'hui, j'ai <strong id=\"current_age\">21</strong> ans et je travaille en tant que développeur freelance !",
 
     "_comment": "Stats",
     "github_stats.coding_time": "Temps passé à coder depuis <span id=\"coding-time-start-date\">2023</span>",
@@ -90,6 +100,6 @@
     "project.title.open_vanilla": "Open Vanilla",
     "project.desc.open_vanilla": "Un plugin bukkit/spigot visant à créer une expérience Minecraft Vanilla améliorée. Il inclut des fonctionnalités telles que des <span>homes</span>, un <span>hub</span>, des commandes administrateur tels que <span>/invsee, /ec, /broadcast</span>, un système monétaire et bien plus encore.",
     
-    "project.title.interpol_red_notice_finder": "Interpol Red Notice Finder",
-    "project.desc.interpol_red_notice_finder": "Il s'agit d'un petit jeu web (HTML/CSS/JS) dans lequel vous devez deviner les crimes commis par la personne affichée. Ce jeu utilise l'API publique d'Interpol pour récupérer les données des criminels."
+    "project.title.bake_n_go": "Bake N' Go",
+    "project.desc.bake_n_go": "Gestion intégrée des commandes pour les boulangeries. Simplifie la gestion des commandes clients, le suivi de l'inventaire et la planification des retraits via une application web responsive."
 }

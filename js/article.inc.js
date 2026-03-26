@@ -1,3 +1,10 @@
+/**
+ * Appends an image or video element based on the project's properties.
+ * 
+ * @param {*} project - The project object containing details about the project, including potential video_id or image properties.
+ * @returns {string} - An HTML string representing either an iframe for a video or an img tag for an image.
+ * @author Niwer
+ */
 function appendImageOrVideo(project) {
     const USE_VIDEO_AS_PREV = project.video_id !== undefined;
     if(USE_VIDEO_AS_PREV)
@@ -6,10 +13,24 @@ function appendImageOrVideo(project) {
     return `<img loading="lazy" draggable="false" src="assets/${project.image}" alt="Image of ${project.name}">`
 }
 
+/**
+ * Formats a project name as a default title.
+ * 
+ * @param {*} projectName - The original project name, which may contain dashes or underscores.
+ * @returns {string} - A formatted title with dashes and underscores replaced by spaces, and each word capitalized.
+ * @author Niwer
+ */
 function formatDefaultTitle(projectName) {
     return projectName.replace(/[-_]+/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
 }
 
+/**
+ * Formats a default button name based on its type.
+ * 
+ * @param {*} type - The type of the button, which can be 'read', 'see', 'play', or any other string. The function will return a default button name based on this type.
+ * @returns  {string} - A formatted button name corresponding to the provided type, with a default fallback of "Read more".
+ * @author Niwer
+ */
 function formatDefaultButtonName(type) {
     switch(type.toLowerCase()) {
         case 'read': return 'Read more';
