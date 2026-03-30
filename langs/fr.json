@@ -46,6 +46,13 @@
     "explore.github": "Explorez mon Github pour en voir plus.",
     "explore.gists": "Voir mes autres Gists",
 
+    "_comment": "Badge",
+    "badge.open_to_work": "Ouvert à travailler",
+    "badge.remote": "À distance",
+    "badge.freelance": "Freelance",
+    "badge.available": "Disponible : Immédiatement",
+    "badge.adr": "400-800 / jour",
+
     "_comment": "Form",
     "form.title": "Vous avez un projet ou des questions ?<br>Parlons-en !",
     "form.subtitle": "Ce formulaire peut ne pas fonctionner en raison des limitations de Github Pages.<br> Si c'est le cas, veuillez me contacter sur discord !",

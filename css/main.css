@@ -423,8 +423,28 @@ input[type="number"]:focus {
     text-shadow: var(--glow-text);
 }
 
+/* Open to Work Badge */
+.open-to-work-badge {
+    margin-top: 3rem;
+}
+
+.badge-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    transition: color 0.3s;
+}
+
+.badge-item i {
+    color: var(--accent-color);
+    font-size: 1rem;
+    min-width: 20px;
+}
+
 /* Skills & Stats */
-.skills-grid, .github-stats-grid {
+.skills-grid, .github-stats-grid, .open-to-work-badge {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -956,5 +976,18 @@ footer p {
     .top-right-external-link {
         top: 8px;
         right: 8px;
+    }
+
+    /* Open to Work Badge - Mobile */
+    .open-to-work-badge {
+        padding: 1.2rem 1.5rem;
+    }
+
+    .badge-header {
+        font-size: 1rem;
+    }
+
+    .badge-item {
+        font-size: 0.85rem;
     }
 }

@@ -46,6 +46,13 @@
     "explore.github": "Explore my github for more",
     "explore.gists": "See my other Gists",
 
+    "_comment": "Badge",
+    "badge.open_to_work": "Open to Work",
+    "badge.remote": "Remote",
+    "badge.freelance": "Freelance",
+    "badge.available": "Available: Immediately",
+    "badge.adr": "400-800 / day",
+
     "_comment": "Form",
     "form.title": "Got a project or questions?<br>Let's talk!",
     "form.subtitle": "This form may not work due to Github Pages limitations.<br> If so, please contact me on discord !",
