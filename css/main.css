@@ -270,6 +270,66 @@
     background: var(--accent-color);
     transform: scale(1.15);
 }
+body.has-store-image-popup {
+    overflow: hidden;
+}
+.store-image-popup {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+}
+.store-image-popup[hidden] {
+    display: none;
+}
+.store-image-popup-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(10px);
+}
+.store-image-popup-panel {
+    position: relative;
+    z-index: 1;
+    width: min(92vw, 1100px);
+    max-height: 92vh;
+    padding: 1rem;
+    border-radius: 24px;
+    border: 1px solid var(--border-color);
+    background: var(--menu-bg);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.store-image-popup-image {
+    display: block;
+    max-width: 100%;
+    max-height: calc(92vh - 2rem);
+    object-fit: contain;
+    border-radius: 18px;
+}
+.store-image-popup-close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-color);
+    background: rgba(0, 0, 0, 0.55);
+    color: var(--text-primary);
+    font-size: 1.35rem;
+    line-height: 1;
+    z-index: 2;
+}
+.store-image-popup-close:hover {
+    background: rgba(0, 0, 0, 0.72);
+}
 .store-price {
     display: inline-flex;
     align-items: center;
