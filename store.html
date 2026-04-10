@@ -1,0 +1,77 @@
+<!-- Copyright - Made by Niwer -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Portfolio of Erwin Redoté, a java and web developer">
+        <meta name="keywords" content="Erwin Redoté, Niwer, portfolio, web development, programming, java, html, css, javascript, php, nodejs, threejs, git, github, linux, gradle, sqlite, mysql, wakatime, coding stats, projects">
+        <meta name="author" content="Niwer, Erwin Redoté">
+        <title>Erwin Redoté - Niwer Store</title>
+        <link rel="shortcut icon" href="./assets/profile.webp">
+        <link rel="stylesheet" href="./css/main.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            (() => {
+                try {
+                    // Prevent theme flash on page load
+                    const PREF = localStorage.getItem('theme-preference') || 'system';
+                    const SYSTEM_DARK = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    const RESOLVED = PREF === 'system' ? (SYSTEM_DARK ? 'dark' : 'light') : PREF;
+                    document.documentElement.setAttribute('data-theme', RESOLVED);
+
+                    // Prevent language flash on page load
+                    const LANG = localStorage.getItem('language') || 'en';
+                    document.documentElement.setAttribute('lang', LANG);
+                } catch (_) {}
+            })();
+        </script>
+    </head>
+    <body>
+        <header>
+            <!-- Basic Navigation -->
+            <nav>
+                <!-- Mobile Navigation -->
+                <input type="checkbox" id="menu-toggle">
+                <label for="menu-toggle" class="menu-icon"><i class="fas fa-bars"></i></label> <!-- Mobile menu icon for navigation -->
+                <!-- Navigation Links -->
+                <ul id="nav-links">
+                    <li><a href="./index.html" data-i18n="btn.back">About</a></li>
+                    <li>
+                        <button id="theme-toggle" type="button" aria-label="Theme mode" title="Theme mode">
+                            <i class="fa-solid fa-circle-half-stroke"></i>
+                            <span id="theme-toggle-label">System</span>
+                        </button>
+                    </li>
+                    <li class="languages-grid">
+                        <a href="./store.html" onclick="changeLanguage('en')">
+                            <img loading="lazy" draggable="false" src="./assets/icons/united-kingdom.webp" alt="united_kingdom_logo">
+                        </a>
+                        <a href="./store.html" onclick="changeLanguage('fr')">
+                            <img loading="lazy" draggable="false" src="./assets/icons/france.webp" alt="france_logo">
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <section>
+                <h1 data-i18n="title.store">Store</h1>
+                <div id="projects-grid" class="articles-grid">
+                    <!-- There will be projects -->
+                </div>
+            </section>
+        </main>
+        <footer id="info"></footer>
+        <!-- Inc scripts -->
+        <script src="./js/i18n.js" defer></script> <!-- Load first to ensure languages are loaded -->
+        <script src="./js/main.js" defer></script> <!-- Load main script -->
+        <script src="./js/stats.js" defer></script> <!-- Load stats script -->
+        <script src="./js/theme.js" defer></script> <!-- Load theme script -->
+        <script src="./js/store.inc.js" defer></script>
+        <script src="./js/contact.inc.js" defer></script>
+        <script src="./js/footer.inc.js" defer></script>
+    </body>
+</html>
