@@ -13,7 +13,7 @@ import {
     storeState,
 } from './shared.js';
 
-import { renderStateMessage, renderStore } from './render.js';
+import { renderStateMessage, renderStore, setBasketToolStatus } from './render.js';
 
 export function unwrapApiData(payload) {
     if (!payload) return null;
@@ -43,9 +43,7 @@ export async function loadStorePackages() {
     storeState.packageMap = new Map(storeState.packages.map(storePackage => [Number(storePackage.id), storePackage]));
     storeState.activeCategoryId = getCategoryPreference();
 
-    if (storeState.activeCategoryId !== 'all' && !storeState.categories.some(category => String(category.id) === String(storeState.activeCategoryId))) {
-        storeState.activeCategoryId = 'all';
-    }
+    if (storeState.activeCategoryId !== 'all' && !storeState.categories.some(category => String(category.id) === String(storeState.activeCategoryId))) storeState.activeCategoryId = 'all';
 
     renderStateMessage(storeState.packages.length
         ? `Loaded ${storeState.categories.length} categories and ${storeState.packages.length} packages.`
@@ -95,6 +93,7 @@ export async function addPackageToBasket(packageId, quantity = 1) {
     });
 
     await syncBasket();
+    await applyStoredBasketTools();
     renderStore();
 }
 
@@ -128,7 +127,7 @@ export async function applyBasketValue(kind, value) {
     if (!storeState.basket?.ident || !config) return;
 
     const normalizedValue = String(value || '').trim();
-    if (!normalizedValue) return;
+    if (!normalizedValue && kind !== 'coupon') return;
 
     await fetchTebex(`/accounts/${TEBEX_PUBLIC_KEY}/baskets/${storeState.basket.ident}/${config.endpoint}`, {
         method: 'POST',
@@ -136,6 +135,7 @@ export async function applyBasketValue(kind, value) {
     });
 
     await syncBasket();
+    setBasketToolStatus(kind, normalizedValue ? 'success' : null);
     renderStore();
 }
 
@@ -145,10 +145,12 @@ export async function applyStoredBasketTools() {
     for (const [kind, config] of Object.entries(BASKET_TOOL_CONFIG)) {
         const storedValue = getStoredBasketTool(config.storageKey);
         if (!storedValue || basketHasTool(storeState.basket, kind, storedValue)) continue;
+        if (kind === 'coupon' && !basketItems().length) continue;
 
         try {
             await applyBasketValue(kind, storedValue);
         } catch (error) {
+            setBasketToolStatus(kind, 'error');
             console.warn(`Unable to auto-apply ${config.label}:`, error);
         }
     }

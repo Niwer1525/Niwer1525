@@ -183,7 +183,53 @@ export function basketHasTool(basket, kind, value) {
 }
 
 export function basketItemQuantity(item) {
-    return Number(item?.qty ?? item?.quantity ?? item?.count ?? item?.amount ?? item?.package_quantity ?? item?.package?.qty ?? item?.package?.quantity ?? item?.package?.count ?? item?.package?.amount ?? 1) || 1;
+    const readQuantity = candidate => {
+        if (candidate == null) return null;
+
+        if (typeof candidate === 'number') return Number.isFinite(candidate) ? candidate : null;
+
+        if (typeof candidate === 'string') {
+            const normalized = candidate.trim();
+            if (!normalized) return null;
+
+            const parsed = Number(normalized);
+            return Number.isFinite(parsed) ? parsed : null;
+        }
+
+        if (typeof candidate === 'object') {
+            for (const key of ['qty', 'quantity', 'count', 'amount', 'value', 'package_quantity']) {
+                if (candidate[key] !== undefined) {
+                    const nestedQuantity = readQuantity(candidate[key]);
+                    if (nestedQuantity !== null) return nestedQuantity;
+                }
+            }
+        }
+
+        return null;
+    };
+
+    const quantity = readQuantity(
+        item?.in_basket?.quantity ??
+        item?.in_basket?.qty ??
+        item?.in_basket?.count ??
+        item?.in_basket?.quantity_in_basket ??
+        item?.in_basket?.line_quantity ??
+        item?.qty ??
+        item?.quantity ??
+        item?.count ??
+        item?.amount ??
+        item?.package_quantity ??
+        item?.quantity_in_basket ??
+        item?.line_quantity ??
+        item?.package?.qty ??
+        item?.package?.quantity ??
+        item?.package?.count ??
+        item?.package?.amount ??
+        item?.package?.quantity_in_basket ??
+        item?.package?.line_quantity
+    );
+
+    return Number.isFinite(quantity) && quantity > 0 ? quantity : 1;
 }
 
 export function basketItemPackageId(item) {
@@ -221,15 +267,44 @@ export function basketQuantityForPackage(packageId) {
 export function basketItemUnitPrice(item) {
     const packageId = basketItemPackageId(item);
     const catalogPackage = packageId ? storeState.packageMap.get(Number(packageId)) : null;
+    const quantity = basketItemQuantity(item);
+
+    const basketPrice = Number(
+        item?.in_basket?.price ??
+        item?.in_basket?.unit_price ??
+        item?.in_basket?.base_price ??
+        item?.price ??
+        item?.unit_price ??
+        item?.base_price ??
+        item?.package?.in_basket?.price ??
+        item?.package?.in_basket?.unit_price ??
+        item?.package?.in_basket?.base_price ??
+        item?.package?.price ??
+        item?.package?.unit_price ??
+        item?.package?.base_price
+    );
+    if (Number.isFinite(basketPrice) && basketPrice > 0) return basketPrice;
+
+    const basketTotal = Number(
+        item?.in_basket?.total_price ??
+        item?.in_basket?.subtotal ??
+        item?.in_basket?.line_total ??
+        item?.total_price ??
+        item?.subtotal ??
+        item?.line_total ??
+        item?.package?.in_basket?.total_price ??
+        item?.package?.in_basket?.subtotal ??
+        item?.package?.in_basket?.line_total ??
+        item?.package?.total_price ??
+        item?.package?.subtotal ??
+        item?.package?.line_total
+    );
+    if (Number.isFinite(basketTotal) && basketTotal > 0) return basketTotal / Math.max(quantity, 1);
+
     const catalogPrice = catalogPackage ? Number(catalogPackage.total_price ?? catalogPackage.base_price) : NaN;
     if (Number.isFinite(catalogPrice) && catalogPrice > 0) return catalogPrice;
 
-    const basketPrice = Number(item?.price ?? item?.unit_price ?? item?.base_price ?? item?.total_price ?? item?.package?.price ?? item?.package?.unit_price ?? item?.package?.base_price ?? item?.package?.total_price);
-    if (Number.isFinite(basketPrice) && basketPrice > 0) return basketPrice;
-
-    const quantity = basketItemQuantity(item);
-    const totalPrice = Number(item?.total_price ?? item?.subtotal ?? item?.line_total);
-    return Number.isFinite(totalPrice) && totalPrice > 0 ? totalPrice / Math.max(quantity, 1) : 0;
+    return 0;
 }
 
 export function basketSummarySubtotal() {

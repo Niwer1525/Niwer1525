@@ -14,7 +14,7 @@ import {
 } from './shared.js';
 
 import { applyBasketValue, applyStoredBasketTools, addPackageToBasket, loadBasket, loadStorePackages, removePackageFromBasket, updatePackageQuantity } from './api.js';
-import { ensureStoreShell, renderPackages, renderStore } from './render.js';
+import { ensureStoreShell, renderPackages, renderStore, setBasketToolStatus } from './render.js';
 
 const { createNotification, applyLanguage } = globalThis;
 const STORE_IMAGE_POPUP_ID = 'store-image-popup';
@@ -47,7 +47,7 @@ function ensureStoreImagePopup() {
     popup.innerHTML = `
         <div class="store-image-popup-backdrop" data-action="${STORE_IMAGE_POPUP_CLOSE_ACTION}" aria-hidden="true"></div>
         <div class="store-image-popup-panel" role="dialog" aria-modal="true" aria-label="Package image preview">
-            <button type="button" class="store-image-popup-close" data-action="${STORE_IMAGE_POPUP_CLOSE_ACTION}" aria-label="Close image preview">&times;</button>
+            <button type="button" class="icon-button store-image-popup-close" data-action="${STORE_IMAGE_POPUP_CLOSE_ACTION}" aria-label="Close image preview">&times;</button>
             <img class="store-image-popup-image" alt="" draggable="false">
         </div>
     `;
@@ -82,7 +82,7 @@ function openStoreImagePopup(imageUrl, altText) {
 }
 
 export function scheduleBasketToolAutoApply(form) {
-    if (!(form instanceof HTMLFormElement)) return;
+    if (!(form instanceof HTMLElement)) return;
 
     const kind = form.dataset.kind;
     const config = getBasketToolConfig(kind);
@@ -91,6 +91,23 @@ export function scheduleBasketToolAutoApply(form) {
 
     const normalizedValue = input.value.trim();
     setStoredBasketTool(config.storageKey, normalizedValue);
+    if (!normalizedValue) {
+        if (basketToolTimers.has(kind)) {
+            clearTimeout(basketToolTimers.get(kind));
+            basketToolTimers.delete(kind);
+        }
+
+        setBasketToolStatus(kind, null);
+
+        if (kind === 'coupon' && storeState.basket?.ident) {
+            void applyBasketValue(kind, '').catch(error => {
+                setBasketToolStatus(kind, 'error');
+                console.warn(`Unable to clear ${config.label}:`, error);
+            });
+        }
+
+        return;
+    }
 
     if (basketToolTimers.has(kind)) clearTimeout(basketToolTimers.get(kind));
 
@@ -101,6 +118,7 @@ export function scheduleBasketToolAutoApply(form) {
         try {
             await applyBasketValue(kind, normalizedValue);
         } catch (error) {
+            setBasketToolStatus(kind, 'error');
             console.warn(`Unable to auto-apply ${config.label}:`, error);
         }
     }, BASKET_TOOL_DEBOUNCE_MS));
@@ -165,14 +183,15 @@ export function handleStoreClick(event) {
 
 export function handleStoreInput(event) {
     const target = event.target;
-    if (target instanceof HTMLFormElement) {
-        if (!target.dataset.autoApply) return;
-        if (!['coupon-form', 'giftcard-form', 'creator-code-form'].includes(target.id)) return;
-        scheduleBasketToolAutoApply(target);
-        return;
-    }
-
     if (target instanceof HTMLInputElement && target.matches('[data-quantity-input]')) scheduleBasketQuantityAutoUpdate(target);
+
+    if (!(target instanceof HTMLInputElement)) return;
+
+    const storeTool = target.closest('[data-auto-apply][data-kind]');
+    if (!storeTool) return;
+
+    if (!['coupon-form', 'giftcard-form', 'creator-code-form'].includes(storeTool.id)) return;
+    scheduleBasketToolAutoApply(storeTool);
 }
 
 export async function bootstrapStore() {

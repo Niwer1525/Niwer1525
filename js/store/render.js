@@ -1,6 +1,7 @@
 const { trimAndMinifyHTML, escapeHtml } = globalThis;
 
 import {
+    BASKET_TOOL_CONFIG,
     basketItems,
     basketQuantityForPackage,
     basketSummarySubtotal,
@@ -15,11 +16,49 @@ import {
     formatCurrency,
     formatDefaultTitle,
     getPackageImageIndex,
+    getStoredBasketTool,
     packageImages,
     sanitizeHtml,
     setPackageImageIndex,
     storeState,
 } from './shared.js';
+
+const basketToolStatuses = new Map();
+
+function basketToolId(kind) {
+    if (kind === 'coupon') return 'coupon-form';
+    if (kind === 'giftcard') return 'giftcard-form';
+    if (kind === 'creator') return 'creator-code-form';
+    return '';
+}
+
+function updateBasketToolStatusClasses() {
+    for (const kind of BASKET_TOOL_CONFIG ? Object.keys(BASKET_TOOL_CONFIG) : []) {
+        const element = document.getElementById(basketToolId(kind));
+        if (!element) continue;
+
+        element.classList.remove('is-success', 'is-error');
+        const status = basketToolStatuses.get(kind);
+        if (status === 'success') element.classList.add('is-success');
+        else if (status === 'error') element.classList.add('is-error');
+    }
+}
+
+export function setBasketToolStatus(kind, status) {
+    if (!kind) return;
+
+    if (!status) basketToolStatuses.delete(kind);
+    else basketToolStatuses.set(kind, status);
+
+    updateBasketToolStatusClasses();
+}
+
+function renderBasketToolValue(kind) {
+    const config = BASKET_TOOL_CONFIG[kind];
+    if (!config) return '';
+
+    return escapeHtml(getStoredBasketTool(config.storageKey));
+}
 
 export function ensureStoreShell() {
     const main = document.querySelector('main');
@@ -37,7 +76,7 @@ export function ensureStoreShell() {
             </aside>
 
             <section class="store-content">
-                <div id="projects-grid" class="articles-grid store-grid"></div>
+                <div id="projects-grid" class="articles-grid"></div>
             </section>
 
             <aside class="store-basket">
@@ -46,23 +85,20 @@ export function ensureStoreShell() {
                         <h2 data-i18n="store.basket">Basket</h2>
                         <span id="basket-item-count"></span>
                     </div>
-                    <div id="basket-summary" class="store-summary"></div>
-                    <div id="basket-items" class="store-basket-items"></div>
-                    <div class="store-panel-section">
-                        <div class="store-panel-head">
-                            <h3 data-i18n="store.checkout_tools">Basket tools</h3>
+                    <div id="basket-summary"></div>
+                    <div>
+                        <div id="coupon-form" class="store-basket-tool" data-kind="coupon" data-auto-apply="true">
+                            <label aria-label="Coupon code"><i class="fa-solid fa-ticket" aria-hidden="true"></i><span class="sr-only" data-i18n="store.coupon">Coupon code</span><input name="code" type="text" autocomplete="off" placeholder="SUMMER10" value="${renderBasketToolValue('coupon')}"></label>
                         </div>
-                        <form id="coupon-form" class="store-form" data-kind="coupon" data-auto-apply="true">
-                            <label class="store-inline-field"><span data-i18n="store.coupon">Coupon code</span><input name="code" type="text" autocomplete="off" placeholder="SUMMER10"></label>
-                        </form>
-                        <form id="giftcard-form" class="store-form" data-kind="giftcard" data-auto-apply="true">
-                            <label class="store-inline-field"><span data-i18n="store.giftcard">Gift card</span><input name="code" type="text" autocomplete="off" placeholder="0127 0244 7210 1111"></label>
-                        </form>
-                        <form id="creator-code-form" class="store-form" data-kind="creator" data-auto-apply="true">
-                            <label class="store-inline-field"><span data-i18n="store.creator_code">Creator code</span><input name="code" type="text" autocomplete="off" placeholder="NIWER"></label>
-                        </form>
+                        <div id="giftcard-form" class="store-basket-tool" data-kind="giftcard" data-auto-apply="true">
+                            <label aria-label="Gift card"><i class="fa-solid fa-gift" aria-hidden="true"></i><span class="sr-only" data-i18n="store.giftcard">Gift card</span><input name="code" type="text" autocomplete="off" placeholder="0127 0244 7210 1111" value="${renderBasketToolValue('giftcard')}"></label>
+                        </div>
+                        <div id="creator-code-form" class="store-basket-tool" data-kind="creator" data-auto-apply="true">
+                            <label aria-label="Creator code"><i class="fa-solid fa-hashtag" aria-hidden="true"></i><span class="sr-only" data-i18n="store.creator_code">Creator code</span><input name="code" type="text" autocomplete="off" placeholder="NIWER" value="${renderBasketToolValue('creator')}"></label>
+                        </div>
                     </div>
-                    <button id="checkout-button" type="button" class="store-checkout-button" data-action="checkout" data-i18n="btn.checkout">Checkout</button>
+                    <div id="basket-items" class="store-basket-items"></div>
+                    <button id="checkout-button" type="button" data-tone="primary" data-size="full" data-action="checkout" data-i18n="btn.checkout">Checkout</button>
                 </div>
             </aside>
         </section>
@@ -86,10 +122,10 @@ export function renderCategoryButtons() {
     if (!container) return;
 
     container.innerHTML = trimAndMinifyHTML([
-        `<button type="button" class="store-category-button${storeState.activeCategoryId === 'all' ? ' is-active' : ''}" data-action="select-category" data-category-id="all" data-i18n="store.all_categories">All categories</button>`,
+        `<button type="button"${storeState.activeCategoryId === 'all' ? ' class="is-active"' : ''} data-action="select-category" data-category-id="all" data-i18n="store.all_categories">All categories</button>`,
         ...storeState.categories.map(category => {
             const packageCount = Array.isArray(category.packages) ? category.packages.length : 0;
-            return `<button type="button" class="store-category-button${String(category.id) === String(storeState.activeCategoryId) ? ' is-active' : ''}" data-action="select-category" data-category-id="${escapeHtml(category.id)}"><span>${escapeHtml(category.name || 'Category')}</span><small>${packageCount}</small></button>`;
+            return `<button type="button"${String(category.id) === String(storeState.activeCategoryId) ? ' class="is-active"' : ''} data-action="select-category" data-category-id="${escapeHtml(category.id)}"><span>${escapeHtml(category.name || 'Category')}</span><small>${packageCount}</small></button>`;
         }),
     ].join(''));
 }
@@ -129,7 +165,7 @@ export function renderPackages() {
                 ${activeImage ? `
                     <div class="store-image-carousel" data-package-carousel="${escapeHtml(storePackage.id)}" data-image-count="${images.length}">
                         <img src="${escapeHtml(activeImage)}" alt="${escapeHtml(storePackage.name || 'Package')}" loading="lazy" draggable="false">
-                        <button type="button" class="store-carousel-button open" data-action="package-image-open" data-package-id="${escapeHtml(storePackage.id)}" aria-label="Open image full size" title="Open image full size">&#128443;</button>
+                        <button type="button" class="store-carousel-button open icon-button" data-action="package-image-open" data-package-id="${escapeHtml(storePackage.id)}" aria-label="Open image full size" title="Open image full size">&#128443;</button>
                         ${images.length > 1 ? `
                             <div class="store-carousel-dots" aria-hidden="true">
                                 ${images.map((_, index) => `<button type="button" class="store-carousel-dot${index === activeImageIndex ? ' is-active' : ''}" data-action="package-image-dot" data-package-id="${escapeHtml(storePackage.id)}" data-image-index="${index}" aria-label="Go to image ${index + 1}"></button>`).join('')}
@@ -140,7 +176,7 @@ export function renderPackages() {
                 <div class="store-package-description">${description}</div>
                 ${tags.length ? `<div class="store-badges">${tags.map(tag => `<span>${escapeHtml(tag)}</span>`).join('')}</div>` : ''}
                 <footer>
-                    <button type="button" class="store-action-button" data-action="add-package" data-package-id="${escapeHtml(storePackage.id)}" data-i18n="btn.add_to_basket">Add to basket</button>
+                    <button type="button" data-tone="primary" data-action="add-package" data-package-id="${escapeHtml(storePackage.id)}" data-i18n="btn.add_to_basket">Add to basket</button>
                     ${quantityInBasket ? `<span class="store-in-basket-count">${escapeHtml(quantityInBasket)} in basket</span>` : ''}
                 </footer>
             </article>
@@ -178,7 +214,7 @@ export function renderBasketItems() {
     if (!container || !checkoutButton) return;
 
     const items = basketItems();
-    checkoutButton.disabled = !items.length; // Prevent checkout if basket is empty
+    checkoutButton.disabled = !items.length;
 
     if (!items.length) {
         container.innerHTML = trimAndMinifyHTML(`
@@ -197,7 +233,7 @@ export function renderBasketItems() {
         return `
             <article class="store-basket-item" data-package-id="${escapeHtml(packageId)}">
                 <div class="store-basket-item-head">
-                    <div>
+                    <div class="store-basket-item-info">
                         <h3>${escapeHtml(basketItemName(item))}</h3>
                         <p>${escapeHtml(quantity)} x ${escapeHtml(price)}</p>
                     </div>
@@ -206,14 +242,14 @@ export function renderBasketItems() {
                     </button>
                 </div>
                 <div class="store-basket-item-actions">
-                    <label class="store-quantity-field compact">
-                        <span data-i18n="store.quantity">Quantity</span>
-                        <input type="number" min="1" value="${quantity}" data-quantity-input="${escapeHtml(packageId)}">
-                        <div class="store-basket-quantity-actions">
-                            <button type="button" class="store-mini-button" data-action="decrease-package" data-package-id="${escapeHtml(packageId)}" data-quantity="${quantity}" data-i18n="btn.decrease">-1</button>
-                            <button type="button" class="store-mini-button" data-action="increase-package" data-package-id="${escapeHtml(packageId)}" data-i18n="btn.increase">+1</button>
+                    <div class="store-basket-quantity-row">
+                        <span class="store-basket-quantity-label"><i class="fa-solid fa-list-ol" aria-hidden="true"></i><span data-i18n="store.quantity">Quantity</span></span>
+                        <div class="store-basket-quantity-actions" aria-label="Quantity actions">
+                            <button type="button" data-tone="secondary" data-action="decrease-package" data-package-id="${escapeHtml(packageId)}" data-quantity="${quantity}" data-i18n="btn.decrease" aria-label="Decrease quantity">-</button>
+                            <span class="store-basket-quantity-value" aria-live="polite">${escapeHtml(quantity)}</span>
+                            <button type="button" data-tone="secondary" data-action="increase-package" data-package-id="${escapeHtml(packageId)}" data-i18n="btn.increase" aria-label="Increase quantity">+</button>
                         </div>
-                    </label>
+                    </div>
                 </div>
             </article>
         `;
@@ -226,4 +262,5 @@ export function renderStore() {
     renderPackages();
     renderBasketSummary();
     renderBasketItems();
+    updateBasketToolStatusClasses();
 }
