@@ -8,7 +8,7 @@
 function appendImageOrVideo(project) {
     const USE_VIDEO_AS_PREV = project.video_id !== undefined;
     if(USE_VIDEO_AS_PREV)
-        return `<iframe src="https://www.youtube.com/embed/${project.video_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+        return `<iframe loading="lazy" title="YouTube video player of ${project.name}" src="https://www.youtube.com/embed/${project.video_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
     
     return `<img loading="lazy" draggable="false" src="assets/${project.image}" alt="Image of ${project.name}">`
 }

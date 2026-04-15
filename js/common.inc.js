@@ -68,18 +68,18 @@ class IncContact extends HTMLElement {
                     </label>
                     <div>
                         <button type="submit" data-i18n="btn.send"><i class="fa fa-paper-plane"></i>Send</button>
-                        <a class="link-button" onclick="copyDiscordId()" title="📋 Discord ID">
+                        <span class="link-button" onclick="copyDiscordId()" title="📋 Discord ID">
                             <i class="fa-brands fa-discord"></i>
                             Discord
-                        </a>
+                        </span>
                     </div>
                     <a href="mailto:contact@niwer.dev" class="link-button" data-i18n="btn.open_email">
                         <i class="fa fa-envelope"></i>
                         Open email application
                     </a>
-                    <a onclick="copyEmail()" class="email-link">
+                    <span onclick="copyEmail()" class="email-link">
                         contact@niwer.dev
-                    </a>
+                    </span>
                 </form>
             </div>
         `;
@@ -93,14 +93,14 @@ class IncFooterContent extends HTMLElement {
         this.innerHTML = `
             <inc-contact></inc-contact>
             <div class="links" id="links">
-                <a class="link-button" onclick="showContactPopup()">
+                <span class="link-button" onclick="showContactPopup()">
                     <i class="fa fa-envelope"></i>
                     Contact
-                </a>
-                <a class="link-button" onclick="copyDiscordId()">
+                </span>
+                <span class="link-button" onclick="copyDiscordId()">
                     <i class="fa-brands fa-discord"></i>
                     Discord
-                </a>
+                </span>
                 <a class="link-button" href="https://git.niwer.dev" target="_blank">
                     <i class="fa-brands fa-github"></i>
                     Github
@@ -129,7 +129,7 @@ class IncFooterContent extends HTMLElement {
                 </a>
             </div>
             <p data-i18n="made_by">Made with ❤️ by Niwer</p>
-            <a href="./license.html" data-i18n="copyright">Copyright - All rights reserved</a>
+            <a href="./licence.html" data-i18n="copyright">Copyright - All rights reserved</a>
         `;
     }
 }
