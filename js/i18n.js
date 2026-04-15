@@ -31,7 +31,7 @@ async function setLanguagePreference(lang) {
  */
 async function fetchLanguageData(lang) {
     try {
-        const response = await fetch(`${WEBSITE_URL}/langs/${lang}.json`);
+        const response = await fetch(new URL(`langs/${lang}.json`, WEBSITE_URL));
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
         return response.json();
     } catch (error) {

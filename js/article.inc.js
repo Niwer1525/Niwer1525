@@ -42,8 +42,8 @@ function formatDefaultButtonName(type) {
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        const BASE_URL = (typeof WEBSITE_URL !== 'undefined') ? WEBSITE_URL : '';
-        const RESPONSE = await fetch(`${BASE_URL}/database.json`);
+        const BASE_URL = (typeof WEBSITE_URL !== 'undefined') ? WEBSITE_URL : new URL('.', window.location.href).href;
+        const RESPONSE = await fetch(new URL('database.json', BASE_URL));
         if (!RESPONSE.ok) throw new Error(`HTTP error! status: ${RESPONSE.status}`);
 
         const DATA = await RESPONSE.json();

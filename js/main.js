@@ -1,7 +1,7 @@
 /* Environement variables */
 const IS_DEV_ENV = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 const GITHUB_USERNAME = 'Niwer1525';
-const WEBSITE_URL = IS_DEV_ENV ? './' : `https://niwer1525.github.io/${GITHUB_USERNAME}/`;
+const WEBSITE_URL = new URL('.', window.location.href).href;
 
 /**
  * Calculate the current age based on a birth date.
