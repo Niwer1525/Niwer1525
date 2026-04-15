@@ -64,6 +64,16 @@ function createNotification(message) {
     setTimeout(() => msg.remove(), 2000);
 }
 
+/**
+ * Notifies the user about the result of an asynchronous operation.
+ * @param {Promise} promise - The asynchronous operation to monitor.
+ * @param {string} fallbackMessage - The message to display if the operation fails.
+ * @returns {Promise} A promise that resolves when the notification is displayed.
+ */
+function notifyAsync(promise, fallbackMessage) {
+    return promise.catch(error => createNotification(error.message || fallbackMessage));
+}
+
 /* Prevent CTRL+S (Saving) & CTRL+P (Printing) */
 window.addEventListener('keydown', function(e) {
     if (e.ctrlKey && e.key === 's') e.preventDefault();

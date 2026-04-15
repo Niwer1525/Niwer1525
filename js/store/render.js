@@ -3,8 +3,9 @@ const { trimAndMinifyHTML, escapeHtml } = globalThis;
 import {
     BASKET_TOOL_CONFIG,
     basketItems,
-    basketQuantityForPackage,
+    basketQuantitiesByPackage,
     basketSummarySubtotal,
+    basketSummaryReduction,
     basketSummaryTax,
     basketSummaryTotal,
     basketTotalItems,
@@ -18,7 +19,6 @@ import {
     getPackageImageIndex,
     getStoredBasketTool,
     packageImages,
-    sanitizeHtml,
     setPackageImageIndex,
     storeState,
 } from './shared.js';
@@ -58,6 +58,28 @@ function renderBasketToolValue(kind) {
     if (!config) return '';
 
     return escapeHtml(getStoredBasketTool(config.storageKey));
+}
+
+function basketHasAppliedTool() {
+    const basket = storeState.basket;
+    if (!basket) return false;
+
+    const hasTextValue = value => Boolean(String(value || '').trim());
+    const hasStoredValue = kind => {
+        const config = BASKET_TOOL_CONFIG[kind];
+        return Boolean(config && hasTextValue(getStoredBasketTool(config.storageKey)));
+    };
+
+    return Boolean(
+        (Array.isArray(basket.coupons) && basket.coupons.some(entry => hasTextValue(entry?.code || entry?.coupon_code))) ||
+        (Array.isArray(basket.giftcards) && basket.giftcards.some(entry => hasTextValue(entry?.card_number))) ||
+        hasTextValue(basket.creator_code) ||
+        hasTextValue(basket.coupon_code) ||
+        hasTextValue(basket.card_number) ||
+        hasStoredValue('coupon') ||
+        hasStoredValue('giftcard') ||
+        hasStoredValue('creator')
+    );
 }
 
 export function ensureStoreShell() {
@@ -130,7 +152,32 @@ export function renderCategoryButtons() {
     ].join(''));
 }
 
-export function renderPackages() {
+export function renderPackageBasketCounts(countsByPackage = basketQuantitiesByPackage()) {
+    for (const card of document.querySelectorAll('.store-package-card[data-package-id]')) {
+        const packageId = Number(card.dataset.packageId);
+        if (!packageId) continue;
+
+        const count = countsByPackage.get(packageId) || 0;
+        const footer = card.querySelector('footer');
+        if (!footer) continue;
+
+        let countElement = card.querySelector('.store-in-basket-count');
+        if (!count) {
+            if (countElement) countElement.remove();
+            continue;
+        }
+
+        if (!countElement) {
+            countElement = document.createElement('span');
+            countElement.className = 'store-in-basket-count';
+            footer.appendChild(countElement);
+        }
+
+        countElement.textContent = `${count} in basket`;
+    }
+}
+
+export function renderPackages(countsByPackage = basketQuantitiesByPackage()) {
     const grid = document.getElementById('projects-grid');
     if (!grid) return;
 
@@ -148,8 +195,8 @@ export function renderPackages() {
     grid.innerHTML = trimAndMinifyHTML(packages.map(storePackage => {
         const price = formatCurrency(storePackage.total_price ?? storePackage.base_price, storePackage.currency);
         const tags = [storePackage.type ? String(storePackage.type).replace(/_/g, ' ') : null, storePackage.disable_quantity ? 'single quantity' : null, storePackage.disable_gifting ? 'gifting disabled' : null].filter(Boolean);
-        const description = sanitizeHtml(storePackage.description) || '<p>No description available.</p>';
-        const quantityInBasket = basketQuantityForPackage(storePackage.id);
+        const description = storePackage.sanitizedDescription || '<p>No description available.</p>';
+        const quantityInBasket = countsByPackage.get(Number(storePackage.id)) || 0;
         const images = packageImages(storePackage);
         const activeImageIndex = getPackageImageIndex(storePackage.id, images.length);
         const activeImage = images[activeImageIndex] || '';
@@ -196,11 +243,14 @@ export function renderBasketSummary() {
 
     const currency = basket.currency || 'USD';
     const subtotal = basketSummarySubtotal();
+    const reduction = basketSummaryReduction(subtotal);
     const tax = basketSummaryTax(subtotal);
     const total = basketSummaryTotal(subtotal, tax);
+    const reductionDisplay = reduction > 0 ? `-${escapeHtml(formatCurrency(reduction, currency))}` : '—';
     summary.innerHTML = trimAndMinifyHTML(`
         <div class="store-summary-grid">
             <div><span data-i18n="store.subtotal">Subtotal</span><strong>${escapeHtml(formatCurrency(subtotal, currency))}</strong></div>
+            ${basketHasAppliedTool() ? `<div><span data-i18n="store.reduction">Reduction</span><strong>${reductionDisplay}</strong></div>` : ''}
             <div><span data-i18n="store.tax">Tax</span><strong>${escapeHtml(formatCurrency(tax, currency))}</strong></div>
             <div><span data-i18n="store.total">Total</span><strong>${escapeHtml(formatCurrency(total, currency))}</strong></div>
         </div>
@@ -256,11 +306,17 @@ export function renderBasketItems() {
     }).join(''));
 }
 
-export function renderStore() {
+export function renderBasketState(countsByPackage = basketQuantitiesByPackage()) {
     renderStoreHeader();
-    renderCategoryButtons();
-    renderPackages();
     renderBasketSummary();
     renderBasketItems();
+    renderPackageBasketCounts(countsByPackage);
     updateBasketToolStatusClasses();
+}
+
+export function renderStore() {
+    const countsByPackage = basketQuantitiesByPackage();
+    renderCategoryButtons();
+    renderPackages(countsByPackage);
+    renderBasketState(countsByPackage);
 }

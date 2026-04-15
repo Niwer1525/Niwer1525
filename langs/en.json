@@ -103,6 +103,7 @@
     "store.quantity": "Quantity",
     "store.basket": "Basket",
     "store.subtotal": "Subtotal",
+    "store.reduction": "Reduction",
     "store.tax": "Tax",
     "store.total": "Total",
     "store.load_failed": "Store could not be loaded",

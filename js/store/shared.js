@@ -11,12 +11,13 @@ export const BASKET_TOOL_DEBOUNCE_MS = 500;
 export const QUANTITY_DEBOUNCE_MS = 400;
 
 export const BASKET_TOOL_CONFIG = {
-    coupon: { storageKey: COUPON_STORAGE_KEY, endpoint: 'coupons', payloadKey: 'coupon_code', collectionKey: 'coupons', valueKey: 'coupon_code', label: 'coupon' },
-    giftcard: { storageKey: GIFTCARD_STORAGE_KEY, endpoint: 'giftcards', payloadKey: 'card_number', collectionKey: 'giftcards', valueKey: 'card_number', label: 'gift card' },
-    creator: { storageKey: CREATOR_CODE_STORAGE_KEY, endpoint: 'creator-codes', payloadKey: 'creator_code', valueKey: 'creator_code', label: 'creator code' },
+    coupon: { storageKey: COUPON_STORAGE_KEY, endpoint: 'coupons', removeEndpoint: 'coupons/remove', payloadKey: 'coupon_code', collectionKey: 'coupons', valueKey: 'code', label: 'coupon', requiresBasketItems: true },
+    giftcard: { storageKey: GIFTCARD_STORAGE_KEY, endpoint: 'giftcards', removeEndpoint: 'giftcards/remove', payloadKey: 'card_number', collectionKey: 'giftcards', valueKey: 'card_number', label: 'gift card' },
+    creator: { storageKey: CREATOR_CODE_STORAGE_KEY, endpoint: 'creator-codes', removeEndpoint: 'creator-codes/remove', payloadKey: 'creator_code', valueKey: 'creator_code', label: 'creator code' },
 };
 
 export const basketToolTimers = new Map();
+export const basketToolAppliedValues = new Map();
 export const quantityTimers = new Map();
 
 export const storeState = {
@@ -172,6 +173,15 @@ export function setStoredBasketTool(key, value) {
 
 export function getBasketToolConfig(kind) { return BASKET_TOOL_CONFIG[kind] || null; }
 
+export function getBasketToolAppliedValue(kind) { return basketToolAppliedValues.get(kind) || ''; }
+
+export function setBasketToolAppliedValue(kind, value) {
+    const normalizedValue = String(value || '').trim();
+    if (!kind) return;
+    if (normalizedValue) basketToolAppliedValues.set(kind, normalizedValue);
+    else basketToolAppliedValues.delete(kind);
+}
+
 export function basketHasTool(basket, kind, value) {
     const config = getBasketToolConfig(kind);
     if (!config) return false;
@@ -264,6 +274,19 @@ export function basketQuantityForPackage(packageId) {
     return basketItems().reduce((total, item) => total + (basketItemPackageId(item) === Number(packageId) ? basketItemQuantity(item) : 0), 0);
 }
 
+export function basketQuantitiesByPackage() {
+    const quantities = new Map();
+
+    for (const item of basketItems()) {
+        const packageId = basketItemPackageId(item);
+        if (!packageId) continue;
+
+        quantities.set(packageId, (quantities.get(packageId) || 0) + basketItemQuantity(item));
+    }
+
+    return quantities;
+}
+
 export function basketItemUnitPrice(item) {
     const packageId = basketItemPackageId(item);
     const catalogPackage = packageId ? storeState.packageMap.get(Number(packageId)) : null;
@@ -307,6 +330,60 @@ export function basketItemUnitPrice(item) {
     return 0;
 }
 
+export function basketItemCurrentLineTotal(item) {
+    const quantity = basketItemQuantity(item);
+
+    const explicitTotal = Number(
+        item?.in_basket?.total_price ??
+        item?.in_basket?.subtotal ??
+        item?.in_basket?.line_total ??
+        item?.total_price ??
+        item?.subtotal ??
+        item?.line_total ??
+        item?.package?.in_basket?.total_price ??
+        item?.package?.in_basket?.subtotal ??
+        item?.package?.in_basket?.line_total ??
+        item?.package?.total_price ??
+        item?.package?.subtotal ??
+        item?.package?.line_total
+    );
+    if (Number.isFinite(explicitTotal) && explicitTotal > 0) return explicitTotal;
+
+    const unitPrice = Number(
+        item?.in_basket?.price ??
+        item?.in_basket?.unit_price ??
+        item?.in_basket?.base_price ??
+        item?.price ??
+        item?.unit_price ??
+        item?.base_price ??
+        item?.package?.in_basket?.price ??
+        item?.package?.in_basket?.unit_price ??
+        item?.package?.in_basket?.base_price ??
+        item?.package?.price ??
+        item?.package?.unit_price ??
+        item?.package?.base_price
+    );
+    if (Number.isFinite(unitPrice) && unitPrice > 0) return unitPrice * quantity;
+
+    return 0;
+}
+
+export function basketItemCatalogLineTotal(item) {
+    const packageId = basketItemPackageId(item);
+    const catalogPackage = packageId ? storeState.packageMap.get(Number(packageId)) : null;
+    const quantity = basketItemQuantity(item);
+
+    const catalogTotal = Number(
+        catalogPackage?.total_price ??
+        catalogPackage?.base_price ??
+        item?.package?.total_price ??
+        item?.package?.base_price
+    );
+
+    if (Number.isFinite(catalogTotal) && catalogTotal > 0) return catalogTotal * quantity;
+    return 0;
+}
+
 export function basketSummarySubtotal() {
     return basketItems().reduce((total, item) => total + (basketItemUnitPrice(item) * basketItemQuantity(item)), 0);
 }
@@ -321,6 +398,73 @@ export function basketSummaryTax(subtotal) {
 
 export function basketSummaryTotal(subtotal, tax) {
     return subtotal + tax;
+}
+
+export function basketSummaryReduction(subtotal) {
+    const basket = storeState.basket;
+    if (!basket) return 0;
+
+    const readPositiveAmount = candidate => {
+        const amount = Number(candidate);
+        return Number.isFinite(amount) && amount > 0 ? amount : 0;
+    };
+
+    const directAmountCandidates = [
+        basket.discount,
+        basket.discount_amount,
+        basket.discount_total,
+        basket.total_discount,
+        basket.discounts_total,
+        basket.discounted_amount,
+    ];
+
+    for (const candidate of directAmountCandidates) {
+        const amount = readPositiveAmount(candidate);
+        if (amount > 0) return amount;
+    }
+
+    const lineTotalReduction = basketItems().reduce((total, item) => {
+        const currentTotal = basketItemCurrentLineTotal(item);
+        const catalogTotal = basketItemCatalogLineTotal(item);
+        if (!(Number.isFinite(currentTotal) && currentTotal >= 0 && Number.isFinite(catalogTotal) && catalogTotal > currentTotal)) return total;
+        return total + (catalogTotal - currentTotal);
+    }, 0);
+    if (lineTotalReduction > 0) return lineTotalReduction;
+
+    const discountCollections = [basket.discounts, basket.discounts_applied, basket.applied_discounts];
+    for (const collection of discountCollections) {
+        if (!Array.isArray(collection) || !collection.length) continue;
+
+        const amount = collection.reduce((total, entry) => total + readPositiveAmount(
+            entry?.amount ??
+            entry?.value ??
+            entry?.total ??
+            entry?.price ??
+            entry?.discount ??
+            entry?.discount_amount
+        ), 0);
+        if (Number.isFinite(amount) && amount > 0) return amount;
+    }
+
+    const lineItemDiscounts = basketItems().reduce((total, item) => total + readPositiveAmount(
+        item?.discount ??
+        item?.discount_amount ??
+        item?.discounted_amount ??
+        item?.in_basket?.discount ??
+        item?.in_basket?.discount_amount ??
+        item?.in_basket?.discounted_amount ??
+        item?.package?.discount ??
+        item?.package?.discount_amount ??
+        item?.package?.discounted_amount
+    ), 0);
+    if (lineItemDiscounts > 0) return lineItemDiscounts;
+
+    const basketBaseSubtotal = Number(basket.base_price ?? basket.subtotal ?? basket.subtotal_price ?? basket.total_before_discount ?? basket.total_price_before_tax ?? basket.subtotal_before_discount);
+    if (Number.isFinite(basketBaseSubtotal) && basketBaseSubtotal > 0 && subtotal > basketBaseSubtotal) {
+        return subtotal - basketBaseSubtotal;
+    }
+
+    return 0;
 }
 
 export function filteredPackages() {

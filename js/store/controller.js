@@ -13,10 +13,10 @@ import {
     storeState,
 } from './shared.js';
 
-import { applyBasketValue, applyStoredBasketTools, addPackageToBasket, loadBasket, loadStorePackages, removePackageFromBasket, updatePackageQuantity } from './api.js';
-import { ensureStoreShell, renderPackages, renderStore, setBasketToolStatus } from './render.js';
+import { applyBasketValue, applyStoredBasketTools, addPackageToBasket, loadBasket, loadStorePackages, removePackageFromBasket, updatePackageQuantity, waitForBasketMutations } from './api.js';
+import { ensureStoreShell, renderBasketState, renderPackages, renderStore, setBasketToolStatus } from './render.js';
 
-const { createNotification, applyLanguage } = globalThis;
+const { notifyAsync, createNotification, applyLanguage } = globalThis;
 const STORE_IMAGE_POPUP_ID = 'store-image-popup';
 const STORE_IMAGE_POPUP_CLOSE_ACTION = 'close-store-image-popup';
 
@@ -81,6 +81,38 @@ function openStoreImagePopup(imageUrl, altText) {
     requestAnimationFrame(() => popup.querySelector('.store-image-popup-close')?.focus());
 }
 
+async function flushBasketToolChanges() {
+    const forms = Array.from(document.querySelectorAll('[data-auto-apply][data-kind]'));
+
+    for (const form of forms) {
+        if (!(form instanceof HTMLElement)) continue;
+
+        const kind = form.dataset.kind;
+        const config = getBasketToolConfig(kind);
+        const input = form.querySelector('input[name="code"]');
+        if (!kind || !config || !(input instanceof HTMLInputElement)) continue;
+
+        const normalizedValue = input.value.trim();
+        setStoredBasketTool(config.storageKey, normalizedValue);
+        renderBasketState();
+
+        if (basketToolTimers.has(kind)) {
+            clearTimeout(basketToolTimers.get(kind));
+            basketToolTimers.delete(kind);
+        }
+
+        if (!normalizedValue) {
+            setBasketToolStatus(kind, null);
+            if (storeState.basket?.ident) await applyBasketValue(kind, '');
+            continue;
+        }
+
+        if (!storeState.basket?.ident || basketHasTool(storeState.basket, kind, normalizedValue)) continue;
+
+        await applyBasketValue(kind, normalizedValue);
+    }
+}
+
 export function scheduleBasketToolAutoApply(form) {
     if (!(form instanceof HTMLElement)) return;
 
@@ -91,6 +123,7 @@ export function scheduleBasketToolAutoApply(form) {
 
     const normalizedValue = input.value.trim();
     setStoredBasketTool(config.storageKey, normalizedValue);
+    renderBasketState();
     if (!normalizedValue) {
         if (basketToolTimers.has(kind)) {
             clearTimeout(basketToolTimers.get(kind));
@@ -99,11 +132,8 @@ export function scheduleBasketToolAutoApply(form) {
 
         setBasketToolStatus(kind, null);
 
-        if (kind === 'coupon' && storeState.basket?.ident) {
-            void applyBasketValue(kind, '').catch(error => {
-                setBasketToolStatus(kind, 'error');
-                console.warn(`Unable to clear ${config.label}:`, error);
-            });
+        if (storeState.basket?.ident) {
+            void applyBasketValue(kind, '').catch(error => console.warn(`Unable to clear ${config.label}:`, error));
         }
 
         return;
@@ -138,7 +168,16 @@ export function scheduleBasketQuantityAutoUpdate(input) {
     }, QUANTITY_DEBOUNCE_MS));
 }
 
-function openCheckout() {
+async function openCheckout() {
+    try {
+        await waitForBasketMutations();
+        await flushBasketToolChanges();
+        await waitForBasketMutations();
+    } catch (error) {
+        createNotification(error.message || 'Could not update basket before checkout.');
+        return;
+    }
+
     const checkoutUrl = storeState.basket?.links?.checkout;
     if (!checkoutUrl) {
         createNotification('Checkout is not available yet.');
@@ -148,42 +187,44 @@ function openCheckout() {
     window.location.href = checkoutUrl;
 }
 
-export function handleStoreClick(event) {
-    const button = event.target.closest('[data-action]');
-    if (!button) return;
+const actionHandlers = {
+    'select-category': ({ categoryId }) => setActiveCategory(categoryId),
+    'jump-to-category': ({ categoryId }) => setActiveCategory(categoryId, true),
+    'add-package': ({ packageId }) => packageId && notifyAsync(addPackageToBasket(packageId, 1), 'Could not add package to basket.'),
+    'remove-package': ({ packageId }) => packageId && notifyAsync(removePackageFromBasket(packageId), 'Could not remove package from basket.'),
+    'increase-package': ({ packageId }) => packageId && notifyAsync(addPackageToBasket(packageId, 1), 'Could not update basket.'),
+    'decrease-package': ({ packageId, quantity }) => packageId && notifyAsync(updatePackageQuantity(packageId, Number(quantity || 1) - 1), 'Could not update basket.'),
+    'checkout': () => { void openCheckout(); },
+    'package-image-dot': ({ packageId, imageIndex }) => {
+        if (!packageId) return;
 
-    const { action, packageId, categoryId } = button.dataset;
+        const index = Number(imageIndex);
+        if (!Number.isInteger(index)) return;
 
-    if (action === 'select-category') return setActiveCategory(categoryId);
-    if (action === 'jump-to-category') return setActiveCategory(categoryId, true);
-    if (action === 'add-package' && packageId) return addPackageToBasket(packageId, 1).catch(error => createNotification(error.message || 'Could not add package to basket.'));
+        setPackageImageIndex(packageId, index);
+        renderPackages();
+    },
+    'package-image-open': ({ packageId }) => {
+        if (!packageId) return;
 
-    if (action === 'package-image-dot' && packageId) {
-        const imageIndex = Number(button.dataset.imageIndex);
-        if (Number.isInteger(imageIndex)) {
-            setPackageImageIndex(packageId, imageIndex);
-            renderPackages();
-        }
-        return;
-    }
-
-    if (action === 'package-image-open' && packageId) {
         const packageItem = storeState.packageMap.get(Number(packageId));
         const images = packageItem ? packageImages(packageItem) : [];
         const imageUrl = images.length ? images[getPackageImageIndex(packageId, images.length)] : '';
         if (imageUrl) openStoreImagePopup(imageUrl, packageItem?.name || 'Package');
-        return;
-    }
+    },
+};
 
-    if (action === 'remove-package' && packageId) return removePackageFromBasket(packageId).catch(error => createNotification(error.message || 'Could not remove package from basket.'));
-    if (action === 'increase-package' && packageId) return addPackageToBasket(packageId, 1).catch(error => createNotification(error.message || 'Could not update basket.'));
-    if (action === 'decrease-package' && packageId) return updatePackageQuantity(packageId, Number(button.dataset.quantity || 1) - 1).catch(error => createNotification(error.message || 'Could not update basket.'));
-    if (action === 'checkout') openCheckout();
+export function handleStoreClick(event) {
+    const button = event.target.closest('[data-action]');
+    if (!button) return;
+
+    const handler = actionHandlers[button.dataset.action];
+    if (handler) return handler(button.dataset, button);
 }
 
 export function handleStoreInput(event) {
     const target = event.target;
-    if (target instanceof HTMLInputElement && target.matches('[data-quantity-input]')) scheduleBasketQuantityAutoUpdate(target);
+    // if (target instanceof HTMLInputElement && target.matches('[data-quantity-input]')) scheduleBasketQuantityAutoUpdate(target);
 
     if (!(target instanceof HTMLInputElement)) return;
 

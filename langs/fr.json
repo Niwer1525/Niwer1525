@@ -103,6 +103,7 @@
     "store.quantity": "Quantité",
     "store.basket": "Panier",
     "store.subtotal": "Sous-total",
+    "store.reduction": "Réduction",
     "store.tax": "Taxe",
     "store.total": "Total",
     "store.load_failed": "La boutique n'a pas pu être chargée",
