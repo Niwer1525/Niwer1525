@@ -31,6 +31,11 @@
             "tags": ["java", "sqlite", "CI/CD", "maven", "gradle"]
         },
         {
+            "name": "nebulae",
+            "links": { "https://git.niwer.dev/Nebulae": "read" },
+            "tags": ["java", "CI/CD", "maven", "gradle"]
+        },
+        {
             "name": "integrative_activity",
             "image": "hexgame.webp",
             "links": { "https://git.niwer.dev/BAC1_Integrative_activity": "read" },

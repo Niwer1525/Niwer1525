@@ -16,19 +16,19 @@ class IncNav extends HTMLElement {
                     <li><a href="./#gists" data-i18n="btn.gists">Gists</a></li>
                     <li><a href="./store.html" data-i18n="btn.store">Store</a></li>
                     <li><a href="#links" data-i18n="btn.contact">Contact</a></li>
-                    <li>
+                    <li class="nav-actions">
                         <button id="theme-toggle" type="button" aria-label="Theme mode" title="Theme mode">
                             <i class="fa-solid fa-circle-half-stroke"></i>
                             <span id="theme-toggle-label">System</span>
                         </button>
-                    </li>
-                    <li class="languages-grid">
-                        <a href="./index.html" onclick="changeLanguage('en')">
-                            <img loading="lazy" draggable="false" src="./assets/icons/united-kingdom.webp" alt="united_kingdom_logo">
-                        </a>
-                        <a href="./index.html" onclick="changeLanguage('fr')">
-                            <img loading="lazy" draggable="false" src="./assets/icons/france.webp" alt="france_logo">
-                        </a>
+                        <div class="languages-grid">
+                            <a href="./index.html" onclick="changeLanguage('en')">
+                                <img loading="lazy" draggable="false" src="./assets/icons/united-kingdom.webp" alt="united_kingdom_logo">
+                            </a>
+                            <a href="./index.html" onclick="changeLanguage('fr')">
+                                <img loading="lazy" draggable="false" src="./assets/icons/france.webp" alt="france_logo">
+                            </a>
+                        </div>
                     </li>
                 </ul>
             </nav>

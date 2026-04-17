@@ -21,9 +21,6 @@ function calculateCurrentAge() {
     return age;
 }
 
-// Store reference to the strong element before i18n destroys it
-let currentAgeElement = null;
-
 /* On document loaded */
 document.addEventListener('DOMContentLoaded', async () => {
     console.log(`%c Niwer's Portfolio - Made with ❤️`, 'background: #000000; color: #d8b4fe; padding: 4px 8px; border-radius: 4px; font-size: 14px;');
@@ -76,8 +73,7 @@ function notifyAsync(promise, fallbackMessage) {
 
 /* Prevent CTRL+S (Saving) & CTRL+P (Printing) */
 window.addEventListener('keydown', function(e) {
-    if (e.ctrlKey && e.key === 's') e.preventDefault();
-    if (e.ctrlKey && e.key === 'p') e.preventDefault();
+    if ((e.ctrlKey && e.key === 's') || (e.ctrlKey && e.key === 'p')) e.preventDefault();
 });
 
 /**

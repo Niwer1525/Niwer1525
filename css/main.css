@@ -199,6 +199,11 @@ nav > ul {
     display: flex;
     gap: 2rem;
     align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    padding: 0 1.5rem;
+    box-sizing: border-box;
 }
 nav > ul > li > a {
     font-size: 0.95rem;
@@ -227,8 +232,8 @@ nav > ul > li > a:hover::after {
 
 /* Flags/Icons in nav */
 nav > ul > li > a > img {
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 16px;
     border-radius: 50%;
     opacity: 0.8;
     transition: opacity 0.2s, transform 0.2s;
@@ -239,8 +244,33 @@ nav > ul > li > a > img:hover {
 }
 .languages-grid {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.35rem;
     align-items: center;
+}
+
+.languages-grid a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 16px;
+    overflow: hidden;
+    line-height: 0;
+}
+
+.languages-grid a > img {
+    width: 100%;
+    height: 100%;
+    border-radius: 3px;
+    object-fit: cover;
+}
+
+.nav-actions {
+    position: absolute;
+    right: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 /* Components: Buttons (Sober & Clean) */
@@ -914,7 +944,7 @@ footer p {
 }
 
 /* Responsiveness */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     /* Mobile Menu Logic */
     .menu-icon {
         display: flex;
@@ -938,14 +968,22 @@ footer p {
         padding-bottom: 3rem;
     }
 
+    .nav-actions {
+        position: static;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
     /* Open state */
     #menu-toggle:checked ~ #nav-links { left: 0; }
 
     /* Rotate/Switch icon */
     #menu-toggle:checked + .menu-icon .fa-bars::before { content: "\f00d"; /* fa-xmark from fontawesome */ }
-    
+
     nav > ul > li > a { font-size: 1.5rem; }
-    
+}
+
+@media (max-width: 768px) {    
     #presentation {
         flex-direction: column-reverse;
         text-align: center;
