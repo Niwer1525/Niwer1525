@@ -12,7 +12,7 @@ const WEBSITE_URL = new URL('.', window.location.href).href;
  */
 function calculateCurrentAge() {
     const TODAY = new Date();
-    const BIRTH_DATE = new Date(2000, 6, 15); // Note: month is 0-indexed, so 6 = July
+    const BIRTH_DATE = new Date(2004, 7, 27); // Note: month is 0-indexed, so 7 = August
     let age = TODAY.getFullYear() - BIRTH_DATE.getFullYear();
 
     const MONTH_DIFF = TODAY.getMonth() - BIRTH_DATE.getMonth();
