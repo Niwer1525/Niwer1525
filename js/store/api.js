@@ -1,282 +1,115 @@
-import {
-    BASKET_TOOL_CONFIG,
-    TEBEX_API_BASE,
-    TEBEX_PUBLIC_KEY,
-    basketHasTool,
-    basketItemPackageId,
-    basketItemQuantity,
-    basketItems,
-    basketLineItems,
-    getBasketIdent,
-    getBasketToolAppliedValue,
-    getCategoryPreference,
-    getStoredBasketTool,
-    sanitizeHtml,
-    setBasketIdent,
-    setBasketToolAppliedValue,
-    storeState,
-} from './shared.js';
-
-import { renderBasketState, renderStateMessage, setBasketToolStatus } from './render.js';
-
-let basketMutationQueue = Promise.resolve();
-
-function enqueueBasketMutation(operation) {
-    const result = basketMutationQueue.then(operation, operation);
-    basketMutationQueue = result.then(() => undefined, () => undefined);
-    return result;
-}
-
-export function waitForBasketMutations() {
-    return basketMutationQueue;
-}
+import { STORE_CATALOG_URL, STRIPE_PAYMENT_LINK_URL, getCategoryPreference, sanitizeHtml, storeState } from './shared.js';
+import { renderStateMessage } from './render.js';
 
 export function unwrapApiData(payload) {
     if (!payload) return null;
     return Object.prototype.hasOwnProperty.call(payload, 'data') ? payload.data : payload;
 }
 
-export async function fetchTebex(path, options = {}) {
-    const response = await fetch(`${TEBEX_API_BASE}${path}`, {
-        method: 'GET',
-        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-        ...options,
-    });
-
-    if (!response.ok) {
-        const errorText = await response.text();
-        let errorDetail = '';
-
-        if (errorText) {
-            try {
-                const errorPayload = JSON.parse(errorText);
-                const payload = unwrapApiData(errorPayload);
-                errorDetail = typeof payload === 'string' ? payload : payload?.message || payload?.error || payload?.detail || payload?.title || errorText;
-            } catch {
-                errorDetail = errorText;
-            }
-        }
-
-        const suffix = errorDetail ? `: ${errorDetail}` : '';
-        throw new Error(`Tebex request failed (${response.status})${suffix}`);
-    }
-    if (response.status === 204) return null;
-
-    const text = await response.text();
-    return text ? unwrapApiData(JSON.parse(text)) : null;
+function readPositiveNumber(value, fallback = 0) {
+    const numericValue = Number(value);
+    return Number.isFinite(numericValue) && numericValue > 0 ? numericValue : fallback;
 }
 
-function updateBasketState(basket) {
-    if (basket && typeof basket === 'object') storeState.basket = basket;
+function ensureNumericId(value, fallbackId) {
+    const parsedValue = Number(value);
+    if (Number.isInteger(parsedValue) && parsedValue > 0) return parsedValue;
+    return fallbackId;
 }
 
-async function commitBasketResponse(basket, refresh = true) {
-    const currentBasket = storeState.basket;
-    const currentItemCount = basketLineItems(currentBasket).length;
-    const nextItemCount = basketLineItems(basket).length;
-
-    if (basket && currentItemCount > 0 && nextItemCount === 0) {
-        try {
-            const syncedBasket = await syncBasket();
-            updateBasketState(syncedBasket || basket);
-        } catch (error) {
-            console.warn('Basket response dropped line items; using the mutation response.', error);
-            updateBasketState(basket);
-        }
-    } else if (basket) {
-        updateBasketState(basket);
-    } else {
-        await syncBasket();
-    }
-
-    if (refresh) renderBasketState();
-}
 
 export async function loadStorePackages() {
-    const categories = await fetchTebex(`/accounts/${TEBEX_PUBLIC_KEY}/categories?includePackages=1`);
-    storeState.categories = Array.isArray(categories) ? categories : [];
-    storeState.packages = storeState.categories.flatMap(category => Array.isArray(category.packages)
-        ? category.packages.map(storePackage => ({
-            ...storePackage,
-            categoryId: category.id,
-            categoryName: category.name,
-            sanitizedDescription: sanitizeHtml(storePackage.description) || '<p>No description available.</p>',
-        }))
-        : []);
+    const response = await fetch(STORE_CATALOG_URL, { cache: 'no-store' });
+    if (!response.ok) throw new Error(`Could not load store catalog (${response.status}).`);
+
+    const payload = unwrapApiData(await response.json());
+    const categories = Array.isArray(payload?.categories) ? payload.categories : (Array.isArray(payload) ? payload : []);
+
+    storeState.catalog = {
+        currency: String(payload?.currency || 'EUR').toUpperCase(),
+        taxRate: Number(payload?.taxRate) || 0,
+        paymentLink: payload?.paymentLink || STRIPE_PAYMENT_LINK_URL,
+        packageName: payload?.packageName || 'Support package',
+    };
+
+    storeState.categories = categories.map((category, categoryIndex) => ({
+        id: ensureNumericId(category?.id, categoryIndex + 1),
+        name: category?.name || `Category ${categoryIndex + 1}`,
+        // preserve legacy top-level packages and nested subcategories
+        packages: Array.isArray(category?.packages) ? category.packages : [],
+        subcategories: Array.isArray(category?.subcategories) ? category.subcategories : [],
+    }));
+
+    storeState.packages = storeState.categories.flatMap((category, categoryIndex) => {
+        const fromTop = Array.isArray(category.packages) ? category.packages.map((storePackage, packageIndex) => {
+            const fallbackId = ((categoryIndex + 1) * 1000) + packageIndex + 1;
+            return {
+                ...storePackage,
+                id: ensureNumericId(storePackage?.id, fallbackId),
+                currency: String(storePackage?.currency || storeState.catalog.currency || 'EUR').toUpperCase(),
+                categoryId: category.id,
+                categoryName: category.name,
+                subcategoryId: null,
+                subcategoryName: null,
+                sanitizedDescription: sanitizeHtml(storePackage.description) || '<p>No description available.</p>',
+            };
+        }) : [];
+
+        const fromSubs = Array.isArray(category.subcategories) ? category.subcategories.flatMap((sub, subIndex) => Array.isArray(sub.packages) ? sub.packages.map((storePackage, packageIndex) => {
+            const fallbackId = ((categoryIndex + 1) * 1000) + (subIndex + 1) * 100 + packageIndex + 1;
+            return {
+                ...storePackage,
+                id: ensureNumericId(storePackage?.id, fallbackId),
+                currency: String(storePackage?.currency || storeState.catalog.currency || 'EUR').toUpperCase(),
+                categoryId: category.id,
+                categoryName: category.name,
+                subcategoryId: ensureNumericId(sub?.id, subIndex + 1),
+                subcategoryName: sub?.name || null,
+                sanitizedDescription: sanitizeHtml(storePackage.description) || '<p>No description available.</p>',
+            };
+        }) : []) : [];
+
+        return [...fromTop, ...fromSubs];
+    });
+
+    if (!storeState.packages.length && storeState.catalog.paymentLink) {
+        const fallbackCategoryId = storeState.categories[0]?.id || 1;
+        const fallbackCategoryName = storeState.categories[0]?.name || 'Store';
+        storeState.categories = storeState.categories.length ? storeState.categories : [{ id: fallbackCategoryId, name: fallbackCategoryName, packages: [] }];
+        storeState.packages = [{
+            id: 1,
+            name: storeState.catalog.packageName,
+            slug: 'support-package',
+            displayed_price: 0,
+            currency: storeState.catalog.currency,
+            categoryId: fallbackCategoryId,
+            categoryName: fallbackCategoryName,
+            paymentLink: storeState.catalog.paymentLink,
+            sanitizedDescription: '<p>Redirects to Stripe payment link.</p>',
+        }];
+    }
+
     storeState.packageMap = new Map(storeState.packages.map(storePackage => [Number(storePackage.id), storePackage]));
     storeState.activeCategoryId = getCategoryPreference();
 
-    if (storeState.activeCategoryId !== 'all' && !storeState.categories.some(category => String(category.id) === String(storeState.activeCategoryId))) storeState.activeCategoryId = 'all';
-
-    renderStateMessage(storeState.packages.length ? `Loaded ${storeState.categories.length} categories and ${storeState.packages.length} packages.` : 'No Tebex packages were returned by the store.');
-}
-
-export async function loadBasket() {
-    const basketIdent = getBasketIdent();
-
-    if (basketIdent) {
-        try {
-            const basket = await fetchTebex(`/accounts/${TEBEX_PUBLIC_KEY}/baskets/${basketIdent}`);
-            if (basket?.complete) setBasketIdent(null);
-            else if (basket) {
-                storeState.basket = basket;
-                return;
-            }
-        } catch (error) {
-            console.warn('Stored basket could not be restored, creating a new basket.', error);
-            setBasketIdent(null);
+    // validate activeCategoryId: supports 'all', 'categoryId' or 'categoryId/subcategoryId'
+    const active = String(storeState.activeCategoryId || 'all');
+    if (active !== 'all') {
+        const parts = active.split('/');
+        const catId = parts[0];
+        const subId = parts[1] || null;
+        const foundCategory = storeState.categories.some(cat => String(cat.id) === String(catId));
+        if (!foundCategory) storeState.activeCategoryId = 'all';
+        else if (subId) {
+            const category = storeState.categories.find(cat => String(cat.id) === String(catId));
+            const foundSub = Array.isArray(category.subcategories) && category.subcategories.some(sc => String(sc.id) === String(subId));
+            if (!foundSub) storeState.activeCategoryId = String(catId);
         }
     }
 
-    const basket = await fetchTebex(`/accounts/${TEBEX_PUBLIC_KEY}/baskets`, {
-        method: 'POST',
-        body: JSON.stringify({ complete_url: window.location.href.split('#')[0], cancel_url: window.location.href.split('#')[0], complete_auto_redirect: true, custom: { source: 'portfolio-store' } }),
-    });
-
-    storeState.basket = basket;
-    setBasketIdent(basket?.ident || null);
+    renderStateMessage(storeState.packages.length ? `Loaded ${storeState.categories.length} categories and ${storeState.packages.length} packages.` : 'No packages were returned by the catalog.');
 }
-
-export async function syncBasket() {
-    if (!storeState.basket?.ident) return;
-
-    const basket = await fetchTebex(`/accounts/${TEBEX_PUBLIC_KEY}/baskets/${storeState.basket.ident}`);
-    storeState.basket = basket;
-    if (basket?.complete) setBasketIdent(null);
-
-    return basket;
-}
-
-async function addPackageToBasketNow(packageId, quantity = 1) {
-    if (!storeState.basket?.ident) return;
-
-    const basket = await fetchTebex(`/baskets/${storeState.basket.ident}/packages`, {
-        method: 'POST',
-        body: JSON.stringify({ package_id: Number(packageId), quantity: Number(quantity) || 1 }),
-    });
-
-    await commitBasketResponse(basket);
-
-    await applyStoredBasketToolsNow();
-}
-
-export function addPackageToBasket(packageId, quantity = 1) {
-    return enqueueBasketMutation(() => addPackageToBasketNow(packageId, quantity));
-}
-
-async function removePackageFromBasketNow(packageId, { refresh = true } = {}) {
-    if (!storeState.basket?.ident) return;
-
-    try {
-        const basket = await fetchTebex(`/baskets/${storeState.basket.ident}/packages/remove`, {
-            method: 'POST',
-            body: JSON.stringify({ package_id: Number(packageId) }),
-        });
-
-        await commitBasketResponse(basket, refresh);
-    } catch (error) {
-        const message = String(error?.message || '');
-        if (message.includes('(400)') || message.includes('(404)')) {
-            await syncBasket();
-            if (refresh) renderBasketState();
-            return;
-        }
-
-        throw error;
-    }
-}
-
-export function removePackageFromBasket(packageId, { refresh = true } = {}) {
-    return enqueueBasketMutation(() => removePackageFromBasketNow(packageId, { refresh }));
-}
-
-export function updatePackageQuantity(packageId, nextQuantity) {
-    return enqueueBasketMutation(async () => {
-        const quantity = Number(nextQuantity) || 1;
-        const item = basketItems().find(entry => basketItemPackageId(entry) === Number(packageId));
-        const currentQuantity = basketItemQuantity(item);
-
-        if (!item) return;
-        if (quantity <= 0) return removePackageFromBasketNow(packageId);
-        if (quantity === currentQuantity) return;
-
-        await removePackageFromBasketNow(packageId, { refresh: false });
-        await addPackageToBasketNow(packageId, quantity);
-    });
-}
-
-async function applyBasketValueNow(kind, value) {
-    const config = BASKET_TOOL_CONFIG[kind];
-    if (!storeState.basket?.ident || !config) return;
-
-    const normalizedValue = String(value || '').trim();
-    const appliedValue = getBasketToolAppliedValue(kind);
-
-    if (normalizedValue && appliedValue && appliedValue.toLowerCase() === normalizedValue.toLowerCase()) {
-        setBasketToolStatus(kind, 'success');
-        return;
-    }
-
-    const isClearRequest = !normalizedValue;
-    const basketValue = getBasketToolAppliedValue(kind) || (
-        config.collectionKey
-            ? Array.isArray(storeState.basket?.[config.collectionKey])
-                ? storeState.basket[config.collectionKey][0]?.[config.valueKey] || ''
-                : ''
-            : storeState.basket?.[config.valueKey] || ''
-    );
-    const endpoint = isClearRequest && config.removeEndpoint ? config.removeEndpoint : config.endpoint;
-    const payloadValue = isClearRequest ? basketValue : normalizedValue;
-    const payload = payloadValue ? { [config.payloadKey]: payloadValue } : {};
-
-    if (isClearRequest && !basketValue) {
-        setBasketToolStatus(kind, null);
-        return;
-    }
-
-    let basket;
-    try {
-        basket = await fetchTebex(`/accounts/${TEBEX_PUBLIC_KEY}/baskets/${storeState.basket.ident}/${endpoint}`, {
-            method: 'POST',
-            body: Object.keys(payload).length ? JSON.stringify(payload) : undefined,
-        });
-    } catch (error) {
-        const message = String(error?.message || '');
-        if (message.includes('already applied to your basket')) {
-            setBasketToolStatus(kind, 'success');
-            return;
-        }
-
-        throw error;
-    }
-
-    await commitBasketResponse(basket);
-    if (normalizedValue) setBasketToolAppliedValue(kind, normalizedValue);
-    else setBasketToolAppliedValue(kind, '');
-    setBasketToolStatus(kind, normalizedValue ? 'success' : null);
-}
-
-export function applyBasketValue(kind, value) {
-    return enqueueBasketMutation(() => applyBasketValueNow(kind, value));
-}
-
-async function applyStoredBasketToolsNow() {
-    if (!storeState.basket?.ident) return;
-
-    for (const [kind, config] of Object.entries(BASKET_TOOL_CONFIG)) {
-        const storedValue = getStoredBasketTool(config.storageKey);
-        if (!storedValue || basketHasTool(storeState.basket, kind, storedValue)) continue;
-        if (config.requiresBasketItems && !basketItems().length) continue;
-
-        try {
-            await applyBasketValueNow(kind, storedValue);
-        } catch (error) {
-            setBasketToolStatus(kind, 'error');
-            console.warn(`Unable to auto-apply ${config.label}:`, error);
-        }
-    }
-}
-
-export function applyStoredBasketTools() {
-    return enqueueBasketMutation(() => applyStoredBasketToolsNow());
+export function getPackagePaymentLink(packageId) {
+    const storePackage = storeState.packageMap.get(Number(packageId));
+    return String(storePackage?.paymentLink || storePackage?.payment_link || storeState.catalog?.paymentLink || STRIPE_PAYMENT_LINK_URL || '').trim();
 }

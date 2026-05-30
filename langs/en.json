@@ -20,6 +20,7 @@
     "btn.see": "See more <i class=\"fa-solid fa-arrow-up-right-from-square\"></i>",
     "btn.play": "Play <i class=\"fa-solid fa-arrow-up-right-from-square\"></i>",
     "btn.add_to_basket": "Add to basket",
+    "btn.buy_now": "Buy now",
     "btn.view_category": "View category",
     "btn.apply_coupon": "Apply coupon",
     "btn.apply_giftcard": "Apply gift card",
@@ -112,19 +113,19 @@
 
     "project.title.wayz": "Minecraft WayZ",
     "project.desc.wayz": "WayZ is a Minecraft mod made first for a Zombie post-apocalypse server. Secondly the mod has been updated to be community friendly and to be used in any server. It's include a lot of unique features like a custom<span> crafting system</span>, a custom <span> zombie system</span>, a custom <span> 3D Orineted bouding box collisions system</span>, a custom <span>fast loading content-packs system</span> and so much more !",
-    
+
     "project.title.wayz_launcher": "Launcher of Minecraft WayZ",
     "project.desc.wayz_launcher": "The WayZ Launcher is a custom launcher for the WayZ server. It simplifies the installation and management of the main mod and the additionnal ones (Sodium, Iris, etc), ensuring that players have the best experience possible. The Launcher is open-source now with some removed features (auto-updater and other network required things).",
 
     "project.title.web_showcase": "Web showcase project",
     "project.desc.web_showcase": "A website made for my web courses using PHP, HTML and CSS. It include a <span>article/news system</span>, a <span>team system</span>, a <span>department system</span>, a <span>contact form</span> and a much more !",
-    
+
     "project.title.lumen": "Lumen",
     "project.desc.lumen": "Lumen is a lightweight, extensible, pure Java logging system. Simple <span>console and file logs</span> or <span>custom processors</span>. Available via <span>JitPack</span>. It's perfect for debugging and printing logs in your Java applications.",
-    
+
     "project.title.queryon": "Queryon",
     "project.desc.queryon": "Queryon is a pure Java SQL builder and parser powered by <span>SQLite</span>. Streamline database interactions with a <span>fluent API and seamless object mapping</span>. Available via <span>JitPack</span>, it's the perfect tool for Java developers seeking efficient and intuitive database management.",
-    
+
     "project.title.nebulae": "Nebulae",
     "project.desc.nebulae": "Nebulae is a custom binary file format. It is designed to be simple, efficient, compressed and obfuscated (via a private key system). It can be used to store any kind of data, but it's mainly designed to store game data (maps, entities, etc).",
 
@@ -139,7 +140,7 @@
 
     "project.title.open_vanilla": "Open Vanilla",
     "project.desc.open_vanilla": "A Bukkit/Spigot plugin designed to create an enhanced Vanilla Minecraft experience. It includes features such as <span>homes</span>, a <span>hub</span>, administrator commands like <span>/invsee, /ec, /broadcast</span>, a currency system, and much more.",
-    
+
     "project.title.bake_n_go": "Bake N' Go",
     "project.desc.bake_n_go": "All-in-one order management for bakeries. Streamlines customer orders, inventory tracking, and pickup scheduling via a responsive web-app."
 }
