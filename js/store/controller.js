@@ -1,22 +1,15 @@
 import {
-    BASKET_TOOL_DEBOUNCE_MS,
-    QUANTITY_DEBOUNCE_MS,
-    basketHasTool,
-    basketToolTimers,
-    getBasketToolConfig,
     getPackageImageIndex,
     packageImages,
-    quantityTimers,
     setCategoryPreference,
     setPackageImageIndex,
-    setStoredBasketTool,
     storeState,
 } from './shared.js';
 
-import { applyBasketValue, applyStoredBasketTools, addPackageToBasket, loadBasket, loadStorePackages, removePackageFromBasket, updatePackageQuantity, waitForBasketMutations } from './api.js';
-import { ensureStoreShell, renderBasketState, renderPackages, renderStore, setBasketToolStatus } from './render.js';
+import { loadStorePackages } from './api.js';
+import { ensureStoreShell, renderPackages, renderStore } from './render.js';
 
-const { notifyAsync, createNotification, applyLanguage } = globalThis;
+const { createNotification, applyLanguage } = globalThis;
 const STORE_IMAGE_POPUP_ID = 'store-image-popup';
 const STORE_IMAGE_POPUP_CLOSE_ACTION = 'close-store-image-popup';
 
@@ -81,136 +74,79 @@ function openStoreImagePopup(imageUrl, altText) {
     requestAnimationFrame(() => popup.querySelector('.store-image-popup-close')?.focus());
 }
 
-async function flushBasketToolChanges() {
-    const forms = Array.from(document.querySelectorAll('[data-auto-apply][data-kind]'));
-
-    for (const form of forms) {
-        if (!(form instanceof HTMLElement)) continue;
-
-        const kind = form.dataset.kind;
-        const config = getBasketToolConfig(kind);
-        const input = form.querySelector('input[name="code"]');
-        if (!kind || !config || !(input instanceof HTMLInputElement)) continue;
-
-        const normalizedValue = input.value.trim();
-        setStoredBasketTool(config.storageKey, normalizedValue);
-        renderBasketState();
-
-        if (basketToolTimers.has(kind)) {
-            clearTimeout(basketToolTimers.get(kind));
-            basketToolTimers.delete(kind);
-        }
-
-        if (!normalizedValue) {
-            setBasketToolStatus(kind, null);
-            if (storeState.basket?.ident) await applyBasketValue(kind, '');
-            continue;
-        }
-
-        if (!storeState.basket?.ident || basketHasTool(storeState.basket, kind, normalizedValue)) continue;
-
-        await applyBasketValue(kind, normalizedValue);
-    }
-}
-
-export function scheduleBasketToolAutoApply(form) {
-    if (!(form instanceof HTMLElement)) return;
-
-    const kind = form.dataset.kind;
-    const config = getBasketToolConfig(kind);
-    const input = form.querySelector('input[name="code"]');
-    if (!kind || !config || !(input instanceof HTMLInputElement)) return;
-
-    const normalizedValue = input.value.trim();
-    setStoredBasketTool(config.storageKey, normalizedValue);
-    renderBasketState();
-    if (!normalizedValue) {
-        if (basketToolTimers.has(kind)) {
-            clearTimeout(basketToolTimers.get(kind));
-            basketToolTimers.delete(kind);
-        }
-
-        setBasketToolStatus(kind, null);
-
-        if (storeState.basket?.ident) {
-            void applyBasketValue(kind, '').catch(error => console.warn(`Unable to clear ${config.label}:`, error));
-        }
-
-        return;
+function resolvePackage(packageId, packageSlug) {
+    const slug = String(packageSlug || '').trim();
+    if (slug) {
+        const bySlug = storeState.packages.find(item => String(item.slug || '') === slug);
+        if (bySlug) return bySlug;
     }
 
-    if (basketToolTimers.has(kind)) clearTimeout(basketToolTimers.get(kind));
-
-    basketToolTimers.set(kind, setTimeout(async () => {
-        basketToolTimers.delete(kind);
-        if (!storeState.basket?.ident || !normalizedValue || basketHasTool(storeState.basket, kind, normalizedValue)) return;
-
-        try {
-            await applyBasketValue(kind, normalizedValue);
-        } catch (error) {
-            setBasketToolStatus(kind, 'error');
-            console.warn(`Unable to auto-apply ${config.label}:`, error);
-        }
-    }, BASKET_TOOL_DEBOUNCE_MS));
-}
-
-export function scheduleBasketQuantityAutoUpdate(input) {
-    if (!(input instanceof HTMLInputElement)) return;
-
-    const packageId = Number(input.dataset.quantityInput);
-    if (!packageId) return;
-
-    if (quantityTimers.has(packageId)) clearTimeout(quantityTimers.get(packageId));
-
-    quantityTimers.set(packageId, setTimeout(async () => {
-        quantityTimers.delete(packageId);
-        await updatePackageQuantity(packageId, Number(input.value || 1));
-    }, QUANTITY_DEBOUNCE_MS));
-}
-
-async function openCheckout() {
-    try {
-        await waitForBasketMutations();
-        await flushBasketToolChanges();
-        await waitForBasketMutations();
-    } catch (error) {
-        createNotification(error.message || 'Could not update basket before checkout.');
-        return;
-    }
-
-    const checkoutUrl = storeState.basket?.links?.checkout;
-    if (!checkoutUrl) {
-        createNotification('Checkout is not available yet.');
-        return;
-    }
-
-    window.location.href = checkoutUrl;
+    return storeState.packageMap.get(Number(packageId)) || null;
 }
 
 const actionHandlers = {
-    'select-category': ({ categoryId }) => setActiveCategory(categoryId),
+    'select-category': ({ categoryId, subcategoryId }) => {
+        if (!categoryId || String(categoryId) === 'all') return setActiveCategory('all');
+        storeState.openCategoryIds.add(String(categoryId));
+        const composite = subcategoryId ? `${categoryId}/${subcategoryId}` : String(categoryId);
+        return setActiveCategory(composite);
+    },
+    'toggle-category-dropdown': ({ categoryId }) => {
+        if (!categoryId || String(categoryId) === 'all') return;
+        const key = String(categoryId);
+        if (storeState.openCategoryIds.has(key)) storeState.openCategoryIds.delete(key);
+        else storeState.openCategoryIds.add(key);
+        renderStore();
+    },
     'jump-to-category': ({ categoryId }) => setActiveCategory(categoryId, true),
-    'add-package': ({ packageId }) => packageId && notifyAsync(addPackageToBasket(packageId, 1), 'Could not add package to basket.'),
-    'remove-package': ({ packageId }) => packageId && notifyAsync(removePackageFromBasket(packageId), 'Could not remove package from basket.'),
-    'increase-package': ({ packageId }) => packageId && notifyAsync(addPackageToBasket(packageId, 1), 'Could not update basket.'),
-    'decrease-package': ({ packageId, quantity }) => packageId && notifyAsync(updatePackageQuantity(packageId, Number(quantity || 1) - 1), 'Could not update basket.'),
-    'checkout': () => { void openCheckout(); },
-    'package-image-dot': ({ packageId, imageIndex }) => {
+    'open-package-payment': ({ paymentLink }) => {
+        const link = String(paymentLink || '').trim();
+        if (!link) {
+            createNotification('Payment link is not available for this package.');
+            return;
+        }
+
+        window.open(link, '_blank', 'noopener');
+    },
+    'package-image-dot': ({ packageId, packageSlug, imageIndex }) => {
         if (!packageId) return;
 
         const index = Number(imageIndex);
         if (!Number.isInteger(index)) return;
 
-        setPackageImageIndex(packageId, index);
+        const packageItem = resolvePackage(packageId, packageSlug);
+        if (!packageItem) return;
+
+        setPackageImageIndex(packageItem.id, index);
         renderPackages();
     },
-    'package-image-open': ({ packageId }) => {
+    'package-image-open': ({ packageId, packageSlug }) => {
         if (!packageId) return;
 
-        const packageItem = storeState.packageMap.get(Number(packageId));
+        const packageItem = resolvePackage(packageId, packageSlug);
         const images = packageItem ? packageImages(packageItem) : [];
-        const imageUrl = images.length ? images[getPackageImageIndex(packageId, images.length)] : '';
+        const imageUrl = images.length ? images[getPackageImageIndex(packageItem.id, images.length)] : '';
         if (imageUrl) openStoreImagePopup(imageUrl, packageItem?.name || 'Package');
+    },
+    'package-image-prev': ({ packageId, packageSlug }) => {
+        if (!packageId) return;
+        const packageItem = resolvePackage(packageId, packageSlug);
+        const images = packageItem ? packageImages(packageItem) : [];
+        if (!images.length) return;
+        const current = getPackageImageIndex(packageItem.id, images.length);
+        const next = (current - 1 + images.length) % images.length;
+        setPackageImageIndex(packageItem.id, next);
+        renderPackages();
+    },
+    'package-image-next': ({ packageId, packageSlug }) => {
+        if (!packageId) return;
+        const packageItem = resolvePackage(packageId, packageSlug);
+        const images = packageItem ? packageImages(packageItem) : [];
+        if (!images.length) return;
+        const current = getPackageImageIndex(packageItem.id, images.length);
+        const next = (current + 1) % images.length;
+        setPackageImageIndex(packageItem.id, next);
+        renderPackages();
     },
 };
 
@@ -222,26 +158,14 @@ export function handleStoreClick(event) {
     if (handler) return handler(button.dataset, button);
 }
 
-export function handleStoreInput(event) {
-    const target = event.target;
-    // if (target instanceof HTMLInputElement && target.matches('[data-quantity-input]')) scheduleBasketQuantityAutoUpdate(target);
-
-    if (!(target instanceof HTMLInputElement)) return;
-
-    const storeTool = target.closest('[data-auto-apply][data-kind]');
-    if (!storeTool) return;
-
-    if (!['coupon-form', 'giftcard-form', 'creator-code-form'].includes(storeTool.id)) return;
-    scheduleBasketToolAutoApply(storeTool);
-}
+export function handleStoreInput() { /* no-op: basket removed */ }
 
 export async function bootstrapStore() {
     ensureStoreShell();
     renderStore();
 
     try {
-        await Promise.all([loadStorePackages(), loadBasket()]);
-        await applyStoredBasketTools();
+        await loadStorePackages();
         renderStore();
         await applyLanguage(document.querySelector('main') || document);
         storeState.loading = false;
@@ -249,7 +173,7 @@ export async function bootstrapStore() {
         storeState.error = error;
         const grid = document.getElementById('projects-grid');
         if (grid) {
-            grid.innerHTML = `<article class="store-empty-card"><header><h2 data-i18n="store.load_failed">Store could not be loaded</h2></header><p>${error.message || 'The Tebex API request failed.'}</p></article>`;
+            grid.innerHTML = `<article class="store-empty-card"><header><h2 data-i18n="store.load_failed">Store could not be loaded</h2></header><p>${error.message || 'The store service request failed.'}</p></article>`;
             await applyLanguage(grid);
         }
     }

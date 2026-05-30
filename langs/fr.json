@@ -20,6 +20,7 @@
     "btn.see": "Voir plus <i class=\"fa-solid fa-arrow-up-right-from-square\"></i>",
     "btn.play": "Jouer <i class=\"fa-solid fa-arrow-up-right-from-square\"></i>",
     "btn.add_to_basket": "Ajouter au panier",
+    "btn.buy_now": "Acheter",
     "btn.view_category": "Voir la catégorie",
     "btn.apply_coupon": "Appliquer le coupon",
     "btn.apply_giftcard": "Appliquer la carte cadeau",
@@ -68,7 +69,7 @@
     "_comment_form": "Form",
     "form.title": "Vous avez un projet ou des questions ?<br>Parlons-en !",
     "form.subtitle": "Ce formulaire peut ne pas fonctionner en raison des limitations de Github Pages.<br> Si c'est le cas, veuillez me contacter sur discord !",
-    
+
     "_comment_timeline": "Timeline",
     "timeline.born": "Je suis né !",
     "timeline.first_device": "J'ai eu ma première console, une Playstation 2 appartenant à mon père",
@@ -118,7 +119,7 @@
 
     "project.title.web_showcase": "Projet vitrine web",
     "project.desc.web_showcase": "Un site web réalisé pour mes cours web en utilisant PHP, HTML et CSS. Il inclut un <span>système d'articles/nouvelles</span>, un <span>système d'équipe</span>, un <span>système de département</span>, un <span>formulaire de contact</span> et bien plus encore !",
-    
+
     "project.title.lumen": "Lumen",
     "project.desc.lumen": "Lumen est un système de journalisation léger, extensible et entièrement écrit en Java. Des <span>logs simples dans la console et les fichiers</span> ou des <span>processeurs personnalisés</span>. Disponible via <span>JitPack</span>. C'est l'outil parfait pour le débogage et l'impression de logs dans vos applications Java.",
 
@@ -139,7 +140,7 @@
 
     "project.title.open_vanilla": "Open Vanilla",
     "project.desc.open_vanilla": "Un plugin bukkit/spigot visant à créer une expérience Minecraft Vanilla améliorée. Il inclut des fonctionnalités telles que des <span>homes</span>, un <span>hub</span>, des commandes administrateur tels que <span>/invsee, /ec, /broadcast</span>, un système monétaire et bien plus encore.",
-    
+
     "project.title.bake_n_go": "Bake N' Go",
     "project.desc.bake_n_go": "Gestion intégrée des commandes pour les boulangeries. Simplifie la gestion des commandes clients, le suivi de l'inventaire et la planification des retraits via une application web responsive."
 }

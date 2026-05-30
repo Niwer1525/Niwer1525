@@ -64,3 +64,14 @@
 ## Contact & Socials
 [![Discord](https://img.shields.io/badge/Discord-%235865F2.svg?logo=discord&logoColor=white)](https://discord.com/users/312636481782939648)
 [![email](https://img.shields.io/badge/Email-D14836?logo=gmail&logoColor=white)](https://niwer.dev/#links)
+
+## Store
+
+The shop catalog is synchronized from Stripe at build time through `.github/workflows/sync_stripe_catalog.yml` and written to `assets/store/catalog.json`.
+
+Stripe product metadata used by the sync:
+- `store_category` or `category`: groups products into categories
+- `store_order` or `order`: optional sort order inside a category
+- `payment_link` or `paymentLink`: the Stripe Payment Link used by the package button
+
+Product name, description, image, and default price are read directly from Stripe.
