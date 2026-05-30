@@ -54,9 +54,12 @@ export function renderCategoryButtons() {
         `<button type="button"${active === 'all' ? ' class="is-active"' : ''} data-action="select-category" data-category-id="all" data-i18n="store.all_categories">All categories</button>`,
         ...storeState.categories.map(category => {
             const packageCount = visiblePackages.filter(item => String(item.categoryId) === String(category.id)).length;
+            const hasSubcategories = Array.isArray(category.subcategories) && category.subcategories.length > 0;
             const categoryActive = active === String(category.id) || active.startsWith(String(category.id) + '/');
+            const subcategoryActive = active.startsWith(String(category.id) + '/');
+            const rowOpen = hasSubcategories && (subcategoryActive || storeState.openCategoryIds.has(String(category.id)));
 
-            const subHtml = Array.isArray(category.subcategories) && category.subcategories.length ? `
+            const subHtml = hasSubcategories ? `
                 <div class="store-subcategory-list">
                     ${category.subcategories.map(sub => {
                         const subCountLocal = visiblePackages.filter(item => String(item.categoryId) === String(category.id) && String(item.subcategoryId || '') === String(sub.id)).length;
@@ -66,7 +69,7 @@ export function renderCategoryButtons() {
                 </div>
             ` : '';
 
-            return `<div class="store-category-row${categoryActive ? ' is-open' : ''}"><button type="button"${categoryActive ? ' class="is-active"' : ''} data-action="select-category" data-category-id="${escapeHtml(category.id)}"><span>${escapeHtml(category.name || 'Category')}</span><small>${packageCount}</small></button>${subHtml}</div>`;
+            return `<div class="store-category-row${rowOpen ? ' is-open' : ''}"><div class="store-category-main"><button type="button" class="store-category-select${categoryActive ? ' is-active' : ''}" data-action="select-category" data-category-id="${escapeHtml(category.id)}"><span>${escapeHtml(category.name || 'Category')}</span><small>${packageCount}</small></button>${hasSubcategories ? `<button type="button" class="store-category-toggle icon-button${rowOpen ? ' is-open' : ''}" data-action="toggle-category-dropdown" data-category-id="${escapeHtml(category.id)}" aria-expanded="${rowOpen ? 'true' : 'false'}" aria-label="Toggle ${escapeHtml(category.name || 'Category')} subcategories"><span aria-hidden="true">▾</span></button>` : ''}</div>${subHtml}</div>`;
         }),
     ].join(''));
 }

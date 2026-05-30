@@ -11,6 +11,7 @@ export const storeState = {
     packages: [],
     packageMap: new Map(),
     packageImageIndexes: new Map(),
+    openCategoryIds: new Set(),
     activeCategoryId: 'all',
     loading: true,
     error: null,

@@ -87,8 +87,16 @@ function resolvePackage(packageId, packageSlug) {
 const actionHandlers = {
     'select-category': ({ categoryId, subcategoryId }) => {
         if (!categoryId || String(categoryId) === 'all') return setActiveCategory('all');
+        storeState.openCategoryIds.add(String(categoryId));
         const composite = subcategoryId ? `${categoryId}/${subcategoryId}` : String(categoryId);
         return setActiveCategory(composite);
+    },
+    'toggle-category-dropdown': ({ categoryId }) => {
+        if (!categoryId || String(categoryId) === 'all') return;
+        const key = String(categoryId);
+        if (storeState.openCategoryIds.has(key)) storeState.openCategoryIds.delete(key);
+        else storeState.openCategoryIds.add(key);
+        renderStore();
     },
     'jump-to-category': ({ categoryId }) => setActiveCategory(categoryId, true),
     'open-package-payment': ({ paymentLink }) => {
