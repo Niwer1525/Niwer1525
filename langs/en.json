@@ -116,6 +116,9 @@
 
     "project.title.wayz_launcher": "Launcher of Minecraft WayZ",
     "project.desc.wayz_launcher": "The WayZ Launcher is a custom launcher for the WayZ server. It simplifies the installation and management of the main mod and the additionnal ones (Sodium, Iris, etc), ensuring that players have the best experience possible. The Launcher is open-source now with some removed features (auto-updater and other network required things).",
+    
+    "project.title.dynamic_smoke_particles": "Dynamic Smoke Particles",
+    "project.desc.dynamic_smoke_particles": "Dynamic Smoke Particles is an actively maintained, open-source Minecraft mod for Fabric and NeoForge (via Modrinth) that introduces realistic, dynamic smoke physics to the game.",
 
     "project.title.web_showcase": "Web showcase project",
     "project.desc.web_showcase": "A website made for my web courses using PHP, HTML and CSS. It include a <span>article/news system</span>, a <span>team system</span>, a <span>department system</span>, a <span>contact form</span> and a much more !",
