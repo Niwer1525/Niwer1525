@@ -59,7 +59,7 @@
 </div>
 
 ## Gists
-"Besides my main repositories, I also maintain several gists. You can find them [here](https://gist.niwer.dev)
+Besides my main repositories, I also maintain several gists. You can find them [here](https://gist.niwer.dev)
 
 ## Contact & Socials
 [![Discord](https://img.shields.io/badge/Discord-%235865F2.svg?logo=discord&logoColor=white)](https://discord.com/users/312636481782939648)
