@@ -4,6 +4,13 @@
     "categories": [
         {
             "id": 3290740,
+            "name": "Steam",
+            "packages": [
+
+            ]
+        },
+        {
+            "id": 3290741,
             "name": "Minecraft",
             "packages": [
                 {

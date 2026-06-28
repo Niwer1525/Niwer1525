@@ -1,6 +1,62 @@
 {
-    "_comment_licence": "Copyright Licence",
+    "_comment_legal": "Copyright Licence & Legal notice",
     "licence": "Copyright (c) 2026 Erwin Redoté (Niwer). Tous droits réservés.<br><br>Ce dépôt et l'ensemble de son contenu (incluant, sans s'y limiter, le code source, le design, les graphismes, les textes et les images) sont la propriété intellectuelle exclusive de Erwin Redoté.<br><br>Toute reproduction, représentation, modification ou diffusion, en tout ou partie, de ce projet, sous quelque forme ou par quelque moyen que ce soit, est sclictement interdite sans l'autorisation écrite préalable de l'auteur. Toute utilisation non autorisée constitue une violation des droits d'auteur.",
+    
+    "_comment_terms_of_service": "All stuff related to terms of service",
+    "legal.title.tos_use": "1. Utilisation du site web",
+    "legal.content.tos_use": "En accédant à ce site web, vous acceptez de l'utiliser uniquement à des fins légales. Il vous est interdit de tenter de compromettre la sécurité du site ou d'utiliser des scripts automatisés pour extraire des données.",
+    
+    "legal.title.tos_limitations": "2. Limitation de responsabilité",
+    "legal.content.tos_limitations": "Ce site web et son portfolio sont fournis \"tels quels\" sans aucune garantie. Bien que je m'efforce de garder les informations exactes, je ne peux garantir que le site sera toujours exempt d'erreurs ou ininterrompu.",
+
+    "legal.title.tos_applicable_law": "3. Droit applicable",
+    "legal.content.tos_applicable_law": "Ces conditions sont régies et interprétées conformément aux lois de la Belgique. Tout litige découlant de l'utilisation de ce site web sera soumis à la juridiction exclusive des tribunaux belges.",
+
+    "_comment_terms_of_sale": "All stuff related to sale",
+    "legal.title.sale_information": "1. Informations sur l'entreprise",
+    "legal.content.sale_information": "Nous collectons uniquement les données personnelles strictement nécessaires au fonctionnement de ce site et au traitement de vos commandes :",
+    "legal.list.sale_information.1": "<strong>Exploitant :</strong> Erwin Redoté (Niwer)",
+    "legal.list.sale_information.2": "<strong>Siège social :</strong> Situé en Belgique (Inscrit à la Banque-Carrefour des Entreprises / BCE). L'adresse physique complète est disponible sur simple demande via le formulaire de contact ou consultable via le registre officiel de la BCE.",
+    "legal.list.sale_information.3": "<strong>Numéro d'entreprise :</strong> Bientôt",
+    "legal.list.sale_information.4": "<strong>Numéro de TVA :</strong> Bientôt ",
+    "legal.list.sale_information.5": "<strong>Email de contact :</strong> contact@niwer.dev",
+
+    "legal.title.sale_scope": "2. Portée des produits et services",
+    "legal.content.sale_scope": "Cette boutique propose différentes catégories de produits et services, chacune soumise à des conditions spécifiques de livraison et de licence :",
+    "legal.list.sale_scope.1": "<strong>Mods Minecraft :</strong> Vendus en tant que produits numériques autonomes. La livraison est effectuée instantanément via un lien de téléchargement ou par email après un paiement réussi.",
+    "legal.list.sale_scope.2": "<strong>Jeux Steam :</strong> Ces produits sont affichés sur ce site web à des fins informatives et promotionnelles uniquement. L'achat réel et la livraison sont gérés exclusivement par la plateforme tierce <strong>Steam</strong>. Je ne suis pas responsable des transactions effectuées sur Steam.",
+    "legal.list.sale_scope.3": "<strong>Framework Logiciel (Abonnement) :</strong> L'accès au framework est fourni via une licence d'abonnement mensuel récurrent. Après un paiement réussi via Stripe, l'utilisateur est redirigé vers un panneau de contrôle externe hébergé sur mon serveur dédié pour gérer son accès.",
+    "legal.list.sale_scope.4": "<strong>Services Freelance :</strong> Le développement et les services sur mesure ne sont pas vendus directement sur cette boutique. Les clients doivent initier le contact par email ou via le formulaire de contact. Chaque projet fait l'objet d'un contrat freelance distinct et juridiquement contraignant détaillant le devis, les délais et les livrables spécifiques.",
+
+    "legal.title.sale_prices_payment": "3. Prix et paiement",
+    "legal.content.sale_prices_payment": "Tous les prix affichés sur la boutique sont en euros (€) et incluent la TVA. Les abonnements sont facturés automatiquement chaque mois jusqu'à leur annulation par l'utilisateur. Les paiements sont traités de manière sécurisée par Stripe. Nous ne stockons pas et n'avons pas accès à vos informations financières.",
+    
+    "legal.title.sale_refund": "4. Droit de rétractation et politique de remboursement",
+    "legal.content.sale_refund": "Conformément aux lois belges et européennes sur la protection des consommateurs, les règles relatives au contenu et aux services numériques s'appliquent comme suit :",
+    "legal.list.sale_refund.1": "<strong>Téléchargements et licences numériques :</strong> En achetant un mod Minecraft ou en vous abonnant au framework, vous demandez explicitement un accès immédiat au contenu numérique et reconnaissez que <strong>vous renoncez à votre droit de rétractation de 14 jours</strong> une fois le lien de téléchargement fourni ou l'accès au panneau de serveur accordé. Toutes les ventes numériques sont définitives et non remboursables.",
+    "legal.list.sale_refund.2": "<strong>Abonnements :</strong> Vous pouvez annuler votre abonnement au framework à tout moment via le panneau utilisateur. L'annulation prendra effet à la fin du cycle de facturation en cours. Aucun remboursement partiel n'est émis pour les jours non utilisés.",
+    "legal.list.sale_refund.3": "<strong>Services Freelance :</strong> Les conditions d'annulation et de remboursement pour les projets sur mesure sont strictement régies par le contrat individuel signé entre les parties avant le début du projet.",
+
+    "legal.title.sale_delivery": "5. Livraison et disponibilité du serveur",
+    "legal.content.sale_delivery": "Bien que je m'efforce de maintenir une disponibilité de 100 % pour le serveur dédié hébergeant le panneau du framework, je ne peux être tenu responsable des interruptions de service temporaires dues à la maintenance, aux pannes de réseau ou aux problèmes du fournisseur d'hébergement.",
+    
+    "legal.title.sale_applicable_law": "6. Droit applicable et litiges",
+    "legal.content.sale_applicable_law": "Ces conditions de vente sont régies par les lois de la Belgique. En cas de problème ou de réclamation, veuillez me contacter directement à <strong>contact@niwer.dev</strong> afin que nous puissions chercher une solution à l'amiable. Si aucune résolution ne peut être trouvée, tout litige juridique sera soumis à la juridiction exclusive des tribunaux belges.",
+
+    "_comment_data": "All data & GDPR related stuff",
+    "legal.title.data_controller": "1.2 Responsable du traitement des données",
+    "legal.content.data_controller": "Le responsable du traitement des données pour ce site web est Erwin Redoté. Pour toute question relative à la confidentialité ou pour exercer vos droits, vous pouvez me contacter à <strong>contact@niwer.dev</strong>.",
+    
+    "legal.title.data_collection": "2. Les données que nous collectons",
+    "legal.content.data_collection": "Nous collectons uniquement les données personnelles strictement nécessaires au fonctionnement de ce site et au traitement de vos commandes :",
+    "legal.list.data_collection.1": "<strong>Données de contact et de commande :</strong> Nom, adresse email et adresse de facturation lorsque vous effectuez un achat.",
+    "legal.list.data_collection.2": "<strong>Données techniques :</strong> Adresse IP et cookies essentiels requis pour le fonctionnement de base du site web et les analyses.",
+    
+    "legal.title.data_sharing": "3. Objectif et partage",
+    "legal.content.data_sharing": "Vos données sont utilisées uniquement pour livrer vos achats, traiter les paiements et répondre à vos messages. Vos informations personnelles ne sont <strong>jamais</strong> vendues, louées ou partagées avec des tiers à des fins de marketing.",
+    
+    "legal.title.data_rights": "4. Vos droits (RGPD)",
+    "legal.content.data_rights": "En vertu du RGPD, vous avez le droit d'accéder, de rectifier ou de demander la suppression des données personnelles que nous détenons (telles que vos emails). Veuillez noter que les données stockées par des processeurs de paiement tiers ou les informations devant être conservées par la loi belge à des fins légales ou comptables ne peuvent pas être supprimées immédiatement. Pour exercer vos droits, contactez-moi à <strong>contact@niwer.dev</strong>",
 
     "_comment_buttons": "Buttons",
     "btn.back": "Retour",
@@ -15,6 +71,9 @@
     "btn.contact": "Contact",
     "btn.send": "<i class=\"fa fa-paper-plane\"></i> Envoyer",
     "btn.open_email": "<i class=\"fa fa-envelope\"></i> Ouvrir l'application de messagerie",
+    "btn.terms_of_service": "Conditions Générales d'Utilisation (CGU)",
+    "btn.terms_of_sale": "Conditions Générales de Vente (CGV)",
+    "btn.privacy_policy": "Protection des données",
 
     "btn.read": "Lire plus <i class=\"fa-solid fa-arrow-up-right-from-square\"></i>",
     "btn.see": "Voir plus <i class=\"fa-solid fa-arrow-up-right-from-square\"></i>",
@@ -49,8 +108,9 @@
     "_comment_other": "Other",
     "made_by": "Fait avec ❤️ par Niwer",
     "copyright": "Copyright - Tous droits réservés",
+    "sponsor": "Jette un sou au Niwer",
     "content_aboute_me": "Yo, je suis <span>Erwin</span> (alias <span>Niwer</span>).<br><br>Développeur autodidacte avec près de 8 ans d'expérience. Spécialiste en <span>Java</span> et dans le <span>développement web</span>, développant des applications robustes et explorant de nouvelles technologies. Toujours avide de nouveaux défis !",
-    "title.copyright": "Droits d'auteur",
+    "title.legal": "Mentions Légales",
     "title.packages": "Paquets",
     "title.timeline": "&#10094;Ligne du temps&#10095;",
     "title.skills": "&#10094;Compétences&#10095;",

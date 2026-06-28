@@ -22,10 +22,10 @@ class IncNav extends HTMLElement {
                             <span id="theme-toggle-label">System</span>
                         </button>
                         <div class="languages-grid">
-                            <a href="./index.html" onclick="changeLanguage('en')">
+                            <a href="#" onclick="changeLanguage('en')">
                                 <img loading="lazy" draggable="false" src="./assets/icons/united-kingdom.webp" alt="united_kingdom_logo">
                             </a>
-                            <a href="./index.html" onclick="changeLanguage('fr')">
+                            <a href="#" onclick="changeLanguage('fr')">
                                 <img loading="lazy" draggable="false" src="./assets/icons/france.webp" alt="france_logo">
                             </a>
                         </div>
@@ -128,8 +128,15 @@ class IncFooterContent extends HTMLElement {
                     <span class="sr-only">Back to top</span>
                 </a>
             </div>
+            <ul>
+                <li><a href="./legal.html#terms_of_service" data-i18n="btn.terms_of_service">Terms of Service</a></li>
+                <li><a href="./legal.html#terms_of_sale" data-i18n="btn.terms_of_sale">Terms of Sale</a></li>
+                <li><a href="./legal.html#privacy_policy" data-i18n="btn.privacy_policy">Privacy Policy</a></li>
+            </ul>
+            <hr>
             <p data-i18n="made_by">Made with ❤️ by Niwer</p>
-            <a href="./licence.html" data-i18n="copyright">Copyright - All rights reserved</a>
+            <p data-i18n="copyright">Copyright - All rights reserved</p>
+            <a href="https://sponsor.niwer.dev" data-i18n="sponsor">Toss a coin to your Niwer</a>
         `;
     }
 }

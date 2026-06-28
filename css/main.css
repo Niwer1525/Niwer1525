@@ -884,12 +884,46 @@ textarea {
     min-height: 100px;
 }
 
+/* Legal notice and sections */
+.legal-notice {
+    text-align: justify;
+}
+.legal-notice ul {
+    list-style: disc;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-left: 1.5rem;
+    margin-bottom: 2rem;
+}
+
 /* Footer */
 footer {
     border-top: 1px solid var(--border-color);
     padding: 3rem 1rem;
     text-align: center;
     background: var(--footer-bg);
+}
+footer a:hover {
+    color: var(--accent-color);
+}
+footer hr {
+    width: 50%;
+    border-radius: var(--border-radius);
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+}
+footer ul {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2.5rem;
+}
+footer ul li:not(:last-child)::after { /* If not the last element we add | */
+    content: "|";
+    margin-left: 1rem;
 }
 footer .links {
     display: flex;
@@ -944,7 +978,7 @@ footer p {
 }
 
 /* Responsiveness */
-@media (max-width: 1024px) {
+@media (max-width: 1180px) {
     /* Mobile Menu Logic */
     .menu-icon {
         display: flex;

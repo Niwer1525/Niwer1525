@@ -24,7 +24,7 @@ function calculateCurrentAge() {
 /* On document loaded */
 document.addEventListener('DOMContentLoaded', async () => {
     console.log(`%c Niwer's Portfolio - Made with ❤️`, 'background: #000000; color: #d8b4fe; padding: 4px 8px; border-radius: 4px; font-size: 14px;');
-    console.log(`%c If you see this message, then you souldn't be here...`, 'background: #000000; color: #000000; padding: 4px 8px; border-radius: 4px; font-size: 14px;');
+    console.log(`%c If you see this message, then you shouldn't be here...`, 'background: #000000; color: #000000; padding: 4px 8px; border-radius: 4px; font-size: 14px;');
 });
 
 /**
