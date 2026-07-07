@@ -38,36 +38,36 @@
                             "id": 1,
                             "name": "Niwer's Engine - Access license",
                             "slug": "niwer_engine",
-                            "displayed_price": 150,
+                            "displayed_price": 179.99,
                             "currency": "EUR",
-                            "paymentLink": "",
+                            "paymentLink": "https://buy.stripe.com/9B68wO33HeGwfxPeGGcfK00",
                             "description": "Niwer's Engine is a powerful Minecraft modding framework that simplifies the creation of content.<br><br> It provides a wide range of features and tools to help developers create high-quality content for Minecraft. With Niwer's Engine, you can easily create custom items, blocks, entities, props, firearms, armors, vehicles, and much more.<br><br> The access license grants you the right to use Niwer's Engine for your projects and receive updates and support from the developer."
                         },
                         {
                             "id": 2,
                             "name": "Airdrop - Content Pack",
                             "slug": "airdrop_content_pack",
-                            "displayed_price": 0,
+                            "displayed_price": 19.99,
                             "currency": "EUR",
-                            "paymentLink": "",
+                            "paymentLink": "https://buy.stripe.com/5kQ5kCaw98i8dpH422cfK03",
                             "description": "This official content-pack for Niwer's Engine includes a plane model, with a crate with parachute models.<br><br> Place drop-points in your world, then the system will randomly drop crates with parachutes, containing random items from a loot table. Perfect for battle royale or survival game modes !"
                         },
                         {
                             "id": 3,
                             "name": "Kidnapping - Content Pack",
                             "slug": "kidnapping_content_pack",
-                            "displayed_price": 0,
+                            "displayed_price": 9.99,
                             "currency": "EUR",
-                            "paymentLink": "",
+                            "paymentLink": "https://buy.stripe.com/6oU00i7jX55WfxPeGGcfK01",
                             "description": "This official content-pack for Niwer's Engine includes handcuffs, handcuff keys, gag that mute the voice and a paper bag that hide the head.<br><br> Perfect for prison or cops and robbers game modes !"
                         },
                         {
                             "id": 4,
                             "name": "Ambient sounds - Content Pack",
                             "slug": "ambient_sounds_content_pack",
-                            "displayed_price": 0,
+                            "displayed_price": 14.99,
                             "currency": "EUR",
-                            "paymentLink": "",
+                            "paymentLink": "https://buy.stripe.com/8x2dR81ZDdCsgBT422cfK02",
                             "description": "This official content-pack for Niwer's Engine includes a variety of ambient sounds for different environments such as forests, caves, oceans, foot steps, etc. Perfect for enhancing the atmosphere in your Minecraft world!"
                         }
                     ]

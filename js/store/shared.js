@@ -2,7 +2,6 @@ const { trimAndMinifyHTML } = globalThis;
 
 export const STORE_NAMESPACE = 'niwer-store-v2';
 export const STORE_CATALOG_URL = './store_catalog.json';
-export const STRIPE_PAYMENT_LINK_URL = globalThis.STRIPE_PAYMENT_LINK_URL || 'https://buy.stripe.com/test_...';
 export const CATEGORY_STORAGE_KEY = `${STORE_NAMESPACE}-category`;
 
 export const storeState = {

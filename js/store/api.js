@@ -1,4 +1,4 @@
-import { STORE_CATALOG_URL, STRIPE_PAYMENT_LINK_URL, getCategoryPreference, sanitizeHtml, storeState } from './shared.js';
+import { STORE_CATALOG_URL, getCategoryPreference, sanitizeHtml, storeState } from './shared.js';
 import { renderStateMessage } from './render.js';
 
 export function unwrapApiData(payload) {
@@ -28,8 +28,8 @@ export async function loadStorePackages() {
     storeState.catalog = {
         currency: String(payload?.currency || 'EUR').toUpperCase(),
         taxRate: Number(payload?.taxRate) || 0,
-        paymentLink: payload?.paymentLink || STRIPE_PAYMENT_LINK_URL,
-        packageName: payload?.packageName || 'Support package',
+        paymentLink: payload?.paymentLink || '',
+        packageName: payload?.packageName || 'Unknown package',
     };
 
     storeState.categories = categories.map((category, categoryIndex) => ({
@@ -111,5 +111,5 @@ export async function loadStorePackages() {
 }
 export function getPackagePaymentLink(packageId) {
     const storePackage = storeState.packageMap.get(Number(packageId));
-    return String(storePackage?.paymentLink || storePackage?.payment_link || storeState.catalog?.paymentLink || STRIPE_PAYMENT_LINK_URL || '').trim();
+    return String(storePackage?.paymentLink || storePackage?.payment_link || storeState.catalog?.paymentLink || '').trim();
 }

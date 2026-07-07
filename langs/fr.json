@@ -4,17 +4,20 @@
     
     "_comment_terms_of_service": "All stuff related to terms of service",
     "legal.title.tos_use": "1. Utilisation du site web",
-    "legal.content.tos_use": "En accédant à ce site web, vous acceptez de l'utiliser uniquement à des fins légales. Il vous est interdit de tenter de compromettre la sécurité du site ou d'utiliser des scripts automatisés pour extraire des données.",
+    "legal.content.tos_use": "En accédant au domaine niwer.dev et à ses sous-domaines associés (y compris, mais sans s'y limiter, engine.niwer.dev, git.niwer.dev, modrinth.niwer.dev, wakatime.niwer.dev), vous acceptez de les utiliser uniquement à des fins légales. Il vous est interdit de tenter de perturber la sécurité du site web, de contourner les mesures d'authentification ou d'utiliser des scripts automatisés pour extraire des données.",
     
-    "legal.title.tos_limitations": "2. Limitation de responsabilité",
+    "legal.title.tos_account": "2. Inscription au compte",
+    "legal.content.tos_account": "Pour accéder à certains services, y compris le framework logiciel, vous pouvez être tenu de créer un compte sur engine.niwer.dev. Vous êtes entièrement responsable du maintien de la confidentialité de vos identifiants de compte (email et mot de passe) et de toutes les activités qui se produisent sous votre compte. Vous acceptez de notifier immédiatement l'administrateur de toute utilisation non autorisée de votre compte.",
+
+    "legal.title.tos_limitations": "3. Limitation de responsabilité",
     "legal.content.tos_limitations": "Ce site web et son portfolio sont fournis \"tels quels\" sans aucune garantie. Bien que je m'efforce de garder les informations exactes, je ne peux garantir que le site sera toujours exempt d'erreurs ou ininterrompu.",
 
-    "legal.title.tos_applicable_law": "3. Droit applicable",
+    "legal.title.tos_applicable_law": "4. Droit applicable",
     "legal.content.tos_applicable_law": "Ces conditions sont régies et interprétées conformément aux lois de la Belgique. Tout litige découlant de l'utilisation de ce site web sera soumis à la juridiction exclusive des tribunaux belges.",
 
     "_comment_terms_of_sale": "All stuff related to sale",
     "legal.title.sale_information": "1. Informations sur l'entreprise",
-    "legal.content.sale_information": "Nous collectons uniquement les données personnelles strictement nécessaires au fonctionnement de ce site et au traitement de vos commandes :",
+    "legal.content.sale_information": "Les services, produits et systèmes de gestion des utilisateurs de cette boutique sont principalement exploités sur le domaine niwer.dev et ses sous-domaines.",
     "legal.list.sale_information.1": "<strong>Exploitant :</strong> Erwin Redoté (Niwer)",
     "legal.list.sale_information.2": "<strong>Siège social :</strong> Situé en Belgique (Inscrit à la Banque-Carrefour des Entreprises / BCE). L'adresse physique complète est disponible sur simple demande via le formulaire de contact ou consultable via le registre officiel de la BCE.",
     "legal.list.sale_information.3": "<strong>Numéro d'entreprise :</strong> Bientôt",
@@ -25,7 +28,7 @@
     "legal.content.sale_scope": "Cette boutique propose différentes catégories de produits et services, chacune soumise à des conditions spécifiques de livraison et de licence :",
     "legal.list.sale_scope.1": "<strong>Mods Minecraft :</strong> Vendus en tant que produits numériques autonomes. La livraison est effectuée instantanément via un lien de téléchargement ou par email après un paiement réussi.",
     "legal.list.sale_scope.2": "<strong>Jeux Steam :</strong> Ces produits sont affichés sur ce site web à des fins informatives et promotionnelles uniquement. L'achat réel et la livraison sont gérés exclusivement par la plateforme tierce <strong>Steam</strong>. Je ne suis pas responsable des transactions effectuées sur Steam.",
-    "legal.list.sale_scope.3": "<strong>Framework Logiciel (Abonnement) :</strong> L'accès au framework est fourni via une licence d'abonnement mensuel récurrent. Après un paiement réussi via Stripe, l'utilisateur est redirigé vers un panneau de contrôle externe hébergé sur mon serveur dédié pour gérer son accès.",
+    "legal.list.sale_scope.3": "<strong>Framework logiciel (Abonnement) :</strong> L'accès au framework est fourni via une licence d'abonnement mensuel récurrent. Après un paiement réussi via Stripe, l'utilisateur se voit accorder l'accès à un panneau de contrôle externe hébergé sur le sous-domaine engine.niwer.dev (via mon serveur dédié) pour gérer son accès.",
     "legal.list.sale_scope.4": "<strong>Services Freelance :</strong> Le développement et les services sur mesure ne sont pas vendus directement sur cette boutique. Les clients doivent initier le contact par email ou via le formulaire de contact. Chaque projet fait l'objet d'un contrat freelance distinct et juridiquement contraignant détaillant le devis, les délais et les livrables spécifiques.",
 
     "legal.title.sale_prices_payment": "3. Prix et paiement",
@@ -33,24 +36,25 @@
     
     "legal.title.sale_refund": "4. Droit de rétractation et politique de remboursement",
     "legal.content.sale_refund": "Conformément aux lois belges et européennes sur la protection des consommateurs, les règles relatives au contenu et aux services numériques s'appliquent comme suit :",
-    "legal.list.sale_refund.1": "<strong>Téléchargements et licences numériques :</strong> En achetant un mod Minecraft ou en vous abonnant au framework, vous demandez explicitement un accès immédiat au contenu numérique et reconnaissez que <strong>vous renoncez à votre droit de rétractation de 14 jours</strong> une fois le lien de téléchargement fourni ou l'accès au panneau de serveur accordé. Toutes les ventes numériques sont définitives et non remboursables.",
+    "legal.list.sale_refund.1": "<strong>Téléchargements et licences numériques :</strong> En achetant un mod Minecraft ou en vous abonnant au framework, vous demandez explicitement un accès immédiat au contenu numérique et reconnaissez que <strong>vous renoncez à votre droit de rétractation de 14 jours</strong> une fois que le lien de téléchargement est fourni ou que l'accès au panneau du serveur est accordé. Toutes les ventes numériques sont finales et non remboursables.",
     "legal.list.sale_refund.2": "<strong>Abonnements :</strong> Vous pouvez annuler votre abonnement au framework à tout moment via le panneau utilisateur. L'annulation prendra effet à la fin du cycle de facturation en cours. Aucun remboursement partiel n'est émis pour les jours non utilisés.",
     "legal.list.sale_refund.3": "<strong>Services Freelance :</strong> Les conditions d'annulation et de remboursement pour les projets sur mesure sont strictement régies par le contrat individuel signé entre les parties avant le début du projet.",
 
     "legal.title.sale_delivery": "5. Livraison et disponibilité du serveur",
-    "legal.content.sale_delivery": "Bien que je m'efforce de maintenir une disponibilité de 100 % pour le serveur dédié hébergeant le panneau du framework, je ne peux être tenu responsable des interruptions de service temporaires dues à la maintenance, aux pannes de réseau ou aux problèmes du fournisseur d'hébergement.",
+    "legal.content.sale_delivery": "Bien que je m'efforce de maintenir une disponibilité de 100 % pour le serveur dédié hébergeant le panneau engine.niwer.dev, je ne peux être tenu responsable des interruptions temporaires de service dues à la maintenance, aux pannes de réseau ou aux problèmes du fournisseur d'hébergement.",
     
     "legal.title.sale_applicable_law": "6. Droit applicable et litiges",
     "legal.content.sale_applicable_law": "Ces conditions de vente sont régies par les lois de la Belgique. En cas de problème ou de réclamation, veuillez me contacter directement à <strong>contact@niwer.dev</strong> afin que nous puissions chercher une solution à l'amiable. Si aucune résolution ne peut être trouvée, tout litige juridique sera soumis à la juridiction exclusive des tribunaux belges.",
 
     "_comment_data": "All data & GDPR related stuff",
     "legal.title.data_controller": "1.2 Responsable du traitement des données",
-    "legal.content.data_controller": "Le responsable du traitement des données pour ce site web est Erwin Redoté. Pour toute question relative à la confidentialité ou pour exercer vos droits, vous pouvez me contacter à <strong>contact@niwer.dev</strong>.",
+    "legal.content.data_controller": "Le responsable du traitement des données pour le domaine niwer.dev et ses sous-domaines est Erwin Redoté. Pour toute question relative à la confidentialité ou pour exercer vos droits, vous pouvez me contacter à <strong>",
     
     "legal.title.data_collection": "2. Les données que nous collectons",
     "legal.content.data_collection": "Nous collectons uniquement les données personnelles strictement nécessaires au fonctionnement de ce site et au traitement de vos commandes :",
-    "legal.list.data_collection.1": "<strong>Données de contact et de commande :</strong> Nom, adresse email et adresse de facturation lorsque vous effectuez un achat.",
-    "legal.list.data_collection.2": "<strong>Données techniques :</strong> Adresse IP et cookies essentiels requis pour le fonctionnement de base du site web et les analyses.",
+    "legal.list.data_collection.1": "<strong>Identifiants de compte :</strong> Lorsque vous créez un compte sur engine.niwer.dev, nous collectons et traitons de manière sécurisée votre adresse email et une version chiffrée (hachée) de votre mot de passe.",
+    "legal.list.data_collection.2": "<strong>Données de contact et de commande :</strong> Nom, adresse email et adresse de facturation lorsque vous effectuez un achat.",
+    "legal.list.data_collection.3": "<strong>Données techniques :</strong> Adresse IP et cookies essentiels requis pour le fonctionnement de base du site web et les analyses.",
     
     "legal.title.data_sharing": "3. Objectif et partage",
     "legal.content.data_sharing": "Vos données sont utilisées uniquement pour livrer vos achats, traiter les paiements et répondre à vos messages. Vos informations personnelles ne sont <strong>jamais</strong> vendues, louées ou partagées avec des tiers à des fins de marketing.",

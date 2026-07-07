@@ -18,6 +18,7 @@ const LANGUAGE_COLORS = {
     'HTML': '#e34c26',
     'CSS': '#563d7c',
     'JavaScript': '#f1e05a',
+    'TypeScript': '#2076bb',
     'PHP': '#4F5D95',
     
     'Python': '#3572A5',
