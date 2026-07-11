@@ -35,29 +35,6 @@
    - Linux/Unix, Windows CLI
    - And bunch of other things that I can't remember right now
 
-## Stats
-<div align="center">
-   <kbd>
-      <img src="https://nirzak-streak-stats.vercel.app?user=Niwer1525&theme=dark&hide_border=true&hide_current_streak=true" alt="GitHub Streak" />
-   </kbd>
-   <kbd>
-      <picture>
-         <source
-            srcset="https://github-readme-stats-eight-theta.vercel.app/api?username=Niwer1525&show_icons=true&theme=dark&hide_border=true&include_all_commits=true&count_private=true"
-            media="(prefers-color-scheme: dark)"
-         />
-         <source
-            srcset="https://github-readme-stats-eight-theta.vercel.app/api?username=Niwer1525&show_icons=true&hide_border=true&include_all_commits=true&count_private=true"
-            media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"
-         />
-         <img src="https://github-readme-stats-eight-theta.vercel.app/api?username=Niwer1525&show_icons=true&hide_border=true&include_all_commits=true&count_private=true"/>
-      </picture>
-   </kbd>
-   <kdb>
-      <img src="https://github-readme-stats-eight-theta.vercel.app/api/top-langs/?username=Niwer1525&layout=compact&theme=dark" alt="GitHub Streak"/>
-   </kdb>
-</div>
-
 ## Gists
 Besides my main repositories, I also maintain several gists. You can find them [here](https://gist.niwer.dev)
 
