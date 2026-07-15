@@ -16,8 +16,8 @@ class TermsOfSale extends HTMLElement {
             addSubCategory("sale_information", "1. Company information", `The services, products, and user management systems of this shop are primarily operated across the niwer.dev domain and its subdomains.`,
                 `<strong>Operator:</strong> Erwin Redoté (Niwer)`,
                 `<strong>Registered Office:</strong> Located in Belgium (Registered with the Crossroads Bank for Enterprises / BCE). Full physical address is available upon immediate request via the contact form or consultable via the official BCE registry.`,
-                `<strong>Enterprise Number:</strong> Soon`,
-                `<strong>VAT Number:</strong> Soon `,
+                `<strong>Enterprise Number:</strong> BE1039107847`,
+                `<strong>VAT Number:</strong> BE1039107847 `,
                 `<strong>Contact Email:</strong> contact@niwer.dev`
             )
             + addSubCategory("sale_scope", "2. Scope of Products and Services", `This shop offers different categories of products and services, each subject to specific delivery and licensing terms:`,
