@@ -11,6 +11,7 @@ export const storeState = {
     packageMap: new Map(),
     packageImageIndexes: new Map(),
     openCategoryIds: new Set(),
+    collapsedCategoryIds: new Set(),
     activeCategoryId: 'all',
     loading: true,
     error: null,
@@ -140,6 +141,20 @@ export function setCategoryPreference(categoryId) {
     localStorage.setItem(CATEGORY_STORAGE_KEY, categoryId);
 }
 
+export function normalizeCategoryPath(value) {
+    return String(value || 'all').split('/').filter(Boolean);
+}
+
+export function matchesCategoryPath(item, active) {
+    const path = normalizeCategoryPath(active);
+    if (!path.length || active === 'all') return true;
+    const [categoryId, ...subPath] = path;
+    if (String(item.categoryId) !== String(categoryId)) return false;
+    const currentPath = Array.isArray(item.subcategoryPath) ? item.subcategoryPath.map(String) : (item.subcategoryId ? [String(item.subcategoryId)] : []);
+    if (!subPath.length) return true;
+    return currentPath.length >= subPath.length && subPath.every((segment, index) => String(currentPath[index]) === String(segment));
+}
+
 export function filteredPackages() {
     const active = String(storeState.activeCategoryId || 'all');
     const withPaymentLink = storeState.packages.filter(pkg => {
@@ -148,15 +163,5 @@ export function filteredPackages() {
     });
 
     if (active === 'all') return withPaymentLink;
-
-    // support selection of "categoryId" or "categoryId/subcategoryId"
-    const parts = active.split('/');
-    const categoryId = parts[0];
-    const subcategoryId = parts[1] || null;
-
-    if (!subcategoryId) {
-        return withPaymentLink.filter(item => String(item.categoryId) === String(categoryId));
-    }
-
-    return withPaymentLink.filter(item => String(item.categoryId) === String(categoryId) && String(item.subcategoryId || '') === String(subcategoryId));
+    return withPaymentLink.filter(item => matchesCategoryPath(item, active));
 }

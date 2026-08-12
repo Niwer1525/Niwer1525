@@ -17,6 +17,13 @@ function ensureNumericId(value, fallbackId) {
     return fallbackId;
 }
 
+function walkSubcategories(subcategories, parentPath = []) {
+    return (Array.isArray(subcategories) ? subcategories : []).flatMap(sub => {
+        const id = ensureNumericId(sub?.id, parentPath.length + 1);
+        const path = [...parentPath, id];
+        return [{ ...sub, __path: path }, ...walkSubcategories(sub?.subcategories, path)];
+    });
+}
 
 export async function loadStorePackages() {
     const response = await fetch(STORE_CATALOG_URL, { cache: 'no-store' });
@@ -51,23 +58,25 @@ export async function loadStorePackages() {
                 categoryName: category.name,
                 subcategoryId: null,
                 subcategoryName: null,
+                subcategoryPath: [],
                 sanitizedDescription: sanitizeHtml(storePackage.description) || '<p>No description available.</p>',
             };
         }) : [];
 
-        const fromSubs = Array.isArray(category.subcategories) ? category.subcategories.flatMap((sub, subIndex) => Array.isArray(sub.packages) ? sub.packages.map((storePackage, packageIndex) => {
-            const fallbackId = ((categoryIndex + 1) * 1000) + (subIndex + 1) * 100 + packageIndex + 1;
+        const fromSubs = walkSubcategories(category.subcategories).flatMap((subNode) => Array.isArray(subNode.packages) ? subNode.packages.map((storePackage, packageIndex) => {
+            const fallbackId = ((categoryIndex + 1) * 1000) + (subNode.__path.join('-').length) + packageIndex + 1;
             return {
                 ...storePackage,
                 id: ensureNumericId(storePackage?.id, fallbackId),
                 currency: String(storePackage?.currency || storeState.catalog.currency || 'EUR').toUpperCase(),
                 categoryId: category.id,
                 categoryName: category.name,
-                subcategoryId: ensureNumericId(sub?.id, subIndex + 1),
-                subcategoryName: sub?.name || null,
+                subcategoryId: subNode.__path[subNode.__path.length - 1],
+                subcategoryName: subNode.name || null,
+                subcategoryPath: subNode.__path,
                 sanitizedDescription: sanitizeHtml(storePackage.description) || '<p>No description available.</p>',
             };
-        }) : []) : [];
+        }) : []);
 
         return [...fromTop, ...fromSubs];
     });
@@ -92,18 +101,23 @@ export async function loadStorePackages() {
     storeState.packageMap = new Map(storeState.packages.map(storePackage => [Number(storePackage.id), storePackage]));
     storeState.activeCategoryId = getCategoryPreference();
 
-    // validate activeCategoryId: supports 'all', 'categoryId' or 'categoryId/subcategoryId'
+    // validate activeCategoryId: supports 'all', 'categoryId', or 'categoryId/subcategoryId[/...childSubcategoryId]'
     const active = String(storeState.activeCategoryId || 'all');
     if (active !== 'all') {
-        const parts = active.split('/');
+        const parts = active.split('/').filter(Boolean);
         const catId = parts[0];
-        const subId = parts[1] || null;
         const foundCategory = storeState.categories.some(cat => String(cat.id) === String(catId));
         if (!foundCategory) storeState.activeCategoryId = 'all';
-        else if (subId) {
+        else {
             const category = storeState.categories.find(cat => String(cat.id) === String(catId));
-            const foundSub = Array.isArray(category.subcategories) && category.subcategories.some(sc => String(sc.id) === String(subId));
-            if (!foundSub) storeState.activeCategoryId = String(catId);
+            let current = Array.isArray(category?.subcategories) ? category.subcategories : [];
+            let valid = true;
+            for (const id of parts.slice(1)) {
+                const next = current.find(sub => String(sub.id) === String(id));
+                if (!next) { valid = false; break; }
+                current = Array.isArray(next.subcategories) ? next.subcategories : [];
+            }
+            if (!valid) storeState.activeCategoryId = String(catId);
         }
     }
 

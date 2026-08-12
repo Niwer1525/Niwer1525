@@ -85,17 +85,19 @@ function resolvePackage(packageId, packageSlug) {
 }
 
 const actionHandlers = {
-    'select-category': ({ categoryId, subcategoryId }) => {
+    'select-category': ({ categoryId, subcategoryId, subcategoryPath }) => {
         if (!categoryId || String(categoryId) === 'all') return setActiveCategory('all');
+        if (subcategoryPath) storeState.collapsedCategoryIds.delete(`${categoryId}/${subcategoryPath}`);
+        storeState.collapsedCategoryIds.delete(String(categoryId));
         storeState.openCategoryIds.add(String(categoryId));
-        const composite = subcategoryId ? `${categoryId}/${subcategoryId}` : String(categoryId);
+        const composite = subcategoryPath ? `${categoryId}/${subcategoryPath}` : subcategoryId ? `${categoryId}/${subcategoryId}` : String(categoryId);
         return setActiveCategory(composite);
     },
-    'toggle-category-dropdown': ({ categoryId }) => {
+    'toggle-category-dropdown': ({ categoryId, categoryPath }) => {
         if (!categoryId || String(categoryId) === 'all') return;
-        const key = String(categoryId);
-        if (storeState.openCategoryIds.has(key)) storeState.openCategoryIds.delete(key);
-        else storeState.openCategoryIds.add(key);
+        const key = categoryPath && String(categoryPath) !== String(categoryId) ? `${categoryId}/${categoryPath}` : String(categoryId);
+        if (storeState.collapsedCategoryIds.has(key)) storeState.collapsedCategoryIds.delete(key);
+        else storeState.collapsedCategoryIds.add(key);
         renderStore();
     },
     'jump-to-category': ({ categoryId }) => setActiveCategory(categoryId, true),

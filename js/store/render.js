@@ -50,24 +50,29 @@ export function renderCategoryButtons() {
     const active = String(storeState.activeCategoryId || 'all');
     const visiblePackages = storeState.packages.filter(pkg => Boolean(String(pkg.paymentLink || pkg.payment_link || '').trim()));
 
+    const renderSubcategories = (items, categoryId, parentPath = []) => {
+        if (!Array.isArray(items) || !items.length) return '';
+        return `<div class="store-subcategory-list">${items.map(sub => {
+            const path = [...parentPath, String(sub.id)];
+            const pathKey = path.join('/');
+            const fullKey = `${categoryId}/${pathKey}`;
+            const itemActive = active === fullKey || active.startsWith(`${fullKey}/`);
+            const hasChildren = Array.isArray(sub.subcategories) && sub.subcategories.length > 0;
+            const rowOpen = hasChildren && !storeState.collapsedCategoryIds.has(fullKey) && (itemActive || active.startsWith(`${fullKey}/`) || storeState.openCategoryIds.has(fullKey));
+            const subCountLocal = visiblePackages.filter(item => String(item.categoryId) === String(categoryId) && Array.isArray(item.subcategoryPath) && item.subcategoryPath.length >= path.length && path.every((segment, index) => String(item.subcategoryPath[index]) === String(segment))).length;
+            const childHtml = renderSubcategories(sub.subcategories, categoryId, path);
+            return `<div class="store-category-row${rowOpen ? ' is-open' : ''}"><div class="store-category-main"><button type="button" class="store-subcategory-button${itemActive ? ' is-active' : ''}" data-action="select-category" data-category-id="${escapeHtml(categoryId)}" data-subcategory-path="${escapeHtml(pathKey)}"><span>${escapeHtml(sub.name || 'Subcategory')}</span><small>${subCountLocal}</small></button>${hasChildren ? `<button type="button" class="store-category-toggle icon-button${rowOpen ? ' is-open' : ''}" data-action="toggle-category-dropdown" data-category-id="${escapeHtml(categoryId)}" data-category-path="${escapeHtml(pathKey)}" aria-expanded="${rowOpen ? 'true' : 'false'}" aria-label="Toggle ${escapeHtml(sub.name || 'Subcategory')} subcategories"><span aria-hidden="true">▾</span></button>` : ''}</div>${childHtml}</div>`;
+        }).join('')}</div>`;
+    };
+
     container.innerHTML = trimAndMinifyHTML([
         `<button type="button"${active === 'all' ? ' class="is-active"' : ''} data-action="select-category" data-category-id="all" data-i18n="store.all_categories">All categories</button>`,
         ...storeState.categories.map(category => {
             const packageCount = visiblePackages.filter(item => String(item.categoryId) === String(category.id)).length;
             const hasSubcategories = Array.isArray(category.subcategories) && category.subcategories.length > 0;
             const categoryActive = active === String(category.id) || active.startsWith(String(category.id) + '/');
-            const subcategoryActive = active.startsWith(String(category.id) + '/');
-            const rowOpen = hasSubcategories && (subcategoryActive || storeState.openCategoryIds.has(String(category.id)));
-
-            const subHtml = hasSubcategories ? `
-                <div class="store-subcategory-list">
-                    ${category.subcategories.map(sub => {
-                        const subCountLocal = visiblePackages.filter(item => String(item.categoryId) === String(category.id) && String(item.subcategoryId || '') === String(sub.id)).length;
-                        const subActive = active === `${category.id}/${sub.id}`;
-                        return `<button type="button" class="store-subcategory-button${subActive ? ' is-active' : ''}" data-action="select-category" data-category-id="${escapeHtml(category.id)}" data-subcategory-id="${escapeHtml(sub.id)}"><span>${escapeHtml(sub.name || 'Subcategory')}</span><small>${subCountLocal}</small></button>`;
-                    }).join('')}
-                </div>
-            ` : '';
+            const rowOpen = hasSubcategories && !storeState.collapsedCategoryIds.has(String(category.id)) && (categoryActive || storeState.openCategoryIds.has(String(category.id)));
+            const subHtml = renderSubcategories(category.subcategories, String(category.id));
 
             return `<div class="store-category-row${rowOpen ? ' is-open' : ''}"><div class="store-category-main"><button type="button" class="store-category-select${categoryActive ? ' is-active' : ''}" data-action="select-category" data-category-id="${escapeHtml(category.id)}"><span>${escapeHtml(category.name || 'Category')}</span><small>${packageCount}</small></button>${hasSubcategories ? `<button type="button" class="store-category-toggle icon-button${rowOpen ? ' is-open' : ''}" data-action="toggle-category-dropdown" data-category-id="${escapeHtml(category.id)}" aria-expanded="${rowOpen ? 'true' : 'false'}" aria-label="Toggle ${escapeHtml(category.name || 'Category')} subcategories"><span aria-hidden="true">▾</span></button>` : ''}</div>${subHtml}</div>`;
         }),
@@ -122,7 +127,7 @@ export function renderPackages() {
                 <div class="store-package-description">${description}</div>
                 ${tags.length ? `<div class="store-badges">${tags.map(tag => `<span>${escapeHtml(tag)}</span>`).join('')}</div>` : ''}
                 <footer>
-                    <a class="link-button" href="${escapeHtml(paymentLink)}" rel="noopener noreferrer" target="_blank" data-i18n="btn.buy_now">Buy now</a>
+                    <a class="link-button" href="${escapeHtml(paymentLink)}" rel="noopener noreferrer" target="_blank" data-i18n="btn.${storePackage.payment_type == 'subscription' ? 'subscribe_now' : 'buy_now'}">Buy</a>
                 </footer>
             </article>
         `;

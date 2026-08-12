@@ -84,6 +84,7 @@
     "btn.play": "Jouer <i class=\"fa-solid fa-arrow-up-right-from-square\"></i>",
     "btn.add_to_basket": "Ajouter au panier",
     "btn.buy_now": "Acheter",
+    "btn.subscribe_now": "Souscrire",
     "btn.view_category": "Voir la catégorie",
     "btn.apply_coupon": "Appliquer le coupon",
     "btn.apply_giftcard": "Appliquer la carte cadeau",
