@@ -13,31 +13,33 @@ customElements.define('terms-of-service-inc', TermsOfService);
 class TermsOfSale extends HTMLElement {
     connectedCallback() {
         this.innerHTML =
-            addSubCategory("sale_information", "1. Company information", `The services, products, and user management systems of this shop are primarily operated across the niwer.dev domain and its subdomains.`,
+            addSubCategory("sale_information", "1. Company Information", `The services, software, frameworks, and user management systems of this shop are operated under the niwer.dev domain and its subdomains.`,
                 `<strong>Operator:</strong> Erwin Redoté (Niwer)`,
-                `<strong>Registered Office:</strong> Located in Belgium (Registered with the Crossroads Bank for Enterprises / BCE). Full physical address is available upon immediate request via the contact form or consultable via the official BCE registry.`,
-                `<strong>Enterprise Number:</strong> BE1039107847`,
-                `<strong>VAT Number:</strong> BE1039107847 `,
-                `<strong>Contact Email:</strong> contact@niwer.dev`
+                `<strong>Registered Office:</strong> Located in Belgium (Registered with the Crossroads Bank for Enterprises / BCE). Address consultable via the official BCE registry or provided upon request.`,
+                `<strong>Enterprise / VAT Number:</strong> BE1039107847`,
+                `<strong>Contact Email:</strong> contact@niwer.dev`,
+                `<strong>Third-Party Disclaimer:</strong> "Niwer's Engine" is an independent software framework and is not affiliated with, endorsed by, authorized, or commercially linked to Mojang Studios, Microsoft Corporation, or Steam. All trademarks belong to their respective owners.`
             )
-            + addSubCategory("sale_scope", "2. Scope of Products and Services", `This shop offers different categories of products and services, each subject to specific delivery and licensing terms:`,
-                `<strong>Minecraft Mods:</strong> Sold as standalone digital products. Delivery is completed instantly via a download link or email after successful payment.`,
-                `<strong>Steam Games:</strong> These products are displayed on this website for informational and promotional purposes only. The actual purchase and delivery are handled exclusively by the third-party platform <strong>Steam</strong>. I am not responsible for transactions made on Steam.`,
-                `<strong>Software Framework (Subscription):</strong> Access to the framework is provided via a recurring monthly subscription license. Upon successful payment through Stripe, the user is granted access to an external control panel hosted on the subdomain engine.niwer.dev (via my dedicated server) to manage their access.`,
-                `<strong>Freelance Services:</strong> Development and custom services are not sold directly on this shop. Clients must initiate contact via email or the contact form. Every project is subject to a separate, legally binding freelance contract detailing the specific quote, deadlines, and deliverables.`
+            + addSubCategory("sale_scope", "2. Scope of Products, Licensing & Developer Access", `This shop offers digital products, software framework access, and developer licenses, each governed by specific terms:`,
+                `<strong>Minecraft Mods & Standalone Assets:</strong> Sold as standalone digital products. Delivery is instant via download link or email after payment.`,
+                `<strong>Software Framework (SaaS Subscription):</strong> Non-exclusive, non-transferable subscription granting access to operate the compiled framework on authorized servers managed via engine.niwer.dev.`,
+                `<strong>Developer Access (Source Code License):</strong> An optional supplementary subscription granting limited, non-exclusive, non-transferable, and revocable access to the source code/repositories of Niwer's Engine strictly for study, customization, debugging, and integration into the Subscriber's own authorized projects.`,
+                `<strong>Restrictions on Source Code:</strong> Developer Access DOES NOT constitute a transfer of ownership or sale of the source code. Subscribers are strictly prohibited from leaking, publishing, sublicensing, reselling, or distributing the source code, API, or included proprietary assets (e.g., /resources/assets, 3D models, audio, textures) to unauthorized third parties.`,
+                `<strong>Contributions & Code Improvements:</strong> The Subscriber retains ownership of their independent custom scripts or modules. However, for any bug fixes, core adaptations, or contributions directly integrated or submitted to the core framework, the Subscriber grants Erwin Redoté a worldwide, perpetual, royalty-free, irrevocable license to use, adapt, commercialize, and redistribute such contributions within Niwer's Engine.`
             )
-            + addSubCategory("sale_prices_payment", "3. Prices and Payment", `
-                All prices displayed on the shop are in Euros (€) and are VAT inclusive. 
-                Subscriptions are automatically billed every month until canceled by the user. 
-                Payments are securely processed through Stripe. We do not store or have access to your financial information.
+            + addSubCategory("sale_prices_payment", "3. Prices, Payment & Billing", `
+                All prices are in Euros (€) and inclusive of VAT where applicable. 
+                SaaS and Developer Access subscriptions are billed automatically on a recurring monthly basis through Stripe until canceled by the user. 
+                We do not store or process your financial banking credentials directly.
             `)
-            + addSubCategory("sale_refund", "4. Right of Withdrawal & Refund Policy", `In accordance with Belgian and EU consumer protection laws, the rules for digital content and services apply as follows:`,
-                `<strong>Digital Downloads & Licenses:</strong> By purchasing a Minecraft mod or subscribing to the framework, you explicitly request immediate access to the digital content and acknowledge that you waive your 14-day right of withdrawal once the download link is provided or access to the engine.niwer.dev panel is granted. All digital sales are final and non-refundable.`,
-                `<strong>Subscriptions:</strong> You can cancel your framework subscription at any time via the user panel. The cancellation will take effect at the end of the current billing cycle. No partial refunds are issued for unused days.`,
-                `<strong>Freelance Services:</strong> Cancellation and refund terms for custom projects are strictly governed by the individual contract signed between the parties before the project begins.`
+            + addSubCategory("sale_refund", "4. Right of Withdrawal, Cancellation & Termination", `In accordance with Belgian and EU consumer protection laws (Article VI.53 of the Belgian Code of Economic Law regarding digital content):`,
+                `<strong>Waiver of Withdrawal Right:</strong> By purchasing digital downloads, subscribing to the SaaS framework, or requesting Developer Access, you explicitly request immediate execution of the service and acknowledge waiving your 14-day right of withdrawal once access to downloads, control panels, or GitHub repositories has been granted. All sales are final.`,
+                `<strong>Subscription Cancellation:</strong> Subscriptions can be canceled at any time via your user portal or Stripe billing manager. Cancellation takes effect at the end of the active billing period. No partial refunds are issued for unused days.`,
+                `<strong>Termination of Access:</strong> Upon subscription cancellation or payment failure, technical access to private code repositories, developer APIs, and control panels will be automatically revoked. The user must cease developing with and delete local copies of uncompiled source code.`,
+                `<strong>Termination for Material Breach:</strong> Any source code leak, unauthorized redistribution, or intellectual property violation will result in immediate termination of all services and access rights without refund, without prejudice to further legal remedies.`
             )
-            + addSubCategory("sale_delivery", "5. Delivery and Server Availability", `While I strive to maintain 100% uptime for the dedicated server hosting the engine.niwer.dev panel, I cannot be held liable for temporary service interruptions due to maintenance, network failures, or hosting provider issues.`)
-            + addSubCategory("sale_applicable_law", "6. Governing Law and Disputes", `These Terms of Sale are governed by the laws of Belgium. In the event of any issue or complaint, please contact me directly at <strong>contact@niwer.dev</strong> so we can seek an amicable solution. If no resolution can be reached, any legal dispute shall be subject to the exclusive jurisdiction of the courts of Belgium.`)
+            + addSubCategory("sale_delivery", "5. Service Availability & Warranty Disclaimer", `While best efforts are made to ensure high uptime for repositories and management panels, service is provided on an "as is" and "as available" basis. Erwin Redoté shall not be held liable for temporary provider outages, downtime, or indirect damages resulting from custom code modifications made by the user.`)
+            + addSubCategory("sale_applicable_law", "6. Governing Law & Jurisdiction", `These Terms of Sale are governed exclusively by Belgian law. Any dispute that cannot be resolved amicably shall be submitted to the exclusive jurisdiction of the competent courts of the judicial district of <strong>Liège, Belgium</strong>.`)
         ;
     }
 }
