@@ -33,17 +33,7 @@
         <main class="legal-notice">
             <section>
                 <h1 data-i18n="title.legal">Legal Notice</h1>
-                <p data-i18n="licence">
-                    Copyright (c) 2026 Erwin Redoté (Niwer). All rights reserved.<br><br>
-
-                    This repository and all its contents (including but not limited to source code,
-                    design, graphics, texts, and images) are the exclusive intellectual property
-                    of Erwin Redoté.<br><br>
-
-                    No part of this project may be copied, reproduced, modified, or redistributed
-                    in any form or by any means without prior written permission from the author.
-                    Any unauthorized use of this work constitutes a violation of copyright laws.
-                </p>
+                <copyright-notice-inc></copyright-notice-inc>
             </section>
             <hr>
             <!-- Terms Of Service -->
@@ -66,6 +56,10 @@
         </main>
         <footer><inc-footer-content></inc-footer-content></footer>
         <!-- Inc scripts -->
+        <script type="module">
+            import * as marked from 'https://cdn.jsdelivr.net/npm/marked@13.0.0/lib/marked.esm.js';
+            window.marked = marked;
+        </script><!-- Load marked ESM and expose as global `marked` for non-module scripts, Yes it's a workaround, I've no idea why THIS ONE SCRIPT isn't working -->
         <script src="./js/i18n.js" defer></script> <!-- Load first to ensure languages are loaded -->
         <script src="./js/main.js" defer></script> <!-- Load main script -->
         <script src="./js/stats.js" defer></script> <!-- Load stats script -->

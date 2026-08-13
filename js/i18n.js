@@ -22,7 +22,6 @@ async function updateContent(langData, root = document) {
  */
 async function setLanguagePreference(lang) {
     localStorage.setItem('language', lang);
-    // location.reload(); // Should not be necessary anymore with dynamic content update
 }
 
 /**
@@ -31,7 +30,7 @@ async function setLanguagePreference(lang) {
  */
 async function fetchLanguageData(lang) {
     try {
-        const response = await fetch(new URL(`langs/${lang}.json`, WEBSITE_URL));
+        const response = await fetch(new URL(`langs/${lang}/global.json`, WEBSITE_URL));
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
         return response.json();
     } catch (error) {
@@ -59,6 +58,27 @@ async function changeLanguage(lang) {
     await setLanguagePreference(lang);
     currentLang = null; // force refresh cache when language changes
     await applyLanguage();
+}
+
+/**
+ * Fetch and load a legal document in the current language.
+ * 
+ * @param {*} docName The name of the legal document to load (e.g., 'privacy_policy', 'terms_of_service').
+ * @returns {Promise<string>} The HTML content of the legal document.
+ */
+async function loadLegalDoc(docName) {
+    const lang = localStorage.getItem('language') || 'en';
+
+    try {
+        const response = await fetch(new URL(`langs/${lang}/${docName}.md`, WEBSITE_URL));
+        if (!response.ok) return `Error loading document: ${response.status} ${response.statusText}`;
+
+        const markdownText = await response.text();
+        return marked.parse(markdownText);
+    } catch (error) {
+        console.error('Error loading legal document:', error);
+        return `Error loading document: ${error.message}`;
+    }
 }
 
 window.applyLanguage = applyLanguage;
