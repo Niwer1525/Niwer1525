@@ -1,40 +1,46 @@
 ### 1. Informations légales sur l'entreprise
 
-Les services, logiciels, frameworks et systèmes de gestion des utilisateurs de cette boutique sont exploités sous le nom de domaine **niwer.dev** et ses sous-domaines.
+Les services, logiciels, frameworks, API et systèmes de gestion de cette boutique sont exploités sous le nom de domaine **niwer.dev** et ses sous-domaines.
 
 * **Exploitant :** Erwin Redoté (Niwer)
 * **Siège social :** Situé en Belgique (Inscrit à la Banque-Carrefour des Entreprises / BCE). L'adresse physique complète est disponible sur demande immédiate via le formulaire de contact ou consultable sur le registre officiel de la BCE.
-* **Numéro d'entreprise / TVA :** BE1039107847
+* **Numéro d'entreprise / TVA :** BE 01039.107.847
 * **E-mail de contact :** contact@niwer.dev
-* **Clause de non-affiliation tiers :** "Niwer's Engine" est un framework logiciel indépendant et n'est en aucun cas affilié, approuvé, autorisé ou lié commercialement à Mojang Studios, Microsoft Corporation ou Steam. Toutes les marques déposées appartiennent à leurs propriétaires respectifs.
+* **Clause de non-affiliation tiers :** "Niwer's Engine" est un framework logiciel indépendant. L'usage des termes « Minecraft », « Mojang », « Microsoft » ou « Steam » est purement descriptif à des fins d'interopérabilité. Niwer's Engine n'est en aucun cas affilié, soutenu, autorisé ou lié commercialement à Mojang Studios, Microsoft Corporation ou Valve Corporation.
 
 ### 2. Portée des produits, licences et Developer Access
 
-Cette boutique propose des produits numériques, des accès aux frameworks logiciels et des licences développeur, chacun étant régi par des conditions spécifiques :
+Cette boutique propose des produits numériques, des abonnements logiciels SaaS et des licences d'accès au code source régis par les dispositions suivantes :
 
-* **Mods Minecraft & Assets indépendants :** Vendus en tant que produits numériques autonomes. La livraison est instantanée via un lien de téléchargement ou par e-mail après le paiement.
-* **Software Framework (Abonnement SaaS) :** Licence d'abonnement non exclusive et incessible donnant accès à l'exploitation du framework compilé sur des serveurs autorisés gérés via `engine.niwer.dev`.
-* **Developer Access (Licence du code source) :** Un abonnement supplémentaire optionnel accordant un accès limité, non exclusif, incessible et révocable au code source/dépôts de Niwer's Engine, strictement destiné à l'étude, la personnalisation, le débogage et l'intégration dans les projets autorisés de l'Abonné.
-* **Restrictions sur le code source :** Le Developer Access **NE CONSTITUE PAS** un transfert de propriété ni une vente du code source. Il est strictement interdit aux Abonnés de fuiter, publier, sous-licencier, revendre ou distribuer le code source, l'API ou les assets propriétaires inclus (ex : `/resources/assets`, modèles 3D, fichiers audio, textures) à des tiers non autorisés.
-* **Contributions & Améliorations du code :** L'Abonné conserve la propriété de ses scripts ou modules personnalisés indépendants. Cependant, pour toute correction de bug, adaptation du cœur ou contribution directement intégrée ou soumise au framework principal, l'Abonné concède à Erwin Redoté une licence mondiale, perpétuelle, gratuite et irrévocable d'utiliser, adapter, commercialiser et redistribuer ces contributions au sein de Niwer's Engine.
+* **Mods Minecraft & Assets indépendants :** Produits numériques téléchargeables autonomes. La livraison est immédiate et automatisée après validation du paiement.
+* **Software Framework (Licence SaaS) :** Concession d'un droit d'utilisation personnel, temporaire, non exclusif et incessible permettant d'exécuter les binaires compilés du moteur sur des serveurs autorisés gérés via `engine.niwer.dev`.
+* **Developer Access (Licence d'accès au code source) :** Souscription optionnelle liée à une Licence SaaS active, accordant un droit d'accès privé, révocable et non exclusif au code source de Niwer's Engine (via dépôts GitHub dédiés). Cet accès est strictement réservé à l'étude, l'intégration, l'adaptation et le débogage pour les besoins exclusifs des Projets autorisés du Licencié.
 
-### 3. Prix, paiement et facturation
+### 3. Propriété intellectuelle et restrictions strictes sur le code source
 
-Tous les prix sont affichés en Euros (€) et incluent la TVA applicable. Les abonnements SaaS et Developer Access sont facturés automatiquement sur une base mensuelle récurrente via **Stripe** jusqu'à résiliation par l'utilisateur. Nous ne stockons ni ne traitons directement vos coordonnées bancaires.
+* **Absence de cession de propriété :** La souscription au Developer Access **NE CONSTITUE PAS** une vente ni une cession de droits de propriété intellectuelle. Le code source, l'architecture, les outils et la documentation demeurent la propriété exclusive d'Erwin Redoté.
+* **Interdiction de redistribution et concurrence :** Il est strictement interdit de vendre, sous-licencier, publier, diffuser publiquement ou faire fuiter tout ou partie du code source. Le Licencié s'interdit d'utiliser le code pour concevoir un framework ou moteur concurrent.
+* **Protection des Ressources incluses :** L'accès au code n'accorde aucun droit d'extraction, de modification autonome ou de redistribution des éléments non logiciels inclus d'origine dans le moteur (dossier `/resources/assets`, modèles 3D, textures, sons, Content Packs d'exemple).
+* **Personnel autorisé et responsabilité solidaire :** Le Licencié peut accorder l'accès à son Personnel autorisé (développeurs, préposés) pour les stricts besoins de ses Projets autorisés. Le Licencié se porte fort du respect absolu des présentes conditions et demeure **seul et solidairement responsable** de tout manquement ou fuite causé par un membre de son équipe.
+* **Licence sur les Contributions :** Le Licencié conserve les droits sur ses modules indépendants créés au-dessus de l'API. En contrepartie du Developer Access, pour tout correctif (bugfix) ou modification du cœur du framework (Core), le Licencié accorde à Erwin Redoté une licence mondiale, perpétuelle, gratuite, transférable et irrévocable d'exploiter, adapter, intégrer et commercialiser ces contributions dans Niwer's Engine, sans droit moral opposable aux nécessités d'évolution du logiciel.
 
-### 4. Droit de rétractation, annulation et résiliation
+### 4. Prix, facturation récurrente et paiements
 
-Conformément au droit belge et européen de la consommation (*Article VI.53 du Code de droit économique belge* relatif au contenu numérique) :
+Tous les prix sont libellés en Euros (€) et incluent la TVA applicable. Les abonnements SaaS et Developer Access font l'objet d'une facturation récurrente mensuelle prélevée automatiquement via **Stripe** jusqu'à résiliation. Les coordonnées bancaires sont gérées de manière sécurisée par Stripe et ne sont jamais stockées sur nos serveurs.
 
-* **Renonciation au droit de rétractation :** En achetant des téléchargements numériques, en souscrivant au framework SaaS ou en demandant le Developer Access, vous demandez expressément l'exécution immédiate du service et reconnaissez renoncer à votre droit de rétractation de 14 jours dès lors que l'accès aux téléchargements, au panneau de contrôle ou aux dépôts GitHub a été accordé. **Toutes les ventes sont définitives.**
-* **Résiliation de l'abonnement :** Les abonnements peuvent être annulés à tout moment via votre espace utilisateur ou le gestionnaire de facturation Stripe. La résiliation prend effet à la fin de la période de facturation en cours. Aucun remboursement partiel n'est effectué pour les jours non utilisés.
-* **Cessation des accès :** En cas de résiliation d'abonnement ou de défaut de paiement, l'accès technique aux dépôts de code privés, aux API développeur et aux panneaux de contrôle sera automatiquement révoqué. L'utilisateur doit cesser de développer avec le code source non compilé et en supprimer les copies locales.
-* **Résiliation pour faute grave :** Toute fuite de code source, redistribution non autorisée ou violation de la propriété intellectuelle entraînera la résiliation immédiate de tous les services et droits d'accès sans remboursement, sans préjudice de poursuites judiciaires ultérieures.
+### 5. Droit de rétractation, résiliation et révocation des accès
 
-### 5. Disponibilité des services et exclusion de garantie
+Conformément à l'article VI.53, 13° du Code de droit économique belge relatif aux contenus numériques fournis sans support matériel :
 
-Bien que tous les efforts soient faits pour assurer une haute disponibilité des dépôts et des panneaux de gestion, le service est fourni *« en l'état »* et *« selon disponibilité »*. Erwin Redoté ne pourra être tenu responsable des interruptions temporaires de l'hébergeur, des pannes ou des dommages indirects résultant de modifications apportées au code par l'utilisateur.
+* **Renonciation expresse au droit de rétractation :** En validant sa commande et en demandant l'accès immédiat aux téléchargements, aux panneaux SaaS ou aux dépôts GitHub, le client renonce expressément à son droit de rétractation de 14 jours. **Toutes les ventes sont fermes et définitives.**
+* **Résiliation par le client :** L'abonnement peut être résilié à tout moment depuis le portail Stripe ou l'espace client. La résiliation prend effet à la fin de la période mensuelle en cours, sans remboursement prorata temporis.
+* **Révocation des accès techniques :** En cas d'annulation ou de défaut de paiement, l'accès aux dépôts privés GitHub et aux outils développeur est automatiquement révoqué. Le Licencié doit cesser d'utiliser le code source non compilé et supprimer toutes ses copies locales.
+* **Résiliation pour manquement grave :** Toute violation de la confidentialité, fuite de code ou atteinte aux droits de propriété intellectuelle entraînera la clôture immédiate de tous les accès sans remboursement ni préavis, sous réserve de poursuites en dommages et intérêts.
 
-### 6. Droit applicable et juridiction compétente
+### 6. Disponibilité des services et limitation de responsabilité
 
-Les présentes Conditions de Vente sont exclusivement régies par le droit belge. Tout litige qui ne pourra être réglé à l'amiable sera soumis à la compétence exclusive des tribunaux compétents de l'arrondissement judiciaire de **Liège, Belgique**.
+Le service est fourni *« en l'état »* et *« selon disponibilité »*. Erwin Redoté ne saurait être tenu responsable des pannes d'infrastructure tierce (GitHub, hébergeurs, Stripe), des incompatibilités issues des mises à jour majeures de Minecraft/Java, ni des dommages indirects (pertes d'exploitation, pertes de données) résultant de l'utilisation ou de la modification du code source par le client.
+
+### 7. Droit applicable et juridiction compétente
+
+Les présentes Conditions Générales de Vente sont exclusivement soumises au **droit belge**. Tout litige qui ne pourra être résolu à l'amiable sera porté devant la juridiction exclusive des tribunaux de l'arrondissement judiciaire de **Liège, Belgique**.

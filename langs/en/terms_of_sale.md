@@ -1,40 +1,46 @@
 ### 1. Company Information & Legal Notice
 
-The services, software, frameworks, and user management systems of this shop are operated under the domain name **niwer.dev** and its subdomains.
+The services, software, frameworks, APIs, and user management systems of this shop are operated under the domain name **niwer.dev** and its subdomains.
 
 * **Operator:** Erwin Redoté (Niwer)
-* **Registered Office:** Located in Belgium (Registered with the Crossroads Bank for Enterprises / BCE). Full physical address is available upon immediate request via the contact form or consultable via the official BCE registry.
-* **Enterprise / VAT Number:** BE1039107847
+* **Registered Office:** Located in Belgium (Registered with the Crossroads Bank for Enterprises / BCE). Full physical address is available upon immediate request via the contact form or consultable on the official public BCE registry.
+* **Enterprise / VAT Number:** BE 01039.107.847
 * **Contact Email:** contact@niwer.dev
-* **Third-Party Disclaimer:** "Niwer's Engine" is an independent software framework and is not affiliated with, endorsed by, authorized, or commercially linked to Mojang Studios, Microsoft Corporation, or Steam. All trademarks belong to their respective owners.
+* **Third-Party Disclaimer:** "Niwer's Engine" is an independent software framework. The use of terms such as "Minecraft", "Mojang", "Microsoft", or "Steam" is purely descriptive for interoperability and technical compatibility purposes. Niwer's Engine is not affiliated with, endorsed by, authorized, sponsored by, or commercially linked to Mojang Studios, Microsoft Corporation, or Valve Corporation.
 
 ### 2. Scope of Products, Licensing & Developer Access
 
-This shop offers digital products, software framework access, and developer licenses, each governed by specific terms:
+This shop offers standalone digital downloads, SaaS software framework subscriptions, and source code access licenses:
 
-* **Minecraft Mods & Standalone Assets:** Sold as standalone digital products. Delivery is instant via download link or email after payment.
-* **Software Framework (SaaS Subscription):** Non-exclusive, non-transferable subscription granting access to operate the compiled framework on authorized servers managed via `engine.niwer.dev`.
-* **Developer Access (Source Code License):** An optional supplementary subscription granting limited, non-exclusive, non-transferable, and revocable access to the source code/repositories of Niwer's Engine strictly for study, customization, debugging, and integration into the Subscriber's own authorized projects.
-* **Restrictions on Source Code:** Developer Access **DOES NOT** constitute a transfer of ownership or sale of the source code. Subscribers are strictly prohibited from leaking, publishing, sublicensing, reselling, or distributing the source code, API, or included proprietary assets (e.g., `/resources/assets`, 3D models, audio files, textures) to unauthorized third parties.
-* **Contributions & Code Improvements:** The Subscriber retains ownership of their independent custom scripts or modules. However, for any bug fixes, core adaptations, or contributions directly integrated or submitted to the core framework, the Subscriber grants Erwin Redoté a worldwide, perpetual, royalty-free, irrevocable license to use, adapt, commercialize, and redistribute such contributions within Niwer's Engine.
+* **Minecraft Mods & Standalone Assets:** Autonomous compiled digital products. Delivery is instantaneous and automated upon payment confirmation.
+* **Software Framework (SaaS License):** Grant of a personal, non-exclusive, non-transferable, temporary, and revocable license to run compiled framework binaries on authorized servers managed via `engine.niwer.dev`.
+* **Developer Access (Source Code License):** Optional supplementary subscription tied to an active SaaS License, granting private, non-exclusive, revocable access to the Niwer's Engine source code (via dedicated private GitHub repositories). This access is strictly limited to studying, customizing, integrating, extending, and debugging the engine for the Subscriber's own authorized server or game projects.
 
-### 3. Prices, Payment & Billing
+### 3. Intellectual Property & Strict Source Code Restrictions
 
-All prices are displayed in Euros (€) and are inclusive of VAT where applicable. SaaS and Developer Access subscriptions are billed automatically on a recurring monthly basis through **Stripe** until canceled by the user. We do not store or process your financial banking credentials directly.
+* **No Transfer of Ownership:** Subscribing to Developer Access **DOES NOT CONSTITUTE** a sale, transfer, or assignment of intellectual property rights. The source code, architecture, internal tools, and technical documentation remain the exclusive property of Erwin Redoté.
+* **Redistribution & Non-Compete Restrictions:** Subscribers are strictly prohibited from selling, sublicensing, distributing, publishing, leaking, or making publicly available any portion of the source code. The Subscriber shall not use the source code to design, commercialize, or distribute a competing engine or modding framework.
+* **Protection of Bundled Assets:** Access to source code grants no rights to extract, isolate, modify standalone, or redistribute non-code assets bundled with the engine (such as the `/resources/assets` directory, 3D models, textures, audio files, or sample Content Packs).
+* **Authorized Personnel & Joint Liability:** The Subscriber may grant source code access to Authorized Personnel (employees, contractors) solely for the development needs of authorized projects. The Subscriber stands guarantor for their team's strict compliance and remains **solely, personally, and jointly liable** for any breach, leak, or unauthorized disclosure caused by an invited collaborator.
+* **Core Contributions & Bug Fixes:** The Subscriber retains intellectual property over independent scripts and modules developed on top of the API. In consideration for Developer Access, for any bug fixes, optimizations, or core modifications submitted or integrated into the core engine, the Subscriber grants Erwin Redoté a worldwide, perpetual, royalty-free, transferable, and irrevocable license to use, adapt, commercialize, and redistribute such contributions within Niwer's Engine, with no moral rights enforceable against necessary software evolutions.
 
-### 4. Right of Withdrawal, Cancellation & Termination
+### 4. Pricing, Recurring Billing & Payments
 
-In accordance with Belgian and EU consumer protection laws (*Article VI.53 of the Belgian Code of Economic Law* regarding digital content):
+All prices are displayed in Euros (€) and are inclusive of applicable VAT based on the purchaser's country of residence. SaaS and Developer Access subscriptions are billed automatically on a recurring monthly cycle via **Stripe** until canceled. Financial payment credentials are processed securely by Stripe and are never stored on our servers.
 
-* **Waiver of Withdrawal Right:** By purchasing digital downloads, subscribing to the SaaS framework, or requesting Developer Access, you explicitly request immediate execution of the service and acknowledge waiving your 14-day right of withdrawal once access to downloads, control panels, or GitHub repositories has been granted. **All sales are final.**
-* **Subscription Cancellation:** Subscriptions can be canceled at any time via your user portal or Stripe billing manager. Cancellation takes effect at the end of the active billing period. No partial refunds are issued for unused days.
-* **Termination of Access:** Upon subscription cancellation or payment failure, technical access to private code repositories, developer APIs, and control panels will be automatically revoked. The user must cease developing with the uncompiled source code and delete local copies.
-* **Termination for Material Breach:** Any source code leak, unauthorized redistribution, or intellectual property violation will result in immediate termination of all services and access rights without refund, without prejudice to further legal remedies.
+### 5. Waiver of Withdrawal Right, Cancellation & Revocation
 
-### 5. Service Availability & Warranty Disclaimer
+In accordance with Article VI.53, 13° of the Belgian Code of Economic Law regarding digital content not supplied on a tangible medium:
 
-While best efforts are made to ensure high uptime for repositories and management panels, the service is provided *"as is"* and *"as available"*. Erwin Redoté shall not be held liable for temporary provider outages, downtime, or indirect damages resulting from custom code modifications made by the user.
+* **Express Waiver of Withdrawal Right:** By placing an order and requesting immediate delivery of downloads, SaaS activation, or access to private GitHub repositories, the customer **expressly waives their statutory 14-day right of withdrawal**. All digital sales are final and non-refundable.
+* **Customer Cancellation:** Subscriptions can be canceled at any time via the Stripe billing manager or user portal. Cancellation takes effect at the end of the active billing period, with no prorated refunds for unused days.
+* **Access Revocation:** Upon subscription termination or payment default, technical access to private code repositories and developer control panels will be automatically revoked. The Subscriber must cease using uncompiled source code and delete all local copies.
+* **Termination for Material Breach:** Any confidentiality breach, unauthorized source code leak, or intellectual property violation will result in immediate termination of all licenses and access without notice or refund, without prejudice to claims for monetary damages.
 
-### 6. Governing Law & Jurisdiction
+### 6. Service Availability & Warranty Disclaimer
 
-These Terms of Sale are governed exclusively by Belgian law. Any dispute that cannot be resolved amicably shall be submitted to the exclusive jurisdiction of the competent courts of the judicial district of **Liège, Belgium**.
+The service is provided on an *"as is"* and *"as available"* basis. Erwin Redoté shall not be held liable for third-party service disruptions (GitHub, web hosting providers, Stripe), platform compatibility breaks caused by major upstream updates to Minecraft or Java, or indirect damages (loss of profits, data loss) resulting from custom modifications made by the customer.
+
+### 7. Governing Law & Jurisdiction
+
+These Terms of Sale are exclusively governed by and construed in accordance with **Belgian law**. Any dispute that cannot be resolved amicably shall be submitted to the exclusive jurisdiction of the competent courts of the judicial district of **Liège, Belgium**.

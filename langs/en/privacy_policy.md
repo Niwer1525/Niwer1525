@@ -1,19 +1,23 @@
-### 1.2 Data Controller
+### 1. Data Controller
 
-The data controller for the niwer.dev domain and its subdomains is Erwin Redoté. For any privacy-related questions or to exercise your rights, you can contact me at contact@niwer.dev.
+The personal data controller for the domain **niwer.dev** and all its subdomains is **Erwin Redoté**. For any questions regarding privacy practices or to exercise your legal rights, you may reach out directly at: **contact@niwer.dev**.
 
-### 2. Data We Collect
+### 2. Personal Data We Collect
 
-We only collect personal data that is strictly necessary to run this website and process your orders:
+We only collect and process personal data strictly necessary to operate our services, manage user access, and fulfill your orders:
 
-* Account Credentials: When you register an account on engine.niwer.dev, we collect and securely process your email address and an encrypted (hashed) version of your password.
-* Contact and Order Data: Name, email address, and billing address when you make a purchase.
-* Technical Data: IP address and essential cookies required for basic website functionality and analytics.
+* **Account Credentials:** When you create an account on `engine.niwer.dev`, we securely store your email address along with a hashed version of your password.
+* **Order & Billing Details:** First name, last name, email address, physical billing address, and VAT/tax identification number (where applicable) upon checkout.
+* **Technical & Security Data:** IP addresses, access logs, and essential cookies strictly required for core functionality, security, and internal usage metrics.
 
-### 3. Purpose and Sharing
+### 3. Purpose and Data Sharing
 
-Your data is used solely to deliver your purchases, process payments, and respond to your messages. Your personal information is **never** sold, rented, or shared with third parties for marketing purposes.
+Your personal data is used solely to deliver your digital purchases, provision SaaS and Developer Access licenses, process payments, and provide technical customer support.
+
+Your personal information is **never sold, rented, or disclosed** to third parties for marketing or advertising purposes. Financial transactions are securely handled by our certified payment processor (**Stripe**).
 
 ### 4. Your Rights (GDPR)
 
-Under the GDPR, you have the right to access, rectify, or request the deletion of the personal data we hold (such as your emails). Please note that data stored by third-party payment processors or information required to be kept by Belgian law for legal or accounting purposes cannot be deleted immediately. To exercise your rights, contact me at **contact@niwer.dev**
+Under the General Data Protection Regulation (GDPR), you hold the right to access, rectify, port, or request the erasure of your personal data.
+
+To exercise these rights, please contact **contact@niwer.dev**. *Please note: billing and transactional records required to satisfy mandatory Belgian accounting and tax obligations cannot be deleted before statutory retention periods expire.*

@@ -1,5 +1,5 @@
 Copyright (c) 2026 Erwin Redoté (Niwer). All rights reserved.
 
-This repository and all its contents (including but not limited to source code, design, graphics, texts, and images) are the exclusive intellectual property of Erwin Redoté.
+This website, this repository, and all of their content (including, without limitation, source code, software architecture, design, graphics, text, logos, trademarks, and images) are the exclusive intellectual property of Erwin Redoté.
 
-No part of this project may be copied, reproduced, modified, or redistributed in any form or by any means without prior written permission from the author. Any unauthorized use of this work constitutes a violation of copyright laws.
+Any reproduction, representation, modification, or distribution, in whole or in part, of this project, under any form or by any means whatsoever, is strictly prohibited without prior written authorization from the author. Any unauthorized use constitutes copyright infringement and may result in legal proceedings.

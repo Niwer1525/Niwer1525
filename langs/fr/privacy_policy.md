@@ -1,19 +1,23 @@
-### 1.2 Responsable du traitement des données
+### 1. Responsable du traitement des données
 
-Le responsable du traitement des données pour le domaine niwer.dev et ses sous-domaines est Erwin Redoté. Pour toute question relative à la confidentialité ou pour exercer vos droits, vous pouvez me contacter à
+Le responsable du traitement des données à caractère personnel pour le domaine **niwer.dev** et l'ensemble de ses sous-domaines est **Erwin Redoté**. Pour toute question relative à la protection de votre vie privée ou pour exercer vos droits légaux, vous pouvez me contacter directement à : **contact@niwer.dev**.
 
-### 2. Les données que nous collectons
+### 2. Données personnelles collectées
 
-Nous collectons uniquement les données personnelles strictement nécessaires au fonctionnement de ce site et au traitement de vos commandes :
+Nous collectons et traitons uniquement les informations strictement nécessaires à la fourniture de nos services, à l'administration des accès et à l'exécution des commandes :
 
-* Identifiants de compte : Lorsque vous créez un compte sur engine.niwer.dev, nous collectons et traitons de manière sécurisée votre adresse email et une version chiffrée (hachée) de votre mot de passe.
-* Données de contact et de commande : Nom, adresse email et adresse de facturation lorsque vous effectuez un achat.
-* Données techniques : Adresse IP et cookies essentiels requis pour le fonctionnement de base du site web et les analyses.
+* **Identifiants de compte :** Lors de la création d'un compte sur `engine.niwer.dev`, nous enregistrons votre adresse e-mail ainsi qu'une empreinte chiffrée (hachage sécurisé) de votre mot de passe.
+* **Données de facturation et de commande :** Nom, prénom, adresse e-mail, adresse postale de facturation et numéro d'identification fiscale/TVA (le cas échéant) lors d'un achat.
+* **Données techniques et de sécurité :** Adresse IP, logs de connexion et cookies strictement essentiels au bon fonctionnement, à la sécurité du site et aux analyses d'audience internes.
 
-### 3. Objectif et partage
+### 3. Finalités et partage des données
 
-Vos données sont utilisées uniquement pour livrer vos achats, traiter les paiements et répondre à vos messages. Vos informations personnelles ne sont **jamais** vendues, louées ou partagées avec des tiers à des fins de marketing.
+Vos données personnelles sont traitées exclusivement pour exécuter vos commandes, vous délivrer les accès logiciels (SaaS et Developer Access), traiter les paiements et assurer le support technique. 
+
+Vos informations personnelles ne sont **jamais vendues, louées ou cédées** à des tiers à des fins publicitaires ou marketing. Les transactions financières sont déléguées à notre prestataire de paiement sécurisé certifié (**Stripe**).
 
 ### 4. Vos droits (RGPD)
 
-En vertu du RGPD, vous avez le droit d'accéder, de rectifier ou de demander la suppression des données personnelles que nous détenons (telles que vos emails). Veuillez noter que les données stockées par des processeurs de paiement tiers ou les informations devant être conservées par la loi belge à des fins légales ou comptables ne peuvent pas être supprimées immédiatement. Pour exercer vos droits, contactez-moi à **contact@niwer.dev**
+Conformément au Règlement Général sur la Protection des Données (RGPD), vous disposez d'un droit d'accès, de rectification, de portabilité et d'effacement de vos données personnelles. 
+
+Pour faire valoir ces droits, contactez-moi par e-mail à **contact@niwer.dev**. *Remarque : les données de facturation et de transaction nécessaires au respect des obligations comptables et fiscales imposées par la législation belge seront conservées pendant les durées légales obligatoires.*

@@ -1,15 +1,17 @@
-### 1. Use of the Website
+### 1. Website Usage
 
-By accessing the niwer.dev domain and its associated subdomains (including but not limited to engine.niwer.dev, git.niwer.dev, modrinth.niwer.dev, wakatime.niwer.dev), you agree to use them for lawful purposes only. You are prohibited from attempting to disrupt the website’s security, bypassing authentication measures, or using automated scripts to scrape data.
+By accessing the **niwer.dev** domain and its associated subdomains (including, but not limited to, `engine.niwer.dev`, `git.niwer.dev`, `modrinth.niwer.dev`, `wakatime.niwer.dev`), you agree to use them strictly for lawful purposes in compliance with these terms.
 
-### 2. Account Registration
+You are strictly prohibited from attempting to compromise infrastructure security, bypassing authentication mechanisms, or using automated scrapers, bots, or scripts to extract data without explicit prior authorization.
 
-To access specific services, including the software framework, you may be required to create an account on engine.niwer.dev. You are entirely responsible for maintaining the confidentiality of your account credentials (email and password) and for all activities that occur under your account. You agree to notify the administrator immediately of any unauthorized use of your account.
+### 2. Account Registration and Security
 
-### 3. Limitation of Liability
+To access certain services or software management panels, creating an account on `engine.niwer.dev` may be required. You are solely responsible for maintaining the confidentiality of your account credentials (email address and password) and for all activities conducted under your account. You agree to notify the administrator immediately at **contact@niwer.dev** in the event of any unauthorized use or security breach.
 
-This website and its portfolio are provided "as is" without any warranties. While I strive to keep the information accurate, I cannot guarantee that the site will always be error-free or uninterrupted.
+### 3. Limitation of Liability
 
-### 4. Applicable Law
+This website, its portfolio, and related services are provided on an *"as is"* and *"as available"* basis, without warranties of any kind. While reasonable efforts are made to ensure accurate information and continuous availability, we cannot guarantee that the service will always be uninterrupted, timely, or error-free.
 
-These terms are governed by and construed in accordance with the laws of Belgium. Any disputes arising from the use of this website shall be subject to the exclusive jurisdiction of the courts of Belgium.
+### 4. Governing Law and Jurisdiction
+
+These Terms of Service are governed by and construed in accordance with **Belgian law**. Any dispute arising out of or related to the access or use of this website and its subdomains shall be submitted to the exclusive jurisdiction of the competent courts of the judicial district of **Liège, Belgium**.
