@@ -46,5 +46,14 @@ jobs:
           # Commit changes if there are any, otherwise exit without error
           git commit -m "Update Stripe data" || exit 0
 
-          # Push the changes to the 'data' branch, force updating it
-          git push origin HEAD:data --force
+          # Push the changes to the 'data' branch, retrying if it changed remotely
+          for attempt in 1 2 3; do
+            if git push origin HEAD:data; then
+              exit 0
+            fi
+
+            git fetch origin data
+            git rebase origin/data
+          done
+
+          exit 1
