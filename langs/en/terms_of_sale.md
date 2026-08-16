@@ -23,6 +23,11 @@ This shop offers standalone digital downloads, SaaS software framework subscript
 * **Protection of Bundled Assets:** Access to source code grants no rights to extract, isolate, modify standalone, or redistribute non-code assets bundled with the engine (such as the `/resources/assets` directory, 3D models, textures, audio files, or sample Content Packs).
 * **Authorized Personnel & Joint Liability:** The Subscriber may grant source code access to Authorized Personnel (employees, contractors) solely for the development needs of authorized projects. The Subscriber stands guarantor for their team's strict compliance and remains **solely, personally, and jointly liable** for any breach, leak, or unauthorized disclosure caused by an invited collaborator.
 * **Core Contributions & Bug Fixes:** The Subscriber retains intellectual property over independent scripts and modules developed on top of the API. In consideration for Developer Access, for any bug fixes, optimizations, or core modifications submitted or integrated into the core engine, the Subscriber grants Erwin Redoté a worldwide, perpetual, royalty-free, transferable, and irrevocable license to use, adapt, commercialize, and redistribute such contributions within Niwer's Engine, with no moral rights enforceable against necessary software evolutions.
+* **Mandatory Attribution & Credit Clause ("Powered by Niwer's Engine"):** 
+  In consideration for the usage rights and Developer Access granted hereunder, the Subscriber explicitly agrees to visibly maintain software attribution and copyright credits:
+  * **In-Game / Menus:** The notice "Powered by Niwer's Engine" (or the official provided logo) must remain prominently displayed within main menus, loading screens, or user-accessible credit sections of the project.
+  * **Media & Promotional Content:** For any official promotional trailer, gameplay showcase video, public documentation, or website promoting the game or server utilizing the Software, the Subscriber agrees to explicitly state that the project is powered by Niwer's Engine and include a link to `niwer.dev`.
+  * **Prohibition of False Attribution:** The Subscriber is strictly prohibited from removing, obscuring, or claiming false authorship/ownership over the underlying software framework and engine architecture.
 
 ### 4. Pricing, Recurring Billing & Payments
 
