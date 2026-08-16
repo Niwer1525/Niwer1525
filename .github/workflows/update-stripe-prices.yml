@@ -1,15 +1,18 @@
 name: Sync Stripe Catalog
 
 on:
+  push:
+    branches:
+      - main
   schedule:
     - cron: '0 */2 * * *' # Executing every 2 hours
-  workflow_dispatch:
+  workflow_dispatch: # Allows manual trigger
 
 jobs:
   sync-catalog:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repo
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Fetch Raw Stripe Data
@@ -22,11 +25,26 @@ jobs:
             -d "expand[]=data.product" \
             -o stripe_catalog.json
 
-      - name: Commit and Push
+      - name: Commit and Push if changed
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
+          # Move the generated catalog to a temporary location
+          mv stripe_catalog.json /tmp/stripe_catalog.json
+
+          # Fetch the existing 'data' branch to ensure we have the latest changes
+          git fetch origin data
+          git checkout data || git checkout --orphan data
+
+          # Move the generated catalog to the root of the repository
+          mv /tmp/stripe_catalog.json .
+
+          # Stage the catalog file
           git add stripe_catalog.json
+
+          # Commit changes if there are any, otherwise exit without error
           git commit -m "chore(store): sync raw stripe data" || exit 0
-          git push origin main
+
+          # Push the changes to the 'data' branch, force updating it
+          git push origin HEAD:data --force
