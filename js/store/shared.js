@@ -2,6 +2,7 @@ const { trimAndMinifyHTML } = globalThis;
 
 export const STORE_NAMESPACE = 'niwer-store-v2';
 export const STORE_CATALOG_URL = './store_catalog.json';
+export const STRIPE_DATA_URL = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_USERNAME}/data/stripe_catalog.json`;
 export const CATEGORY_STORAGE_KEY = `${STORE_NAMESPACE}-category`;
 
 export const storeState = {

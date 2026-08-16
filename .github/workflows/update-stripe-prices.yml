@@ -44,7 +44,7 @@ jobs:
           git add stripe_catalog.json
 
           # Commit changes if there are any, otherwise exit without error
-          git commit -m "chore(store): sync raw stripe data" || exit 0
+          git commit -m "Update Stripe data" || exit 0
 
           # Push the changes to the 'data' branch, force updating it
           git push origin HEAD:data --force

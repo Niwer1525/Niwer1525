@@ -1,4 +1,4 @@
-import { STORE_CATALOG_URL, getCategoryPreference, sanitizeHtml, storeState } from './shared.js';
+import { STORE_CATALOG_URL, STRIPE_DATA_URL, getCategoryPreference, sanitizeHtml, storeState } from './shared.js';
 import { renderStateMessage } from './render.js';
 
 export function unwrapApiData(payload) {
@@ -26,10 +26,29 @@ function walkSubcategories(subcategories, parentPath = []) {
 }
 
 export async function loadStorePackages() {
-    const response = await fetch(STORE_CATALOG_URL, { cache: 'no-store' });
-    if (!response.ok) throw new Error(`Could not load store catalog (${response.status}).`);
+    // Getting the catalog and Stripe data in parallel
+    const [catalogResponse, stripeResponse] = await Promise.all([
+        fetch(STORE_CATALOG_URL, { cache: 'no-store' }),
+        fetch(STRIPE_DATA_URL, { cache: 'no-store' }).catch(() => null)
+    ]);
 
-    const payload = unwrapApiData(await response.json());
+    if (!catalogResponse.ok) throw new Error(`Could not load store catalog (${catalogResponse.status}).`);
+
+    // Mapping Stripe price IDs to their corresponding data for quick lookup
+    const stripePriceMap = new Map();
+    if (stripeResponse && stripeResponse.ok) {
+        try {
+            const stripePayload = await stripeResponse.json();
+            const stripeData = Array.isArray(stripePayload?.data) ? stripePayload.data : [];
+            for (const item of stripeData) {
+                if (item?.id) stripePriceMap.set(item.id, item);
+            }
+        } catch (err) {
+            console.warn('Could not parse live Stripe data:', err);
+        }
+    }
+
+    const payload = unwrapApiData(await catalogResponse.json());
     const categories = Array.isArray(payload?.categories) ? payload.categories : (Array.isArray(payload) ? payload : []);
 
     storeState.catalog = {
@@ -42,87 +61,55 @@ export async function loadStorePackages() {
     storeState.categories = categories.map((category, categoryIndex) => ({
         id: ensureNumericId(category?.id, categoryIndex + 1),
         name: category?.name || `Category ${categoryIndex + 1}`,
-        // preserve legacy top-level packages and nested subcategories
         packages: Array.isArray(category?.packages) ? category.packages : [],
         subcategories: Array.isArray(category?.subcategories) ? category.subcategories : [],
     }));
 
+    // Helper pour fusionner les infos du package local avec le prix Stripe
+    const hydratePackage = (storePackage, fallbackId, subNode = null) => {
+        const stripePriceObj = storePackage.price_id ? stripePriceMap.get(storePackage.price_id) : null;
+        
+        // Si trouvé dans Stripe : conversion centimes -> euros (/ 100), sinon fallback sur displayed_price local
+        const displayedPrice = stripePriceObj
+            ? (Number(stripePriceObj.unit_amount) || 0) / 100
+            : (storePackage.displayed_price ?? storePackage.displayedPrice ?? 0);
+
+        const currency = String(stripePriceObj?.currency || storePackage.currency || storeState.catalog.currency || 'EUR').toUpperCase();
+
+        return {
+            ...storePackage,
+            id: ensureNumericId(storePackage?.id, fallbackId),
+            displayed_price: displayedPrice,
+            currency: currency,
+            categoryId: storePackage.categoryId,
+            categoryName: storePackage.categoryName,
+            subcategoryId: subNode ? subNode.__path[subNode.__path.length - 1] : null,
+            subcategoryName: subNode ? (subNode.name || null) : null,
+            subcategoryPath: subNode ? subNode.__path : [],
+            sanitizedDescription: sanitizeHtml(storePackage.description) || '<p>No description available.</p>',
+        };
+    };
+
     storeState.packages = storeState.categories.flatMap((category, categoryIndex) => {
         const fromTop = Array.isArray(category.packages) ? category.packages.map((storePackage, packageIndex) => {
             const fallbackId = ((categoryIndex + 1) * 1000) + packageIndex + 1;
-            return {
-                ...storePackage,
-                id: ensureNumericId(storePackage?.id, fallbackId),
-                currency: String(storePackage?.currency || storeState.catalog.currency || 'EUR').toUpperCase(),
-                categoryId: category.id,
-                categoryName: category.name,
-                subcategoryId: null,
-                subcategoryName: null,
-                subcategoryPath: [],
-                sanitizedDescription: sanitizeHtml(storePackage.description) || '<p>No description available.</p>',
-            };
+            return hydratePackage({ ...storePackage, categoryId: category.id, categoryName: category.name }, fallbackId);
         }) : [];
 
         const fromSubs = walkSubcategories(category.subcategories).flatMap((subNode) => Array.isArray(subNode.packages) ? subNode.packages.map((storePackage, packageIndex) => {
             const fallbackId = ((categoryIndex + 1) * 1000) + (subNode.__path.join('-').length) + packageIndex + 1;
-            return {
-                ...storePackage,
-                id: ensureNumericId(storePackage?.id, fallbackId),
-                currency: String(storePackage?.currency || storeState.catalog.currency || 'EUR').toUpperCase(),
-                categoryId: category.id,
-                categoryName: category.name,
-                subcategoryId: subNode.__path[subNode.__path.length - 1],
-                subcategoryName: subNode.name || null,
-                subcategoryPath: subNode.__path,
-                sanitizedDescription: sanitizeHtml(storePackage.description) || '<p>No description available.</p>',
-            };
+            return hydratePackage({ ...storePackage, categoryId: category.id, categoryName: category.name }, fallbackId, subNode);
         }) : []);
 
         return [...fromTop, ...fromSubs];
     });
 
-    if (!storeState.packages.length && storeState.catalog.paymentLink) {
-        const fallbackCategoryId = storeState.categories[0]?.id || 1;
-        const fallbackCategoryName = storeState.categories[0]?.name || 'Store';
-        storeState.categories = storeState.categories.length ? storeState.categories : [{ id: fallbackCategoryId, name: fallbackCategoryName, packages: [] }];
-        storeState.packages = [{
-            id: 1,
-            name: storeState.catalog.packageName,
-            slug: 'support-package',
-            displayed_price: 0,
-            currency: storeState.catalog.currency,
-            categoryId: fallbackCategoryId,
-            categoryName: fallbackCategoryName,
-            paymentLink: storeState.catalog.paymentLink,
-            sanitizedDescription: '<p>Redirects to Stripe payment link.</p>',
-        }];
-    }
-
     storeState.packageMap = new Map(storeState.packages.map(storePackage => [Number(storePackage.id), storePackage]));
     storeState.activeCategoryId = getCategoryPreference();
 
-    // validate activeCategoryId: supports 'all', 'categoryId', or 'categoryId/subcategoryId[/...childSubcategoryId]'
-    const active = String(storeState.activeCategoryId || 'all');
-    if (active !== 'all') {
-        const parts = active.split('/').filter(Boolean);
-        const catId = parts[0];
-        const foundCategory = storeState.categories.some(cat => String(cat.id) === String(catId));
-        if (!foundCategory) storeState.activeCategoryId = 'all';
-        else {
-            const category = storeState.categories.find(cat => String(cat.id) === String(catId));
-            let current = Array.isArray(category?.subcategories) ? category.subcategories : [];
-            let valid = true;
-            for (const id of parts.slice(1)) {
-                const next = current.find(sub => String(sub.id) === String(id));
-                if (!next) { valid = false; break; }
-                current = Array.isArray(next.subcategories) ? next.subcategories : [];
-            }
-            if (!valid) storeState.activeCategoryId = String(catId);
-        }
-    }
-
     renderStateMessage(storeState.packages.length ? `Loaded ${storeState.categories.length} categories and ${storeState.packages.length} packages.` : 'No packages were returned by the catalog.');
 }
+
 export function getPackagePaymentLink(packageId) {
     const storePackage = storeState.packageMap.get(Number(packageId));
     return String(storePackage?.paymentLink || storePackage?.payment_link || storeState.catalog?.paymentLink || '').trim();
