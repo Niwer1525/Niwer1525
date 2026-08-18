@@ -66,13 +66,8 @@ class IncContact extends HTMLElement {
                         <i class="fa fa-comment"></i>
                         <textarea name="message" placeholder="Message" required></textarea>
                     </label>
-                    <div>
-                        <button type="submit" data-i18n="btn.send"><i class="fa fa-paper-plane"></i>Send</button>
-                        <span class="link-button" onclick="copyDiscordId()" title="📋 Discord ID">
-                            <i class="fa-brands fa-discord"></i>
-                            Discord
-                        </span>
-                    </div>
+                    <button type="submit" data-i18n="btn.send"><i class="fa fa-paper-plane"></i>Send</button>
+                    <hr>
                     <a href="mailto:contact@niwer.dev" class="link-button" data-i18n="btn.open_email">
                         <i class="fa fa-envelope"></i>
                         Open email application

@@ -8,9 +8,10 @@
 function appendImageOrVideo(project) {
     const USE_VIDEO_AS_PREV = project.video_id !== undefined;
     if(USE_VIDEO_AS_PREV)
-        return `<iframe loading="lazy" title="YouTube video player of ${project.name}" src="https://www.youtube.com/embed/${project.video_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+        return `<lite-youtube videoid="${project.video_id}" title="YouTube video player of ${project.name}"></lite-youtube>`; // Lite-Youtube should reduce load time / memory usage compared to a full iframe.
+        // return `<iframe loading="lazy" title="YouTube video player of ${project.name}" src="https://www.youtube.com/embed/${project.video_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
     
-    return `<img loading="lazy" draggable="false" src="assets/${project.image}" alt="Image of ${project.name}">`
+    return `<img loading="lazy" decoding="async" draggable="false" src="assets/${project.image}" alt="Image of ${project.name}">`
 }
 
 /**
@@ -43,7 +44,7 @@ function formatDefaultButtonName(type) {
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const BASE_URL = (typeof WEBSITE_URL !== 'undefined') ? WEBSITE_URL : new URL('.', window.location.href).href;
-        const RESPONSE = await fetch(new URL('database.json', BASE_URL));
+        const RESPONSE = await fetch(new URL('data/database.json', BASE_URL));
         if (!RESPONSE.ok) throw new Error(`HTTP error! status: ${RESPONSE.status}`);
 
         const DATA = await RESPONSE.json();
