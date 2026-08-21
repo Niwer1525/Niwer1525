@@ -1,0 +1,82 @@
+name: Sync All External Data
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 */2 * * *' # Execute every 2 hours
+  workflow_dispatch: # Allow manual triggering of the workflow
+
+jobs:
+  sync-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      # 1. GitHub Stats
+      - name: Run GitHub stats script
+        env:
+          GH_TOKEN: ${{ secrets.STATS_TOKEN }}
+        run: python fetch_stats.py
+
+      # 2. Stripe Catalog
+      - name: Fetch Raw Stripe Data
+        env:
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+        run: |
+          curl -s -u "${STRIPE_SECRET_KEY}:" \
+            -G "https://api.stripe.com/v1/prices" \
+            -d "active=true" \
+            -d "expand[]=data.product" \
+            -o stripe_catalog.json
+
+      # 3. WakaTime Data & Chart
+      - name: Fetch WakaTime Stats & Chart
+        env:
+          WAKA_KEY: ${{ secrets.WAKATIME_API_KEY }}
+        run: |
+          AUTH=$(echo -n "$WAKA_KEY" | base64)
+
+          # WakaTime stats
+          curl -H "Authorization: Basic $AUTH" "https://wakatime.com/api/v1/users/current/all_time_since_today" -o wakatime.json
+
+          # WakaTime chart
+          curl -H "Authorization: Basic $AUTH" "https://wakatime.com/api/v1/users/current/stats/all_time" -o wakatime-chart.json
+
+      # 4. Commit & Push on data branch
+      - name: Commit and push changes to data branch
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Moving generated files to a temporary directory to avoid issues with git
+          mkdir -p /tmp/generated_data
+          cp -f github_full_stats.json stripe_catalog.json wakatime.json wakatime-chart.json /tmp/generated_data/ 2>/dev/null || true
+
+          # Checkout the data branch or create it if it doesn't exist
+          if git fetch origin data; then
+            git checkout data
+          else
+            git checkout --orphan data
+            git rm -rf . # Nettoie tout le code hérité de main
+          fi
+
+          # Move the generated files back to the repository root
+          cp -f /tmp/generated_data/* . 2>/dev/null || true
+
+          # Indexing generated files
+          git add github_full_stats.json stripe_catalog.json wakatime.json wakatime-chart.json
+          git commit -m "Update external data (GitHub, Stripe, WakaTime)" || exit 0
+
+          git push origin HEAD:data --force
