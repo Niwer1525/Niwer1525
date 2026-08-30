@@ -28,15 +28,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 /**
- * Copies the Discord ID to the clipboard and shows a notification.
- * 
- * @author Niwer
- */
-function copyDiscordId() {
-    navigator.clipboard.writeText('niwerbis').then(() => createNotification('Discord ID copied to clipboard!'));
-}
-
-/**
  * Copies the email address to the clipboard and shows a notification.
  * 
  * @author Niwer
