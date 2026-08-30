@@ -60,26 +60,26 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Moving generated files to a temporary directory to avoid issues with git
+          # Move (not copy) generated files out of the working tree
           mkdir -p /tmp/generated_data
-          cp -f github_full_stats.json stripe_catalog.json wakatime.json wakatime-chart.json /tmp/generated_data/ 2>/dev/null || true
+          mv -f github_full_stats.json stripe_catalog.json wakatime.json wakatime-chart.json /tmp/generated_data/ 2>/dev/null || true
 
-          # Clean the workspace so tracked files don't conflict
+          # Clean any remaining untracked or modified files from main
           git reset --hard
+          git clean -fd
 
           # Checkout the data branch or create it if it doesn't exist
           if git fetch origin data; then
-            # Disambiguate using -- and track origin/data explicitly
             git checkout -B data origin/data --
           else
             git checkout --orphan data
             git rm -rf .
           fi
 
-          # Move the generated files back to the repository root
-          cp -f /tmp/generated_data/* . 2>/dev/null || true
+          # Move the generated files back into the data branch workspace
+          mv -f /tmp/generated_data/* . 2>/dev/null || true
 
-          # Indexing generated files
+          # Stage, commit, and force-push
           git add github_full_stats.json stripe_catalog.json wakatime.json wakatime-chart.json
           git commit -m "Update external data (GitHub, Stripe, WakaTime)" || exit 0
 
