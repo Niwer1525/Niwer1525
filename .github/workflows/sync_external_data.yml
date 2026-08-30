@@ -64,12 +64,16 @@ jobs:
           mkdir -p /tmp/generated_data
           cp -f github_full_stats.json stripe_catalog.json wakatime.json wakatime-chart.json /tmp/generated_data/ 2>/dev/null || true
 
+          # Clean the workspace so tracked files don't conflict
+          git reset --hard
+
           # Checkout the data branch or create it if it doesn't exist
           if git fetch origin data; then
-            git checkout data
+            # Disambiguate using -- and track origin/data explicitly
+            git checkout -B data origin/data --
           else
             git checkout --orphan data
-            git rm -rf . # Nettoie tout le code hérité de main
+            git rm -rf .
           fi
 
           # Move the generated files back to the repository root
