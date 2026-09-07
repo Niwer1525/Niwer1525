@@ -1,0 +1,1 @@
+This official content-pack for Niwer's Engine includes a variety of ambient sounds for different environments such as forests, caves, oceans, foot steps, etc. Perfect for enhancing the atmosphere in your Minecraft world!

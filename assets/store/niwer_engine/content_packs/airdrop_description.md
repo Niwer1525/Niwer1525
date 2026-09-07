@@ -1,0 +1,1 @@
+This official content-pack for Niwer's Engine includes a plane model, with a crate with parachute models.<br><br> Place drop-points in your world, then the system will randomly drop crates with parachutes, containing random items from a loot table. Perfect for battle royale or survival game modes !

@@ -36,19 +36,36 @@ export function extractPackageImageSource(image) {
     return '';
 }
 
+function resolvePackageImageUrl(source) {
+    const normalized = String(source || '').trim();
+    if (!normalized || typeof document === 'undefined') return normalized;
+
+    const localPath = normalized.startsWith('/') && document.baseURI.startsWith('file:')
+        ? `.${normalized}`
+        : normalized;
+
+    try {
+        return new URL(localPath, document.baseURI).href;
+    } catch {
+        return normalized;
+    }
+}
+
 export function packageImages(storePackage) {
     const images = [];
     for (const candidate of [storePackage?.images, storePackage?.gallery, storePackage?.media, storePackage?.image]) {
         if (Array.isArray(candidate)) {
             for (const item of candidate) {
                 const source = extractPackageImageSource(item);
-                if (source && isSafeAssetUrl(source) && !images.includes(source)) images.push(source);
+                const resolvedSource = resolvePackageImageUrl(source);
+                if (source && isSafeAssetUrl(source) && !images.includes(resolvedSource)) images.push(resolvedSource);
             }
             continue;
         }
 
         const source = extractPackageImageSource(candidate);
-        if (source && isSafeAssetUrl(source) && !images.includes(source)) images.push(source);
+        const resolvedSource = resolvePackageImageUrl(source);
+        if (source && isSafeAssetUrl(source) && !images.includes(resolvedSource)) images.push(resolvedSource);
     }
 
     return images;

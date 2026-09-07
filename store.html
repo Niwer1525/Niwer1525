@@ -39,6 +39,10 @@
         </main>
         <footer><inc-footer-content></inc-footer-content></footer>
         <!-- Inc scripts -->
+        <script type="module">
+            import * as marked from 'https://cdn.jsdelivr.net/npm/marked@13.0.0/lib/marked.esm.js';
+            window.marked = marked;
+        </script><!-- Load marked ESM and expose as global `marked` for store modules -->
         <script src="./js/i18n.js" defer></script> <!-- Load first to ensure languages are loaded -->
         <script src="./js/main.js" defer></script> <!-- Load main script -->
         <script src="./js/theme.js" defer></script> <!-- Load theme script -->

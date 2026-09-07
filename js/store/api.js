@@ -25,6 +25,26 @@ function walkSubcategories(subcategories, parentPath = []) {
     });
 }
 
+async function loadPackageDescription(descriptionPath) {
+    const path = String(descriptionPath || '').trim();
+    if (!path) return '<p>No description available.</p>';
+
+    try {
+        const localPath = path.startsWith('/') ? `.${path}` : path;
+        const response = await fetch(new URL(localPath, document.baseURI));
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        const markdown = await response.text();
+        const parser = globalThis.marked?.parse;
+        if (typeof parser !== 'function') throw new Error('Markdown parser is unavailable.');
+
+        return sanitizeHtml(parser(markdown));
+    } catch (error) {
+        console.error(`Could not load package description: ${path}`, error);
+        return '<p>Description unavailable.</p>';
+    }
+}
+
 export async function loadStorePackages() {
     // Getting the catalog and Stripe data in parallel
     const [catalogResponse, stripeResponse] = await Promise.all([
@@ -66,7 +86,7 @@ export async function loadStorePackages() {
     }));
 
     // Helper pour fusionner les infos du package local avec le prix Stripe
-    const hydratePackage = (storePackage, fallbackId, subNode = null) => {
+    const hydratePackage = async (storePackage, fallbackId, subNode = null) => {
         const stripePriceObj = storePackage.price_id ? stripePriceMap.get(storePackage.price_id) : null;
         
         // Si trouvé dans Stripe : conversion centimes -> euros (/ 100), sinon fallback sur displayed_price local
@@ -86,23 +106,23 @@ export async function loadStorePackages() {
             subcategoryId: subNode ? subNode.__path[subNode.__path.length - 1] : null,
             subcategoryName: subNode ? (subNode.name || null) : null,
             subcategoryPath: subNode ? subNode.__path : [],
-            sanitizedDescription: sanitizeHtml(storePackage.description) || '<p>No description available.</p>',
+            sanitizedDescription: await loadPackageDescription(storePackage.description),
         };
     };
 
-    storeState.packages = storeState.categories.flatMap((category, categoryIndex) => {
-        const fromTop = Array.isArray(category.packages) ? category.packages.map((storePackage, packageIndex) => {
+    storeState.packages = (await Promise.all(storeState.categories.map(async (category, categoryIndex) => {
+        const fromTop = Array.isArray(category.packages) ? await Promise.all(category.packages.map(async (storePackage, packageIndex) => {
             const fallbackId = ((categoryIndex + 1) * 1000) + packageIndex + 1;
             return hydratePackage({ ...storePackage, categoryId: category.id, categoryName: category.name }, fallbackId);
-        }) : [];
+        })) : [];
 
-        const fromSubs = walkSubcategories(category.subcategories).flatMap((subNode) => Array.isArray(subNode.packages) ? subNode.packages.map((storePackage, packageIndex) => {
+        const fromSubs = (await Promise.all(walkSubcategories(category.subcategories).map(async (subNode) => Array.isArray(subNode.packages) ? Promise.all(subNode.packages.map(async (storePackage, packageIndex) => {
             const fallbackId = ((categoryIndex + 1) * 1000) + (subNode.__path.join('-').length) + packageIndex + 1;
             return hydratePackage({ ...storePackage, categoryId: category.id, categoryName: category.name }, fallbackId, subNode);
-        }) : []);
+        })) : []))).flat();
 
         return [...fromTop, ...fromSubs];
-    });
+    }))).flat();
 
     storeState.packageMap = new Map(storeState.packages.map(storePackage => [Number(storePackage.id), storePackage]));
     storeState.activeCategoryId = getCategoryPreference();

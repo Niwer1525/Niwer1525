@@ -11,23 +11,7 @@
             "id": 3290741,
             "name": "Minecraft",
             "packages": [
-                {
-                    "id": 1,
-                    "name": "Armo",
-                    "slug": "armo",
-                    "price_id": "price_1ToKZSCs4coI0BXqF2ryvk4X",
-                    "displayed_price": 24.95,
-                    "currency": "EUR",
-                    "paymentLink": "",
-                    "payment_type": "one_time_purchase",
-                    "images": [
-                        "/assets/store/armo/armo_1.png",
-                        "/assets/store/armo/armo_2.png",
-                        "/assets/store/armo/armo_3.png",
-                        "/assets/store/armo/armo_4.png"
-                    ],
-                    "description": "Bring 3D Blockbench (.bbmodel) armor to Minecraft.<br> Works as a desktop app (Java 21) to generate resource packs or as a server plugin integrating with Nexo, ItemsAdder, and CraftEngine via /reloadAndSend.<br><br> Features:<br> • Iris/Optifine shader support (via EMF/ETF or Optifine CEM)<br> • Universal entity support<br> • Tested on MC 1.21.x (uses 1.21 equippable components)<br><br> Note: Requires players to use ETF/EMF or Optifine (pure vanilla core shader support pending)."
-                }
+                
             ],
             "subcategories": [
                 {
@@ -46,7 +30,7 @@
                                     "currency": "EUR",
                                     "paymentLink": "https://buy.stripe.com/9B68wO33HeGwfxPeGGcfK00",
                                     "payment_type": "subscription",
-                                    "description": "Niwer's Engine is a powerful Minecraft modding framework that simplifies the creation of content.<br><br> It provides a wide range of features and tools to help developers create high-quality content for Minecraft. With Niwer's Engine, you can easily create custom items, blocks, entities, props, firearms, armors, vehicles, and much more.<br><br> The access license grants you the right to use Niwer's Engine for your projects and receive updates and support from the developer."
+                                    "description": "/assets/store/niwer_engine/default_description.md"
                                 },
                                 {
                                     "id": 2,
@@ -56,7 +40,7 @@
                                     "currency": "EUR",
                                     "paymentLink": "https://buy.stripe.com/00w3cu9s5bukdpH7eecfK04",
                                     "payment_type": "subscription",
-                                    "description": "This version of Niwer's Engine allows you to access developer repositories and tools, enabling you to create and modify content directly inside the engine. This version is under Terms of sales"
+                                    "description": "/assets/store/niwer_engine/developer_access_description.md"
                                 }
                             ]
                         },
@@ -72,7 +56,7 @@
                                     "currency": "EUR",
                                     "paymentLink": "https://buy.stripe.com/5kQ5kCaw98i8dpH422cfK03",
                                     "payment_type": "one_time_purchase",
-                                    "description": "This official content-pack for Niwer's Engine includes a plane model, with a crate with parachute models.<br><br> Place drop-points in your world, then the system will randomly drop crates with parachutes, containing random items from a loot table. Perfect for battle royale or survival game modes !"
+                                    "description": "/assets/store/niwer_engine/content_packs/airdrop_description.md"
                                 },
                                 {
                                     "id": 3,
@@ -82,7 +66,7 @@
                                     "currency": "EUR",
                                     "paymentLink": "https://buy.stripe.com/6oU00i7jX55WfxPeGGcfK01",
                                     "payment_type": "one_time_purchase",
-                                    "description": "This official content-pack for Niwer's Engine includes handcuffs, handcuff keys, gag that mute the voice and a paper bag that hide the head.<br><br> Perfect for prison or cops and robbers game modes !"
+                                    "description": "/assets/store/niwer_engine/content_packs/kidnapping_description.md"
                                 },
                                 {
                                     "id": 4,
@@ -92,9 +76,31 @@
                                     "currency": "EUR",
                                     "paymentLink": "https://buy.stripe.com/8x2dR81ZDdCsgBT422cfK02",
                                     "payment_type": "one_time_purchase",
-                                    "description": "This official content-pack for Niwer's Engine includes a variety of ambient sounds for different environments such as forests, caves, oceans, foot steps, etc. Perfect for enhancing the atmosphere in your Minecraft world!"
+                                    "description": "/assets/store/niwer_engine/content_packs/ambient_sounds_description.md"
                                 }
                             ]
+                        }
+                    ]
+                },
+                {
+                    "id": 1002,
+                    "name": "Tools & Standalone",
+                    "packages": [
+                        {
+                            "id": 1,
+                            "name": "Armo",
+                            "slug": "armo",
+                            "price_id": "price_1ToKZSCs4coI0BXqF2ryvk4X",
+                            "currency": "EUR",
+                            "paymentLink": "",
+                            "payment_type": "one_time_purchase",
+                            "images": [
+                                "/assets/store/armo/armo_1.png",
+                                "/assets/store/armo/armo_2.png",
+                                "/assets/store/armo/armo_3.png",
+                                "/assets/store/armo/armo_4.png"
+                            ],
+                            "description": "/assets/store/armo/description.md"
                         }
                     ]
                 }
