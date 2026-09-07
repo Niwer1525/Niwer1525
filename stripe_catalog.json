@@ -284,7 +284,7 @@
         },
         "type": "service",
         "unit_label": null,
-        "updated": 1782898602,
+        "updated": 1788787035,
         "url": null
       },
       "recurring": null,
@@ -292,8 +292,8 @@
       "tiers_mode": null,
       "transform_quantity": null,
       "type": "one_time",
-      "unit_amount": 2495,
-      "unit_amount_decimal": "2495"
+      "unit_amount": 1995,
+      "unit_amount_decimal": "1995"
     }
   ],
   "has_more": false,
