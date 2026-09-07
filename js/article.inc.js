@@ -46,7 +46,8 @@ async function loadProjectDescription(projectName) {
     const path = `assets/projects/${projectName}/description_${lang}.md`;
 
     try {
-        const response = await fetch(new URL(path, WEBSITE_URL));
+        const BASE_URL = (typeof WEBSITE_URL !== 'undefined') ? WEBSITE_URL : new URL('.', window.location.href).href;
+        const response = await fetch(new URL(path, BASE_URL));
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
         const markdownText = await response.text();
