@@ -1,0 +1,1 @@
+Un bot discord.js qui inclut un <span>système d'IA</span> qui peut discuter avec vous. Il est <span>configurable</span> et peut être utilisé dans n'importe quel serveur.

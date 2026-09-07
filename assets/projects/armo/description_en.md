@@ -1,0 +1,1 @@
+Armo is a specialized tool designed to bring <span>custom 3D armors</span> to Minecraft without requiring any client-side mods. Powered by optimized <span>GLSL core shaders</span>, it allows server creators to easily export models with <span>automatic skeleton alignment</span>, <span>full vanilla animation support</span>, and zero noticeable performance impact.

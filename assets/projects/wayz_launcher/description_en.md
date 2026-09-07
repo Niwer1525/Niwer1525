@@ -1,0 +1,1 @@
+The WayZ Launcher is a custom launcher for the WayZ server. It simplifies the installation and management of the main mod and the additionnal ones (Sodium, Iris, etc), ensuring that players have the best experience possible. The Launcher is open-source now with some removed features (auto-updater and other network required things).

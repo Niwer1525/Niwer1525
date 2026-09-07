@@ -1,0 +1,1 @@
+Queryon is a pure Java SQL builder and parser powered by <span>SQLite</span>. Streamline database interactions with a <span>fluent API and seamless object mapping</span>. Available via <span>JitPack</span>, it's the perfect tool for Java developers seeking efficient and intuitive database management.

@@ -1,0 +1,1 @@
+All-in-one order management for bakeries. Streamlines customer orders, inventory tracking, and pickup scheduling via a responsive web-app.

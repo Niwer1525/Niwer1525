@@ -1,0 +1,1 @@
+Lumen is a lightweight, extensible, pure Java logging system. Simple <span>console and file logs</span> or <span>custom processors</span>. Available via <span>JitPack</span>. It's perfect for debugging and printing logs in your Java applications.

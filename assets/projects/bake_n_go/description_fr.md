@@ -1,0 +1,1 @@
+Gestion intégrée des commandes pour les boulangeries. Simplifie la gestion des commandes clients, le suivi de l'inventaire et la planification des retraits via une application web responsive.

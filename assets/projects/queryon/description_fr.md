@@ -1,0 +1,1 @@
+Queryon est un constructeur et analyseur SQL en Java pur alimenté par <span>SQLite</span>. Rationalisez les interactions avec la base de données grâce à une <span>API fluide et une conversion d'objets transparente</span>. Disponible via <span>JitPack</span>, c'est l'outil parfait pour les développeurs Java à la recherche d'une gestion de base de données efficace et intuitive.

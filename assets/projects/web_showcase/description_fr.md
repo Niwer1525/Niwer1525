@@ -1,0 +1,1 @@
+Un site web réalisé pour mes cours web en utilisant PHP, HTML et CSS. Il inclut un <span>système d'articles/nouvelles</span>, un <span>système d'équipe</span>, un <span>système de département</span>, un <span>formulaire de contact</span> et bien plus encore !

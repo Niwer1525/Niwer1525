@@ -1,0 +1,1 @@
+A Bukkit/Spigot plugin designed to create an enhanced Vanilla Minecraft experience. It includes features such as <span>homes</span>, a <span>hub</span>, administrator commands like <span>/invsee, /ec, /broadcast</span>, a currency system, and much more.

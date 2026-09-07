@@ -1,0 +1,1 @@
+Nebulae est un format de fichier binaire personnalisé. Il est conçu pour être simple, efficace, compressé et obfusqué (via un système de clé privée). Il peut être utilisé pour stocker n'importe quel type de données, mais il est principalement conçu pour stocker des données de jeu (cartes, entités, etc).

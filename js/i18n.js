@@ -58,6 +58,7 @@ async function changeLanguage(lang) {
     await setLanguagePreference(lang);
     currentLang = null; // force refresh cache when language changes
     await applyLanguage();
+    window.dispatchEvent(new Event('languageChanged'));
 }
 
 /**

@@ -1,0 +1,1 @@
+Lumen est un système de journalisation léger, extensible et entièrement écrit en Java. Des <span>logs simples dans la console et les fichiers</span> ou des <span>processeurs personnalisés</span>. Disponible via <span>JitPack</span>. C'est l'outil parfait pour le débogage et l'impression de logs dans vos applications Java.

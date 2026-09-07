@@ -4,7 +4,7 @@
     "projects": [
         {
             "name": "wayz",
-            "image": "wayz.webp",
+            "image": "projects/wayz.webp",
             "links": { "https://www.youtube.com/watch?v=ovDb41z2TuQ&list=PL2uFPy064gi_Rz8ndkNubAYFySzAdpvOt": "see" },
             "tags": ["java", "fabric", "gradle" ]
         },
@@ -13,6 +13,12 @@
             "video_id": "SocKuHWuOe8",
             "links": { "https://git.niwer.dev/WayZ-Launcher": "read" },
             "tags": ["java", "javaFx", "gradle"]
+        },
+        {
+            "name": "armo",
+            "image": "projects/armo.png",
+            "links": { "https://modrinth.com/resourcepack/3d-military-police-armor": "see" },
+            "tags": ["java", "spigot", "glsl", "maven", "glsl_obfuscator", "lumen" ]
         },
         {
             "name": "dynamic_smoke_particles",
@@ -43,13 +49,13 @@
         },
         {
             "name": "integrative_activity",
-            "image": "hexgame.webp",
+            "image": "projects/hexgame.webp",
             "links": { "https://git.niwer.dev/BAC1_Integrative_activity": "read" },
             "tags": ["java"]
         },
         {
             "name": "gaspar",
-            "image": "gaspar.webp",
+            "image": "projects/gaspar.webp",
             "links": { "https://git.niwer.dev/Gaspar-AI-Discord-Bot": "read" },
             "tags": ["python", "discord.js", "nodejs", "javascript"]
         },

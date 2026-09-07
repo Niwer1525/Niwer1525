@@ -1,0 +1,1 @@
+Il s'agit d'un obfuscateur GLSL open-source écrit en Java. Il peut être utilisé comme une bibliothèque Java ou comme un plugin Gradle. Il inclut de nombreuses fonctionnalités telles que le <span>renommage des variables</span>, la <span>minification du code GLSL</span> et bien plus encore.

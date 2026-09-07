@@ -27,7 +27,7 @@ function walkSubcategories(subcategories, parentPath = []) {
 
 async function loadPackageDescription(descriptionPath) {
     const path = String(descriptionPath || '').trim();
-    if (!path) return '<p>No description available.</p>';
+    if (!path) return '<p data-i18n="description.unavailable">Description unavailable.</p>';
 
     try {
         const localPath = path.startsWith('/') ? `.${path}` : path;
@@ -41,7 +41,7 @@ async function loadPackageDescription(descriptionPath) {
         return sanitizeHtml(parser(markdown));
     } catch (error) {
         console.error(`Could not load package description: ${path}`, error);
-        return '<p>Description unavailable.</p>';
+        return '<p data-i18n="description.unavailable">Description unavailable.</p>';
     }
 }
 

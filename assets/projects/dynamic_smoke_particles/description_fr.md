@@ -1,0 +1,1 @@
+Dynamic Smoke Particles est un mod Minecraft open-source et activement maintenu pour Fabric et NeoForge (via Modrinth), qui introduit une physique des particules de fumée réaliste et dynamique dans le jeu.

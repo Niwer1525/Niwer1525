@@ -1,0 +1,1 @@
+A small game inspired by <a class="underline" href="https://www.lutanho.net/play/hex.html" target="_blank">HEX</a>. Made for my java courses. This include a <span>bridge system</span>, <span>red and blue players</span> and <span>preview system</span> !
