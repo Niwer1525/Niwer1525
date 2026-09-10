@@ -124,7 +124,7 @@
       "product": {
         "id": "prod_UbkfScPhBCa4lt",
         "object": "product",
-        "active": true,
+        "active": false,
         "attributes": [],
         "created": 1782898610,
         "default_price": "price_1U5BTKCs4coI0BXqOsHSj2Au",
@@ -146,7 +146,7 @@
         },
         "type": "service",
         "unit_label": null,
-        "updated": 1786915259,
+        "updated": 1789048886,
         "url": null
       },
       "recurring": {
@@ -178,7 +178,7 @@
       "product": {
         "id": "prod_UbkfScPhBCa4lt",
         "object": "product",
-        "active": true,
+        "active": false,
         "attributes": [],
         "created": 1782898610,
         "default_price": "price_1U5BTKCs4coI0BXqOsHSj2Au",
@@ -200,7 +200,7 @@
         },
         "type": "service",
         "unit_label": null,
-        "updated": 1786915259,
+        "updated": 1789048886,
         "url": null
       },
       "recurring": {
