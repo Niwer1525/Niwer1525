@@ -6,7 +6,7 @@ Le responsable du traitement des données à caractère personnel pour le domain
 
 Nous collectons et traitons uniquement les informations strictement nécessaires à la fourniture de nos services, à l'administration des accès et à l'exécution des commandes :
 
-* **Identifiants de compte :** Lors de la création d'un compte sur `engine.niwer.dev`, nous enregistrons votre adresse e-mail ainsi qu'une empreinte chiffrée (hachage sécurisé) de votre mot de passe.
+* **Identifiants de compte :** Lors de la création d'un compte sur `panel.niwer.dev`, nous enregistrons votre adresse e-mail ainsi qu'une empreinte chiffrée (hachage sécurisé) de votre mot de passe.
 * **Données de facturation et de commande :** Nom, prénom, adresse e-mail, adresse postale de facturation et numéro d'identification fiscale/TVA (le cas échéant) lors d'un achat.
 * **Données techniques et de sécurité :** Adresse IP, logs de connexion et cookies strictement essentiels au bon fonctionnement, à la sécurité du site et aux analyses d'audience internes.
 

@@ -1,12 +1,12 @@
 ### 1. Website Usage
 
-By accessing the **niwer.dev** domain and its associated subdomains (including, but not limited to, `engine.niwer.dev`, `git.niwer.dev`, `modrinth.niwer.dev`, `wakatime.niwer.dev`), you agree to use them strictly for lawful purposes in compliance with these terms.
+By accessing the **niwer.dev** domain and its associated subdomains (including, but not limited to, `panel.niwer.dev`, `git.niwer.dev`, `modrinth.niwer.dev`, `wakatime.niwer.dev`), you agree to use them strictly for lawful purposes in compliance with these terms.
 
 You are strictly prohibited from attempting to compromise infrastructure security, bypassing authentication mechanisms, or using automated scrapers, bots, or scripts to extract data without explicit prior authorization.
 
 ### 2. Account Registration and Security
 
-To access certain services or software management panels, creating an account on `engine.niwer.dev` may be required. You are solely responsible for maintaining the confidentiality of your account credentials (email address and password) and for all activities conducted under your account. You agree to notify the administrator immediately at **contact@niwer.dev** in the event of any unauthorized use or security breach.
+To access certain services or software management panels, creating an account on `panel.niwer.dev` may be required. You are solely responsible for maintaining the confidentiality of your account credentials (email address and password) and for all activities conducted under your account. You agree to notify the administrator immediately at **contact@niwer.dev** in the event of any unauthorized use or security breach.
 
 ### 3. Limitation of Liability
 

@@ -13,7 +13,7 @@ The services, software, frameworks, APIs, and user management systems of this sh
 This shop offers standalone digital downloads, SaaS software framework subscriptions, and source code access licenses:
 
 * **Minecraft Mods & Standalone Assets:** Autonomous compiled digital products. Delivery is instantaneous and automated upon payment confirmation.
-* **Software Framework (SaaS License):** Grant of a personal, non-exclusive, non-transferable, temporary, and revocable license to run compiled framework binaries on authorized servers managed via `engine.niwer.dev`.
+* **Software Framework (SaaS License):** Grant of a personal, non-exclusive, non-transferable, temporary, and revocable license to run compiled framework binaries on authorized servers managed via `panel.niwer.dev`.
 * **Developer Access (Source Code License):** Optional supplementary subscription tied to an active SaaS License, granting private, non-exclusive, revocable access to the Niwer's Engine source code (via dedicated private GitHub repositories). This access is strictly limited to studying, customizing, integrating, extending, and debugging the engine for the Subscriber's own authorized server or game projects.
 
 ### 3. Intellectual Property & Strict Source Code Restrictions

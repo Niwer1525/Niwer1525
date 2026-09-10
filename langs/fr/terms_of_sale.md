@@ -13,7 +13,7 @@ Les services, logiciels, frameworks, API et systèmes de gestion de cette boutiq
 Cette boutique propose des produits numériques, des abonnements logiciels SaaS et des licences d'accès au code source régis par les dispositions suivantes :
 
 * **Mods Minecraft & Assets indépendants :** Produits numériques téléchargeables autonomes. La livraison est immédiate et automatisée après validation du paiement.
-* **Software Framework (Licence SaaS) :** Concession d'un droit d'utilisation personnel, temporaire, non exclusif et incessible permettant d'exécuter les binaires compilés du moteur sur des serveurs autorisés gérés via `engine.niwer.dev`.
+* **Software Framework (Licence SaaS) :** Concession d'un droit d'utilisation personnel, temporaire, non exclusif et incessible permettant d'exécuter les binaires compilés du moteur sur des serveurs autorisés gérés via `panel.niwer.dev`.
 * **Developer Access (Licence d'accès au code source) :** Souscription optionnelle liée à une Licence SaaS active, accordant un droit d'accès privé, révocable et non exclusif au code source de Niwer's Engine (via dépôts GitHub dédiés). Cet accès est strictement réservé à l'étude, l'intégration, l'adaptation et le débogage pour les besoins exclusifs des Projets autorisés du Licencié.
 
 ### 3. Propriété intellectuelle et restrictions strictes sur le code source

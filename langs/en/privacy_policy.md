@@ -6,7 +6,7 @@ The personal data controller for the domain **niwer.dev** and all its subdomains
 
 We only collect and process personal data strictly necessary to operate our services, manage user access, and fulfill your orders:
 
-* **Account Credentials:** When you create an account on `engine.niwer.dev`, we securely store your email address along with a hashed version of your password.
+* **Account Credentials:** When you create an account on `panel.niwer.dev`, we securely store your email address along with a hashed version of your password.
 * **Order & Billing Details:** First name, last name, email address, physical billing address, and VAT/tax identification number (where applicable) upon checkout.
 * **Technical & Security Data:** IP addresses, access logs, and essential cookies strictly required for core functionality, security, and internal usage metrics.
 
