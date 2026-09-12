@@ -1529,7 +1529,7 @@ body.has-store-image-popup {
 .store-empty-card p {
     margin-bottom: 0;
 }
-@media (max-width: 1240px) {
+@media (max-width: 1040px) {
     .store-shell {
         grid-template-columns: 1fr;
     }

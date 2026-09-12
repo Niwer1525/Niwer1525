@@ -8,6 +8,5 @@ Works as a desktop app (**Java 21**) to generate resource packs, or directly as 
 * • **Universal Entity Support:** Attach custom armor models to players and humanoid entities.
 * • **One-Click Export:** Directly converts `.bbmodel` into game-ready assets and configs.
 * • **Server Plugin Integration:** Seamlessly integrates with Nexo, ItemsAdder and CraftEngine via `/reloadAndSend`.
-* • Tested on `Minecraft 1.21.x` (leveraging native 1.21 equippable components).
-
+* • Tested and confirmed compatible with Minecraft versions 1.21.5 through 26.1, utilizing native 1.21.2 equippable components.
 [Test by yourself](https://modrinth.com/resourcepack/3d-military-police-armor) — No client mods required for players.
