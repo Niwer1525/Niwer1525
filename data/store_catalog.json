@@ -98,6 +98,8 @@
                                 "/assets/store/armo/armo_1.png",
                                 "/assets/store/armo/armo_2.png",
                                 "/assets/store/armo/armo_3.png",
+                                "/assets/store/armo/armo_scaling.png",
+                                "/assets/store/armo/armo_gui.png",
                                 "/assets/store/armo/armo_4.png"
                             ],
                             "description": "/assets/store/armo/description.md"
