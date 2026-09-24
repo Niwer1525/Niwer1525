@@ -3,7 +3,7 @@
 ## About me
 - My name is Erwin AKA Niwer
 
-- I've spent near 10 years on my computer creating projects, learning programmation by myself
+- I've spent years on my computer creating projects, learning programmation by myself
 
 - Want to learn more? Check out my [Portfolio](https://niwer.dev)
 
