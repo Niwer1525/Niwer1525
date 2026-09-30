@@ -13,6 +13,7 @@ const LANGUAGE_COLORS = {
     
     'Groovy': '#e69f56',
     'Java': '#b07219',
+    'C#': '#178600',
     'GLSL': '#5686a5',
 
     'HTML': '#e34c26',
