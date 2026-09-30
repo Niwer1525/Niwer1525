@@ -86,7 +86,7 @@
     "timeline.today": "I'm now <strong id=\"current_age\">21</strong> years old and I'm working as a freelance developer !",
 
     "_comment_stats": "Stats",
-    "github_stats.coding_time": "Spent Coding Time Since <span id=\"coding-time-start-date\">2023</span>",
+    "github_stats.coding_time": "Coding Time Since <span id=\"coding-time-start-date\">2023</span>",
     "github_stats.total_commits": "Total Commits",
     "github_stats.contributions": "Contributions",
     "github_stats.streak": "Longest Weekly Streak",
