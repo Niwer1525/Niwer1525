@@ -116,6 +116,10 @@ class IncFooterContent extends HTMLElement {
                     <!-- <i class="fa-brands fa-modrinth"></i> --> <!-- Modrinth doesn't have an official icon, so we can use a custom one or just text -->
                     Modrinth
                 </a>
+                <a class="link-button" href="https://www.linkedin.com/in/niwerdev" target="_blank">
+                    <i class="fa-brands fa-linkedin"></i>
+                    LinkedIn
+                </a>
             </div>
             <div>
                 <a href="#top" class="back-to-top" title="Back to top" aria-label="Back to top">
