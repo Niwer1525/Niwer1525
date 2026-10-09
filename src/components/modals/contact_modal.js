@@ -1,18 +1,12 @@
-export function contactModal() {
+import { getValueWithFallback } from '../../utils.js';
+
+export function contactModal(langDict) {
   return `
     <div id="contact-popup">
         <form id="contact-form">
             <input type="hidden" name="access_key" value="f18de961-019b-4e2a-ad3d-dffbb5136e1f">
             <button type="button" id="close" onclick="hideContactPopup()">X</button>
-            <h2 data-i18n="form.title">
-                Got a project or questions?<br>
-                Let's talk!
-            </h2>
-            <!-- The form should be fixed thank to Web3Forms -->
-            <!-- <h3 data-i18n="form.subtitle">
-                This form may not work due to Github Pages limitations.<br>
-                If so, please contact me on discord !
-            </h3> -->
+            <h2>${getValueWithFallback(langDict, 'form.title', 'Contact Me')}</h2>
             <label>
                 <i class="fa fa-user"></i>
                 <input type="text" name="name" placeholder="Name" required>
@@ -25,11 +19,11 @@ export function contactModal() {
                 <i class="fa fa-comment"></i>
                 <textarea name="message" placeholder="Message" required></textarea>
             </label>
-            <button type="submit" data-i18n="btn.send"><i class="fa fa-paper-plane"></i>Send</button>
+            <button type="submit"><i class="fa fa-paper-plane"></i>${getValueWithFallback(langDict, 'btn.send', 'Send')}</button>
             <hr>
-            <a href="mailto:contact@niwer.dev" class="link-button" data-i18n="btn.open_email">
+            <a href="mailto:contact@niwer.dev" class="link-button">
                 <i class="fa fa-envelope"></i>
-                Open email application
+                ${getValueWithFallback(langDict, 'btn.open_email', 'Open email application')}
             </a>
             <span onclick="copyEmail()" class="email-link">
                 contact@niwer.dev

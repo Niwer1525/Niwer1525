@@ -1,4 +1,6 @@
-export function footer() {
+import { getValueWithFallback } from '../utils.js';
+
+export function footer(langDict) {
   const currentYear = new Date().getFullYear();
   return `
     <footer id="links">
@@ -39,14 +41,14 @@ export function footer() {
             </a>
         </div>
         <ul>
-            <li><a href="./legal.html#terms_of_service" data-i18n="btn.terms_of_service">Terms of Service</a></li>
-            <li><a href="./legal.html#terms_of_sale" data-i18n="btn.terms_of_sale">Terms of Sale</a></li>
-            <li><a href="./legal.html#privacy_policy" data-i18n="btn.privacy_policy">Privacy Policy</a></li>
+            <li><a href="./legal.html#terms_of_service">${getValueWithFallback(langDict, "btn.terms_of_service", "Terms of Service")}</a></li>
+            <li><a href="./legal.html#terms_of_sale">${getValueWithFallback(langDict, "btn.terms_of_sale", "Terms of Sale")}</a></li>
+            <li><a href="./legal.html#privacy_policy">${getValueWithFallback(langDict, "btn.privacy_policy", "Privacy Policy")}</a></li>
         </ul>
         <hr>
-        <p data-i18n="made_by">Made with ❤️ by Niwer</p>
-        <p data-i18n="copyright">Copyright ${currentYear} - All rights reserved</p>
-        <a href="https://sponsor.niwer.dev" data-i18n="sponsor">Toss a coin to your Niwer</a>
+        <p>${getValueWithFallback(langDict, "made_by", "Made with ❤️ by Niwer")}</p>
+        <p>${getValueWithFallback(langDict, "copyright", `Copyright ${currentYear} - All rights reserved`)}</p>
+        <a href="https://sponsor.niwer.dev">${getValueWithFallback(langDict, "sponsor", "Toss a coin to your Niwer")}</a>
     </footer>
   `;
 }

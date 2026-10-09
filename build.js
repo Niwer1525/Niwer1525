@@ -19,7 +19,6 @@ async function build() {
   const rootDir = process.cwd();
   const distDir = path.join(rootDir, 'dist');
   const staticDir = path.join(rootDir, 'src/static');
-  const dataFile = path.join(rootDir, 'src/data/global.json');
 
   console.log('Building website...');
 
@@ -33,28 +32,29 @@ async function build() {
   } catch (err) {
     console.warn('Warning: Could not copy static assets from src/static:', err.message);
   }
+  
+  const languages = ['en', 'fr'];
+  for (const lang of languages) {
+    const jsonPath = path.join(rootDir, `src/data/langs/${lang}/global.json`);
+    const rawData = await fs.readFile(jsonPath, 'utf8');
+    const dict = JSON.parse(rawData);
 
-  // Load global data
-  let globalData = {};
-  try {
-    const rawData = await fs.readFile(dataFile, 'utf8');
-    globalData = JSON.parse(rawData);
-  } catch (err) {
-    console.warn('Warning: No global.json found or failed to parse. Proceeding with empty data.');
-  }
+    // English goes to dist/, French goes to dist/fr/
+    const outFolder = lang === 'en' ? distDir : path.join(distDir, lang);
+    await fs.mkdir(outFolder, { recursive: true });
 
-  // Render and write HTML pages
-  const pages = [
-    { filename: 'index.html', renderer: () => renderIndex(globalData) },
-    { filename: 'store.html', renderer: () => renderStore(globalData) },
-    { filename: 'legal.html', renderer: () => renderLegal() }
-  ];
+    // Render pages
+    const pages = [
+      { filename: 'index.html', html: await renderIndex(lang, dict) },
+      { filename: 'store.html', html: await renderStore(lang, dict) },
+      { filename: 'legal.html', html: await renderLegal(lang, dict) }
+    ];
 
-  for (const page of pages) {
-    const rawHtml = await page.renderer();
-    const minifiedHtml = await minify(rawHtml, minifyOptions);
-    await fs.writeFile(path.join(distDir, page.filename), minifiedHtml, 'utf8');
-    console.log(`✓ Generated ${page.filename} (minified)`);
+    for (const page of pages) {
+      const minifiedHtml = await minify(page.html, minifyOptions);
+      await fs.writeFile(path.join(outFolder, page.filename), minifiedHtml, 'utf8');
+      console.log(`✓ [${lang.toUpperCase()}] Generated ${path.join(lang === 'en' ? '' : lang, page.filename)}`);
+    }
   }
 
   console.log('✓ Build complete! Static assets and pre-rendered pages ready in ./dist');

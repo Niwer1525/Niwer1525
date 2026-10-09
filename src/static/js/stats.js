@@ -34,18 +34,18 @@ let wakaLanguagesCache = [];
 document.addEventListener('DOMContentLoaded', () => {
     /* Get wakatime time */
     getWakatimeData().then(data => {
-        getElementByIdAndSetContent('coding-time', `${data.totalHours}h`);
-        getElementByIdAndSetContent('coding-time-start-date', `${data.startYear}`);
+        getElementByIdAndSetContent('coding_time', `${data.totalHours}h`);
+        getElementByIdAndSetContent('coding_time_start_date', `${data.startYear}`);
     });
 
     /* Get github stats */
     getGitHubStats().then(stats => {
-        getElementByIdAndSetContent('total-commits', stats.commits);
+        getElementByIdAndSetContent('total_commits', stats.commits);
         getElementByIdAndSetContent('contributions', stats.contributions);
         // getElementByIdAndSetContent('streak', 0);
-        getElementByIdAndSetContent('total-issues', stats.issues);
-        getElementByIdAndSetContent('total-prs', stats.prs);
-        getElementByIdAndSetContent('total-stars', stats.stars);
+        getElementByIdAndSetContent('total_issues', stats.issues);
+        getElementByIdAndSetContent('total_prs', stats.prs);
+        getElementByIdAndSetContent('total_stars', stats.stars);
     });
 
     /* Render wakatime languages chart */

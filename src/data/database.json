@@ -1,10 +1,9 @@
 {
     "_comment": "Copyright - Made by Niwer",
-    "_comment": "Since Github supports only static websites, I can't use a SQL database. So, I'm using a JSON file to store the data.",
     "projects": [
         {
             "name": "wayz",
-            "image": "projects/wayz.webp",
+            "image": "niwer_engine/wayz.webp",
             "links": { "https://www.youtube.com/watch?v=ovDb41z2TuQ&list=PL2uFPy064gi_Rz8ndkNubAYFySzAdpvOt": "see" },
             "tags": ["java", "fabric", "gradle" ]
         },
@@ -16,7 +15,7 @@
         },
         {
             "name": "armo",
-            "image": "projects/armo.png",
+            "image": "armo/armo.png",
             "links": { "https://modrinth.com/resourcepack/3d-military-police-armor": "see" },
             "tags": ["java", "spigot", "glsl", "maven", "glsl_obfuscator", "lumen" ]
         },
@@ -48,13 +47,13 @@
         },
         {
             "name": "integrative_activity",
-            "image": "projects/hexgame.webp",
+            "image": "hexgame.webp",
             "links": { "https://git.niwer.dev/BAC1_Integrative_activity": "read" },
             "tags": ["java"]
         },
         {
             "name": "gaspar",
-            "image": "projects/gaspar.webp",
+            "image": "gaspar.webp",
             "links": { "https://git.niwer.dev/Gaspar-AI-Discord-Bot": "read" },
             "tags": ["python", "discord.js", "nodejs", "javascript"]
         },

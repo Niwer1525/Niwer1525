@@ -18,3 +18,34 @@ export const loadMd = async (folderName, fileName) => {
         return '';
     }
 };
+
+/**
+ * Loads a JSON file from the specified folder.
+ * 
+ * @param {*} folderName The folder where the JSON file is located.
+ * @param {*} fileName The name of the JSON file to load.
+ * @returns The parsed JSON content, or an empty object if the file could not be loaded.
+ */
+export const loadJson = async (folderName, fileName) => {
+    const folder = path.resolve(folderName);
+    try {
+        const text = await fs.readFile(path.join(folder, fileName), 'utf8');
+        return JSON.parse(text);
+    }
+    catch {
+        return {};
+    }
+};
+
+/**
+ * Retrieves a value from a dictionary using the specified key, returning a fallback value if the key is not found.
+ * 
+ * @param {*} dict The dictionary from which to retrieve the value.
+ * @param {*} key The key to look up in the dictionary.
+ * @param {*} fallback The value to return if the key is not found in the dictionary. Defaults to an empty string.
+ * @returns The value associated with the key in the dictionary, or the fallback value if the key is not found.
+ */
+export const getValueWithFallback = (dict = {}, key, fallback = '') => {
+    if (key in dict && dict[key] !== undefined && dict[key] !== '') return dict[key];
+    return fallback;
+};

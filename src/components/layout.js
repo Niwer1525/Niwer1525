@@ -2,7 +2,11 @@ import { nav } from './nav.js';
 import { footer } from './footer.js';
 import { contactModal } from './modals/contact_modal.js';
 
-export function layout({ title, description, canonical, content }) {
+function addScripts(scripts) {
+    return scripts.map(script => `<script src="${script}" defer></script>`).join('\n');
+}
+
+export function layout({ lang, langDict, title, description, canonical, content, additionalScripts = [] }) {
   return `
         <!DOCTYPE html>
         <html lang="en">
@@ -12,7 +16,9 @@ export function layout({ title, description, canonical, content }) {
                 <title>${title}</title>
                 <meta name="description" content="${description}">
                 <link rel="canonical" href="${canonical}">
-                <link rel="shortcut icon" href="./assets/profile.webp">
+                <link rel="shortcut icon" href="/assets/profile.webp">
+                <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+                <script type="module" src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.min.js"></script>
 
                 <!-- Open Graph -->
                 <meta property="og:title" content="${title}">
@@ -20,19 +26,18 @@ export function layout({ title, description, canonical, content }) {
                 <meta property="og:url" content="${canonical}">
                 <meta property="og:image" content="https://niwer.dev/assets/profile.webp">
 
-                <link rel="stylesheet" href="css/main.css">
+                <link rel="stylesheet" href="/css/main.css">
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
                 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
             </head>
             <body>
-                ${nav()}
+                ${nav(langDict)}
                 <main>${content}</main>
-                ${contactModal()}
-                ${footer()}
-                <script src="./js/stats.js" defer></script> <!-- Load stats script -->
-                <script src="./js/i18n.js" defer></script> <!-- Load first to ensure languages are loaded -->
-                <script src="./js/main.js" defer></script> <!-- Load main script -->
-                <script src="./js/theme.js" defer></script> <!-- Load theme script -->
+                ${contactModal(langDict)}
+                ${footer(langDict)}
+                <script src="/js/main.js" defer></script> <!-- Load main script -->
+                <script src="/js/theme.js" defer></script> <!-- Load theme script -->
+                ${addScripts(additionalScripts)}
             </body>
         </html>
     `;
