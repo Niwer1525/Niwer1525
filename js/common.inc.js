@@ -92,10 +92,6 @@ class IncFooterContent extends HTMLElement {
                     <i class="fa fa-envelope"></i>
                     Contact
                 </span>
-                <a class="link-button" href="https://discord.gg/qcWKF5VWr6" target="_blank">
-                    <i class="fa-brands fa-discord"></i>
-                    Discord
-                </a>
                 <a class="link-button" href="https://git.niwer.dev" target="_blank">
                     <i class="fa-brands fa-github"></i>
                     Github

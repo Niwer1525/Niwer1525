@@ -3,4 +3,12 @@
         <loc>https://niwer.dev/</loc>
         <lastmod>2026-04-15T19:04:57+00:00</lastmod>
     </url>
+    <url>
+        <loc>https://niwer.dev/store</loc>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://niwer.dev/legal</loc>
+        <priority>0.3</priority>
+    </url>
 </urlset>
