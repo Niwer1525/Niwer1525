@@ -1,0 +1,25 @@
+{
+  "name": "niwer1525",
+  "version": "1.0.0",
+  "description": "- My name is Erwin AKA Niwer",
+  "main": "build.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Niwer1525/Niwer1525.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Niwer1525/Niwer1525/issues"
+  },
+  "homepage": "https://github.com/Niwer1525/Niwer1525#readme",
+  "devDependencies": {
+    "html-minifier-terser": "^7.2.0",
+    "marked": "^18.1.0"
+  }
+}

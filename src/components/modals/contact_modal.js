@@ -1,0 +1,40 @@
+export function contactModal() {
+  return `
+    <div id="contact-popup">
+        <form id="contact-form">
+            <input type="hidden" name="access_key" value="f18de961-019b-4e2a-ad3d-dffbb5136e1f">
+            <button type="button" id="close" onclick="hideContactPopup()">X</button>
+            <h2 data-i18n="form.title">
+                Got a project or questions?<br>
+                Let's talk!
+            </h2>
+            <!-- The form should be fixed thank to Web3Forms -->
+            <!-- <h3 data-i18n="form.subtitle">
+                This form may not work due to Github Pages limitations.<br>
+                If so, please contact me on discord !
+            </h3> -->
+            <label>
+                <i class="fa fa-user"></i>
+                <input type="text" name="name" placeholder="Name" required>
+            </label>
+            <label>
+                <i class="fa fa-envelope"></i>
+                <input type="email" name="email" placeholder="Email" required>
+            </label>
+            <label>
+                <i class="fa fa-comment"></i>
+                <textarea name="message" placeholder="Message" required></textarea>
+            </label>
+            <button type="submit" data-i18n="btn.send"><i class="fa fa-paper-plane"></i>Send</button>
+            <hr>
+            <a href="mailto:contact@niwer.dev" class="link-button" data-i18n="btn.open_email">
+                <i class="fa fa-envelope"></i>
+                Open email application
+            </a>
+            <span onclick="copyEmail()" class="email-link">
+                contact@niwer.dev
+            </span>
+        </form>
+    </div>
+  `;
+}
