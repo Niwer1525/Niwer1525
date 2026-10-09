@@ -29,7 +29,6 @@ export function render(data) {
   `;
 
   return layout({
-    pageName: 'index',
     title: 'Erwin Redoté (Niwer) - Developer Portfolio',
     description: 'Portfolio of Erwin Redoté, a Java and Web developer showcasing recent work and open source projects.',
     canonical: 'https://niwer.dev',

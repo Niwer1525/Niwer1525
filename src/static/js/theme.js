@@ -85,3 +85,11 @@ function cycleThemeMode() {
 SYSTEM_THEME_QUERY.addEventListener('change', () => {
     if (getStoredThemePreference() === 'system') applyTheme('system');
 });
+
+(() => {
+    try {
+        const PREF = localStorage.getItem('theme-preference') || 'system';
+        const SYSTEM_DARK = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.setAttribute('data-theme', PREF === 'system' ? (SYSTEM_DARK ? 'dark' : 'light') : PREF);
+    } catch (_) {}
+})();

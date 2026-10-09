@@ -30,7 +30,6 @@ export function render(data = {}) {
   `;
 
   return layout({
-    pageName: 'store',
     title: 'Developer Store & Digital Tools | Erwin Redoté',
     description: 'Explore developer tools, code repositories, and software products by Erwin Redoté.',
     canonical: 'https://niwer.dev/store.html',
