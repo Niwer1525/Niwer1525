@@ -1,0 +1,14 @@
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--surface-color);
+    color: var(--text-primary);
+    padding: 1rem 2rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--accent-color);
+    opacity: 0;
+    transform: translateY(100%);
+    animation: slideIn 0.5s forwards, fadeOut 0.5s 2.5s forwards;
+    z-index: 3000;
+}

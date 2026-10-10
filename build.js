@@ -1,95 +1,92 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { minify } from 'html-minifier-terser';
-import { PurgeCSS } from 'purgecss';
+import { bundle } from 'lightningcss';
 
-const minifyOptions = {
-  collapseWhitespace: true,
-  removeComments: true,
-  removeRedundantAttributes: true,
-  minifyCSS: true,
-  minifyJS: true
-};
-
-// Import page renderers
+/* Import page renderers */
 import { render as renderIndex } from './src/pages/index.js';
 import { render as renderStore } from './src/pages/store.js';
 import { render as renderLegal } from './src/pages/legal.js';
 
+const minifyOptions = {
+	collapseWhitespace: true,
+	removeComments: true,
+	removeRedundantAttributes: true,
+	minifyCSS: true,
+	minifyJS: true
+};
+
 async function build() {
-  const rootDir = process.cwd();
-  const distDir = path.join(rootDir, 'dist');
-  const staticDir = path.join(rootDir, 'src/static');
+	const rootDir = process.cwd();
+	const distDir = path.join(rootDir, 'dist');
+	const staticDir = path.join(rootDir, 'src/static');
 
-  console.log('Building website...');
+	console.log('Building website...');
 
-  // Reset dist directory
-  await fs.rm(distDir, { recursive: true, force: true });
-  await fs.mkdir(distDir, { recursive: true });
+	// Reset dist directory
+	await fs.rm(distDir, { recursive: true, force: true });
+	await fs.mkdir(distDir, { recursive: true });
 
-  // Copy static assets (css, client-side js, images) directly to dist
-  try {
-    await fs.cp(staticDir, distDir, { recursive: true });
-  } catch (err) {
-    console.warn('Warning: Could not copy static assets from src/static:', err.message);
-  }
+	// Copy static assets (excluding raw CSS if any were in static)
+	try {
+		await fs.cp(staticDir, distDir, { recursive: true });
+	} catch (err) {
+		console.warn('Warning: Could not copy static assets from src/static:', err.message);
+	}
 
-  /* Copy store catalog */
-  const catalogFilePath = path.join(rootDir, 'src/data/store_catalog.json');
-  try {
-    await fs.copyFile(catalogFilePath, path.join(distDir, 'store_catalog.json'));
-  } catch (err) {
-    console.warn('Warning: Could not copy store catalog:', err.message);
-  }
+	/* Copy store catalog */
+	const catalogFilePath = path.join(rootDir, 'src/data/store_catalog.json');
+	try {
+		await fs.copyFile(catalogFilePath, path.join(distDir, 'store_catalog.json'));
+	} catch (err) {
+		console.warn('Warning: Could not copy store catalog:', err.message);
+	}
 
-  const languages = ['en', 'fr'];
-  for (const lang of languages) {
-    const jsonPath = path.join(rootDir, `src/data/langs/${lang}/global.json`);
-    const rawData = await fs.readFile(jsonPath, 'utf8');
-    const dict = JSON.parse(rawData);
+	// Render and write HTML pages first
+	const languages = ['en', 'fr'];
+	for (const lang of languages) {
+		const jsonPath = path.join(rootDir, `src/data/langs/${lang}/global.json`);
+		const rawData = await fs.readFile(jsonPath, 'utf8');
+		const dict = JSON.parse(rawData);
 
-    // English goes to dist/, French goes to dist/fr/
-    const outFolder = lang === 'en' ? distDir : path.join(distDir, lang);
-    await fs.mkdir(outFolder, { recursive: true });
+		const outFolder = lang === 'en' ? distDir : path.join(distDir, lang);
+		await fs.mkdir(outFolder, { recursive: true });
 
-    // Render pages
-    const pages = [
-      { filename: 'index.html', html: await renderIndex(lang, dict) },
-      { filename: 'store.html', html: await renderStore(lang, dict) },
-      { filename: 'legal.html', html: await renderLegal(lang, dict) }
-    ];
+		const pages = [
+			{ filename: 'index.html', html: await renderIndex(lang, dict) },
+			{ filename: 'store.html', html: await renderStore(lang, dict) },
+			{ filename: 'legal.html', html: await renderLegal(lang, dict) }
+		];
 
-    for (const page of pages) {
-      const minifiedHtml = await minify(page.html, minifyOptions);
-      await fs.writeFile(path.join(outFolder, page.filename), minifiedHtml, 'utf8');
-      console.log(`✓ [${lang.toUpperCase()}] Generated ${path.join(lang === 'en' ? '' : lang, page.filename)}`);
-    }
-  }
-  
-  const distCssPath = path.join(distDir, 'css/main.css');
-  const purgeCSSResults = await new PurgeCSS().purge({
-    content: [ path.join(distDir, '**/*.html'), path.join(distDir, '**/*.js') ],
-    css: [distCssPath],
-    safelist: {
-      
-      // Classes/attributes toggled dynamically in the browser at runtime
-      standard: [
+		for (const page of pages) {
+			const minifiedHtml = await minify(page.html, minifyOptions);
+			await fs.writeFile(path.join(outFolder, page.filename), minifiedHtml, 'utf8');
+			console.log(`✓ [${lang.toUpperCase()}] Generated ${path.join(lang === 'en' ? '' : lang, page.filename)}`);
+		}
+	}
+	
+	// Bundle all modular CSS files into a single CSS string
+	console.log('Bundling modular CSS...');
+	const entryCssPath = path.join(rootDir, 'src/styles/main.css');
+	
+	const { code: bundledCssBuffer } = bundle({
+		filename: entryCssPath,
+		minify: true
+	});
+	const bundledCssString = bundledCssBuffer.toString('utf8');
 
-      ],
+	// Minify the purged result and write to dist/assets/main.css
+	const outCssDir = path.join(distDir, 'assets');
+	await fs.mkdir(outCssDir, { recursive: true });
 
-      greedy: []
-    }
-  });
+	const distCssPath = path.join(outCssDir, 'main.css');
+	await fs.writeFile(distCssPath, bundledCssString, 'utf8');
+	console.log('✓ CSS bundled, purged, and written to dist/css/main.css');
 
-  if (purgeCSSResults.length > 0) {
-    await fs.writeFile(distCssPath, purgeCSSResults[0].css, 'utf8');
-    console.log('✓ Unused CSS classes purged successfully!');
-  }
-
-  console.log('✓ Build complete! Static assets and pre-rendered pages ready in ./dist');
+	console.log('✓ Build complete! Static assets and pre-rendered pages ready in ./dist');
 }
 
 build().catch((err) => {
-  console.error('Build process failed:', err);
-  process.exit(1);
+	console.error('Build process failed:', err);
+	process.exit(1);
 });

@@ -1,0 +1,103 @@
+/* Contact Modal */
+#contact-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--surface-glass);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+.email-link {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    font-style: italic;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    text-align: center;
+}
+.email-link:hover {
+    color: var(--accent-color);
+    text-shadow: var(--glow-text);
+}
+
+form {
+    background: var(--menu-bg);
+    border: 1px solid var(--border-color);
+    padding: 2.5rem;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+    animation: fadeIn 0.4s ease-out;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: relative;
+}
+form #close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    cursor: pointer;
+}
+form #close:hover { 
+    color: var(--text-primary); 
+    transform: none; 
+    box-shadow: none; 
+}
+form h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+form h2::after { display: none; }
+form h3 {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+form > div {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+label {
+    display: flex;
+    align-items: center;
+    background: var(--surface-glass-hover);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    border: 1px solid transparent;
+    transition: border-color 0.3s;
+}
+label:focus-within {
+    border-color: var(--accent-color);
+}
+label i {
+    color: var(--text-secondary);
+    margin-right: 10px;
+}
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+hr {
+    border-radius: 5px;
+    color: var(--text-primary);
+    margin: 1rem 0;
+}

@@ -1,0 +1,54 @@
+:root {
+    /* Color Palette - OLED Theme */
+    --bg-color: #000000;
+    --surface-color: #0a0a0a;
+    --surface-glass: rgba(20, 20, 20, 0.6);
+    --surface-glass-hover: rgba(40, 40, 40, 0.7);
+    --text-primary: #f0f0f0;
+    --text-secondary: #a0a0a0;
+    --text-presentation: #fff;
+    --border-color: rgba(0, 0, 0, 0.1);
+    --menu-bg: #111;
+    --nav-bg: rgba(0, 0, 0, 0.7);
+    --mobile-nav-bg: rgba(5, 5, 5, 0.98);
+    --footer-bg: #050505;
+    --article-footer-bg: rgba(0,0,0,0.2);
+    --scrollbar-bg: rgba(255, 255, 255, 0.1);
+    --scrollbar-thumb: #333;
+    --scrollbar-thumb-hover: #555;
+    
+    /* Accent */
+    --accent-color: #d8b4fe;
+    --accent-glow: rgba(216, 180, 254, 0.3);
+
+    /* Functional */
+    --border-radius: 16px;
+    --nav-height: 70px;
+    --transition-speed: 0.3s;
+    
+    /* Shadows & Glows */
+    --shadow-soft: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    --glow-text: 0 0 10px var(--accent-glow);
+}
+
+/* Light theme */
+html[data-theme="light"] {
+    --bg-color: #f7f7fb;
+    --surface-color: #ffffff;
+    --surface-glass: rgba(255, 255, 255, 0.75);
+    --surface-glass-hover: rgba(248, 248, 255, 0.95);
+    --text-primary: #1a1a1a;
+    --text-secondary: #4a4a4a;
+    --text-presentation: #6b6b6b;
+    --border-color: rgba(0, 0, 0, 0.12);
+    --menu-bg: #ffffff;
+    --nav-bg: rgba(255, 255, 255, 0.7);
+    --mobile-nav-bg: rgba(255, 255, 255, 0.98);
+    --footer-bg: #f2f2f8;
+    --article-footer-bg: rgba(255, 255, 255, 0.1);
+    --scrollbar-bg: rgba(0, 0, 0, 0.1);
+    --scrollbar-thumb: #ccc;
+    --scrollbar-thumb-hover: #aaa;
+    --accent-color: #7c3aed;
+    --accent-glow: rgba(124, 58, 237, 0.25);
+}

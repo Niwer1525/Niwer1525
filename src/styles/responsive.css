@@ -1,0 +1,81 @@
+@media (max-width: 1180px) {
+    .menu-icon {
+        display: flex;
+        position: absolute;
+        z-index: 1010;
+    }
+    nav > ul {
+        position: fixed;
+        top: var(--nav-height);
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - var(--nav-height));
+        background: var(--mobile-nav-bg);
+        flex-direction: column;
+        justify-content: center;
+        gap: 2.5rem;
+        transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        border-top: 1px solid var(--border-color);
+        padding-bottom: 3rem;
+    }
+    .nav-actions {
+        position: static;
+        flex-direction: column;
+        gap: 2rem;
+    }
+    #menu-toggle:checked ~ #nav-links { left: 0; }
+    #menu-toggle:checked + .menu-icon .fa-bars::before { content: "\f00d"; }
+    nav > ul > li > a { font-size: 1.5rem; }
+}
+
+@media (max-width: 768px) {    
+    #presentation {
+        flex-direction: column-reverse;
+        text-align: center;
+        gap: 2rem;
+    }
+    #presentation h1 { font-size: 2.5rem; }
+
+    .skills-grid, .github-card { gap: 1rem; }
+    .skills-card, .github-card {
+        width: 100px;
+        padding: 1rem;
+        font-size: 0.85rem;
+    }
+    .skill-icon { font-size: 2rem; }
+    .github-card > span { font-size: 1.5rem; }
+
+    .large-card {
+        width: 100%;
+        padding: 1.25rem 2.5rem 1.25rem 1.25rem;
+    }
+    .top-right-external-link {
+        top: 8px;
+        right: 8px;
+    }
+    .open-to-work-badge {
+        padding: 1.2rem 1.5rem;
+    }
+    .badge-item {
+        font-size: 0.85rem;
+    }
+
+    /* Store Mobile */
+    .store-package-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .store-image-carousel {
+        margin: 0 0.75rem 0.75rem;
+    }
+    .store-carousel-slide img,
+    .store-package-card iframe {
+        height: 180px;
+    }
+    .store-package-header,
+    .store-package-card p,
+    .store-package-description {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+}
