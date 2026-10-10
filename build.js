@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { minify } from 'html-minifier-terser';
+import { PurgeCSS } from 'purgecss';
 
 const minifyOptions = {
   collapseWhitespace: true,
@@ -65,6 +66,37 @@ async function build() {
     }
   }
   
+  const distCssPath = path.join(distDir, 'css/main.css'); // Adjust if it's dist/css/main.css
+
+  const purgeCSSResults = await new PurgeCSS().purge({
+    content: [
+      path.join(distDir, '**/*.html'),
+      path.join(distDir, '**/*.js')
+    ],
+    css: [distCssPath],
+    safelist: {
+      
+      // Classes/attributes toggled dynamically in the browser at runtime
+      standard: [
+        /^is-/,      // .is-open, .is-active, .is-unselected
+        /^has-/,     // .has-store-image-popup
+        'active',
+        'hidden'
+      ],
+
+      greedy: [
+        /data-theme/,           // html[data-theme="light"]
+        /store-image-popup/,    // popup overlays toggled on click
+        /store-carousel/        // carousel arrows/dots toggled dynamically
+      ]
+    }
+  });
+
+  if (purgeCSSResults.length > 0) {
+    await fs.writeFile(distCssPath, purgeCSSResults[0].css, 'utf8');
+    console.log('✓ Unused CSS classes purged successfully!');
+  }
+
   console.log('✓ Build complete! Static assets and pre-rendered pages ready in ./dist');
 }
 

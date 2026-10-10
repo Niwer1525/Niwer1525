@@ -20,6 +20,7 @@
   "homepage": "https://github.com/Niwer1525/Niwer1525#readme",
   "devDependencies": {
     "html-minifier-terser": "^7.2.0",
-    "marked": "^18.1.0"
+    "marked": "^18.1.0",
+    "purgecss": "^8.0.0"
   }
 }
