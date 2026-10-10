@@ -1,6 +1,5 @@
+/* CSS Copyright - Made by Niwer */
 :root {
-    /* CSS Copyright - Made by Niwer */
-
     /* Color Palette - OLED Theme */
     --bg-color: #000000;
     --surface-color: #0a0a0a;
@@ -55,7 +54,6 @@ html[data-theme="light"] {
     /* Accent */
     --accent-color: #7c3aed;
     --accent-glow: rgba(124, 58, 237, 0.25);
-
 }
 
 /* Base Reset & Typography */
@@ -358,72 +356,10 @@ input[type="number"]:focus {
     flex-shrink: 0;
 }
 
-/* Timeline */
-
-.timeline {
-    position: relative;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-/* The vertical line */
-.timeline::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 2px;
-    height: 100%;
-    background: linear-gradient(180deg, transparent, var(--accent-color), transparent);
-}
-
-/* The dots on the main line */
-
-.bubble-content {
-    background: var(--surface-glass);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    padding: 1.5rem;
-    backdrop-filter: blur(5px);
-    transition: transform 0.3s, border-color 0.3s;
-}
-
-.bubble-content:hover {
-    transform: translateY(-5px);
-    border-color: var(--accent-color);
-    background: var(--surface-glass-hover);
-}
-
-.bubble-content h3, .bubble-content span {
-    font-size: 1.25rem;
-    color: var(--accent-color);
-    margin-bottom: 0.5rem;
-}
-
-.bubble-content p {
-    margin: 0;
-    font-size: 0.9rem;
-}
-
-/* Timeline Link in bubble */
-.bubble-content a {
-    margin-top: 1rem;
-    display: inline-block;
-    color: var(--accent-color);
-    text-decoration: underline;
-    text-underline-offset: 5px;
-}
-.bubble-content a:hover {
-    color: #fff;
-    text-shadow: var(--glow-text);
-}
-
 /* Open to Work Badge */
 .open-to-work-badge {
     margin-top: 3rem;
 }
-
 .badge-item {
     display: flex;
     align-items: center;
@@ -432,7 +368,6 @@ input[type="number"]:focus {
     color: var(--text-secondary);
     transition: color 0.3s;
 }
-
 .badge-item i {
     color: var(--accent-color);
     font-size: 1rem;
@@ -446,7 +381,6 @@ input[type="number"]:focus {
     justify-content: center;
     gap: 1.5rem;
 }
-
 .skills-card, .github-card {
     background: var(--surface-glass);
     border: 1px solid var(--border-color);
@@ -461,7 +395,6 @@ input[type="number"]:focus {
     transition: all var(--transition-speed);
     cursor: default;
 }
-
 .github-card {
     width: 180px;
     font-size: 0.9rem;
@@ -837,8 +770,6 @@ textarea {
     min-height: 100px;
 }
 
-/* Legal notice and sections */
-
 /* Footer */
 footer {
     border-top: 1px solid var(--border-color);
@@ -1112,18 +1043,6 @@ footer p {
     gap: 1.5rem;
 }
 
-.store-package-card {
-    background: var(--surface-glass);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    backdrop-filter: blur(12px);
-    box-shadow: var(--shadow-soft);
-}
-
-.store-package-card h2::after {
-    display: none;
-}
-
 /* Subcategory visuals */
 .store-package-card {
     display: flex;
@@ -1274,66 +1193,6 @@ footer p {
 }
 .store-carousel-dot.is-active {
     background: var(--accent-color);
-}
-body.has-store-image-popup {
-    overflow: hidden;
-}
-.store-image-popup {
-    position: fixed;
-    inset: 0;
-    z-index: 3000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: clamp(0.5rem, 2vw, 1.25rem);
-}
-.store-image-popup[hidden] {
-    display: none;
-}
-.store-image-popup-backdrop {
-    position: absolute;
-    inset: 0;
-    background: var(--bg-color);
-    backdrop-filter: blur(10px);
-}
-.store-image-popup-panel {
-    position: relative;
-    z-index: 1;
-    width: min(100%, 1100px);
-    max-height: calc(100dvh - 2rem);
-    padding: 3.25rem 1rem 1rem;
-    border-radius: 24px;
-    border: 1px solid var(--border-color);
-    background: var(--menu-bg);
-    box-shadow: var(--shadow-soft);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: visible;
-}
-.store-image-popup-close {
-    position: absolute;
-    top: -0.65rem;
-    right: -0.65rem;
-    z-index: 2;
-    background: var(--menu-bg);
-    border: 1px solid var(--border-color);
-    box-shadow: var(--shadow-soft);
-}
-.store-image-popup-close:hover {
-    background: var(--surface-glass-hover);
-    transform: none;
-}
-.store-image-popup-close:active {
-    transform: scale(0.98);
-}
-.store-image-popup-image {
-    display: block;
-    max-width: 100%;
-    max-height: calc(100dvh - 6rem);
-    width: 100%;
-    object-fit: contain;
-    border-radius: 18px;
 }
 .store-price {
     display: inline-flex;

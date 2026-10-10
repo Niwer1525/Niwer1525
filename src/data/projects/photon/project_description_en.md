@@ -1,0 +1,3 @@
+Photon is the core backend engine powering my commercial digital products and services. Built with lightweight performance and reliability in mind, it handles the end-to-end infrastructure for customer transactions, account management, and service delivery.
+
+To build trust and demonstrate high security standards, Photon is <span>fully open-source</span>. It enforces modern defensive architecture directly out of the box, including <span>Argon2 password hashing</span>, <span>encrypted multi-factor authentication (2FA)</span>, and robust data isolation. As the operational backbone of my business, Photon represents my most critical engineering work—delivering an uncompromising balance of security, transparency, and high-throughput reliability.
