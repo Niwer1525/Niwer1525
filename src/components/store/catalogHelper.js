@@ -8,27 +8,24 @@ export function formatCurrency(amount, currency = 'EUR') {
     }
 }
 
-// Recursively collects all packages with their correct nested branch path
-function extractPackagesFromNode(node, categoryId, currentPath = []) {
+function extractPackages(node, categorySlug, inheritedTags = []) {
     const packages = [];
+    const currentTag = String(node.id ?? node.slug);
+    const tags = [...inheritedTags, currentTag];
 
-    // Packages directly on this node
     if (Array.isArray(node.packages)) {
         node.packages.forEach((pkg, index) => {
             packages.push({
                 ...pkg,
-                id: pkg.id || `${categoryId}-${currentPath.join('-')}-${index + 1}`,
-                categoryId: String(categoryId),
-                subcategoryPath: [...currentPath] // e.g. ["niwer-engine", "licenses"] or ["tools-standalone"]
+                id: pkg.id || `${categorySlug}-${index + 1}`,
+                filterTags: tags // e.g. ["minecraft", "niwer-engine", "licenses"]
             });
         });
     }
 
-    // Recurse into subcategories
     if (Array.isArray(node.subcategories)) {
-        node.subcategories.forEach((sub) => {
-            const subId = String(sub.id ?? sub.slug);
-            packages.push(...extractPackagesFromNode(sub, categoryId, [...currentPath, subId]));
+        node.subcategories.forEach(sub => {
+            packages.push(...extractPackages(sub, categorySlug, tags));
         });
     }
 
@@ -36,8 +33,8 @@ function extractPackagesFromNode(node, categoryId, currentPath = []) {
 }
 
 export function flattenCatalogPackages(categories = []) {
-    return categories.flatMap((cat) => {
-        const catId = String(cat.id ?? cat.slug);
-        return extractPackagesFromNode(cat, catId, []);
+    return categories.flatMap(cat => {
+        const catSlug = String(cat.id ?? cat.slug);
+        return extractPackages(cat, catSlug, [catSlug]);
     });
 }

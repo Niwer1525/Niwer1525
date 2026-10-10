@@ -17,17 +17,11 @@ export async function renderPackageCard(pkg, { lang, langDict, defaultCurrency, 
         ? getValueWithFallback(langDict, 'btn.subscribe_now', 'Subscribe')
         : getValueWithFallback(langDict, 'btn.buy_now', 'Buy');
 
-    // Build the full path: e.g. "minecraft/tools-standalone" or "minecraft/niwer-engine/licenses"
-    const fullCategoryPath = [pkg.categoryId, ...(pkg.subcategoryPath || [])].filter(Boolean).join('/');
-
     return `
-        <article class="store-package-card" 
-                 data-package-id="${pkg.id}" 
-                 data-category-path="${fullCategoryPath}"
-                 ${pkg.price_id ? `data-price-id="${pkg.price_id}"` : ''}>
+        <article class="store-package-card" data-package-id="${pkg.id}" ${pkg.price_id ? `data-price-id="${pkg.price_id}"` : ''}>
             <header class="store-package-header">
                 <div>
-                    <h2>${pkg.name || formatDefaultTitle(pkg.slug || 'Package')}</h2>
+                    <h3>${pkg.name || formatDefaultTitle(pkg.slug || 'Package')}</h3>
                 </div>
                 <div class="store-price">${price}</div>
             </header>
