@@ -1,1 +1,2 @@
-This official content-pack for Niwer's Engine includes handcuffs, handcuff keys, gag that mute the voice and a paper bag that hide the head.<br><br> Perfect for prison or cops and robbers game modes !
+Ce pack de contenu officiel pour Niwer's Engine comprend des menottes, des clés de menottes, un bâillon qui rend muet et un sac en papier qui dissimule la tête.
+Idéal pour les modes de jeu prison ou gendarmes et voleurs !

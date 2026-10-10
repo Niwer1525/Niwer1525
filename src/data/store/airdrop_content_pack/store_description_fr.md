@@ -1,1 +1,3 @@
-This official content-pack for Niwer's Engine includes a plane model, with a crate with parachute models.<br><br> Place drop-points in your world, then the system will randomly drop crates with parachutes, containing random items from a loot table. Perfect for battle royale or survival game modes !
+Ce pack de contenu officiel pour Niwer's Engine inclut un modèle d'avion, ainsi qu'une caisse avec des modèles de parachute.
+
+Placez des points de largage dans votre monde, et le système parachutera aléatoirement des caisses contenant des objets tirés au sort depuis une table de butin. Idéal pour les modes de jeu battle royale ou survie !

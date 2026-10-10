@@ -1,1 +1,1 @@
-This version of Niwer's Engine allows you to access developer repositories and tools, enabling you to create and modify content directly inside the engine. This version is under Terms of sales
+Cette version de Niwer's Engine vous donne accès aux dépôts et outils pour développeurs, vous permettant de créer et de modifier du contenu directement au sein du moteur.

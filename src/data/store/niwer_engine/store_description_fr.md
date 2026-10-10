@@ -1,5 +1,5 @@
-Niwer's Engine is a powerful Minecraft modding framework that simplifies the creation of content.
+Niwer's Engine est un framework de modding puissant pour Minecraft qui simplifie la création de contenu.
 
-It provides a wide range of features and tools to help developers create high-quality content for Minecraft. With Niwer's Engine, you can easily create custom items, blocks, entities, props, firearms, armors, vehicles, and much more.
+Il offre un large éventail de fonctionnalités et d'outils pour aider les développeurs à concevoir du contenu de haute qualité pour Minecraft. Grâce à Niwer's Engine, vous pouvez facilement créer des objets personnalisés, des blocs, des entités, des accessoires (props), des armes à feu, des armures, des véhicules et bien plus encore.
 
-The access license grants you the right to use Niwer's Engine for your projects and receive updates and support from the developer.
+La licence d'accès vous donne le droit d'utiliser Niwer's Engine pour vos projets, ainsi que de bénéficier des mises à jour et du support fournis par le développeur.

@@ -1,17 +1,17 @@
-Bring 3D Blockbench (.bbmodel) armors to Minecraft — No client mods required.
+Intégrez des armures 3D Blockbench (.bbmodel) dans Minecraft — Aucun mod client requis.
 
-Works as a desktop app (**Java 21**) to generate resource packs, or directly as a server plugin integrating with Nexo, ItemsAdder, and CraftEngine via `/reloadAndSend`.
+Fonctionne sous forme d'application de bureau (**Java 21**) pour générer des packs de ressources, ou directement comme plugin serveur s'intégrant avec Nexo, ItemsAdder et CraftEngine via `/reloadAndSend`.
 
-#### Features:
-* • **Pure Vanilla Support:** Works out-of-the-box using optimized core shaders (zero client mods needed for players).
-* • **Broad Shader & Mod Compatibility:** Seamless fallback and support for Iris, OptiFine (CEM/JEM), and EMF.
-* • **Standalone Desktop Application:** Interactive GUI menu opens directly on double-clicking the JAR.
-* • **High-Performance Rendering:** Built-in Level of Detail (LOD) handling and aggressive culling for lag-free gameplay.
-* • **In-Inventory 3D Rendering:** Custom armors render directly in GUI inventory slots, player previews, and crafting menus.
-* • **Universal Entity & Scale Support:** Attach models to players and humanoid mobs, with full support for `/attribute` and entity scaling.
-* • **One-Click Export:** Directly converts `.bbmodel` into game-ready assets and configs.
-* • **Server Plugin Integration:** Native support for Nexo, ItemsAdder, and CraftEngine with auto-sync via `/reloadAndSend`.
-* • **Blockbench Compatibility:** Tested and certified working with Blockbench 4.x and 5.x formats.
-* • **Broad Version Support:** Tested and certified for Minecraft 1.21.5 through 26.x, utilizing native Minecraft's 1.21.2 equippable components.
+#### Fonctionnalités :
+- • **Support 100% Vanilla :** Fonctionne clé en main grâce à des shaders core optimisés (zéro mod client nécessaire pour les joueurs).
+- • **Large compatibilité Shaders & Mods :** Solution de repli fluide et prise en charge d'Iris, OptiFine (CEM/JEM) et EMF.
+- • **Application de bureau autonome :** Une interface graphique (GUI) interactive s'ouvre d'un simple double-clic sur le JAR.
+- • **Rendu haute performance :** Gestion intégrée du niveau de détail (LOD) et culling agressif pour un jeu sans ralentissements.
+- • **Rendu 3D dans l'inventaire :** Les armures personnalisées s'affichent directement dans les emplacements d'inventaire de la GUI, l'aperçu du joueur et les menus de fabrication.
+- • **Prise en charge universelle des entités et de l'échelle :** Attachez des modèles aux joueurs et aux monstres humanoïdes, avec support complet de la commande `/attribute` et de la mise à l'échelle des entités.
+- • **Exportation en un clic :** Convertit directement les fichiers `.bbmodel` en configurations et assets prêts à l'emploi en jeu.
+- • **Intégration plugin serveur :** Support natif de Nexo, ItemsAdder et CraftEngine avec synchronisation automatique via `/reloadAndSend`.
+- • **Compatibilité Blockbench :** Testé et certifié opérationnel avec les formats Blockbench 4.x et 5.x.
+- • **Large compatibilité de versions :** Testé et certifié pour Minecraft 1.21.5 jusqu'à la 26.x, tirant parti des composants équipables natifs de Minecraft 1.21.2.
 
-[Test by yourself](https://modrinth.com/resourcepack/3d-military-police-armor?utm_source=gemini) — No client mods required for players.
+[Testez par vous-même](https://modrinth.com/resourcepack/3d-military-police-armor) — Aucun mod client requis pour les joueurs.

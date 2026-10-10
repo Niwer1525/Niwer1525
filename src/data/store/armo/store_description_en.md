@@ -14,4 +14,4 @@ Works as a desktop app (**Java 21**) to generate resource packs, or directly as 
 * • **Blockbench Compatibility:** Tested and certified working with Blockbench 4.x and 5.x formats.
 * • **Broad Version Support:** Tested and certified for Minecraft 1.21.5 through 26.x, utilizing native Minecraft's 1.21.2 equippable components.
 
-[Test by yourself](https://modrinth.com/resourcepack/3d-military-police-armor?utm_source=gemini) — No client mods required for players.
+[Test by yourself](https://modrinth.com/resourcepack/3d-military-police-armor) — No client mods required for players.
