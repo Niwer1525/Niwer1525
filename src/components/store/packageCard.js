@@ -9,8 +9,36 @@ export async function renderPackageCard(pkg, { lang, langDict, defaultCurrency, 
     const descriptionHtml = await loadMd(`src/data/store/${pkg.slug}/`, `store_description_${lang}.md`)
         .catch(() => `<p>${getValueWithFallback(langDict, 'description.unavailable', 'Description unavailable.')}</p>`);
 
-    const images = Array.isArray(pkg.images) ? pkg.images : (pkg.image ? [pkg.image] : []);
-    const activeImage = images[0] || '';
+    const images = Array.isArray(pkg.images) && pkg.images.length > 0 
+        ? pkg.images 
+        : (pkg.image ? [pkg.image] : []);
+
+    const carouselHtml = images.length > 0 ? `
+        <div class="store-image-carousel">
+            <div class="store-carousel-track">
+                ${images.map((src, idx) => `
+                    <div class="store-carousel-slide">
+                        <img src="${src}" alt="${pkg.name || 'Package'} preview${idx + 1}" loading="lazy" draggable="false">
+                    </div>
+                `).join('')}
+            </div>
+
+            ${images.length > 1 ? `
+                <button type="button" class="store-carousel-button prev" data-carousel-prev aria-label="Previous image">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button type="button" class="store-carousel-button next" data-carousel-next aria-label="Next image">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+
+                <div class="store-carousel-dots">
+                    ${images.map((_, idx) => `
+                        <button type="button" class="store-carousel-dot ${idx === 0 ? 'is-active' : ''}" data-carousel-dot="${idx}" aria-label="Slide ${idx + 1}"></button>
+                    `).join('')}
+                </div>
+            ` : ''}
+        </div>
+    ` : '';
 
     const isSubscription = pkg.payment_type === 'subscription';
     const buttonLabel = isSubscription
@@ -26,11 +54,7 @@ export async function renderPackageCard(pkg, { lang, langDict, defaultCurrency, 
                 <div class="store-price">${price}</div>
             </header>
 
-            ${activeImage ? `
-                <div class="store-image-carousel" data-package-carousel="${pkg.id}">
-                    <img src="${activeImage}" alt="${pkg.name || 'Package'}" loading="lazy" draggable="false">
-                </div>
-            ` : ''}
+            ${carouselHtml}
 
             <div class="store-package-description">${descriptionHtml}</div>
 
