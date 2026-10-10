@@ -2,7 +2,7 @@ import { getValueWithFallback } from '../utils.js';
 
 export function footer(lang = 'en', langDict) {
   const currentYear = new Date().getFullYear();
-  const legalUrl = lang === 'en' ? './legal.html' : `./${lang}/legal.html`;
+  const legalUrl = lang === 'en' ? '/legal.html' : `/${lang}/legal.html`;
   return `
     <footer id="links">
         <div class="links" id="links">

@@ -1,8 +1,8 @@
 import { getValueWithFallback } from '../utils.js';
 
 export function nav(lang = 'en', langDict) {
-    const indexUrl = lang === 'en' ? './index.html' : `./${lang}/index.html`;
-    const storeUrl = lang === 'en' ? './store.html' : `./${lang}/store.html`;
+    const indexUrl = lang === 'en' ? '/index.html' : `/${lang}/index.html`;
+    const storeUrl = lang === 'en' ? '/store.html' : `/${lang}/store.html`;
     return `
         <header id="top">
             <nav>

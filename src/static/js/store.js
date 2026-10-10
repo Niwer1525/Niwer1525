@@ -1,4 +1,4 @@
-const STRIPE_DATA_URL = 'https://raw.githubusercontent.com/Niwer1525/Niwer1525/data/stripe_catalog.json';
+const STRIPE_DATA_URL = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_USERNAME}/data/stripe_catalog.json`;
 
 async function hydrateStripePrices() {
     try {
@@ -30,8 +30,5 @@ async function hydrateStripePrices() {
     }
 }
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', hydrateStripePrices, { once: true });
-} else {
-    hydrateStripePrices();
-}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', hydrateStripePrices, { once: true });
+else hydrateStripePrices();

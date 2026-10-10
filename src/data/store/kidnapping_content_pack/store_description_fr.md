@@ -1,0 +1,1 @@
+This official content-pack for Niwer's Engine includes handcuffs, handcuff keys, gag that mute the voice and a paper bag that hide the head.<br><br> Perfect for prison or cops and robbers game modes !

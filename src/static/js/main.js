@@ -1,7 +1,5 @@
 /* Environement variables */
-const IS_DEV_ENV = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 const GITHUB_USERNAME = 'Niwer1525';
-const WEBSITE_URL = new URL('.', window.location.href).href;
 
 /**
  * Calculate the current age based on a birth date.
@@ -50,16 +48,6 @@ function createNotification(message) {
     msg.style.bottom = `${offset}px`;
     document.body.appendChild(msg);
     setTimeout(() => msg.remove(), 2000);
-}
-
-/**
- * Notifies the user about the result of an asynchronous operation.
- * @param {Promise} promise - The asynchronous operation to monitor.
- * @param {string} fallbackMessage - The message to display if the operation fails.
- * @returns {Promise} A promise that resolves when the notification is displayed.
- */
-function notifyAsync(promise, fallbackMessage) {
-    return promise.catch(error => createNotification(error.message || fallbackMessage));
 }
 
 /* Prevent CTRL+S (Saving) & CTRL+P (Printing) */

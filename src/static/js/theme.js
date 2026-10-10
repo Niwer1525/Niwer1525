@@ -79,7 +79,6 @@ function cycleThemeMode() {
     const NEXT = THEME_MODES[(CURRENT_INDEX + 1) % THEME_MODES.length];
     localStorage.setItem(THEME_STORAGE_KEY, NEXT);
     applyTheme(NEXT);
-    createNotification(`Theme: ${NEXT}`);
 }
 
 SYSTEM_THEME_QUERY.addEventListener('change', () => {

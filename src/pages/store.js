@@ -93,9 +93,8 @@ export async function render(lang = 'en', langDict = {}) {
         content,
         additionalScripts: [
             {
-                file: '/js/store/controller.js',
-                defer: true,
-                type: 'module'
+                file: '/js/store.js',
+                defer: true
             }
         ]
     });
