@@ -1,0 +1,2 @@
+Ce pack de contenu officiel pour Niwer's Engine comprend des menottes, des clés de menottes, un bâillon qui rend muet et un sac en papier qui dissimule la tête.
+Idéal pour les modes de jeu prison ou gendarmes et voleurs !

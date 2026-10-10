@@ -1,0 +1,1 @@
+Ce pack de contenu officiel pour Niwer's Engine comprend une variété de sons d'ambiance pour différents environnements tels que les forêts, les grottes, les océans, les bruits de pas, etc. Idéal pour enrichir l'atmosphère de votre monde Minecraft !

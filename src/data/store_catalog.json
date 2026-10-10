@@ -1,0 +1,84 @@
+{
+    "categories": [
+        {
+            "name": "Steam",
+            "packages": []
+        },
+        {
+            "name": "Minecraft",
+            "packages": [],
+            "subcategories": [
+                {
+                    "name": "Niwer's Engine",
+                    "subcategories": [
+                        {
+                            "name": "Licenses",
+                            "packages": [
+                                {
+                                    "name": "Niwer's Engine - Access license",
+                                    "slug": "niwer_engine",
+                                    "price_id": "price_1U5BTKCs4coI0BXqOsHSj2Au",
+                                    "paymentLink": "https://buy.stripe.com/9B66oGcEh9mc5Xf9mmcfK07",
+                                    "payment_type": "subscription"
+                                },
+                                {
+                                    "name": "Niwer's Engine - Developer Access",
+                                    "slug": "niwer_engine_dev_access",
+                                    "price_id": "price_1U5BWjCs4coI0BXqkCiPGz0w",
+                                    "paymentLink": "https://buy.stripe.com/6oU28qfQt0PGclD1TUcfK06",
+                                    "payment_type": "subscription"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Content Packs",
+                            "packages": [
+                                {
+                                    "name": "Airdrop - Content Pack",
+                                    "slug": "airdrop_content_pack",
+                                    "price_id": "price_1TomGMCs4coI0BXqF3Mes3z1",
+                                    "paymentLink": "",
+                                    "payment_type": "one_time_purchase"
+                                },
+                                {
+                                    "name": "Kidnapping - Content Pack",
+                                    "slug": "kidnapping_content_pack",
+                                    "price_id": "price_1TomHnCs4coI0BXqacviyn7O",
+                                    "paymentLink": "",
+                                    "payment_type": "one_time_purchase"
+                                },
+                                {
+                                    "name": "Ambient sounds - Content Pack",
+                                    "slug": "ambient_sounds_content_pack",
+                                    "price_id": "price_1TomH4Cs4coI0BXqngeDTrc9",
+                                    "paymentLink": "",
+                                    "payment_type": "one_time_purchase"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Tools & Standalone",
+                    "packages": [
+                        {
+                            "name": "Armo",
+                            "slug": "armo",
+                            "price_id": "price_1ToKZSCs4coI0BXqF2ryvk4X",
+                            "paymentLink": "https://buy.stripe.com/eVqbJ047Lbuk2L39mmcfK05",
+                            "payment_type": "one_time_purchase",
+                            "images": [
+                                "/assets/armo/armo_1.png",
+                                "/assets/armo/armo_2.png",
+                                "/assets/armo/armo_3.png",
+                                "/assets/armo/armo_scaling.png",
+                                "/assets/armo/armo_gui.png",
+                                "/assets/armo/armo_4.png"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
