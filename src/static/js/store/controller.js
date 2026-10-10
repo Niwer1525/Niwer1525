@@ -1,7 +1,5 @@
-// src/static/js/store/controller.js
 const STRIPE_DATA_URL = 'https://raw.githubusercontent.com/Niwer1525/Niwer1525/data/stripe_catalog.json';
 
-// 1. Sync category badge counters directly from the rendered cards
 function updateCategoryCounters() {
     const cards = Array.from(document.querySelectorAll('.store-package-card'));
 
@@ -28,14 +26,12 @@ function updateCategoryCounters() {
     });
 }
 
-// 2. Filter package cards matching the selected path
 function filterPackages(selectedPath) {
     const cards = document.querySelectorAll('.store-package-card');
     let visibleCount = 0;
 
     cards.forEach(card => {
         const cardPath = card.dataset.categoryPath || '';
-        // Matches exact or any deeper path
         const isMatch = selectedPath === 'all' || cardPath === selectedPath || cardPath.startsWith(`${selectedPath}/`);
         card.style.display = isMatch ? '' : 'none';
         if (isMatch) visibleCount++;
@@ -47,35 +43,42 @@ function filterPackages(selectedPath) {
     }
 }
 
-// 3. Update the active button style
+// Strictly highlight ONLY the single button representing the exact selected path
 function setActiveButton(selectedPath) {
     document.querySelectorAll('[data-action="select-category"]').forEach(btn => {
-        const btnPath = btn.dataset.subcategoryPath 
-            ? `${btn.dataset.categoryId}/${btn.dataset.subcategoryPath}` 
-            : (btn.dataset.categoryId || 'all');
-        btn.classList.toggle('is-active', btnPath === selectedPath);
+        let btnPath = 'all';
+        if (btn.dataset.subcategoryPath) {
+            btnPath = `${btn.dataset.categoryId}/${btn.dataset.subcategoryPath}`;
+        } else if (btn.dataset.categoryId && btn.dataset.categoryId !== 'all') {
+            btnPath = btn.dataset.categoryId;
+        }
+
+        const isExactMatch = btnPath === selectedPath;
+        btn.classList.toggle('is-active', isExactMatch);
+
+        // Remove active styles from parent row wrappers
+        btn.closest('.store-category-row')?.classList.toggle('is-selected-row', isExactMatch);
     });
 }
 
-// 4. Open parent rows so the active subcategory is visible
+// Expand ancestor dropdowns WITHOUT marking them as active buttons
 function expandActiveAncestors(selectedPath) {
     if (!selectedPath || selectedPath === 'all') return;
     const parts = selectedPath.split('/');
-    let current = parts[0];
     
-    // Find and expand top-level row
-    const topBtn = document.querySelector(`.store-category-select[data-category-id="${current}"]`);
-    topBtn?.closest('.store-category-row')?.classList.add('is-open');
+    // Top-level category
+    const catId = parts[0];
+    const topRow = document.querySelector(`.store-category-row[data-row-path="${catId}"]`);
+    topRow?.classList.add('is-open');
 
-    // Expand intermediate rows
+    // Subcategory ancestors
     for (let i = 1; i < parts.length; i++) {
-        const subPath = parts.slice(1, i + 1).join('/');
-        const subBtn = document.querySelector(`.store-subcategory-button[data-subcategory-path="${subPath}"]`);
-        subBtn?.closest('.store-category-row')?.classList.add('is-open');
+        const currentSubPath = parts.slice(0, i + 1).join('/');
+        const subRow = document.querySelector(`.store-category-row[data-row-path="${currentSubPath}"]`);
+        subRow?.classList.add('is-open');
     }
 }
 
-// 5. Fetch dynamic Stripe prices
 async function hydrateStripePrices() {
     try {
         const res = await fetch(STRIPE_DATA_URL, { cache: 'no-store' });
@@ -103,7 +106,6 @@ async function hydrateStripePrices() {
     }
 }
 
-// 6. Handle click events
 document.addEventListener('click', (e) => {
     // Chevron toggle
     const toggleBtn = e.target.closest('[data-action="toggle-category-dropdown"]');
@@ -119,14 +121,14 @@ document.addEventListener('click', (e) => {
         return;
     }
 
-    // Category or Subcategory selection
+    // Category / Subcategory button
     const selectBtn = e.target.closest('[data-action="select-category"]');
     if (selectBtn) {
         const path = selectBtn.dataset.subcategoryPath
             ? `${selectBtn.dataset.categoryId}/${selectBtn.dataset.subcategoryPath}`
             : (selectBtn.dataset.categoryId || 'all');
 
-        // Automatically expand the clicked row if it has subcategories
+        // Expand clicked row if it has children
         selectBtn.closest('.store-category-row')?.classList.add('is-open');
 
         localStorage.setItem('niwer-store-category', path);
@@ -135,7 +137,6 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Boot on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
     updateCategoryCounters();
     const saved = localStorage.getItem('niwer-store-category') || 'all';

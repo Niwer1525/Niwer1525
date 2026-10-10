@@ -3,15 +3,16 @@ import { getValueWithFallback } from '../../utils.js';
 function renderSubcategoryBranch(subcategories, categoryId, visiblePackages, parentPath = []) {
     if (!Array.isArray(subcategories) || !subcategories.length) return '';
 
-    return `<div class="store-subcategory-list">${subcategories.map(sub => {
+    const itemsHtml = subcategories.map(sub => {
         const subId = String(sub.id ?? sub.slug);
         const path = [...parentPath, subId];
-        const pathKey = path.join('/'); // e.g. "niwer-engine" or "niwer-engine/licenses" or "tools-standalone"
+        const pathKey = path.join('/'); // e.g. "niwer-engine", "niwer-engine/licenses", "tools-standalone"
+        const fullCompositePath = `${categoryId}/${pathKey}`;
 
-        // Count packages that live in this subcategory or any deeper branch of it
+        // Count packages that live in this exact branch or its descendants
         const subCount = visiblePackages.filter(item => {
             if (String(item.categoryId) !== String(categoryId)) return false;
-            const itemPath = item.subcategoryPath || [];
+            const itemPath = Array.isArray(item.subcategoryPath) ? item.subcategoryPath : [];
             return path.every((segment, idx) => String(itemPath[idx]) === String(segment));
         }).length;
 
@@ -19,11 +20,12 @@ function renderSubcategoryBranch(subcategories, categoryId, visiblePackages, par
         const childHtml = hasChildren ? renderSubcategoryBranch(sub.subcategories, categoryId, visiblePackages, path) : '';
 
         return `
-            <div class="store-category-row">
+            <div class="store-category-row" data-row-path="${fullCompositePath}">
                 <div class="store-category-main">
                     <button type="button" 
                             class="store-subcategory-button" 
                             data-action="select-category" 
+                            data-full-path="${fullCompositePath}"
                             data-category-id="${categoryId}" 
                             data-subcategory-path="${pathKey}">
                         <span>${sub.name || 'Subcategory'}</span>
@@ -33,23 +35,24 @@ function renderSubcategoryBranch(subcategories, categoryId, visiblePackages, par
                         <button type="button" 
                                 class="store-category-toggle icon-button" 
                                 data-action="toggle-category-dropdown" 
-                                data-category-id="${categoryId}" 
-                                data-category-path="${pathKey}" 
+                                data-full-path="${fullCompositePath}"
                                 aria-expanded="false" 
                                 aria-label="Toggle subcategories">
-                            <span aria-hidden="true">▾</span>
+                            <span>▾</span>
                         </button>
                     ` : ''}
                 </div>
                 ${childHtml}
             </div>
         `;
-    }).join('')}</div>`;
+    }).join('');
+
+    return `<div class="store-subcategory-list">${itemsHtml}</div>`;
 }
 
 export function renderCategoriesSidebar(categories, visiblePackages, langDict) {
     const categoryButtonsHtml = [
-        `<button type="button" class="is-active" data-action="select-category" data-category-id="all">${getValueWithFallback(langDict, 'store.all_categories', 'All categories')}</button>`,
+        `<button type="button" class="is-active" data-action="select-category" data-full-path="all" data-category-id="all">${getValueWithFallback(langDict, 'store.all_categories', 'All categories')}</button>`,
         ...categories.map(category => {
             const catId = String(category.id ?? category.slug);
             const packageCount = visiblePackages.filter(item => String(item.categoryId) === catId).length;
@@ -57,11 +60,12 @@ export function renderCategoriesSidebar(categories, visiblePackages, langDict) {
             const subHtml = hasSubcategories ? renderSubcategoryBranch(category.subcategories, catId, visiblePackages, []) : '';
 
             return `
-                <div class="store-category-row">
+                <div class="store-category-row" data-row-path="${catId}">
                     <div class="store-category-main">
                         <button type="button" 
                                 class="store-category-select" 
                                 data-action="select-category" 
+                                data-full-path="${catId}"
                                 data-category-id="${catId}">
                             <span>${category.name || 'Category'}</span>
                             <small>${packageCount}</small>
@@ -70,10 +74,10 @@ export function renderCategoriesSidebar(categories, visiblePackages, langDict) {
                             <button type="button" 
                                     class="store-category-toggle icon-button" 
                                     data-action="toggle-category-dropdown" 
-                                    data-category-id="${catId}" 
+                                    data-full-path="${catId}"
                                     aria-expanded="false" 
                                     aria-label="Toggle subcategories">
-                                <span aria-hidden="true">▾</span>
+                                <span>▾</span>
                             </button>
                         ` : ''}
                     </div>
