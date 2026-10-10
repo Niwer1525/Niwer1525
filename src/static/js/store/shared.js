@@ -1,7 +1,6 @@
-const { trimAndMinifyHTML } = globalThis;
-
+export const GITHUB_USERNAME = 'Niwer1525';
 export const STORE_NAMESPACE = 'niwer-store-v2';
-export const STORE_CATALOG_URL = './data/store_catalog.json';
+export const STORE_CATALOG_URL = '/data/store_catalog.json';
 export const STRIPE_DATA_URL = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_USERNAME}/data/stripe_catalog.json`;
 export const CATEGORY_STORAGE_KEY = `${STORE_NAMESPACE}-category`;
 
@@ -82,77 +81,17 @@ export function setPackageImageIndex(packageId, nextIndex) {
     if (numericPackageId) storeState.packageImageIndexes.set(numericPackageId, nextIndex);
 }
 
-export function sanitizeHtml(value) {
-    const allowedTags = new Set(['a', 'b', 'blockquote', 'br', 'code', 'div', 'em', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'i', 'img', 'li', 'ol', 'p', 'pre', 'strong', 'span', 'ul']);
-    const allowedAttributes = new Set(['alt', 'aria-label', 'aria-hidden', 'class', 'href', 'loading', 'rel', 'src', 'target', 'title', 'width', 'height']);
-    const template = document.createElement('template');
-    template.innerHTML = String(value || '');
-
-    const isSafeUrl = url => isSafeAssetUrl(url);
-    const walk = node => {
-        for (const child of Array.from(node.childNodes)) {
-            if (child.nodeType === Node.TEXT_NODE) continue;
-            if (child.nodeType !== Node.ELEMENT_NODE) {
-                child.remove();
-                continue;
-            }
-
-            const element = child;
-            const tagName = element.tagName.toLowerCase();
-            if (!allowedTags.has(tagName)) {
-                element.replaceWith(...Array.from(element.childNodes));
-                continue;
-            }
-
-            for (const attribute of Array.from(element.attributes)) {
-                const name = attribute.name.toLowerCase();
-                const attributeValue = attribute.value;
-                if (name.startsWith('on') || !allowedAttributes.has(name)) {
-                    element.removeAttribute(attribute.name);
-                    continue;
-                }
-
-                if ((name === 'href' || name === 'src') && !isSafeUrl(attributeValue)) element.removeAttribute(attribute.name);
-            }
-
-            if (tagName === 'a') {
-                const href = element.getAttribute('href');
-                if (!href || !isSafeUrl(href)) element.removeAttribute('href');
-                else {
-                    element.setAttribute('target', '_blank');
-                    element.setAttribute('rel', 'noopener noreferrer');
-                }
-            }
-
-            if (tagName === 'img') {
-                const src = element.getAttribute('src');
-                if (!src || !isSafeUrl(src)) {
-                    element.remove();
-                    continue;
-                }
-
-                if (!element.hasAttribute('loading')) element.setAttribute('loading', 'lazy');
-                if (!element.hasAttribute('decoding')) element.setAttribute('decoding', 'async');
-            }
-
-            walk(element);
-        }
-    };
-
-    walk(template.content);
-    return template.innerHTML.trim();
-}
-
 export function formatCurrency(amount, currency) {
     const numericValue = Number(amount);
     if (Number.isNaN(numericValue)) return '';
 
     try {
-        return new Intl.NumberFormat(undefined, { style: 'currency', currency: currency || 'USD' }).format(numericValue);
+        return new Intl.NumberFormat(undefined, { style: 'currency', currency: currency || 'EUR' }).format(numericValue);
     } catch {
-        return `${numericValue.toFixed(2)} ${currency || 'USD'}`;
+        return `${numericValue.toFixed(2)} ${currency || 'EUR'}`;
     }
 }
+
 export function getCategoryPreference() { return localStorage.getItem(CATEGORY_STORAGE_KEY) || 'all'; }
 
 export function setCategoryPreference(categoryId) {
@@ -166,20 +105,33 @@ export function normalizeCategoryPath(value) {
 export function matchesCategoryPath(item, active) {
     const path = normalizeCategoryPath(active);
     if (!path.length || active === 'all') return true;
-    const [categoryId, ...subPath] = path;
-    if (String(item.categoryId) !== String(categoryId)) return false;
-    const currentPath = Array.isArray(item.subcategoryPath) ? item.subcategoryPath.map(String) : (item.subcategoryId ? [String(item.subcategoryId)] : []);
-    if (!subPath.length) return true;
-    return currentPath.length >= subPath.length && subPath.every((segment, index) => String(currentPath[index]) === String(segment));
+
+    const [targetCatId, ...targetSubSegments] = path;
+
+    // Check top-level match
+    if (String(item.categoryId) !== String(targetCatId)) return false;
+
+    // Selected top-level category: show all packages in that category
+    if (!targetSubSegments.length) return true;
+
+    const itemSubPath = Array.isArray(item.subcategoryPath)
+        ? item.subcategoryPath.map(String)
+        : (item.subcategoryId ? [String(item.subcategoryId)] : []);
+
+    if (itemSubPath.length < targetSubSegments.length) return false;
+
+    return targetSubSegments.every((segment, idx) => String(itemSubPath[idx]) === String(segment));
+}
+
+export function getResolvedPaymentLink(pkg) {
+    return String(pkg?.paymentLink || pkg?.payment_link || storeState.catalog?.paymentLink || '').trim();
 }
 
 export function filteredPackages() {
     const active = String(storeState.activeCategoryId || 'all');
-    const withPaymentLink = storeState.packages.filter(pkg => {
-        const link = String(pkg.paymentLink || pkg.payment_link || '').trim();
-        return Boolean(link);
-    });
+    // Accepts package if it has a direct payment link OR catalog has a global payment link
+    const validPackages = storeState.packages.filter(pkg => Boolean(getResolvedPaymentLink(pkg)));
 
-    if (active === 'all') return withPaymentLink;
-    return withPaymentLink.filter(item => matchesCategoryPath(item, active));
+    if (active === 'all') return validPackages;
+    return validPackages.filter(item => matchesCategoryPath(item, active));
 }

@@ -1,7 +1,8 @@
 import { getValueWithFallback } from '../utils.js';
 
-export function footer(langDict) {
+export function footer(lang = 'en', langDict) {
   const currentYear = new Date().getFullYear();
+  const legalUrl = lang === 'en' ? './legal.html' : `./${lang}/legal.html`;
   return `
     <footer id="links">
         <div class="links" id="links">
@@ -41,9 +42,9 @@ export function footer(langDict) {
             </a>
         </div>
         <ul>
-            <li><a href="./legal.html#terms_of_service">${getValueWithFallback(langDict, "btn.terms_of_service", "Terms of Service")}</a></li>
-            <li><a href="./legal.html#terms_of_sale">${getValueWithFallback(langDict, "btn.terms_of_sale", "Terms of Sale")}</a></li>
-            <li><a href="./legal.html#privacy_policy">${getValueWithFallback(langDict, "btn.privacy_policy", "Privacy Policy")}</a></li>
+            <li><a href="${legalUrl}#terms_of_service">${getValueWithFallback(langDict, "btn.terms_of_service", "Terms of Service")}</a></li>
+            <li><a href="${legalUrl}#terms_of_sale">${getValueWithFallback(langDict, "btn.terms_of_sale", "Terms of Sale")}</a></li>
+            <li><a href="${legalUrl}#privacy_policy">${getValueWithFallback(langDict, "btn.privacy_policy", "Privacy Policy")}</a></li>
         </ul>
         <hr>
         <p>${getValueWithFallback(langDict, "made_by", "Made with ❤️ by Niwer")}</p>

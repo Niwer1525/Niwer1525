@@ -1,4 +1,4 @@
-import { loadMd, loadJson, getValueWithFallback } from '../utils.js';
+import { loadMd, loadJson, getValueWithFallback, formatDefaultTitle } from '../utils.js';
 
 /**
  * Appends an image or video element based on the project's properties.
@@ -15,18 +15,7 @@ function appendImageOrVideo(project) {
         return `<lite-youtube videoid="${project.video_id}" title="YouTube video player of ${project.name}"></lite-youtube>`; // Lite-Youtube should reduce load time / memory usage compared to a full iframe.
         // return `<iframe loading="lazy" title="YouTube video player of ${project.name}" src="https://www.youtube.com/embed/${project.video_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
     
-    return `<img loading="lazy" decoding="async" draggable="false" src="assets/${project.image}" alt="Image of ${project.name}">`
-}
-
-/**
- * Formats a project name as a default title.
- * 
- * @param {*} projectName - The original project name, which may contain dashes or underscores.
- * @returns {string} - A formatted title with dashes and underscores replaced by spaces, and each word capitalized.
- * @author Niwer
- */
-function formatDefaultTitle(projectName) {
-    return projectName.replace(/[-_]+/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+    return `<img loading="lazy" decoding="async" draggable="false" src="/assets/${project.image}" alt="Image of ${project.name}">`
 }
 
 /**

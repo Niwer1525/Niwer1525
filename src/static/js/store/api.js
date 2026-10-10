@@ -1,14 +1,9 @@
-import { STORE_CATALOG_URL, STRIPE_DATA_URL, getCategoryPreference, sanitizeHtml, storeState } from './shared.js';
+import { STORE_CATALOG_URL, STRIPE_DATA_URL, getCategoryPreference, storeState } from './shared.js';
 import { renderStateMessage } from './render.js';
 
 export function unwrapApiData(payload) {
     if (!payload) return null;
     return Object.prototype.hasOwnProperty.call(payload, 'data') ? payload.data : payload;
-}
-
-function readPositiveNumber(value, fallback = 0) {
-    const numericValue = Number(value);
-    return Number.isFinite(numericValue) && numericValue > 0 ? numericValue : fallback;
 }
 
 function ensureNumericId(value, fallbackId) {
@@ -17,36 +12,20 @@ function ensureNumericId(value, fallbackId) {
     return fallbackId;
 }
 
-function walkSubcategories(subcategories, parentPath = []) {
-    return (Array.isArray(subcategories) ? subcategories : []).flatMap(sub => {
-        const id = ensureNumericId(sub?.id, parentPath.length + 1);
+// Recursively walks the category tree to extract all subnodes with their full path
+function collectAllSubcategories(subcategories, parentPath = []) {
+    if (!Array.isArray(subcategories)) return [];
+    return subcategories.flatMap((sub, idx) => {
+        const id = String(sub.id ?? sub.slug ?? (idx + 1));
         const path = [...parentPath, id];
-        return [{ ...sub, __path: path }, ...walkSubcategories(sub?.subcategories, path)];
+        return [
+            { ...sub, __path: path },
+            ...collectAllSubcategories(sub.subcategories, path)
+        ];
     });
 }
 
-async function loadPackageDescription(descriptionPath) {
-    const path = String(descriptionPath || '').trim();
-    if (!path) return '<p data-i18n="description.unavailable">Description unavailable.</p>';
-
-    try {
-        const localPath = path.startsWith('/') ? `.${path}` : path;
-        const response = await fetch(new URL(localPath, document.baseURI));
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-        const markdown = await response.text();
-        const parser = globalThis.marked?.parse;
-        if (typeof parser !== 'function') throw new Error('Markdown parser is unavailable.');
-
-        return sanitizeHtml(parser(markdown));
-    } catch (error) {
-        console.error(`Could not load package description: ${path}`, error);
-        return '<p data-i18n="description.unavailable">Description unavailable.</p>';
-    }
-}
-
 export async function loadStorePackages() {
-    // Getting the catalog and Stripe data in parallel
     const [catalogResponse, stripeResponse] = await Promise.all([
         fetch(STORE_CATALOG_URL, { cache: 'no-store' }),
         fetch(STRIPE_DATA_URL, { cache: 'no-store' }).catch(() => null)
@@ -54,7 +33,6 @@ export async function loadStorePackages() {
 
     if (!catalogResponse.ok) throw new Error(`Could not load store catalog (${catalogResponse.status}).`);
 
-    // Mapping Stripe price IDs to their corresponding data for quick lookup
     const stripePriceMap = new Map();
     if (stripeResponse && stripeResponse.ok) {
         try {
@@ -78,59 +56,66 @@ export async function loadStorePackages() {
         packageName: payload?.packageName || 'Unknown package',
     };
 
-    storeState.categories = categories.map((category, categoryIndex) => ({
-        id: ensureNumericId(category?.id, categoryIndex + 1),
-        name: category?.name || `Category ${categoryIndex + 1}`,
-        packages: Array.isArray(category?.packages) ? category.packages : [],
-        subcategories: Array.isArray(category?.subcategories) ? category.subcategories : [],
-    }));
+    storeState.categories = categories;
 
-    // Helper pour fusionner les infos du package local avec le prix Stripe
-    const hydratePackage = async (storePackage, fallbackId, subNode = null) => {
+    // Grab pre-rendered descriptions already in the DOM
+    const existingDomDescriptions = new Map();
+    document.querySelectorAll('.store-package-card').forEach(card => {
+        const id = Number(card.dataset.packageId);
+        const descEl = card.querySelector('.store-package-description');
+        if (id && descEl) existingDomDescriptions.set(id, descEl.innerHTML);
+    });
+
+    const hydratePackage = (storePackage, category, subNode = null, fallbackId = 1) => {
         const stripePriceObj = storePackage.price_id ? stripePriceMap.get(storePackage.price_id) : null;
         
-        // Si trouvé dans Stripe : conversion centimes -> euros (/ 100), sinon fallback sur displayed_price local
         const displayedPrice = stripePriceObj
             ? (Number(stripePriceObj.unit_amount) || 0) / 100
-            : (storePackage.displayed_price ?? storePackage.displayedPrice ?? 0);
+            : (storePackage.displayed_price ?? storePackage.displayedPrice ?? storePackage.price ?? 0);
 
         const currency = String(stripePriceObj?.currency || storePackage.currency || storeState.catalog.currency || 'EUR').toUpperCase();
+        const pkgId = ensureNumericId(storePackage?.id, fallbackId);
+        const subPath = subNode ? subNode.__path.map(String) : [];
 
         return {
             ...storePackage,
-            id: ensureNumericId(storePackage?.id, fallbackId),
+            id: pkgId,
             displayed_price: displayedPrice,
             currency: currency,
-            categoryId: storePackage.categoryId,
-            categoryName: storePackage.categoryName,
-            subcategoryId: subNode ? subNode.__path[subNode.__path.length - 1] : null,
-            subcategoryName: subNode ? (subNode.name || null) : null,
-            subcategoryPath: subNode ? subNode.__path : [],
-            sanitizedDescription: await loadPackageDescription(storePackage.description),
+            categoryId: String(category.id ?? category.slug),
+            categoryName: category.name,
+            subcategoryId: subPath.length ? subPath[subPath.length - 1] : null,
+            subcategoryName: subNode ? subNode.name : null,
+            subcategoryPath: subPath,
+            sanitizedDescription: existingDomDescriptions.get(pkgId) || '<p>Description unavailable.</p>',
+            paymentLink: storePackage.paymentLink || storePackage.payment_link || storeState.catalog.paymentLink || ''
         };
     };
 
-    storeState.packages = (await Promise.all(storeState.categories.map(async (category, categoryIndex) => {
-        const fromTop = Array.isArray(category.packages) ? await Promise.all(category.packages.map(async (storePackage, packageIndex) => {
-            const fallbackId = ((categoryIndex + 1) * 1000) + packageIndex + 1;
-            return hydratePackage({ ...storePackage, categoryId: category.id, categoryName: category.name }, fallbackId);
-        })) : [];
+    // Flatten all packages across all nested levels
+    const flattened = [];
+    categories.forEach((cat, catIdx) => {
+        // Direct packages in category
+        if (Array.isArray(cat.packages)) {
+            cat.packages.forEach((pkg, pkgIdx) => {
+                flattened.push(hydratePackage(pkg, cat, null, (catIdx + 1) * 1000 + pkgIdx + 1));
+            });
+        }
 
-        const fromSubs = (await Promise.all(walkSubcategories(category.subcategories).map(async (subNode) => Array.isArray(subNode.packages) ? Promise.all(subNode.packages.map(async (storePackage, packageIndex) => {
-            const fallbackId = ((categoryIndex + 1) * 1000) + (subNode.__path.join('-').length) + packageIndex + 1;
-            return hydratePackage({ ...storePackage, categoryId: category.id, categoryName: category.name }, fallbackId, subNode);
-        })) : []))).flat();
+        // Packages in subcategories (and nested sub-subcategories)
+        const subNodes = collectAllSubcategories(cat.subcategories);
+        subNodes.forEach((subNode, subIdx) => {
+            if (Array.isArray(subNode.packages)) {
+                subNode.packages.forEach((pkg, pkgIdx) => {
+                    flattened.push(hydratePackage(pkg, cat, subNode, (catIdx + 1) * 10000 + (subIdx + 1) * 100 + pkgIdx + 1));
+                });
+            }
+        });
+    });
 
-        return [...fromTop, ...fromSubs];
-    }))).flat();
-
-    storeState.packageMap = new Map(storeState.packages.map(storePackage => [Number(storePackage.id), storePackage]));
+    storeState.packages = flattened;
+    storeState.packageMap = new Map(storeState.packages.map(p => [Number(p.id), p]));
     storeState.activeCategoryId = getCategoryPreference();
 
-    renderStateMessage(storeState.packages.length ? `Loaded ${storeState.categories.length} categories and ${storeState.packages.length} packages.` : 'No packages were returned by the catalog.');
-}
-
-export function getPackagePaymentLink(packageId) {
-    const storePackage = storeState.packageMap.get(Number(packageId));
-    return String(storePackage?.paymentLink || storePackage?.payment_link || storeState.catalog?.paymentLink || '').trim();
+    renderStateMessage(storeState.packages.length ? `Loaded ${storeState.categories.length} categories and ${storeState.packages.length} packages.` : 'No packages found.');
 }

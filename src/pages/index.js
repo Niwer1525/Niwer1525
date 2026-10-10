@@ -62,8 +62,10 @@ export async function render(lang, langDict) {
     canonical: 'https://niwer.dev',
     content,
     additionalScripts: [
-      '/js/stats.js',
-      '/js/gists.js'
+      {
+          file: '/js/gists.js',
+          defer: true
+      }
     ]
   });
 }

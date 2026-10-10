@@ -32,7 +32,15 @@ async function build() {
   } catch (err) {
     console.warn('Warning: Could not copy static assets from src/static:', err.message);
   }
-  
+
+  /* Copy store catalog */
+  const catalogFilePath = path.join(rootDir, 'src/data/store_catalog.json');
+  try {
+    await fs.copyFile(catalogFilePath, path.join(distDir, 'store_catalog.json'));
+  } catch (err) {
+    console.warn('Warning: Could not copy store catalog:', err.message);
+  }
+
   const languages = ['en', 'fr'];
   for (const lang of languages) {
     const jsonPath = path.join(rootDir, `src/data/langs/${lang}/global.json`);
@@ -56,7 +64,7 @@ async function build() {
       console.log(`✓ [${lang.toUpperCase()}] Generated ${path.join(lang === 'en' ? '' : lang, page.filename)}`);
     }
   }
-
+  
   console.log('✓ Build complete! Static assets and pre-rendered pages ready in ./dist');
 }
 

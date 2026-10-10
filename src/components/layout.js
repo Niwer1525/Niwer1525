@@ -2,11 +2,21 @@ import { nav } from './nav.js';
 import { footer } from './footer.js';
 import { contactModal } from './modals/contact_modal.js';
 
+// function addScripts(scripts) {
+//     return scripts.map(script => `<script src="${script}" defer></script>`).join('\n');
+// }
+
 function addScripts(scripts) {
-    return scripts.map(script => `<script src="${script}" defer></script>`).join('\n');
+    return scripts.map(script => {
+        const attrs = Object.entries(script)
+            .filter(([key]) => key !== 'file')
+            .map(([key, value]) => `${key}="${value}"`)
+            .join(' ');
+        return `<script src="${script.file}" ${attrs}></script>`;
+    }).join('\n');
 }
 
-export function layout({ lang, langDict, title, description, canonical, content, additionalScripts = [] }) {
+export function layout({ lang = 'en', langDict, title, description, canonical, content, additionalScripts = [] }) {
   return `
         <!DOCTYPE html>
         <html lang="en">
@@ -31,11 +41,15 @@ export function layout({ lang, langDict, title, description, canonical, content,
                 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
             </head>
             <body>
-                ${nav(langDict)}
+                <!-- Content -->
+                ${nav(lang, langDict)}
                 <main>${content}</main>
                 ${contactModal(langDict)}
-                ${footer(langDict)}
+                ${footer(lang, langDict)}
+
+                <!-- Scripts -->
                 <script src="/js/main.js" defer></script> <!-- Load main script -->
+                <script src="/js/stats.js" defer></script> <!-- Stats script, required by the theme script -->
                 <script src="/js/theme.js" defer></script> <!-- Load theme script -->
                 ${addScripts(additionalScripts)}
             </body>

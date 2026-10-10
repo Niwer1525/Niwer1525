@@ -20,6 +20,16 @@ export const loadMd = async (folderName, fileName) => {
 };
 
 /**
+ * Formats a project name into a default title by replacing hyphens and underscores with spaces and capitalizing the first letter of each word.
+ * 
+ * @param {*} projectName The name of the project to format.
+ * @returns The formatted title.
+ */
+export function formatDefaultTitle(projectName) {
+    return String(projectName || '').replace(/[-_]+/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+}
+
+/**
  * Loads a JSON file from the specified folder.
  * 
  * @param {*} folderName The folder where the JSON file is located.

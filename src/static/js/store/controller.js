@@ -1,191 +1,146 @@
-import {
-    getPackageImageIndex,
-    packageImages,
-    setCategoryPreference,
-    setPackageImageIndex,
-    storeState,
-} from './shared.js';
+// src/static/js/store/controller.js
+const STRIPE_DATA_URL = 'https://raw.githubusercontent.com/Niwer1525/Niwer1525/data/stripe_catalog.json';
 
-import { loadStorePackages } from './api.js';
-import { ensureStoreShell, renderPackages, renderStore } from './render.js';
+// 1. Sync category badge counters directly from the rendered cards
+function updateCategoryCounters() {
+    const cards = Array.from(document.querySelectorAll('.store-package-card'));
 
-const { createNotification, applyLanguage } = globalThis;
-const STORE_IMAGE_POPUP_ID = 'store-image-popup';
-const STORE_IMAGE_POPUP_CLOSE_ACTION = 'close-store-image-popup';
-
-function setActiveCategory(categoryId, shouldScroll = false) {
-    storeState.activeCategoryId = String(categoryId || 'all');
-    setCategoryPreference(storeState.activeCategoryId);
-    renderStore();
-    if (shouldScroll) document.getElementById('projects-grid')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function closeStoreImagePopup() {
-    const popup = document.getElementById(STORE_IMAGE_POPUP_ID);
-    if (!popup) return;
-
-    popup.hidden = true;
-    popup.dataset.open = 'false';
-    document.body.classList.remove('has-store-image-popup');
-}
-
-function ensureStoreImagePopup() {
-    let popup = document.getElementById(STORE_IMAGE_POPUP_ID);
-    if (popup) return popup;
-
-    popup = document.createElement('div');
-    popup.id = STORE_IMAGE_POPUP_ID;
-    popup.className = 'store-image-popup';
-    popup.hidden = true;
-    popup.innerHTML = `
-        <div class="store-image-popup-backdrop" data-action="${STORE_IMAGE_POPUP_CLOSE_ACTION}" aria-hidden="true"></div>
-        <div class="store-image-popup-panel" role="dialog" aria-modal="true" aria-label="Package image preview">
-            <button type="button" class="icon-button store-image-popup-close" data-action="${STORE_IMAGE_POPUP_CLOSE_ACTION}" aria-label="Close image preview">&times;</button>
-            <img class="store-image-popup-image" alt="" draggable="false">
-        </div>
-    `;
-
-    popup.addEventListener('click', event => {
-        const actionButton = event.target.closest('[data-action]');
-        if (!actionButton) {
-            if (event.target === popup) closeStoreImagePopup();
-            return;
-        }
-
-        if (actionButton.dataset.action === STORE_IMAGE_POPUP_CLOSE_ACTION) closeStoreImagePopup();
+    // Top-level categories
+    document.querySelectorAll('.store-category-select').forEach(btn => {
+        const catId = btn.dataset.categoryId;
+        const count = cards.filter(card => {
+            const path = card.dataset.categoryPath || '';
+            return path === catId || path.startsWith(`${catId}/`);
+        }).length;
+        const badge = btn.querySelector('small');
+        if (badge) badge.textContent = count;
     });
 
-    document.body.appendChild(popup);
-    return popup;
+    // Subcategories
+    document.querySelectorAll('.store-subcategory-button').forEach(btn => {
+        const fullPath = `${btn.dataset.categoryId}/${btn.dataset.subcategoryPath}`;
+        const count = cards.filter(card => {
+            const path = card.dataset.categoryPath || '';
+            return path === fullPath || path.startsWith(`${fullPath}/`);
+        }).length;
+        const badge = btn.querySelector('small');
+        if (badge) badge.textContent = count;
+    });
 }
 
-function openStoreImagePopup(imageUrl, altText) {
-    if (!imageUrl) return;
+// 2. Filter package cards matching the selected path
+function filterPackages(selectedPath) {
+    const cards = document.querySelectorAll('.store-package-card');
+    let visibleCount = 0;
 
-    const popup = ensureStoreImagePopup();
-    const image = popup.querySelector('.store-image-popup-image');
-    if (!(image instanceof HTMLImageElement)) return;
+    cards.forEach(card => {
+        const cardPath = card.dataset.categoryPath || '';
+        // Matches exact or any deeper path
+        const isMatch = selectedPath === 'all' || cardPath === selectedPath || cardPath.startsWith(`${selectedPath}/`);
+        card.style.display = isMatch ? '' : 'none';
+        if (isMatch) visibleCount++;
+    });
 
-    image.src = imageUrl;
-    image.alt = altText || 'Package image';
-    popup.hidden = false;
-    popup.dataset.open = 'true';
-    document.body.classList.add('has-store-image-popup');
-    requestAnimationFrame(() => popup.querySelector('.store-image-popup-close')?.focus());
-}
-
-function resolvePackage(packageId, packageSlug) {
-    const slug = String(packageSlug || '').trim();
-    if (slug) {
-        const bySlug = storeState.packages.find(item => String(item.slug || '') === slug);
-        if (bySlug) return bySlug;
+    const emptyMsg = document.querySelector('.store-empty-card');
+    if (emptyMsg) {
+        emptyMsg.style.display = visibleCount === 0 ? '' : 'none';
     }
-
-    return storeState.packageMap.get(Number(packageId)) || null;
 }
 
-const actionHandlers = {
-    'select-category': ({ categoryId, subcategoryId, subcategoryPath }) => {
-        if (!categoryId || String(categoryId) === 'all') return setActiveCategory('all');
-        if (subcategoryPath) storeState.collapsedCategoryIds.delete(`${categoryId}/${subcategoryPath}`);
-        storeState.collapsedCategoryIds.delete(String(categoryId));
-        storeState.openCategoryIds.add(String(categoryId));
-        const composite = subcategoryPath ? `${categoryId}/${subcategoryPath}` : subcategoryId ? `${categoryId}/${subcategoryId}` : String(categoryId);
-        return setActiveCategory(composite);
-    },
-    'toggle-category-dropdown': ({ categoryId, categoryPath }) => {
-        if (!categoryId || String(categoryId) === 'all') return;
-        const key = categoryPath && String(categoryPath) !== String(categoryId) ? `${categoryId}/${categoryPath}` : String(categoryId);
-        if (storeState.collapsedCategoryIds.has(key)) storeState.collapsedCategoryIds.delete(key);
-        else storeState.collapsedCategoryIds.add(key);
-        renderStore();
-    },
-    'jump-to-category': ({ categoryId }) => setActiveCategory(categoryId, true),
-    'open-package-payment': ({ paymentLink }) => {
-        const link = String(paymentLink || '').trim();
-        if (!link) {
-            createNotification('Payment link is not available for this package.');
-            return;
-        }
-
-        window.open(link, '_blank', 'noopener');
-    },
-    'package-image-dot': ({ packageId, packageSlug, imageIndex }) => {
-        if (!packageId) return;
-
-        const index = Number(imageIndex);
-        if (!Number.isInteger(index)) return;
-
-        const packageItem = resolvePackage(packageId, packageSlug);
-        if (!packageItem) return;
-
-        setPackageImageIndex(packageItem.id, index);
-        renderPackages();
-    },
-    'package-image-open': ({ packageId, packageSlug }) => {
-        if (!packageId) return;
-
-        const packageItem = resolvePackage(packageId, packageSlug);
-        const images = packageItem ? packageImages(packageItem) : [];
-        const imageUrl = images.length ? images[getPackageImageIndex(packageItem.id, images.length)] : '';
-        if (imageUrl) openStoreImagePopup(imageUrl, packageItem?.name || 'Package');
-    },
-    'package-image-prev': ({ packageId, packageSlug }) => {
-        if (!packageId) return;
-        const packageItem = resolvePackage(packageId, packageSlug);
-        const images = packageItem ? packageImages(packageItem) : [];
-        if (!images.length) return;
-        const current = getPackageImageIndex(packageItem.id, images.length);
-        const next = (current - 1 + images.length) % images.length;
-        setPackageImageIndex(packageItem.id, next);
-        renderPackages();
-    },
-    'package-image-next': ({ packageId, packageSlug }) => {
-        if (!packageId) return;
-        const packageItem = resolvePackage(packageId, packageSlug);
-        const images = packageItem ? packageImages(packageItem) : [];
-        if (!images.length) return;
-        const current = getPackageImageIndex(packageItem.id, images.length);
-        const next = (current + 1) % images.length;
-        setPackageImageIndex(packageItem.id, next);
-        renderPackages();
-    },
-};
-
-export function handleStoreClick(event) {
-    const button = event.target.closest('[data-action]');
-    if (!button) return;
-
-    const handler = actionHandlers[button.dataset.action];
-    if (handler) return handler(button.dataset, button);
+// 3. Update the active button style
+function setActiveButton(selectedPath) {
+    document.querySelectorAll('[data-action="select-category"]').forEach(btn => {
+        const btnPath = btn.dataset.subcategoryPath 
+            ? `${btn.dataset.categoryId}/${btn.dataset.subcategoryPath}` 
+            : (btn.dataset.categoryId || 'all');
+        btn.classList.toggle('is-active', btnPath === selectedPath);
+    });
 }
 
-export function handleStoreInput() { /* no-op: basket removed */ }
+// 4. Open parent rows so the active subcategory is visible
+function expandActiveAncestors(selectedPath) {
+    if (!selectedPath || selectedPath === 'all') return;
+    const parts = selectedPath.split('/');
+    let current = parts[0];
+    
+    // Find and expand top-level row
+    const topBtn = document.querySelector(`.store-category-select[data-category-id="${current}"]`);
+    topBtn?.closest('.store-category-row')?.classList.add('is-open');
 
-export async function bootstrapStore() {
-    ensureStoreShell();
-    renderStore();
+    // Expand intermediate rows
+    for (let i = 1; i < parts.length; i++) {
+        const subPath = parts.slice(1, i + 1).join('/');
+        const subBtn = document.querySelector(`.store-subcategory-button[data-subcategory-path="${subPath}"]`);
+        subBtn?.closest('.store-category-row')?.classList.add('is-open');
+    }
+}
 
+// 5. Fetch dynamic Stripe prices
+async function hydrateStripePrices() {
     try {
-        await loadStorePackages();
-        renderStore();
-        await applyLanguage(document.querySelector('main') || document);
-        storeState.loading = false;
-    } catch (error) {
-        storeState.error = error;
-        const grid = document.getElementById('projects-grid');
-        if (grid) {
-            grid.innerHTML = `<article class="store-empty-card"><header><h2 data-i18n="store.load_failed">Store could not be loaded</h2></header><p>${error.message || 'The store service request failed.'}</p></article>`;
-            await applyLanguage(grid);
-        }
+        const res = await fetch(STRIPE_DATA_URL, { cache: 'no-store' });
+        if (!res.ok) return;
+        const { data = [] } = await res.json();
+        const priceMap = new Map(data.map(item => [item.id, item]));
+
+        document.querySelectorAll('.store-package-card[data-price-id]').forEach(card => {
+            const priceId = card.dataset.priceId;
+            const stripeItem = priceMap.get(priceId);
+            if (stripeItem?.unit_amount != null) {
+                const amount = stripeItem.unit_amount / 100;
+                const currency = (stripeItem.currency || 'EUR').toUpperCase();
+                const priceEl = card.querySelector('.store-price');
+                if (priceEl) {
+                    priceEl.textContent = new Intl.NumberFormat(undefined, {
+                        style: 'currency',
+                        currency
+                    }).format(amount);
+                }
+            }
+        });
+    } catch (e) {
+        console.warn('Could not update live Stripe prices:', e);
     }
 }
 
-/* Update the content */
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootstrapStore, { once: true });
-else bootstrapStore();
+// 6. Handle click events
+document.addEventListener('click', (e) => {
+    // Chevron toggle
+    const toggleBtn = e.target.closest('[data-action="toggle-category-dropdown"]');
+    if (toggleBtn) {
+        const row = toggleBtn.closest('.store-category-row');
+        if (row) {
+            row.classList.toggle('is-open');
+            const isOpen = row.classList.contains('is-open');
+            toggleBtn.setAttribute('aria-expanded', isOpen);
+            const arrow = toggleBtn.querySelector('span');
+            if (arrow) arrow.textContent = isOpen ? '▴' : '▾';
+        }
+        return;
+    }
 
-document.addEventListener('click', handleStoreClick);
-document.addEventListener('input', handleStoreInput);
-document.addEventListener('keydown', event => { if (event.key === 'Escape') closeStoreImagePopup(); });
-window.addEventListener('beforeunload', () => { if (storeState.activeCategoryId) setCategoryPreference(storeState.activeCategoryId); });
+    // Category or Subcategory selection
+    const selectBtn = e.target.closest('[data-action="select-category"]');
+    if (selectBtn) {
+        const path = selectBtn.dataset.subcategoryPath
+            ? `${selectBtn.dataset.categoryId}/${selectBtn.dataset.subcategoryPath}`
+            : (selectBtn.dataset.categoryId || 'all');
+
+        // Automatically expand the clicked row if it has subcategories
+        selectBtn.closest('.store-category-row')?.classList.add('is-open');
+
+        localStorage.setItem('niwer-store-category', path);
+        setActiveButton(path);
+        filterPackages(path);
+    }
+});
+
+// Boot on DOM ready
+document.addEventListener('DOMContentLoaded', () => {
+    updateCategoryCounters();
+    const saved = localStorage.getItem('niwer-store-category') || 'all';
+    expandActiveAncestors(saved);
+    setActiveButton(saved);
+    filterPackages(saved);
+    hydrateStripePrices();
+});
