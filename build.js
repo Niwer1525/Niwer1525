@@ -34,14 +34,6 @@ async function build() {
 		console.warn('Warning: Could not copy static assets from src/static:', err.message);
 	}
 
-	/* Copy store catalog */
-	const catalogFilePath = path.join(rootDir, 'src/data/store_catalog.json');
-	try {
-		await fs.copyFile(catalogFilePath, path.join(distDir, 'store_catalog.json'));
-	} catch (err) {
-		console.warn('Warning: Could not copy store catalog:', err.message);
-	}
-
 	// Render and write HTML pages first
 	const languages = ['en', 'fr'];
 	for (const lang of languages) {

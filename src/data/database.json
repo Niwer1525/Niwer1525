@@ -7,6 +7,32 @@
             "tags": ["java", "javalin", "queryon", "lumen", "gradle", "html", "css", "js", "SQLite", "Docker"]
         },
         {
+            "name": "lumen",
+            "links": { "https://git.niwer.dev/Lumen": "read" },
+            "tags": ["java", "CI/CD", "maven", "gradle"]
+        },
+        {
+            "name": "queryon",
+            "links": { "https://git.niwer.dev/Queryon": "read" },
+            "tags": ["java", "sqlite", "CI/CD", "maven", "gradle"]
+        },
+        {
+            "name": "nebulae",
+            "links": { "https://git.niwer.dev/Nebulae": "read" },
+            "tags": ["java", "CI/CD", "maven", "gradle"]
+        },
+        {
+            "name": "bake_n_go",
+            "video_id": "Tjjix8cpBXg",
+            "links": { "https://git.niwer.dev/BakeNGo": "read" },
+            "tags": ["java", "javalin", "queryon", "lumen", "gradle", "html", "css", "js", "SQLite"]
+        },
+        {
+            "name": "web_showcase",
+            "links": { "https://git.niwer.dev/Web-showcase-ASBL": "read" },
+            "tags": ["html", "php", "phpMyAdmin", "mySQL", "css", "js"]
+        },
+        {
             "name": "wayz",
             "image": "niwer_engine/wayz.webp",
             "links": { "https://www.youtube.com/watch?v=ovDb41z2TuQ&list=PL2uFPy064gi_Rz8ndkNubAYFySzAdpvOt": "see" },
@@ -31,26 +57,6 @@
             "tags": ["java", "fabric", "neoforge", "gradle" ]
         },
         {
-            "name": "web_showcase",
-            "links": { "https://git.niwer.dev/Web-showcase-ASBL": "read" },
-            "tags": ["html", "php", "phpMyAdmin", "mySQL", "css", "js"]
-        },
-        {
-            "name": "lumen",
-            "links": { "https://git.niwer.dev/Lumen": "read" },
-            "tags": ["java", "CI/CD", "maven", "gradle"]
-        },
-        {
-            "name": "queryon",
-            "links": { "https://git.niwer.dev/Queryon": "read" },
-            "tags": ["java", "sqlite", "CI/CD", "maven", "gradle"]
-        },
-        {
-            "name": "nebulae",
-            "links": { "https://git.niwer.dev/Nebulae": "read" },
-            "tags": ["java", "CI/CD", "maven", "gradle"]
-        },
-        {
             "name": "integrative_activity",
             "image": "hexgame.webp",
             "links": { "https://git.niwer.dev/BAC1_Integrative_activity": "read" },
@@ -71,12 +77,6 @@
             "name": "open_vanilla",
             "links": { "https://git.niwer.dev/OpenVanilla": "read" },
             "tags": ["java", "bukkit"]
-        },
-        {
-            "name": "bake_n_go",
-            "video_id": "Tjjix8cpBXg",
-            "links": { "https://git.niwer.dev/BakeNGo": "read" },
-            "tags": ["java", "javalin", "queryon", "lumen", "gradle", "html", "css", "js", "SQLite"]
         }
     ]
 }
