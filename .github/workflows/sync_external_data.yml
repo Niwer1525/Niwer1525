@@ -46,13 +46,11 @@ jobs:
         env:
           WAKA_KEY: ${{ secrets.WAKATIME_API_KEY }}
         run: |
-          AUTH=$(echo -n "$WAKA_KEY" | base64)
-
           # WakaTime stats
-          curl -H "Authorization: Basic $AUTH" "https://wakatime.com/api/v1/users/current/all_time_since_today" -o wakatime.json
+          curl -s "https://wakatime.com/api/v1/users/current/all_time_since_today?api_key=${WAKA_KEY}" -o wakatime.json
 
           # WakaTime chart
-          curl -H "Authorization: Basic $AUTH" "https://wakatime.com/api/v1/users/current/stats/all_time" -o wakatime-chart.json
+          curl -s "https://wakatime.com/api/v1/users/current/stats/all_time?api_key=${WAKA_KEY}" -o wakatime-chart.json
 
       # 4. Commit & Push on data branch
       - name: Commit and push changes to data branch
