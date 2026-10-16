@@ -39,8 +39,10 @@ export function layout({ lang = 'en', langDict, title, description, canonical, c
             <body>
                 <!-- Content -->
                 ${nav(lang, langDict)}
-                <main>${content}</main>
-                ${contactModal(langDict)}
+                <main>
+                    ${content}
+                    ${contactModal(langDict)}
+                </main>
                 ${footer(lang, langDict)}
 
                 <!-- Scripts -->

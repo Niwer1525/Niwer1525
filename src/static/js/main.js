@@ -1,28 +1,9 @@
 /* Environement variables */
 const GITHUB_USERNAME = 'Niwer1525';
 
-/**
- * Calculate the current age based on a birth date.
- * 
- * @param {Date} birthDate - The birth date
- * @returns {number} The current age
- * @author Niwer
- */
-function calculateCurrentAge() {
-    const TODAY = new Date();
-    const BIRTH_DATE = new Date(2004, 7, 27); // Note: month is 0-indexed, so 7 = August
-    let age = TODAY.getFullYear() - BIRTH_DATE.getFullYear();
-
-    const MONTH_DIFF = TODAY.getMonth() - BIRTH_DATE.getMonth();
-    if (MONTH_DIFF < 0 || (MONTH_DIFF === 0 && TODAY.getDate() < BIRTH_DATE.getDate())) age--;
-
-    return age;
-}
-
 /* On document loaded */
 document.addEventListener('DOMContentLoaded', async () => {
     console.log(`%c Niwer's Portfolio - Made with ❤️`, 'background: #000000; color: #d8b4fe; padding: 4px 8px; border-radius: 4px; font-size: 14px;');
-    console.log(`%c If you see this message, then you shouldn't be here...`, 'background: #000000; color: #000000; padding: 4px 8px; border-radius: 4px; font-size: 14px;');
 });
 
 /**
@@ -56,36 +37,29 @@ window.addEventListener('keydown', function(e) {
 });
 
 /**
- * Utility function to get the contact popup element.
+ * Utility function to get a popup element by its ID.
  * 
- * @returns {HTMLElement} The contact popup element.
+ * @param {string} id - The ID of the popup element to find.
+ * @returns {HTMLElement} The popup element.
  * @author Niwer
  */
-const popup = () => document.getElementById("contact-popup");
+const popup = (id) => document.getElementById(id);
 
 /**
  * Appends an image or video element based on the project's properties.
  * 
- * @param {*} project - The project object containing details about the project, including potential video_id or image properties.
- * @return {string} - An HTML string representing either an iframe for a video or an img tag for an image.
+ * @param {string} id - The ID of the project element to append the media to.
  * @author Niwer
  */
-function showContactPopup() { popup().style.display = "flex"; }
+function showPopup(id) { popup(id).style.display = "flex"; }
 
 /**
  * Hides the contact popup by setting its display style to "none".
  * 
+ * @param {string} id - The ID of the contact popup element to hide.
  * @author Niwer
  */
-function hideContactPopup() { popup().style.display = "none"; }
-
-/**
- * Checks if the contact popup is currently visible by checking its display style.
- * 
- * @returns {boolean} - True if the contact popup is visible, false otherwise.
- * @author Niwer 
- */
-function isContactPopupVisible() { return popup().style.display === "flex"; }
+function hidePopup(id) { popup(id).style.display = "none"; }
 
 document.addEventListener('submit', function(e) {
     if (e.target && e.target.id === 'contact-form') {

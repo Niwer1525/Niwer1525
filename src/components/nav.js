@@ -18,7 +18,7 @@ export function nav(lang = 'en', langDict) {
                     <li><a href="${indexUrl}#projects">${getValueWithFallback(langDict, 'btn.projects', 'Projects')}</a></li>
                     <li><a href="${indexUrl}#gists">${getValueWithFallback(langDict, 'btn.gists', 'Gists')}</a></li>
                     <li><a href="${storeUrl}">${getValueWithFallback(langDict, 'btn.store', 'Store')}</a></li>
-                    <li><a href="#" onclick="showContactPopup()">${getValueWithFallback(langDict, 'btn.contact', 'Contact')}</a></li>
+                    <li><a href="#" onclick="showPopup('contact-popup')">${getValueWithFallback(langDict, 'btn.contact', 'Contact')}</a></li>
                     <li class="nav-actions">
                         <button id="theme-toggle" type="button" aria-label="Theme mode" title="Theme mode">
                             <i class="fa-solid fa-circle-half-stroke"></i>

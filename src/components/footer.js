@@ -6,7 +6,7 @@ export function footer(lang = 'en', langDict) {
   return `
     <footer id="links">
         <div class="links" id="links">
-            <span class="link-button" onclick="showContactPopup()">
+            <span class="link-button" onclick="showPopup('contact-popup')">
                 <i class="fa fa-envelope"></i>
                 Contact
             </span>

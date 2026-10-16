@@ -7,6 +7,7 @@ import { bundle } from 'lightningcss';
 import { render as renderIndex } from './src/pages/index.js';
 import { render as renderStore } from './src/pages/store.js';
 import { render as renderLegal } from './src/pages/legal.js';
+import { render as renderPanel } from './src/pages/panel.js';
 
 const minifyOptions = {
 	collapseWhitespace: true,
@@ -47,7 +48,8 @@ async function build() {
 		const pages = [
 			{ filename: 'index.html', html: await renderIndex(lang, dict) },
 			{ filename: 'store.html', html: await renderStore(lang, dict) },
-			{ filename: 'legal.html', html: await renderLegal(lang, dict) }
+			{ filename: 'legal.html', html: await renderLegal(lang, dict) },
+			{ filename: 'panel.html', html: await renderPanel(lang, dict) }
 		];
 
 		for (const page of pages) {
