@@ -1,1 +1,23 @@
-.hidden { display: none !important; }
+.hidden {
+    display: none !important;
+}
+
+.download-repository {
+    margin-bottom: 2rem;
+}
+.download-repository:last-child {
+    margin-bottom: 0;
+}
+.download-repository-header {
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+}
+.download-repository-header h3 {
+    margin: 0;
+    font-size: 1rem;
+}
+.download-action {
+    width: 1%;
+    white-space: nowrap;
+}

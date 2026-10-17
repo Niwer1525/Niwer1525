@@ -2,14 +2,10 @@ import { panelLayout } from '../../components/layout.js';
 
 export async function render(lang, langDict) {
     const content = `
-        <section id="page-downloads" class="page">
-            <div class="panel">
-                <div class="panel-header">
-                    <h2><i class="fa-solid fa-download text-accent"></i> Downloads</h2>
-                </div>
-                <div id="downloadsGrid">
-                    <p class="text-secondary">Loading downloads...</p>
-                </div>
+        <section id="page-downloads">
+            <h2>Downloads</h2>
+            <div id="downloads-grid">
+                <p class="text-secondary">Loading downloads...</p>
             </div>
         </section>
     `;
@@ -17,12 +13,35 @@ export async function render(lang, langDict) {
     return panelLayout({
         lang,
         langDict,
-        title: 'Dashboard | Erwin Redoté',
-        description: 'The dashboard for niwer.dev, where you can manage your account, view your purchases, and access exclusive content.',
-        canonical: 'https://niwer.dev/panel.html',
+        title: 'Dashboard - Downloads | Erwin Redoté',
+        description: 'Download the latest releases and assets for our projects. Stay up-to-date with the newest features and improvements.',
+        canonical: 'https://niwer.dev/panel/downloads.html',
         content,
         additionalScripts: [
-            'js/panel.js'
+            {
+                file: '/js/panel/panel_state.js',
+                defer: true
+            },
+            {
+                file: '/js/panel.js',
+                defer: true
+            },
+			{
+				file: '/js/panel/services/public.js',
+				defer: true
+			},
+			{
+				file: '/js/panel/services/auth.js',
+				defer: true
+			},
+			{
+				file: '/js/panel/services/licenses.js',
+				defer: true
+			},
+			{
+				file: '/js/panel/services/admin.js',
+				defer: true
+			}
         ]
     });
 }

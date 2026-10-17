@@ -1,4 +1,4 @@
-button, .link-button {
+button, .button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -17,7 +17,7 @@ button, .link-button {
     text-decoration: none;
 }
 
-button:hover, .link-button:hover {
+button:hover, .button:hover {
     background: rgba(216, 180, 254, 0.15);
     border-color: var(--accent-color);
     transform: translateY(-2px);
@@ -25,7 +25,7 @@ button:hover, .link-button:hover {
     color: var(--text-primary);
 }
 
-button:active, .link-button:active {
+button:active, .button:active {
     transform: scale(0.98);
 }
 

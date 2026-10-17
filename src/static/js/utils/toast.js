@@ -4,7 +4,7 @@
  */
 function createNotification(message) {
     let notifications = document.querySelectorAll('.notification');
-    let offset = 20 + notifications.length * 60; // 20px base, 60px per notification
+    let offset = 20 + notifications.length * 65; // 20px base, 65px per notification
     let msg = document.createElement('div');
     msg.textContent = message;
     msg.className = 'notification';

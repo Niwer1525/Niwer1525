@@ -65,8 +65,8 @@ export function panelNavigation(lang = 'en', langDict) {
     return navigation(lang, langDict, [
         { url: `${indexUrl}`, labelKey: 'btn.home', defaultLabel: 'Home' },
         { url: `${panelUrl}`, labelKey: 'btn.overview', defaultLabel: 'Overview' },
-        { url: `${licensesUrl}`, labelKey: 'btn.licenses', defaultLabel: 'Licenses' },
         { url: `${downloadsUrl}`, labelKey: 'btn.downloads', defaultLabel: 'Downloads' },
+        { url: `${licensesUrl}`, labelKey: 'btn.licenses', defaultLabel: 'Licenses' },
         { url: `${adminUrl}`, labelKey: 'btn.admin', defaultLabel: 'Admin' },
     ], `
         <div class="dashboard-actions-grid">

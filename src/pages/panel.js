@@ -29,14 +29,6 @@ export async function render(lang, langDict) {
 			{
 				file: '/js/panel/services/auth.js',
 				defer: true
-			},
-			{
-				file: '/js/panel/services/licenses.js',
-				defer: true
-			},
-			{
-				file: '/js/panel/services/admin.js',
-				defer: true
 			}
         ]
 	});

@@ -31,6 +31,9 @@ async function loadPublicServers() {
             // Copy IP button
             const copyBtn = cardNode.querySelector('.copy-ip-btn');
             copyBtn.dataset.ip = `${server.serverIP}:${server.serverPort}`;
+            copyBtn.onclick = () => {
+                copyToClipboardWithNotification(copyBtn.dataset.ip, `Copied IP: ${copyBtn.dataset.ip}`);
+            }
 
             // for optional links, we populate href or remove element if not present
             const siteLink = cardNode.querySelector('.site-btn');
@@ -52,11 +55,12 @@ async function loadPublicServers() {
 }
 
 async function loadDownloads() {
-    const grid = document.getElementById('downloadsGrid');
+    const grid = document.getElementById('downloads-grid');
     if (!grid) return;
 
     try {
         const repositories = await api('/download/list');
+        console.log('Fetched repositories:', repositories);
         const sections = Object.entries(repositories || {}).map(([repository, data]) => {
             const releases = (data && data.releases) || [];
             const tags = (data && data.tags) || [];
@@ -72,11 +76,11 @@ async function loadDownloads() {
                     .map((asset) => `
                         <tr>
                             <td>${escapeHtml(release.name || tagName || 'Unreleased')}</td>
-                            <td><span class="font-mono text-sm">${escapeHtml(release.prerelease ? 'Yes' : 'No')}</span></td>
-                            <td><span class="font-mono text-sm">${escapeHtml(asset.name)}</span></td>
-                            <td><span class="font-mono text-sm">${escapeHtml(tagMessage || release.body || asset.body || '-')}</span></td>
+                            <td>${escapeHtml(release.prerelease ? 'Yes' : 'No')}</td>
+                            <td>${escapeHtml(asset.name)}</td>
+                            <td>${escapeHtml(tagMessage || release.body || asset.body || '-')}</td>
                             <td class="download-action">
-                                <a class="btn primary icon-btn" title="Download" href="/download?product=${encodeURIComponent(repository)}&assetName=${encodeURIComponent(asset.name || 'Unknown')}&assetId=${asset.id}" target="_blank">
+                                <a class="btn" title="Download" href="/download?product=${encodeURIComponent(repository)}&assetName=${encodeURIComponent(asset.name || 'Unknown')}&assetId=${asset.id}" target="_blank">
                                     <i class="fa-solid fa-cloud-arrow-down"></i>
                                 </a>
                             </td>

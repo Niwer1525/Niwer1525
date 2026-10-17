@@ -13,16 +13,12 @@ function cardTemplate() {
                     <button class="copy-ip-btn" title="Copy IP">
                         <i class="fa-regular fa-copy"></i>
                     </button>
-                    <button title="Website">
-                        <a target="_blank" rel="noopener" class="site-btn">
-                            <i class="fa-solid fa-link"></i>
-                        </a>
-                    </button>
-                    <button title="Discord">
-                        <a target="_blank" rel="noopener" class="discord-btn">
-                            <i class="fa-brands fa-discord"></i>
-                        </a>
-                    </button>
+                    <a target="_blank" rel="noopener" class="button site-btn" title="Website">
+                        <i class="fa-solid fa-link"></i>
+                    </a>
+                    <a target="_blank" rel="noopener" class="button discord-btn" title="Discord">
+                        <i class="fa-brands fa-discord"></i>
+                    </a>
                 </footer>
             </article>
         </template>
