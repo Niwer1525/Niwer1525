@@ -12,20 +12,20 @@ function login(langDict) {
 			<i class="fa-solid fa-lock left-icon"></i>
 			<input type="password" name="password" required placeholder="••••••••">
 		</label>
-		<button type="submit" class="btn primary" style="width: 100%; margin-top: 1rem;">Login</button>
+		<button type="submit" style="width: 100%; margin-top: 1rem;">Login</button>
 	`;
 }
 
 function twoFactorAuth(langDict) {
 	return `
-		<form id="totpLoginForm">
+		<form id="totp-login-form">
 			<h2><i class="fa-solid fa-shield-halved text-accent"></i> Two-Factor Auth</h2>
 			<label>
 				<i class="fa-solid fa-key left-icon"></i>
 				<input type="text" name="code" id="totpLoginInput" pattern="[0-9]{6}" maxlength="6" inputmode="numeric" autocomplete="one-time-code" required placeholder="123456" style="letter-spacing: 0.3rem; text-align: center; font-size: 1.25rem;">
 			</label>
-			<button type="submit" class="btn primary" style="width: 100%; margin-top: 1rem;">Verify & Continue</button>
-			<button type="button" class="btn icon-btn" id="btnCancel2FA" style="width: 100%; margin-top: 0.5rem; border-radius: 12px;">Back to Login</button>
+			<button type="submit" style="width: 100%; margin-top: 1rem;">Verify & Continue</button>
+			<button type="button" id="btnCancel2FA" onclick="showPopupAndSwitchTab('auth-popup', 'login')">Back to Login</button>
 		</form>
 	`
 }
@@ -45,7 +45,7 @@ function register(langDict) {
 			<i class="fa-solid fa-lock left-icon"></i>
 			<input type="password" name="password" required minlength="8" placeholder="••••••••">
 		</label>
-		<button type="submit" class="btn">Register</button>
+		<button type="submit">Register</button>
 	`;
 }
 

@@ -1,10 +1,11 @@
 async function loadLicenses() {
-    const tbody = document.getElementById('licensesTableBody');
+    const tbody = document.getElementById('licenses-table-body');
     if (!tbody) return;
 
     try {
         await loadLicenseProducts();
         const licenses = await api('/accounts/licenses');
+        console.log('Licenses:', licenses);
 
         if (!licenses || !licenses.length) {
             tbody.innerHTML = '<tr><td colspan="5" class="text-secondary text-center">No licenses found.</td></tr>';
@@ -12,7 +13,6 @@ async function loadLicenses() {
         }
 
         tbody.innerHTML = licenses.map((l) => {
-            console.log('License:', l);
             const status = String(l.status || l.state || 'UNKNOWN').toUpperCase();
             const isExpired = status === 'EXPIRED' || (l.expiresAt && new Date(l.expiresAt) < new Date());
             const isRevoked = status === 'REVOKED';
@@ -61,7 +61,7 @@ async function loadLicenses() {
             btn.addEventListener('click', () => revokeLicense(btn.dataset.key));
         });
     } catch {
-        toast('Failed to load licenses', 'error');
+        createNotification('Failed to load licenses', 'error');
     }
 }
 
@@ -79,7 +79,7 @@ async function loadLicenseProducts() {
     } catch (error) {
         state.licenseProducts = [];
         select.innerHTML = '<option value="">Unable to load products</option>';
-        toast(error.message || 'Failed to load license products', 'error');
+        createNotification(error.message || 'Failed to load license products', 'error');
     }
 }
 
@@ -91,12 +91,12 @@ async function createLicense(e) {
 
     try {
         await api('/accounts/licenses', { method: 'POST', body: JSON.stringify(payload) });
-        closeModal(null);
+        closeModals();
         e.target.reset();
-        toast('License created', 'success');
+        createNotification('License created', 'success');
         loadLicenses();
     } catch (err) {
-        toast(err.message, 'error');
+        createNotification(err.message, 'error');
     }
 }
 
@@ -104,9 +104,9 @@ async function revokeLicense(key) {
     if (!confirm('Revoke this license?')) return;
     try {
         await api('/accounts/licenses/revoke', { method: 'POST', body: JSON.stringify({ license_key: key }) });
-        toast('License revoked', 'success');
+        createNotification('License revoked', 'success');
         loadLicenses();
     } catch (err) {
-        toast(err.message, 'error');
+        createNotification(err.message, 'error');
     }
 }

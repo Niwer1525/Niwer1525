@@ -14,7 +14,7 @@ async function loadTablesList() {
         loadTableData();
     } catch {
         sel.innerHTML = '<option value="">Error loading tables</option>';
-        toast('Failed to load tables list (API Error)', 'error');
+        createNotification('Failed to load tables list (API Error)', 'error');
     }
 }
 
@@ -28,7 +28,7 @@ async function executeAdminSql() {
         output.textContent = JSON.stringify(result, null, 2);
     } catch (error) {
         output.textContent = error.message;
-        toast(error.message, 'error');
+        createNotification(error.message, 'error');
     }
 }
 
@@ -53,7 +53,7 @@ async function loadTableData() {
             `<tr>${data.columns.map((c) => `<td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis;" title="${escapeHTML(formatVal(row[c]))}">${escapeHTML(formatVal(row[c]))}</td>`).join('')}</tr>`
         ).join('');
     } catch {
-        toast('Failed to load table data', 'error');
+        createNotification('Failed to load table data', 'error');
         body.innerHTML = '<tr><td class="text-danger">Failed to fetch data.</td></tr>';
     }
 }

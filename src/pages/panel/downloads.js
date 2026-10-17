@@ -2,7 +2,7 @@ import { panelLayout } from '../../components/layout.js';
 
 export async function render(lang, langDict) {
     const content = `
-        <section id="page-downloads">
+        <section>
             <h2>Downloads</h2>
             <div id="downloads-grid">
                 <p class="text-secondary">Loading downloads...</p>
@@ -28,14 +28,6 @@ export async function render(lang, langDict) {
 			},
 			{
 				file: '/js/panel/auth.js',
-				defer: true
-			},
-			{
-				file: '/js/panel/licenses.js',
-				defer: true
-			},
-			{
-				file: '/js/panel/admin.js',
 				defer: true
 			}
         ]

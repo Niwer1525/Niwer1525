@@ -12,7 +12,7 @@ function navigation(lang = 'en', langDict, buttons, additionalActionsContent = '
                 <ul id="nav-links">
                     <!-- Navigation buttons -->
                     ${buttons.map(button => `
-                        <li><a href="${button.url}" ${button.onClick ? `onclick="${button.onClick}"` : ''}>${getValueWithFallback(langDict, button.labelKey, button.defaultLabel)}</a></li>
+                        <li id="${button.id || ''}"><a href="${button.url}" ${button.onClick ? `onclick="${button.onClick}"` : ''}>${getValueWithFallback(langDict, button.labelKey, button.defaultLabel)}</a></li>
                     `).join('')}
 
                     <!-- Theme Toggle and Language Selection -->
@@ -71,11 +71,11 @@ export function panelNavigation(lang = 'en', langDict) {
     ], `
         <div class="dashboard-actions-grid">
             <!-- Sign In button will be shown when the user is not authenticated, while the Profile and Logout buttons will be shown when the user is authenticated. -->
-            <button id="navSignInBtn" onclick="showPopupAndSwitchTab('auth-popup', 'login')">Sign In</button>
-            <button id="navProfileBtn" title="Profile" onclick="window.location.href='/panel/profile.html'">
+            <button id="nav-signin-btn" onclick="showPopupAndSwitchTab('auth-popup', 'login')">Sign In</button>
+            <button id="nav-profile-btn" title="Profile" onclick="window.location.href='/panel/profile.html'">
                 <i class="fa-solid fa-user"></i>
             </button>
-            <button id="navLogoutBtn" title="Logout" onclick="logout()">
+            <button id="nav-logout-btn" title="Logout" onclick="logout()">
                 <i class="fa-solid fa-sign-out-alt"></i>
             </button>
         </div>

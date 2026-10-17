@@ -20,11 +20,14 @@ document.addEventListener('submit', function(e) {
             let json = await response.json();
             if (response.status == 200) createNotification('Message sent successfully!');
             else createNotification(json.message || 'An error occurred while sending the message.');
-            closeModal('contact-popup');
+            hidePopup('contact-popup');
         })
         .catch(error => createNotification('An error occurred while sending the message.'))
         .then(() => form.reset());
     }
+    else if (e.target && e.target.id === 'auth-popup-login-form') login(e);
+    else if (e.target && e.target.id === 'totp-login-form') submit2FALogin(e);
+    else if (e.target && e.target.id === 'auth-popup-register-form') register(e);
 });
 
 /* On document loaded */
@@ -33,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     /* Handle specific loading action depending on the current path */
     const currentPath = window.location.pathname;
-    // if(currentPath.startsWith('/panel')) await restoreSession(); // Validate and restore session tokens
+    if(currentPath.startsWith('/panel')) await restoreSession(); // Validate and restore session tokens
     switch (currentPath) {
         case '/panel':
             if (state.purchaseToken && !state.account)
@@ -45,10 +48,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             await loadDownloads();
             break;
         case '/panel/licenses':
-            // await loadLicenses();
+            await loadLicenses();
             break;
         case '/panel/admin':
             // await loadAdminPanel();
+            break;
+        case '/panel/profile':
+            // await loadProfile();
             break;
         default: break;
     }

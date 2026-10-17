@@ -18,10 +18,19 @@ function getTokenFromURL() {
     return token || '';
 }
 
+function updateAuthVisibility() {
+    const isAuthenticated = !!state.userToken && !!state.account;
+    const signInBtn = document.getElementById('nav-signin-btn');
+    const profileBtn = document.getElementById('nav-profile-btn');
+    const logoutBtn = document.getElementById('nav-logout-btn');
+
+    if (signInBtn) signInBtn.style.display = isAuthenticated ? 'none' : 'inline-block';
+    if (profileBtn) profileBtn.style.display = isAuthenticated ? 'inline-block' : 'none';
+    if (logoutBtn) logoutBtn.style.display = isAuthenticated ? 'inline-block' : 'none';
+}
+
 async function api(path, options = {}) {
-    const retryable = !path.startsWith('/accounts/auth_account')
-        && path !== '/accounts/refresh'
-        && path !== '/accounts/logout';
+    const retryable = !path.startsWith('/accounts/auth_account') && path !== '/accounts/refresh' && path !== '/accounts/logout';
 
     for (let attempt = 0; attempt < (retryable ? 2 : 1); attempt += 1) {
         const headers = new Headers(options.headers || {});

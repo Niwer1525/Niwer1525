@@ -30,7 +30,7 @@ async function restoreSession() {
         }
     }
 
-    updateAuthVisibility();
+    // updateAuthVisibility();
 }
 
 async function login(e) {
@@ -44,10 +44,7 @@ async function login(e) {
 
     const formData = new FormData(e.target);
     const body = new URLSearchParams(formData);
-
-    if (state.purchaseToken) {
-        body.set('token', state.purchaseToken);
-    }
+    if (state.purchaseToken) body.set('token', state.purchaseToken);
 
     try {
         if (state.purchaseToken) {
@@ -58,7 +55,7 @@ async function login(e) {
             }).catch(() => {});
         }
 
-        const res = await fetch('/accounts/auth_account', {
+        const res = await fetch('http://localhost:17070/accounts/auth_account', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: body.toString(),
@@ -171,7 +168,7 @@ async function register(e) {
 
         clearPurchaseToken();
         createNotification('Account created', 'success');
-        closeModal(null);
+        closeModals();
         updateAuthVisibility();
     } catch (err) {
         createNotification(err.message, 'error');
@@ -202,7 +199,7 @@ async function handleLoginSuccessPayload(payload) {
     localStorage.setItem('photon-refresh-token', state.refreshToken);
 
     clearPurchaseToken();
-    closeModal(null);
+    closeModals();
     updateAuthVisibility();
 }
 
@@ -217,7 +214,7 @@ async function logout() {
     localStorage.removeItem('photon-user-token');
     localStorage.removeItem('photon-refresh-token');
     updateAuthVisibility();
-    navigate('overview');
+    // navigate('overview');
     createNotification('Logged out');
 }
 
@@ -250,7 +247,7 @@ async function updateProfile(e) {
         localStorage.setItem('photon-account', JSON.stringify(acc));
         e.target.reset();
         updateAuthVisibility();
-        closeModal(null);
+        closeModals();
         createNotification('Profile updated', 'success');
     } catch (err) {
         createNotification(err.message, 'error');
@@ -317,7 +314,7 @@ async function confirm2FASetup(e) {
         });
 
         createNotification('Two-factor authentication enabled!', 'success');
-        closeModal(null);
+        closeModals();
         e.target.reset();
 
         const updatedAccount = await api('/accounts/me');
@@ -366,7 +363,7 @@ async function requestAccountDeletion(e) {
         });
 
         // Close the modal and reset form
-        closeModal(null);
+        closeModals();
         e.target.reset();
 
         // Clear local credentials and session state matching logout()

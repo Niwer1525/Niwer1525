@@ -44,3 +44,9 @@ function showPopupAndSwitchTab(id, tabId) {
  * @author Niwer
  */
 function hidePopup(id) { getModal(id).style.display = "none"; }
+
+function closeModals() {
+    document.querySelectorAll('.modal-overlay').forEach((modal) => {
+        if (modal instanceof HTMLElement) modal.style.display = 'none';
+    });
+}
