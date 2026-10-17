@@ -1,22 +1,14 @@
 import { getValueWithFallback } from '../../utils.js';
 
-function groupTemplate() {
-    return `
-        <template id="tmpl-server-group">
-            <h3 class="group-title"></h3>
-            <div class="server-cards-grid"></div>
-        </template>
-    `;
-}
-
 function cardTemplate() {
     return `
         <template id="tmpl-server-card">
             <article>
                 <header>
                     <h2 class="card-name"></h2>
+                    <span class="card-project-id"></span>
                 </header>
-                <div class="project-description card-motd"></div>
+                <main class="card-motd"></main>
                 <footer>
                     <button class="copy-ip-btn" title="Copy IP">
                         <i class="fa-regular fa-copy"></i>
@@ -44,7 +36,6 @@ export function servers(langDict) {
 			<div id="servers-grid" class="articles-grid">
 				<p>${getValueWithFallback(langDict, 'servers.loading', 'Loading servers...')}</p>
 			</div>
-            ${groupTemplate()}
             ${cardTemplate()}
         </section>
     `;

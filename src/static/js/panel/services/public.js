@@ -1,8 +1,7 @@
 async function loadPublicServers() {
     const grid = document.getElementById('servers-grid');
-    const groupTmpl = document.getElementById('tmpl-server-group');
     const cardTmpl = document.getElementById('tmpl-server-card');
-    if (!grid || !groupTmpl || !cardTmpl) return;
+    if (!grid || !cardTmpl) return;
 
     try {
         const servers = await api('/api/status/servers');
@@ -10,52 +9,44 @@ async function loadPublicServers() {
             grid.innerHTML = '<p>No servers online.</p>';
             return;
         }
-
-        // Group servers by productId
-        const groupedServers = servers.reduce((acc, server) => {
-            const key = formatProductId(server.productId || server.projectId) || 'Other / Community';
-            (acc[key] = acc[key] || []).push(server);
-            return acc;
-        }, {});
-
+        
         // Build DOM fragments using SSG templates
         const fragment = document.createDocumentFragment();
-        for (const [productId, productServers] of Object.entries(groupedServers)) {
-            const groupNode = groupTmpl.content.cloneNode(true);
-            groupNode.querySelector('.group-title').textContent = productId;
+        for (const server of servers) {
+            const cardNode = cardTmpl.content.cloneNode(true);
 
-            const cardsGrid = groupNode.querySelector('.server-cards-grid');
-            for (const s of productServers) {
-                const cardNode = cardTmpl.content.cloneNode(true);
+            // Name
+            const nameEl = cardNode.querySelector('.card-name');
+            nameEl.textContent = server.serverName || 'Unknown Server';
+            nameEl.title = server.serverName || 'Unknown';
 
-                // Name & MOTD (textContent handles HTML escaping safely)
-                const nameEl = cardNode.querySelector('.card-name');
-                nameEl.textContent = s.serverName || 'Unknown Server';
-                nameEl.title = s.serverName || 'Unknown';
+            // Project ID
+            const projectIdEl = cardNode.querySelector('.card-project-id');
+            projectIdEl.textContent = formatProductId(server.productId || server.projectId || 'Unknown Product');
+            projectIdEl.title = formatProductId(server.productId || server.projectId || 'Unknown');
 
-                cardNode.querySelector('.card-motd').textContent = s.serverMOTD || 'No MOTD provided';
+            // MOTD (Message of the Day)
+            cardNode.querySelector('.card-motd').textContent = server.serverMOTD || 'No MOTD provided';
 
-                // Copy IP button
-                const copyBtn = cardNode.querySelector('.copy-ip-btn');
-                copyBtn.dataset.ip = `${s.serverIP}:${s.serverPort}`;
+            // Copy IP button
+            const copyBtn = cardNode.querySelector('.copy-ip-btn');
+            copyBtn.dataset.ip = `${server.serverIP}:${server.serverPort}`;
 
-                // for optional links, we populate href or remove element if not present
-                const siteLink = cardNode.querySelector('.site-btn');
-                if (s.site) siteLink.href = s.site;
-                else siteLink.remove();
+            // for optional links, we populate href or remove element if not present
+            const siteLink = cardNode.querySelector('.site-btn');
+            if (server.site) siteLink.href = server.site;
+            else siteLink.remove();
 
-                const discordLink = cardNode.querySelector('.discord-btn');
-                if (s.discord) discordLink.href = s.discord;
-                else discordLink.remove();
+            const discordLink = cardNode.querySelector('.discord-btn');
+            if (server.discord) discordLink.href = server.discord;
+            else discordLink.remove();
 
-                cardsGrid.appendChild(cardNode);
-            }
-
-            fragment.appendChild(groupNode);
+            fragment.appendChild(cardNode);
         }
 
         grid.replaceChildren(fragment); // Single DOM paint
-    } catch {
+    } catch (e) {
+        console.error('Failed to load public servers.', e);
         grid.innerHTML = '<p>Failed to load servers.</p>';
     }
 }

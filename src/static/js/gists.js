@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     let languageLegendHTML = '<div class="gist-language-legend">';
                     SORTED_LANGUAGES.forEach(([lang, count]) => {
                         const COLOR = LANGUAGE_COLORS[lang] || DEFAULT_LANGUAGE_COLOR;
-                        languageLegendHTML += `<span class="gist-language-item"><span class="gist-language-dot" style="background-color: ${COLOR};"></span>${escapeHtml(lang)}</span>`;
+                        languageLegendHTML += `<span class="gist-language-item"><span class="language-dot" style="background-color: ${COLOR};"></span>${escapeHtml(lang)}</span>`;
                     });
                     languageLegendHTML += '</div>';
                     

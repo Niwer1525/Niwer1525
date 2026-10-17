@@ -64,7 +64,3 @@ async function refreshSession() {
         return false;
     }
 }
-
-document.addEventListener('DOMContentLoaded', async () => {
-    loadPublicServers();
-});

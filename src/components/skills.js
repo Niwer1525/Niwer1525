@@ -2,7 +2,7 @@ import { getValueWithFallback } from '../utils.js';
 
 function createCard(iconClass, skillName) {
     return `
-        <div class="skills-card">
+        <div class="badge-card skills-card">
             <i class="${iconClass} skill-icon" alt="${skillName}"></i>
             ${skillName}
         </div>
@@ -13,7 +13,7 @@ export function skillsCards(langDict) {
   return `
     <section id="skills">
         <h2>${getValueWithFallback(langDict, 'title.skills', 'Skills')}</h2>
-        <div class="skills-grid">
+        <div class="flex-center-wrap">
             <!-- Game/App dev -->
             ${createCard('fa-brands fa-java', 'Java')}
             ${createCard('devicon-csharp-plain', 'C#')}

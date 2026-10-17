@@ -1,7 +1,6 @@
 @import "./reset.css";
 @import "./variables.css";
 @import "./animations.css";
-@import "./responsive.css";
 
 @import "./components/nav.css";
 @import "./components/footer.css";
@@ -13,3 +12,4 @@
 @import "./pages/home.css";
 @import "./pages/store.css";
 @import "./pages/panel.css";
+@import "./responsive.css";
