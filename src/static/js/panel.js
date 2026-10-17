@@ -1,3 +1,23 @@
+/**
+ * Core Application State
+ */
+const state = {
+    token: '',
+    userToken: localStorage.getItem('photon-user-token') || '',
+    refreshToken: localStorage.getItem('photon-refresh-token') || '',
+    account: JSON.parse(localStorage.getItem('photon-account')) || null,
+    pending2FATicket: '',
+    purchaseToken: getTokenFromURL(),
+    licenseProducts: [],
+    entitlements: [],
+};
+
+function getTokenFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    return token || '';
+}
+
 async function api(path, options = {}) {
     const retryable = !path.startsWith('/accounts/auth_account')
         && path !== '/accounts/refresh'

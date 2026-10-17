@@ -19,27 +19,23 @@ export async function render(lang, langDict) {
         content,
         additionalScripts: [
             {
-                file: '/js/panel/panel_state.js',
-                defer: true
-            },
-            {
                 file: '/js/panel.js',
                 defer: true
             },
 			{
-				file: '/js/panel/services/public.js',
+				file: '/js/panel/public.js',
 				defer: true
 			},
 			{
-				file: '/js/panel/services/auth.js',
+				file: '/js/panel/auth.js',
 				defer: true
 			},
 			{
-				file: '/js/panel/services/licenses.js',
+				file: '/js/panel/licenses.js',
 				defer: true
 			},
 			{
-				file: '/js/panel/services/admin.js',
+				file: '/js/panel/admin.js',
 				defer: true
 			}
         ]

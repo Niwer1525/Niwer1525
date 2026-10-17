@@ -60,7 +60,6 @@ async function loadDownloads() {
 
     try {
         const repositories = await api('/download/list');
-        console.log('Fetched repositories:', repositories);
         const sections = Object.entries(repositories || {}).map(([repository, data]) => {
             const releases = (data && data.releases) || [];
             const tags = (data && data.tags) || [];
@@ -80,7 +79,7 @@ async function loadDownloads() {
                             <td>${escapeHtml(asset.name)}</td>
                             <td>${escapeHtml(tagMessage || release.body || asset.body || '-')}</td>
                             <td class="download-action">
-                                <a class="btn" title="Download" href="/download?product=${encodeURIComponent(repository)}&assetName=${encodeURIComponent(asset.name || 'Unknown')}&assetId=${asset.id}" target="_blank">
+                                <a class="button" title="Download" href="/download?product=${encodeURIComponent(repository)}&assetName=${encodeURIComponent(asset.name || 'Unknown')}&assetId=${asset.id}" target="_blank">
                                     <i class="fa-solid fa-cloud-arrow-down"></i>
                                 </a>
                             </td>

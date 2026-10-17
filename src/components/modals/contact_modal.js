@@ -1,8 +1,8 @@
 import { getValueWithFallback } from '../../utils.js';
-import { modal } from './modal.js';
+import { basicModal } from './modal.js';
 
 export function contactModal(langDict) {
-  return modal(langDict, 'contact-popup', `
+  return basicModal(langDict, 'contact-popup', `
     <input type="hidden" name="access_key" value="f18de961-019b-4e2a-ad3d-dffbb5136e1f">
     <h2>${getValueWithFallback(langDict, 'form.title', 'Contact Me')}</h2>
     <label>
