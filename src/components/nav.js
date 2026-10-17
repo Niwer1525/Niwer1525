@@ -12,7 +12,7 @@ function navigation(lang = 'en', langDict, buttons, additionalActionsContent = '
                 <ul id="nav-links">
                     <!-- Navigation buttons -->
                     ${buttons.map(button => `
-                        <li><a href="${button.url}">${getValueWithFallback(langDict, button.labelKey, button.defaultLabel)}</a></li>
+                        <li><a href="${button.url}" ${button.onClick ? `onclick="${button.onClick}"` : ''}>${getValueWithFallback(langDict, button.labelKey, button.defaultLabel)}</a></li>
                     `).join('')}
 
                     <!-- Theme Toggle and Language Selection -->
@@ -71,7 +71,7 @@ export function panelNavigation(lang = 'en', langDict) {
     ], `
         <div class="dashboard-actions-grid">
             <!-- Sign In button will be shown when the user is not authenticated, while the Profile and Logout buttons will be shown when the user is authenticated. -->
-            <button id="navSignInBtn">Sign In</button>
+            <button id="navSignInBtn" onclick="showPopup('auth-popup')">Sign In</button>
             <button id="navProfileBtn" title="Profile">
                 <i class="fa-solid fa-user"></i>
             </button>

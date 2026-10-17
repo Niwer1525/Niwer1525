@@ -1,6 +1,7 @@
 import { defaultNavigation, panelNavigation } from './nav.js';
 import { footer } from './footer.js';
 import { contactModal } from './modals/contact_modal.js';
+import { authModal } from './modals/auth_modal.js';
 
 function addScripts(scripts) {
     return scripts.map(script => {
@@ -79,6 +80,7 @@ export function panelLayout({ lang = 'en', langDict, title, description, canonic
             <main>
                 ${content}
                 ${contactModal(langDict)}
+                ${authModal(langDict)}
             </main>
             ${footer(lang, langDict)}
         `,

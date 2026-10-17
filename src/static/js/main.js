@@ -51,7 +51,9 @@ const popup = (id) => document.getElementById(id);
  * @param {string} id - The ID of the project element to append the media to.
  * @author Niwer
  */
-function showPopup(id) { popup(id).style.display = "flex"; }
+function showPopup(id) {
+    console.log(id)
+    popup(id).style.display = "flex"; }
 
 /**
  * Hides the contact popup by setting its display style to "none".
