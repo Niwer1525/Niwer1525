@@ -2,10 +2,11 @@ import { getValueWithFallback } from '../utils.js';
 
 function createCard(iconClass, skillName) {
     return `
-    <div class="skills-card">
-        <i class="${iconClass} skill-icon" alt="${skillName}"></i>
-        ${skillName}
-    </div>`;
+        <div class="skills-card">
+            <i class="${iconClass} skill-icon" alt="${skillName}"></i>
+            ${skillName}
+        </div>
+    `;
 }
 
 export function skillsCards(langDict) {

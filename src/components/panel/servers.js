@@ -1,0 +1,51 @@
+import { getValueWithFallback } from '../../utils.js';
+
+function groupTemplate() {
+    return `
+        <template id="tmpl-server-group">
+            <h3 class="group-title"></h3>
+            <div class="server-cards-grid"></div>
+        </template>
+    `;
+}
+
+function cardTemplate() {
+    return `
+        <template id="tmpl-server-card">
+            <article>
+                <header>
+                    <h2 class="card-name"></h2>
+                </header>
+                <div class="project-description card-motd"></div>
+                <footer>
+                    <button class="copy-ip-btn" title="Copy IP">
+                        <i class="fa-regular fa-copy"></i>
+                    </button>
+                    <button title="Website">
+                        <a target="_blank" rel="noopener" class="site-btn">
+                            <i class="fa-solid fa-link"></i>
+                        </a>
+                    </button>
+                    <button title="Discord">
+                        <a target="_blank" rel="noopener" class="discord-btn">
+                            <i class="fa-brands fa-discord"></i>
+                        </a>
+                    </button>
+                </footer>
+            </article>
+        </template>
+    `
+}
+
+export function servers(langDict) {
+    return `
+        <section>
+            <h2>${getValueWithFallback(langDict, 'title.servers', 'Public Servers')}</h2>
+			<div id="servers-grid" class="articles-grid">
+				<p>${getValueWithFallback(langDict, 'servers.loading', 'Loading servers...')}</p>
+			</div>
+            ${groupTemplate()}
+            ${cardTemplate()}
+        </section>
+    `;
+}

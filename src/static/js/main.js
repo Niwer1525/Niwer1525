@@ -130,3 +130,17 @@ function trimAndMinifyHTML(html) {
 function escapeHtml(value) {
     return String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
 }
+
+/**
+ * This will make the first letter of each word in the productId uppercase and replace underscores with spaces.
+ * 
+ * @param {*} productId The productId to format.
+ */
+function formatProductId(productId) {
+    if (!productId) return 'Unknown';
+    return productId
+        .replace(/_/g, ' ')
+        .split(' ')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+}
