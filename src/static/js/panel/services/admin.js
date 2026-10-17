@@ -1,8 +1,4 @@
-import { api } from '../api/client.js';
-import { toast } from '../ui/toast.js';
-import { escapeHTML, formatVal } from '../ui/dom.js';
-
-export async function loadTablesList() {
+async function loadTablesList() {
     const sel = document.getElementById('tableSelector');
     if (!sel) return;
 
@@ -22,7 +18,7 @@ export async function loadTablesList() {
     }
 }
 
-export async function executeAdminSql() {
+async function executeAdminSql() {
     const input = document.getElementById('adminSql');
     const output = document.getElementById('adminSqlResult');
     if (!input || !output || !input.value.trim()) return;
@@ -36,7 +32,7 @@ export async function executeAdminSql() {
     }
 }
 
-export async function loadTableData() {
+async function loadTableData() {
     const table = document.getElementById('tableSelector')?.value;
     const limit = document.getElementById('tableLimit')?.value || 100;
     const head = document.getElementById('dataTableHead');

@@ -1,10 +1,4 @@
-import { api } from '../api/client.js';
-import { state } from '../state.js';
-import { toast } from '../ui/toast.js';
-import { closeModal } from '../ui/modal.js';
-import { escapeHTML, formatDate, copyToClipboard } from '../ui/dom.js';
-
-export async function loadLicenses() {
+async function loadLicenses() {
     const tbody = document.getElementById('licensesTableBody');
     if (!tbody) return;
 
@@ -71,7 +65,7 @@ export async function loadLicenses() {
     }
 }
 
-export async function loadLicenseProducts() {
+async function loadLicenseProducts() {
     const select = document.getElementById('licenseProductSelect');
     if (!select) return;
 
@@ -89,7 +83,7 @@ export async function loadLicenseProducts() {
     }
 }
 
-export async function createLicense(e) {
+async function createLicense(e) {
     e.preventDefault();
     const fd = new FormData(e.target);
     const payload = { name: fd.get('name'), product_id: fd.get('product_id') };
@@ -106,7 +100,7 @@ export async function createLicense(e) {
     }
 }
 
-export async function revokeLicense(key) {
+async function revokeLicense(key) {
     if (!confirm('Revoke this license?')) return;
     try {
         await api('/accounts/licenses/revoke', { method: 'POST', body: JSON.stringify({ license_key: key }) });

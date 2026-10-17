@@ -1,5 +1,6 @@
 import { projects } from '../components/projects.js';
 import { skillsCards } from '../components/skills.js';
+import { gists } from '../components/gists.js';
 import { stats } from '../components/stats.js';
 import { defaultLayout } from '../components/layout.js';
 import { getValueWithFallback } from '../utils.js';
@@ -12,7 +13,7 @@ export async function render(lang, langDict) {
         <p>${getValueWithFallback(langDict, 'content_aboute_me', 'Self-taught developer, passionate about code and backend architecture.')}</p>
         
         <!-- Open to Work Badge -->
-        <div class="open-to-work-badge">
+        <div class="flex-center-wrap open-to-work-badge">
             <span class="badge-item">
                 <i class="fa-solid fa-briefcase"></i>
                 <span>${getValueWithFallback(langDict, 'badge.open_to_work', 'Open to Work')}</span>
@@ -44,14 +45,7 @@ export async function render(lang, langDict) {
     ${await projects(lang, langDict)}
 
     <!-- Gists -->
-    <section id="gists">
-        <h2>Gists</h2>
-        <div id="gists-grid" class="articles-grid">
-            <!-- There will be gists -->
-        </div>
-        <a class="link-button" href="https://gist.niwer.dev" target="_blank" rel="noopener noreferrer">${getValueWithFallback(langDict, 'explore.gists', 'Explore my Gists')}</a>
-        <input type="number" id="gists-limit" min="1" max="100" value="6" placeholder="Number of gists to show">
-    </section>
+    ${gists(langDict)}
   `;
 
   return defaultLayout({

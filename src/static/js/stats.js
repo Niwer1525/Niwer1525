@@ -176,7 +176,7 @@ function ensureWakaLanguageFiltersUI(languages) {
         /* Generate the language button */
         let html = `
             <button type="button" class="waka-filter-chip ${IS_SELECTED ? '' : 'is-unselected'}" data-language="${escapeHtml(language.name)}" aria-pressed="${IS_SELECTED ? 'true' : 'false'}" title="Toggle ${escapeHtml(language.name)}">
-                <span class="waka-filter-dot" style="background:${escapeHtml(COLOR)}"></span>
+                <span class="language-dot" style="background:${escapeHtml(COLOR)}"></span>
                 ${escapeHtml(language.name)}
             </button>
         `;

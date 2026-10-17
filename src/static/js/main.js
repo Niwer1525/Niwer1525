@@ -1,90 +1,31 @@
 /* Environement variables */
 const GITHUB_USERNAME = 'Niwer1525';
 
-/* On document loaded */
-document.addEventListener('DOMContentLoaded', async () => {
-    console.log(`%c Niwer's Portfolio - Made with ❤️`, 'background: #000000; color: #d8b4fe; padding: 4px 8px; border-radius: 4px; font-size: 14px;');
-});
-
 /**
- * Copies the email address to the clipboard and shows a notification.
+ * Formats a value for display in the UI.
+ * If the value is null or empty, it returns a dash.
+ * If the value is an object, it returns its JSON string representation.
+ * Otherwise, it converts the value to a string.
  * 
- * @author Niwer
+ * @param {*} v - The value to format.
+ * @returns {string} - The formatted value.
  */
-function copyEmail() {
-    navigator.clipboard.writeText('contact@niwer.dev').then(() => createNotification('Email copied to clipboard!'));
+function formatVal(v) {
+    if (v == null || v === '') return '—';
+    return typeof v === 'object' ? JSON.stringify(v) : String(v);
 }
 
 /**
- * Creates a temporary notification at the bottom of the screen.
- * @param {string} message - The message to display in the notification.
+ * Formats a date value for display in the UI.
+ * 
+ * @param {*} v - The date value to format. 
+ * @returns {string} - The formatted date string or a dash if the value is invalid.
  */
-function createNotification(message) {
-    let notifications = document.querySelectorAll('.notification');
-    let offset = 20 + notifications.length * 60; // 20px base, 60px per notification
-    let msg = document.createElement('div');
-    msg.textContent = message;
-    msg.className = 'notification';
-    msg.style.top = 'auto';
-    msg.style.bottom = `${offset}px`;
-    document.body.appendChild(msg);
-    setTimeout(() => msg.remove(), 2000);
+function formatDate(v) {
+    if (!v) return '—';
+    const d = new Date(v);
+    return isNaN(d.getTime()) ? v : d.toLocaleString();
 }
-
-/* Prevent CTRL+S (Saving) & CTRL+P (Printing) */
-window.addEventListener('keydown', function(e) {
-    if ((e.ctrlKey && e.key === 's') || (e.ctrlKey && e.key === 'p')) e.preventDefault();
-});
-
-/**
- * Utility function to get a popup element by its ID.
- * 
- * @param {string} id - The ID of the popup element to find.
- * @returns {HTMLElement} The popup element.
- * @author Niwer
- */
-const popup = (id) => document.getElementById(id);
-
-/**
- * Appends an image or video element based on the project's properties.
- * 
- * @param {string} id - The ID of the project element to append the media to.
- * @author Niwer
- */
-function showPopup(id) {
-    console.log(id)
-    popup(id).style.display = "flex"; }
-
-/**
- * Hides the contact popup by setting its display style to "none".
- * 
- * @param {string} id - The ID of the contact popup element to hide.
- * @author Niwer
- */
-function hidePopup(id) { popup(id).style.display = "none"; }
-
-document.addEventListener('submit', function(e) {
-    if (e.target && e.target.id === 'contact-form') {
-        e.preventDefault();
-        const form = e.target;
-        const formData = new FormData(form);
-        const object = Object.fromEntries(formData);
-        const json = JSON.stringify(object);
-
-        fetch('https://api.web3forms.com/submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: json
-        })
-        .then(async response => {
-            let json = await response.json();
-            if (response.status == 200) createNotification('Message sent successfully!');
-            else createNotification(json.message || 'An error occurred while sending the message.');
-        })
-        .catch(error => createNotification('An error occurred while sending the message.'))
-        .then(() => form.reset());
-    }
-});
 
 /**
  * Utility function to get a CSS variable's value
@@ -128,5 +69,25 @@ function trimAndMinifyHTML(html) {
  * @author Niwer
  */
 function escapeHtml(value) {
-    return String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
+    return String(value || '').replace(/[&<>"']/g, (m) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    }[m]));
+}
+
+/**
+ * This will make the first letter of each word in the productId uppercase and replace underscores with spaces.
+ * 
+ * @param {*} productId The productId to format.
+ */
+function formatProductId(productId) {
+    if (!productId) return 'Unknown';
+    return productId
+        .replace(/_/g, ' ')
+        .split(' ')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
 }

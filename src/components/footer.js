@@ -47,9 +47,10 @@ export function footer(lang = 'en', langDict) {
             <li><a href="${legalUrl}#privacy_policy">${getValueWithFallback(langDict, "btn.privacy_policy", "Privacy Policy")}</a></li>
         </ul>
         <hr>
-        <p>${getValueWithFallback(langDict, "made_by", "Made with ❤️ by Niwer")}</p>
+        <p>
+            ${getValueWithFallback(langDict, "made_by", "Made with ❤️ by Niwer")} - <a href="https://sponsor.niwer.dev">${getValueWithFallback(langDict, "sponsor", "Toss a coin to your Niwer")}</a>
+        </p>
         <p>${getValueWithFallback(langDict, "copyright", `Copyright ${currentYear} - All rights reserved`)}</p>
-        <a href="https://sponsor.niwer.dev">${getValueWithFallback(langDict, "sponsor", "Toss a coin to your Niwer")}</a>
     </footer>
   `;
 }

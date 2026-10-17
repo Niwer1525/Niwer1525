@@ -36,8 +36,8 @@
     }
     #presentation h1 { font-size: 2.5rem; }
 
-    .skills-grid, .github-card { gap: 1rem; }
-    .skills-card, .github-card {
+    .flex-center-wrap, .github-card { gap: 1rem; }
+    .badge-card {
         width: 100px;
         padding: 1rem;
         font-size: 0.85rem;

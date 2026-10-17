@@ -1,18 +1,11 @@
-import { api } from '../../panel.js';
-import { state } from '../panel_state.js';
-import { createNotification } from '../../main.js';
-import { closeModal, openModal } from '../../../../../panel_original/js/ui/modal.js';
-import { updateAuthVisibility } from '../../../../../panel_original/js/ui/views.js';
-import { navigate } from '../../../../../panel_original/js/ui/router.js';
-
-export function clearPurchaseToken() {
+function clearPurchaseToken() {
     if (state.purchaseToken) {
         state.purchaseToken = '';
         window.history.replaceState({}, '', window.location.pathname);
     }
 }
 
-export async function restoreSession() {
+async function restoreSession() {
     if (state.purchaseToken && (state.userToken || state.refreshToken || state.account || state.token)) {
         await logout();
         return;
@@ -40,7 +33,7 @@ export async function restoreSession() {
     updateAuthVisibility();
 }
 
-export async function login(e) {
+async function login(e) {
     e.preventDefault();
     const btn = e.target.querySelector('button[type="submit"]');
     const originalText = btn ? btn.innerHTML : '';
@@ -103,7 +96,7 @@ export async function login(e) {
     }
 }
 
-export async function submit2FALogin(e) {
+async function submit2FALogin(e) {
     e.preventDefault();
     const btn = e.target.querySelector('button[type="submit"]');
     const originalText = btn ? btn.innerHTML : '';
@@ -141,7 +134,7 @@ export async function submit2FALogin(e) {
     }
 }
 
-export async function register(e) {
+async function register(e) {
     e.preventDefault();
     const btn = e.target.querySelector('button[type="submit"]');
     const originalText = btn?.innerHTML || '';
@@ -190,7 +183,7 @@ export async function register(e) {
     }
 }
 
-export async function handleLoginSuccessPayload(payload) {
+async function handleLoginSuccessPayload(payload) {
     state.account = payload.account || payload;
     localStorage.setItem('photon-account', JSON.stringify(state.account));
 
@@ -213,7 +206,7 @@ export async function handleLoginSuccessPayload(payload) {
     updateAuthVisibility();
 }
 
-export async function logout() {
+async function logout() {
     await api('/accounts/logout', { method: 'POST' }).catch(() => {});
     state.token = '';
     state.userToken = '';
@@ -228,7 +221,7 @@ export async function logout() {
     createNotification('Logged out');
 }
 
-export async function updateProfile(e) {
+async function updateProfile(e) {
     e.preventDefault();
     const fd = new FormData(e.target);
     try {
@@ -264,7 +257,7 @@ export async function updateProfile(e) {
     }
 }
 
-export async function open2FASetup() {
+async function open2FASetup() {
     if (state.account?.totpEnabled) {
         if (!confirm('Two-factor authentication is already active. Do you want to disable it?')) return;
 
@@ -306,7 +299,7 @@ export async function open2FASetup() {
     }
 }
 
-export async function confirm2FASetup(e) {
+async function confirm2FASetup(e) {
     e.preventDefault();
     const btn = e.target.querySelector('button[type="submit"]');
     const originalText = btn?.innerHTML || '';
@@ -341,7 +334,7 @@ export async function confirm2FASetup(e) {
     }
 }
 
-export async function loadEntitlements() {
+async function loadEntitlements() {
     try {
         const entitlements = await api('/accounts/entitlements');
         state.entitlements = Array.isArray(entitlements) ? entitlements : [];
@@ -350,7 +343,7 @@ export async function loadEntitlements() {
     }
 }
 
-export async function requestAccountDeletion(e) {
+async function requestAccountDeletion(e) {
     e.preventDefault();
     const btn = e.target.querySelector('button[type="submit"]');
     const originalText = btn ? btn.innerHTML : '';

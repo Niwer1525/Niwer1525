@@ -1,3 +1,4 @@
+/* Presentation / Hero Section */
 #presentation {
     display: flex;
     align-items: center;
@@ -5,7 +6,11 @@
     gap: 4rem;
     min-height: 60vh;
 }
-#presentation > div { flex: 1; }
+
+#presentation > div {
+    flex: 1;
+}
+
 #presentation h1 {
     background: linear-gradient(120deg, var(--text-presentation), var(--accent-color));
     background-clip: text;
@@ -13,112 +18,24 @@
     -webkit-text-fill-color: transparent;
     margin-bottom: 1.5rem;
 }
+
 #presentation > img {
     width: 280px;
     height: 280px;
     object-fit: cover;
     border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-    border: 2px solid rgba(255,255,255,0.1);
+    border: 2px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 0 50px rgba(216, 180, 254, 0.15);
     animation: float 6s ease-in-out infinite, morph 12s ease-in-out infinite;
     flex-shrink: 0;
 }
 
-/* Cards & Grid Shared */
-.skills-grid, .github-stats-grid, .open-to-work-badge {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1.5rem;
-}
-.open-to-work-badge { margin-top: 3rem; }
-
-.badge-item {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-size: 0.95rem;
-    color: var(--text-secondary);
-    transition: color 0.3s;
-}
-.badge-item i {
-    color: var(--accent-color);
-    font-size: 1rem;
-    min-width: 20px;
-}
-
-.skills-card, .github-card {
-    background: var(--surface-glass);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    padding: 1.5rem;
-    width: 140px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    transition: all var(--transition-speed);
-    cursor: default;
-}
-.skills-card:hover, .github-card:hover {
-    border-color: var(--accent-color);
-    box-shadow: 0 4px 20px rgba(216, 180, 254, 0.15);
-    transform: translateY(-5px);
-    background: var(--surface-glass-hover);
-}
-.skill-icon {
-    font-size: 3rem;
-    color: var(--text-primary);
-    transition: color 0.3s;
-}
-.skills-card:hover .skill-icon {
-    color: var(--accent-color);
-    filter: drop-shadow(0 0 5px var(--accent-glow));
-}
-
-.github-card {
-    width: 180px;
-    font-size: 0.9rem;
-    text-align: center;
-    padding: 1rem;
-}
-.github-card > span {
-    font-size: 3rem;
-    line-height: 1;
-    display: block;
-}
-.github-card p {
-    margin: 0;
-    line-height: 1.35;
-}
-
-.large-card-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-.large-card {
-    width: 60%;
-    padding: 2rem 3rem 2rem 2rem;
-    cursor: pointer;
-    position: relative;
-}
-.large-card > span {
-    font-size: clamp(2.5rem, 8vw, 4.5rem);
-    padding-right: 1.25rem;
-}
-.top-right-external-link {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 10;
-}
-
+/* WakaTime Chart & Filters */
 .chart-container {
     max-width: 600px;
     margin: 2rem auto;
 }
+
 .waka-language-filters {
     display: flex;
     flex-wrap: wrap;
@@ -126,6 +43,7 @@
     justify-content: center;
     margin-bottom: 1rem;
 }
+
 .waka-filter-chip {
     padding: 0.4rem 0.8rem;
     border-radius: 999px;
@@ -139,162 +57,35 @@
     font-weight: 500;
     cursor: pointer;
     transition: all var(--transition-speed);
+    width: fit-content;
 }
+
 .waka-filter-chip:hover {
     border-color: var(--accent-color);
     color: var(--text-primary);
 }
+
 .waka-filter-chip.is-unselected {
     opacity: 0.45;
     filter: saturate(0.25);
 }
-.waka-filter-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    display: inline-block;
+
+/* Home 'Open to Work' badge */
+.open-to-work-badge {
+    margin-top: 3rem;
 }
 
-/* Projects & Articles */
-.articles-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-bottom: 2rem;
-}
-
-article {
-    background: var(--surface-glass);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    overflow: hidden;
+.badge-item {
     display: flex;
-    flex-direction: column;
-    transition: all var(--transition-speed);
-    position: relative;
-    backdrop-filter: blur(10px);
-    text-align: justify;
-}
-article:hover {
-    transform: translateY(-8px);
-    border-color: var(--accent-color);
-    box-shadow: 0 4px 20px rgba(216, 180, 254, 0.15);
-    z-index: 5;
-}
-article img, article iframe {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border: none;
-    border-bottom: 1px solid var(--border-color);
-    transition: transform 0.5s;
-}
-article:hover img, article:hover iframe {
-    transform: scale(1.05);
-}
-
-article header, article h2 {
-    margin: 0;
-    padding: 1rem;
-    font-size: 1.4rem;
-    text-align: left;
-    color: var(--text-primary);
-}
-article h2::after { display: none; }
-
-article p {
-    padding: 0 1rem 1rem;
-    font-size: 0.95rem;
-    flex: 1;
-}
-
-article footer {
-    padding: 1rem;
-    border-top: 1px solid var(--border-color);
-    display: flex;
-    justify-content: space-between;
     align-items: center;
-    background: var(--article-footer-bg);
+    gap: 0.6rem;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    transition: color 0.3s;
 }
 
-.project-tags {
-    font-size: 0.8rem;
+.badge-item i {
     color: var(--accent-color);
-    font-family: monospace;
+    font-size: 1rem;
+    min-width: 20px;
 }
-
-/* Gists */
-.gist-card {
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-.gist-card header {
-    padding: 1.25rem;
-    border-bottom: 1px solid var(--border-color);
-    min-height: 60px;
-    display: flex;
-    align-items: center;
-    text-align: justify;
-}
-.gist-card header p {
-    margin: 0;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--text-primary);
-}
-.gist-language-bar {
-    display: flex;
-    height: 8px;
-    background: var(--border-color);
-    flex-shrink: 0;
-    margin-top: auto;
-}
-.gist-language-segment {
-    transition: opacity 0.2s ease;
-    cursor: pointer;
-}
-.gist-language-segment:hover {
-    opacity: 0.85;
-    filter: brightness(1.1);
-}
-.gist-language-legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    padding: 1rem 1.25rem;
-    border-bottom: 1px solid var(--border-color);
-    background: var(--surface-glass);
-    flex-shrink: 0;
-}
-.gist-language-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    font-weight: 500;
-}
-.gist-language-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    display: inline-block;
-    flex-shrink: 0;
-}
-.gist-info {
-    display: flex;
-    gap: 1.5rem;
-    padding: 0.75rem 1.25rem;
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    border-bottom: 1px solid var(--border-color);
-    align-items: center;
-    flex-shrink: 0;
-}
-.gist-file-count, .gist-date {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-}
-.gist-file-count i, .gist-date i { opacity: 0.7; }

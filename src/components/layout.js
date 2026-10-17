@@ -13,7 +13,7 @@ function addScripts(scripts) {
     }).join('\n');
 }
 
-function layout({ lang = 'en', langDict = [], title = 'Default Title', description = '', canonical = '', body = '', additionalScripts = [] }) {
+function layout({ title = 'Default Title', description = '', canonical = '', body = '', additionalScripts = [] }) {
     return `
         <!DOCTYPE html>
         <html lang="en">
@@ -39,20 +39,46 @@ function layout({ lang = 'en', langDict = [], title = 'Default Title', descripti
             </head>
             <body>
                 ${body}
+
                 <!-- Scripts -->
-                <script src="/js/main.js" defer></script> <!-- Load main script -->
-                <script src="/js/stats.js" defer></script> <!-- Stats script, required by the theme script -->
-                <script src="/js/theme.js" defer></script> <!-- Load theme script -->
+                ${addScripts([
+                    {
+                        file: '/js/main.js',
+                        defer: true
+                    },
+                    {
+                        file: '/js/stats.js',
+                        defer: true
+                    },
+                    {
+                        file: '/js/theme.js',
+                        defer: true
+                    },
+                    {
+                        file: '/js/utils/modals.js',
+                        defer: true
+                    },
+                    {
+                        file: '/js/utils/toast.js',
+                        defer: true
+                    },
+                    {
+                        file: '/js/utils/clipboard.js',
+                        defer: true
+                    },
+                    {
+                        file: '/js/utils/events.js',
+                        defer: true
+                    }
+                ])}
                 ${addScripts(additionalScripts)}
             </body>
         </html>
     `;
 }
 
-export function defaultLayout({ lang = 'en', langDict, title, description, canonical, content, additionalScripts = [] }) {
+export function defaultLayout({ lang = 'en', langDict = [], title, description, canonical, content, additionalScripts = [] }) {
     return layout({
-        lang,
-        langDict,
         title,
         description,
         canonical,
@@ -68,10 +94,8 @@ export function defaultLayout({ lang = 'en', langDict, title, description, canon
     });
 }
 
-export function panelLayout({ lang = 'en', langDict, title, description, canonical, content, additionalScripts = [] }) {
+export function panelLayout({ lang = 'en', langDict = [], title, description, canonical, content, additionalScripts = [] }) {
     return layout({
-        lang,
-        langDict,
         title,
         description,
         canonical,

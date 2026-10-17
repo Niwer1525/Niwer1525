@@ -72,10 +72,10 @@ export function panelNavigation(lang = 'en', langDict) {
         <div class="dashboard-actions-grid">
             <!-- Sign In button will be shown when the user is not authenticated, while the Profile and Logout buttons will be shown when the user is authenticated. -->
             <button id="navSignInBtn" onclick="showPopup('auth-popup')">Sign In</button>
-            <button id="navProfileBtn" title="Profile">
+            <button id="navProfileBtn" title="Profile" onclick="window.location.href='/panel/profile.html'">
                 <i class="fa-solid fa-user"></i>
             </button>
-            <button id="navLogoutBtn" title="Logout">
+            <button id="navLogoutBtn" title="Logout" onclick="logout()">
                 <i class="fa-solid fa-sign-out-alt"></i>
             </button>
         </div>

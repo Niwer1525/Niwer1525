@@ -1,6 +1,4 @@
-import { state } from './panel/panel_state.js';
-
-export async function api(path, options = {}) {
+async function api(path, options = {}) {
     const retryable = !path.startsWith('/accounts/auth_account')
         && path !== '/accounts/refresh'
         && path !== '/accounts/logout';
@@ -20,7 +18,7 @@ export async function api(path, options = {}) {
         const isURLSearch = options.body instanceof URLSearchParams;
         if (options.body && !isFormData && !isURLSearch && !headers.has('Content-Type')) headers.set('Content-Type', 'application/json');
 
-        const res = await fetch(path, { credentials: 'same-origin', ...options, headers });
+        const res = await fetch('http://localhost:17070'+path, { credentials: 'same-origin', ...options, headers });
         const contentType = res.headers.get('content-type') || '';
         const payload = contentType.includes('json') ? await res.json() : await res.text();
 

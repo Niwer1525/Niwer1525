@@ -1,7 +1,7 @@
 /**
  * Core Application State
  */
-export const state = {
+const state = {
     token: '',
     userToken: localStorage.getItem('photon-user-token') || '',
     refreshToken: localStorage.getItem('photon-refresh-token') || '',
