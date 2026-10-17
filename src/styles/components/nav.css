@@ -71,13 +71,21 @@ nav > ul > li > a:hover::after { width: 100%; }
     opacity: 1;
     transform: scale(1.1);
 }
-
 .nav-actions {
     position: absolute;
     right: 1.5rem;
     display: flex;
     align-items: center;
     gap: 1rem;
+}
+.dashboard-actions-grid {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.dashboard-actions-grid button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
 }
 
 /* Mobile Nav Toggle & Themes */
