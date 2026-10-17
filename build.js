@@ -8,6 +8,10 @@ import { render as renderIndex } from './src/pages/index.js';
 import { render as renderStore } from './src/pages/store.js';
 import { render as renderLegal } from './src/pages/legal.js';
 import { render as renderPanel } from './src/pages/panel.js';
+import { render as renderPanelDownloads } from './src/pages/panel/downloads.js';
+import { render as renderPanelLicenses } from './src/pages/panel/licenses.js';
+import { render as renderPanelAdmin } from './src/pages/panel/admin.js';
+import { render as renderPanelProfile } from './src/pages/panel/user_profile.js';
 
 const minifyOptions = {
 	collapseWhitespace: true,
@@ -44,16 +48,21 @@ async function build() {
 
 		const outFolder = lang === 'en' ? distDir : path.join(distDir, lang);
 		await fs.mkdir(outFolder, { recursive: true });
-
+		
 		const pages = [
 			{ filename: 'index.html', html: await renderIndex(lang, dict) },
 			{ filename: 'store.html', html: await renderStore(lang, dict) },
 			{ filename: 'legal.html', html: await renderLegal(lang, dict) },
-			{ filename: 'panel.html', html: await renderPanel(lang, dict) }
+			{ filename: 'panel.html', html: await renderPanel(lang, dict) },
+			{ filename: '/panel/downloads.html', html: await renderPanelDownloads(lang, dict) },
+			{ filename: '/panel/licenses.html', html: await renderPanelLicenses(lang, dict) },
+			{ filename: '/panel/admin.html', html: await renderPanelAdmin(lang, dict) },
+			{ filename: '/panel/profile.html', html: await renderPanelProfile(lang, dict) }
 		];
 
 		for (const page of pages) {
 			const minifiedHtml = await minify(page.html, minifyOptions);
+			await fs.mkdir(path.dirname(path.join(outFolder, page.filename)), { recursive: true });
 			await fs.writeFile(path.join(outFolder, page.filename), minifiedHtml, 'utf8');
 			console.log(`✓ [${lang.toUpperCase()}] Generated ${path.join(lang === 'en' ? '' : lang, page.filename)}`);
 		}

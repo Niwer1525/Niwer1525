@@ -1,6 +1,6 @@
 import { getValueWithFallback } from '../utils.js';
 
-function navigation(lang = 'en', langDict, buttons) {
+function navigation(lang = 'en', langDict, buttons, additionalActionsContent = '') {
     return `
         <header id="top">
             <nav>
@@ -10,14 +10,23 @@ function navigation(lang = 'en', langDict, buttons) {
                 
                 <!-- Navigation Links -->
                 <ul id="nav-links">
+                    <!-- Navigation buttons -->
                     ${buttons.map(button => `
                         <li><a href="${button.url}">${getValueWithFallback(langDict, button.labelKey, button.defaultLabel)}</a></li>
                     `).join('')}
+
+                    <!-- Theme Toggle and Language Selection -->
                     <li class="nav-actions">
+                        <!-- Additional content can be added here -->
+                        ${additionalActionsContent}
+
+                        <!-- Theme Toggle Button -->
                         <button id="theme-toggle" type="button" aria-label="Theme mode" title="Theme mode">
                             <i class="fa-solid fa-circle-half-stroke"></i>
                             <span id="theme-toggle-label">System</span>
                         </button>
+
+                        <!-- Language Selection -->
                         <div class="languages-grid">
                             <a href="/">
                                 <img loading="lazy" draggable="false" src="/assets/icons/united-kingdom.webp" alt="united_kingdom_logo">
@@ -50,12 +59,25 @@ export function defaultNavigation(lang = 'en', langDict) {
 export function panelNavigation(lang = 'en', langDict) {
     const indexUrl = lang === 'en' ? '/index.html' : `/${lang}/index.html`;
     const panelUrl = lang === 'en' ? '/panel.html' : `/${lang}/panel.html`;
-    const downloadsUrl = lang === 'en' ? '/panel/downloads.html' : `/${lang}/panel/panel.html`;
+    const downloadsUrl = lang === 'en' ? '/panel/downloads.html' : `/${lang}/panel/downloads.html`;
+    const licensesUrl = lang === 'en' ? '/panel/licenses.html' : `/${lang}/panel/licenses.html`;
     const adminUrl = lang === 'en' ? '/panel/admin.html' : `/${lang}/panel/admin.html`;
     return navigation(lang, langDict, [
         { url: `${indexUrl}`, labelKey: 'btn.home', defaultLabel: 'Home' },
         { url: `${panelUrl}`, labelKey: 'btn.overview', defaultLabel: 'Overview' },
+        { url: `${licensesUrl}`, labelKey: 'btn.licenses', defaultLabel: 'Licenses' },
         { url: `${downloadsUrl}`, labelKey: 'btn.downloads', defaultLabel: 'Downloads' },
         { url: `${adminUrl}`, labelKey: 'btn.admin', defaultLabel: 'Admin' },
-    ]);
+    ], `
+        <div class="dashboard-actions-grid">
+            <!-- Sign In button will be shown when the user is not authenticated, while the Profile and Logout buttons will be shown when the user is authenticated. -->
+            <button id="navSignInBtn">Sign In</button>
+            <button id="navProfileBtn" title="Profile">
+                <i class="fa-solid fa-user"></i>
+            </button>
+            <button id="navLogoutBtn" title="Logout">
+                <i class="fa-solid fa-sign-out-alt"></i>
+            </button>
+        </div>
+    `);
 }
