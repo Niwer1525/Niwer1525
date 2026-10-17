@@ -1,7 +1,7 @@
 import { projects } from '../components/projects.js';
 import { skillsCards } from '../components/skills.js';
 import { stats } from '../components/stats.js';
-import { layout } from '../components/layout.js';
+import { defaultLayout } from '../components/layout.js';
 import { getValueWithFallback } from '../utils.js';
 
 export async function render(lang, langDict) {
@@ -54,7 +54,7 @@ export async function render(lang, langDict) {
     </section>
   `;
 
-  return layout({
+  return defaultLayout({
     lang,
     langDict,
     title: 'Erwin Redoté (Niwer) - Developer Portfolio',

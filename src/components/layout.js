@@ -1,4 +1,4 @@
-import { nav } from './nav.js';
+import { defaultNavigation, panelNavigation } from './nav.js';
 import { footer } from './footer.js';
 import { contactModal } from './modals/contact_modal.js';
 
@@ -12,8 +12,8 @@ function addScripts(scripts) {
     }).join('\n');
 }
 
-export function layout({ lang = 'en', langDict, title, description, canonical, content, additionalScripts = [] }) {
-  return `
+function layout({ lang = 'en', langDict = [], title = 'Default Title', description = '', canonical = '', body = '', additionalScripts = [] }) {
+    return `
         <!DOCTYPE html>
         <html lang="en">
             <head>
@@ -37,14 +37,7 @@ export function layout({ lang = 'en', langDict, title, description, canonical, c
                 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
             </head>
             <body>
-                <!-- Content -->
-                ${nav(lang, langDict)}
-                <main>
-                    ${content}
-                    ${contactModal(langDict)}
-                </main>
-                ${footer(lang, langDict)}
-
+                ${body}
                 <!-- Scripts -->
                 <script src="/js/main.js" defer></script> <!-- Load main script -->
                 <script src="/js/stats.js" defer></script> <!-- Stats script, required by the theme script -->
@@ -53,4 +46,42 @@ export function layout({ lang = 'en', langDict, title, description, canonical, c
             </body>
         </html>
     `;
+}
+
+export function defaultLayout({ lang = 'en', langDict, title, description, canonical, content, additionalScripts = [] }) {
+    return layout({
+        lang,
+        langDict,
+        title,
+        description,
+        canonical,
+        body: `
+            ${defaultNavigation(lang, langDict)}
+            <main>
+                ${content}
+                ${contactModal(langDict)}
+            </main>
+            ${footer(lang, langDict)}
+        `,
+        additionalScripts
+    });
+}
+
+export function panelLayout({ lang = 'en', langDict, title, description, canonical, content, additionalScripts = [] }) {
+    return layout({
+        lang,
+        langDict,
+        title,
+        description,
+        canonical,
+        body: `
+            ${panelNavigation(lang, langDict)}
+            <main>
+                ${content}
+                ${contactModal(langDict)}
+            </main>
+            ${footer(lang, langDict)}
+        `,
+        additionalScripts
+    });
 }

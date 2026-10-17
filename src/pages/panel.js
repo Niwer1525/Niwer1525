@@ -1,11 +1,11 @@
-import { layout } from '../components/layout.js';
+import { panelLayout } from '../components/layout.js';
 
 export async function render(lang, langDict) {
 	const content = `
         
 	`;
 
-	return layout({
+	return panelLayout({
 		lang,
     	langDict,
 		title: 'Terms of Service & Privacy Policy | Erwin Redoté',

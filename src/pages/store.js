@@ -1,4 +1,4 @@
-import { layout } from '../components/layout.js';
+import { defaultLayout } from '../components/layout.js';
 import { loadJson, getValueWithFallback } from '../utils.js';
 import { renderPackageCard } from '../components/store/packageCard.js';
 
@@ -35,9 +35,7 @@ async function renderCategorySections(node, parentPath, context, outLinks) {
 
     // Recurse into nested subcategories
     if (Array.isArray(node.subcategories) && node.subcategories.length > 0) {
-        for (const sub of node.subcategories) {
-            html += await renderCategorySections(sub, currentPath, context, outLinks);
-        }
+        for (const sub of node.subcategories) html += await renderCategorySections(sub, currentPath, context, outLinks);
     }
 
     return html;
@@ -84,7 +82,7 @@ export async function render(lang = 'en', langDict = {}) {
         </div>
     `;
 
-    return layout({
+    return defaultLayout({
         lang,
         langDict,
         title: `${getValueWithFallback(langDict, 'btn.store', 'Store')} | Erwin Redoté (Niwer)`,

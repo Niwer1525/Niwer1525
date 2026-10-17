@@ -53,3 +53,10 @@ export function footer(lang = 'en', langDict) {
     </footer>
   `;
 }
+
+/* 
+This may be added to the footer inside the panel page?
+    <p>
+    Powered by <a href="https://git.niwer.dev/Photon" target="_blank" rel="noopener noreferrer">Photon</a>, the open-source backend behind Niwer's products. Inspect our code and verify its security anytime.
+    </p>
+*/

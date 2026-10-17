@@ -1,8 +1,6 @@
 import { getValueWithFallback } from '../utils.js';
 
-export function nav(lang = 'en', langDict) {
-    const indexUrl = lang === 'en' ? '/index.html' : `/${lang}/index.html`;
-    const storeUrl = lang === 'en' ? '/store.html' : `/${lang}/store.html`;
+function navigation(lang = 'en', langDict, buttons) {
     return `
         <header id="top">
             <nav>
@@ -12,13 +10,9 @@ export function nav(lang = 'en', langDict) {
                 
                 <!-- Navigation Links -->
                 <ul id="nav-links">
-                    <li><a href="${indexUrl}#presentation">${getValueWithFallback(langDict, 'btn.about', 'About')}</a></li>
-                    <li><a href="${indexUrl}#skills">${getValueWithFallback(langDict, 'btn.skills', 'Skills')}</a></li>
-                    <li><a href="${indexUrl}#stats">${getValueWithFallback(langDict, 'btn.github_stats', 'Statistics')}</a></li>
-                    <li><a href="${indexUrl}#projects">${getValueWithFallback(langDict, 'btn.projects', 'Projects')}</a></li>
-                    <li><a href="${indexUrl}#gists">${getValueWithFallback(langDict, 'btn.gists', 'Gists')}</a></li>
-                    <li><a href="${storeUrl}">${getValueWithFallback(langDict, 'btn.store', 'Store')}</a></li>
-                    <li><a href="#" onclick="showPopup('contact-popup')">${getValueWithFallback(langDict, 'btn.contact', 'Contact')}</a></li>
+                    ${buttons.map(button => `
+                        <li><a href="${button.url}">${getValueWithFallback(langDict, button.labelKey, button.defaultLabel)}</a></li>
+                    `).join('')}
                     <li class="nav-actions">
                         <button id="theme-toggle" type="button" aria-label="Theme mode" title="Theme mode">
                             <i class="fa-solid fa-circle-half-stroke"></i>
@@ -37,4 +31,31 @@ export function nav(lang = 'en', langDict) {
             </nav>
         </header>
     `;
+}
+
+export function defaultNavigation(lang = 'en', langDict) {
+    const indexUrl = lang === 'en' ? '/index.html' : `/${lang}/index.html`;
+    const storeUrl = lang === 'en' ? '/store.html' : `/${lang}/store.html`;
+    return navigation(lang, langDict, [
+        { url: `${indexUrl}#presentation`, labelKey: 'btn.about', defaultLabel: 'About' },
+        { url: `${indexUrl}#skills`, labelKey: 'btn.skills', defaultLabel: 'Skills' },
+        { url: `${indexUrl}#stats`, labelKey: 'btn.github_stats', defaultLabel: 'Statistics' },
+        { url: `${indexUrl}#projects`, labelKey: 'btn.projects', defaultLabel: 'Projects' },
+        { url: `${indexUrl}#gists`, labelKey: 'btn.gists', defaultLabel: 'Gists' },
+        { url: storeUrl, labelKey: 'btn.store', defaultLabel: 'Store' },
+        { url: '#', labelKey: 'btn.contact', defaultLabel: 'Contact', onClick: "showPopup('contact-popup')" }
+    ]);
+}
+
+export function panelNavigation(lang = 'en', langDict) {
+    const indexUrl = lang === 'en' ? '/index.html' : `/${lang}/index.html`;
+    const panelUrl = lang === 'en' ? '/panel.html' : `/${lang}/panel.html`;
+    const downloadsUrl = lang === 'en' ? '/panel/downloads.html' : `/${lang}/panel/panel.html`;
+    const adminUrl = lang === 'en' ? '/panel/admin.html' : `/${lang}/panel/admin.html`;
+    return navigation(lang, langDict, [
+        { url: `${indexUrl}`, labelKey: 'btn.home', defaultLabel: 'Home' },
+        { url: `${panelUrl}`, labelKey: 'btn.overview', defaultLabel: 'Overview' },
+        { url: `${downloadsUrl}`, labelKey: 'btn.downloads', defaultLabel: 'Downloads' },
+        { url: `${adminUrl}`, labelKey: 'btn.admin', defaultLabel: 'Admin' },
+    ]);
 }

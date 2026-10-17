@@ -1,4 +1,4 @@
-import { layout } from '../components/layout.js';
+import { defaultLayout } from '../components/layout.js';
 import { loadMd, getValueWithFallback } from '../utils.js';
 
 export async function render(lang, langDict) {
@@ -32,7 +32,7 @@ export async function render(lang, langDict) {
 		</section>
 	`;
 
-	return layout({
+	return defaultLayout({
 		lang,
     	langDict,
 		title: 'Terms of Service & Privacy Policy | Erwin Redoté',

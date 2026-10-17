@@ -5,6 +5,6 @@ export function modal(langDict, id, fromContent) {
 				<button type="button" id="close" onclick="hidePopup('${id}')">X</button>
 				${fromContent}
 			</form>
-		</div>è
+		</div>
 	`;
 }
