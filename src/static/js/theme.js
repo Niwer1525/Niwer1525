@@ -1,8 +1,9 @@
+import { renderWakaChart } from './stats.js';
+
 /* Theme variables */
 const THEME_STORAGE_KEY = 'theme-preference';
 const THEME_MODES = ['system', 'dark', 'light'];
 const SYSTEM_THEME_QUERY = window.matchMedia('(prefers-color-scheme: dark)');
-
 
 /* On document loaded */
 document.addEventListener('DOMContentLoaded', () => {

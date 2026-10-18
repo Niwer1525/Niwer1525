@@ -44,31 +44,38 @@ function layout({ title = 'Default Title', description = '', canonical = '', bod
                 ${addScripts([
                     {
                         file: '/js/main.js',
-                        defer: true
+                        defer: true,
+                        type: 'module'
                     },
                     {
                         file: '/js/stats.js',
-                        defer: true
+                        defer: true,
+                        type: 'module'
                     },
                     {
                         file: '/js/theme.js',
-                        defer: true
+                        defer: true,
+                        type: 'module'
                     },
                     {
                         file: '/js/utils/modals.js',
-                        defer: true
+                        defer: true,
+                        type: 'module'
                     },
                     {
                         file: '/js/utils/toast.js',
-                        defer: true
+                        defer: true,
+                        type: 'module'
                     },
                     {
                         file: '/js/utils/clipboard.js',
-                        defer: true
+                        defer: true,
+                        type: 'module'
                     },
                     {
                         file: '/js/utils/events.js',
-                        defer: true
+                        defer: true,
+                        type: 'module'
                     }
                 ])}
                 ${addScripts(additionalScripts)}

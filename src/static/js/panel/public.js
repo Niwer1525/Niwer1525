@@ -1,3 +1,7 @@
+import { createNotification } from '../utils/toast.js';
+import { formatProductId } from '../main.js';
+import { api } from '../panel.js';
+
 /**
  * Sets up a server card with the provided data.
  * 
@@ -30,7 +34,7 @@ function setupServerCard(root, { serverName = 'Unknown Server', projectId, serve
     return root;
 }
 
-async function loadPublicServers() {
+export async function loadPublicServers() {
     const grid = document.getElementById('servers-grid');
     const tmpl = document.getElementById('tmpl-server-card');
     if (!grid || !tmpl) return;
@@ -51,6 +55,7 @@ async function loadPublicServers() {
         servers.forEach(s => fragment.append(setupServerCard(tmpl.content.cloneNode(true), s)));
         grid.replaceChildren(fragment);
     } catch (e) {
+        console.error('Failed to load public servers.', e);
         createNotification('Failed to load public servers', 'error');
     }
 }
@@ -74,7 +79,7 @@ function setupDownloadRow(root, { releaseName, isPreRelease, assetName, descript
     return root;
 }
 
-async function loadDownloads() {
+export async function loadDownloads() {
     const grid = document.getElementById('downloads-grid');
     const repoTmpl = document.getElementById('tmpl-download-repo');
     const rowTmpl = document.getElementById('tmpl-download-row');
@@ -122,7 +127,8 @@ async function loadDownloads() {
         }
 
         grid.replaceChildren(fragment);
-    } catch {
+    } catch (e) {
+        console.error('Failed to load downloads.', e);
         createNotification('Failed to load downloads', 'error');
     }
 }

@@ -1,3 +1,9 @@
+import { createNotification } from './toast.js';
+import { hidePopup } from './modals.js';
+import { loadDownloads, loadPublicServers } from '../panel/public.js';
+import { restoreSession, login, submit2FALogin, register } from '../panel/auth.js';
+import { state } from '../panel.js';
+
 /* Prevent CTRL+S (Saving) & CTRL+P (Printing) */
 window.addEventListener('keydown', function(e) {
     if ((e.ctrlKey && e.key === 's') || (e.ctrlKey && e.key === 'p')) e.preventDefault();

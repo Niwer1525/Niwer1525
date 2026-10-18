@@ -3,7 +3,7 @@
  * @param {string} message - The message to display in the notification.
  * @param {string} type - The type of notification ('info', 'success', 'error').
  */
-function createNotification(message, type = 'info') {
+export function createNotification(message, type = 'info') {
     let notifications = document.querySelectorAll('.notification');
     let offset = 20 + notifications.length * 65; // 20px base, 65px per notification
     let msg = document.createElement('div');

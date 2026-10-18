@@ -1,5 +1,5 @@
 /* Environement variables */
-const GITHUB_USERNAME = 'Niwer1525';
+export const GITHUB_USERNAME = 'Niwer1525';
 
 /**
  * Formats a value for display in the UI.
@@ -10,7 +10,7 @@ const GITHUB_USERNAME = 'Niwer1525';
  * @param {*} v - The value to format.
  * @returns {string} - The formatted value.
  */
-function formatVal(v) {
+export function formatVal(v) {
     if (v == null || v === '') return '—';
     return typeof v === 'object' ? JSON.stringify(v) : String(v);
 }
@@ -21,7 +21,7 @@ function formatVal(v) {
  * @param {*} v - The date value to format. 
  * @returns {string} - The formatted date string or a dash if the value is invalid.
  */
-function formatDate(v) {
+export function formatDate(v) {
     if (!v) return '—';
     const d = new Date(v);
     return isNaN(d.getTime()) ? v : d.toLocaleString();
@@ -34,7 +34,7 @@ function formatDate(v) {
  * @returns {string} The value of the CSS variable, or an empty string if not found
  * @author Niwer
  */
-function getCSSVar(name) {
+export function getCSSVar(name) {
     return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }
 
@@ -45,7 +45,7 @@ function getCSSVar(name) {
  * @param {*} content - The text content to set on the element
  * @author Niwer
  */
-function getElementByIdAndSetContent(id, content) {
+export function getElementByIdAndSetContent(id, content) {
     const ELEMENT = document.getElementById(id);
     if(ELEMENT) ELEMENT.textContent = content;
 }
@@ -57,7 +57,7 @@ function getElementByIdAndSetContent(id, content) {
  * @returns {string} The trimmed and minified HTML string.
  * @author Niwer
  */
-function trimAndMinifyHTML(html) {
+export function trimAndMinifyHTML(html) {
     return html.trim().replace(/\s+/g, ' ');
 }
 
@@ -68,7 +68,7 @@ function trimAndMinifyHTML(html) {
  * @returns {string} The escaped string, safe for HTML insertion.
  * @author Niwer
  */
-function escapeHtml(value) {
+export function escapeHtml(value) {
     return String(value || '').replace(/[&<>"']/g, (m) => ({
         '&': '&amp;',
         '<': '&lt;',
@@ -83,7 +83,7 @@ function escapeHtml(value) {
  * 
  * @param {*} productId The productId to format.
  */
-function formatProductId(productId) {
+export function formatProductId(productId) {
     if (!productId) return 'Unknown';
     return productId
         .replace(/_/g, ' ')

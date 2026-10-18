@@ -13,9 +13,10 @@ const getModal = (id) => document.getElementById(id);
  * @param {string} id - The ID of the project element to append the media to.
  * @author Niwer
  */
-function showPopup(id) { getModal(id).style.display = "flex"; }
+export function showPopup(id) { getModal(id).style.display = "flex"; }
+window.showPopup = showPopup;
 
-function switchTab(modalId, tabId) {
+export function switchTab(modalId, tabId) {
     if (!modalId || !tabId) return;
 
     /* Try to get the modal by it's ID */
@@ -28,14 +29,16 @@ function switchTab(modalId, tabId) {
     popupElement.querySelectorAll('form').forEach((f) => f.classList.add('hidden'));
     popupElement.querySelector(`#${modalId}-${tabId}-form`)?.classList.remove('hidden');
 }
+window.switchTab = switchTab;
 
 /**
  * Shows a popup and switches to a specific tab within that popup.
  */
-function showPopupAndSwitchTab(id, tabId) {
+export function showPopupAndSwitchTab(id, tabId) {
     showPopup(id);
     switchTab(id, tabId);
 }
+window.showPopupAndSwitchTab = window.showPopupAndSwitchTab = showPopupAndSwitchTab;;
 
 /**
  * Hides the contact popup by setting its display style to "none".
@@ -43,9 +46,10 @@ function showPopupAndSwitchTab(id, tabId) {
  * @param {string} id - The ID of the contact popup element to hide.
  * @author Niwer
  */
-function hidePopup(id) { getModal(id).style.display = "none"; }
+export function hidePopup(id) { getModal(id).style.display = "none"; }
+window.hidePopup = hidePopup;
 
-function closeModals() {
+export function closeModals() {
     document.querySelectorAll('.modal-overlay').forEach((modal) => {
         if (modal instanceof HTMLElement) modal.style.display = 'none';
     });

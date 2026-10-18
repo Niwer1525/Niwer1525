@@ -36,15 +36,18 @@ export async function render(lang, langDict) {
         additionalScripts: [
             {
                 file: '/js/panel.js',
-                defer: true
+                defer: true,
+                type: 'module'
             },
 			{
 				file: '/js/panel/auth.js',
-				defer: true
+				defer: true,
+                type: 'module'
 			},
 			{
 				file: '/js/panel/licenses.js',
-				defer: true
+				defer: true,
+                type: 'module'
 			}
         ]
     });

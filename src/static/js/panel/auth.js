@@ -1,3 +1,6 @@
+import { createNotification } from '../utils/toast.js';
+import { api, state, setSession, clearSession, updateAuthVisibility } from '../panel.js';
+
 function clearPurchaseToken() {
     if (state.purchaseToken) {
         state.purchaseToken = '';
@@ -14,7 +17,7 @@ async function syncPurchaseSession(body) {
     }).catch(() => {});
 }
 
-async function restoreSession() {
+export async function restoreSession() {
     if (state.purchaseToken && (state.userToken || state.refreshToken || state.account || state.token)) return logout();
     if (state.account) {
         try {
@@ -29,7 +32,7 @@ async function restoreSession() {
     updateAuthVisibility();
 }
 
-function login(e) {
+export function login(e) {
     return handleFormSubmit(e, async (form, formData) => {
         const body = new URLSearchParams(formData);
         await syncPurchaseSession(body);
@@ -51,7 +54,7 @@ function login(e) {
     });
 }
 
-function submit2FALogin(e) {
+export function submit2FALogin(e) {
     return handleFormSubmit(e, async (form, formData) => {
         const payload = await api('/accounts/auth_account/2fa', {
             method: 'POST',
@@ -63,7 +66,7 @@ function submit2FALogin(e) {
     });
 }
 
-function register(e) {
+export function register(e) {
     return handleFormSubmit(e, async (form, formData) => {
         const body = new URLSearchParams(formData);
         await syncPurchaseSession(body);
@@ -95,6 +98,7 @@ async function logout() {
     updateAuthVisibility();
     createNotification('Logged out');
 }
+window.logout = logout;
 
 function updateProfile(e) {
     return handleFormSubmit(e, async (form, fromData) => {

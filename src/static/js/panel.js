@@ -1,7 +1,7 @@
 /**
  * Core Application State
  */
-const state = {
+export const state = {
     token: '',
     userToken: localStorage.getItem('photon-user-token') || '',
     refreshToken: localStorage.getItem('photon-refresh-token') || '',
@@ -25,7 +25,7 @@ function getTokenFromURL() {
  * @param {*} userToken - The user token string to store in the session.
  * @param {*} refreshToken - The refresh token string to store in the session.
  */
-function setSession(account = null, userToken = '', refreshToken = '') {
+export function setSession(account = null, userToken = '', refreshToken = '') {
     state.account = account;
     state.userToken = userToken;
     state.refreshToken = refreshToken;
@@ -39,7 +39,7 @@ function setSession(account = null, userToken = '', refreshToken = '') {
 /**
  * Clears the current session, removing all tokens and account information from the state and localStorage.
  */
-function clearSession() {
+export function clearSession() {
     state.token = '';
     state.entitlements = [];
     setSession(null, '', '');
@@ -50,7 +50,7 @@ function clearSession() {
  * If the user is authenticated, the sign-in button is hidden and the profile and logout buttons are shown.
  * If the user is not authenticated, the sign-in button is shown and the profile and logout buttons are hidden.
  */
-function updateAuthVisibility() {
+export function updateAuthVisibility() {
     const isAuthenticated = !!state.account;
     const signInBtn = document.getElementById('nav-signin-btn');
     const profileBtn = document.getElementById('nav-profile-btn');
@@ -61,7 +61,7 @@ function updateAuthVisibility() {
     if (logoutBtn) logoutBtn.style.display = isAuthenticated ? 'inline-block' : 'none';
 }
 
-async function api(path, options = {}) {
+export async function api(path, options = {}) {
     const retryable = !path.startsWith('/accounts/auth_account') && path !== '/accounts/refresh' && path !== '/accounts/logout';
 
     for (let attempt = 0; attempt < (retryable ? 2 : 1); attempt += 1) {
@@ -93,7 +93,7 @@ async function api(path, options = {}) {
     }
 }
 
-async function refreshSession() {
+export async function refreshSession() {
     try {
         const res = await fetch('/accounts/refresh', {
             method: 'POST',

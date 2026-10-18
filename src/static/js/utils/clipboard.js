@@ -1,11 +1,14 @@
+import { createNotification } from './toast.js';
+
 /**
  * Copies the email address to the clipboard and shows a notification.
  * 
  * @author Niwer
  */
-function copyEmail() {
+export function copyEmail() {
     copyToClipboardWithNotification('contact@niwer.dev', 'Email copied to clipboard!');
 }
+window.copyEmail = copyEmail;
 
 /**
  * Copies the provided text to the clipboard and shows a notification with the provided message.
@@ -13,7 +16,7 @@ function copyEmail() {
  * @param {*} text - The text to copy to the clipboard. 
  * @param {*} notificationMessage - The message to display in the notification after copying.
  */
-function copyToClipboardWithNotification(text, notificationMessage) {
+export function copyToClipboardWithNotification(text, notificationMessage) {
     copyToClipboard(text).then(() => createNotification(notificationMessage));
 }
 
@@ -22,7 +25,7 @@ function copyToClipboardWithNotification(text, notificationMessage) {
  * 
  * @param {*} text - The text to copy to the clipboard.
  */
-async function copyToClipboard(text) {
+export async function copyToClipboard(text) {
     try {
         await navigator.clipboard.writeText(text);
     } catch {}

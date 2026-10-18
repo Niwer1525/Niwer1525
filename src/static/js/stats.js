@@ -3,9 +3,11 @@
     E.G : https://raw.githubusercontent.com/Niwer1525/Niwer1525/data/github_full_stats.json
 */
 
+import { GITHUB_USERNAME, escapeHtml, trimAndMinifyHTML, getCSSVar, getElementByIdAndSetContent } from './main.js';
+
 /* WakaTime chart variables */
-const DEFAULT_LANGUAGE_COLOR = '#cccccc';
-const LANGUAGE_COLORS = {
+export const DEFAULT_LANGUAGE_COLOR = '#cccccc';
+export const LANGUAGE_COLORS = {
     'JSON': '#292929',
     'Shell': '#89e051',
     'Markdown': '#083fa1',
@@ -109,7 +111,7 @@ async function getWakatimeData() {
  * 
  * @author Niwer
  */
-async function renderWakaChart() {
+export async function renderWakaChart() {
     try {
         const RESPONSE = await fetch(`https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_USERNAME}/data/wakatime-chart.json`);
         if (!RESPONSE.ok) throw new Error('Could not fetch WakaTime chart data', GITHUB_USERNAME);
