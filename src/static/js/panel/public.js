@@ -3,7 +3,7 @@
  * 
  * @param {*} root - The root element of the card to be populated. 
  * @param {*} param1 - An object containing server properties such as serverName, projectId, serverMOTD, serverIP, serverPort, site, and discord.
- * @returns 
+ * @returns {HTMLElement} The populated card element.
  */
 function setupServerCard(root, { serverName = 'Unknown Server', projectId, serverMOTD, serverIP, serverPort, site, discord }) {
     const formattedId = formatProductId(projectId || 'Unknown');
@@ -51,55 +51,78 @@ async function loadPublicServers() {
         servers.forEach(s => fragment.append(setupServerCard(tmpl.content.cloneNode(true), s)));
         grid.replaceChildren(fragment);
     } catch (e) {
-        console.error('Failed to load public servers.', e);
-        grid.innerHTML = '<p>Failed to load servers.</p>';
+        createNotification('Failed to load public servers', 'error');
     }
+}
+
+/**
+ * Sets up a download row with the provided data.
+ * 
+ * @param {*} root - The root element of the row to be populated. 
+ * @param {*} param1 - An object containing download properties such as releaseName, isPreRelease, assetName, description, repo, and assetId.
+ * @returns {HTMLElement} The populated row element.
+ */
+function setupDownloadRow(root, { releaseName, isPreRelease, assetName, description, repo, assetId }) {
+    root.querySelector('.row-release').textContent = releaseName;
+    root.querySelector('.row-prerelease').textContent = isPreRelease ? 'Yes' : 'No';
+    root.querySelector('.row-asset').textContent = assetName;
+    root.querySelector('.row-desc').textContent = description;
+
+    const link = root.querySelector('.download-link');
+    if (link) link.href = `/download?product=${encodeURIComponent(repo)}&assetName=${encodeURIComponent(assetName)}&assetId=${assetId}`;
+
+    return root;
 }
 
 async function loadDownloads() {
     const grid = document.getElementById('downloads-grid');
-    if (!grid) return;
+    const repoTmpl = document.getElementById('tmpl-download-repo');
+    const rowTmpl = document.getElementById('tmpl-download-row');
+    if (!grid || !repoTmpl || !rowTmpl) return;
 
     try {
         const repositories = await api('/download/list');
         const entries = Object.entries(repositories || {});
-        if (!entries.length) return (grid.innerHTML = '<p class="text-secondary">No downloadable assets found.</p>');
+        if (!entries.length) {
+            grid.innerHTML = '<p class="text-secondary">No downloadable assets found.</p>';
+            return;
+        }
 
-        grid.innerHTML = entries.map(([repo, data = {}]) => {
+        const fragment = document.createDocumentFragment();
+
+        for (const [repo, data = {}] of entries) {
+            const repoNode = repoTmpl.content.cloneNode(true);
+            repoNode.querySelector('.repo-name').textContent = repo;
+            const tbody = repoNode.querySelector('.repo-rows');
+
             const tagMap = new Map((data.tags || []).map(t => [t.tag || t.name, t.message || '']));
+            const rowsFragment = document.createDocumentFragment();
 
-            const rows = (data.releases || []).flatMap(rel => {
+            (data.releases || []).forEach(rel => {
                 const tag = rel.tagName || rel.tag_name;
                 const desc = tagMap.get(tag) || rel.body || '-';
 
-                return (rel.assets || []).filter(a => a?.name).map(a => `
-                    <tr>
-                        <td>${escapeHtml(rel.name || tag || 'Unreleased')}</td>
-                        <td>${rel.prerelease ? 'Yes' : 'No'}</td>
-                        <td>${escapeHtml(a.name)}</td>
-                        <td>${escapeHtml(desc !== '-' ? desc : a.body || '-')}</td>
-                        <td class="download-action">
-                            <a class="button" title="Download" href="/download?product=${encodeURIComponent(repo)}&assetName=${encodeURIComponent(a.name)}&assetId=${a.id}" target="_blank">
-                                <i class="fa-solid fa-cloud-arrow-down"></i>
-                            </a>
-                        </td>
-                    </tr>`);
-            }).join('');
+                (rel.assets || []).filter(a => a?.name).forEach(a => {
+                    const rowNode = setupDownloadRow(rowTmpl.content.cloneNode(true), {
+                        releaseName: rel.name || tag || 'Unreleased',
+                        isPreRelease: Boolean(rel.prerelease),
+                        assetName: a.name,
+                        description: desc !== '-' ? desc : (a.body || '-'),
+                        repo,
+                        assetId: a.id
+                    });
+                    rowsFragment.append(rowNode);
+                });
+            });
 
-            return `
-                <section class="download-repository">
-                    <div class="download-repository-header">
-                        <h3><i class="fa-solid fa-code-branch text-accent"></i> ${escapeHtml(repo)}</h3>
-                    </div>
-                    <div class="table-container">
-                        <table>
-                            <thead><tr><th>Release</th><th>Pre-Release</th><th>Asset</th><th>Description</th><th>Download</th></tr></thead>
-                            <tbody>${rows || '<tr><td colspan="5" class="text-secondary">No downloadable assets found.</td></tr>'}</tbody>
-                        </table>
-                    </div>
-                </section>`;
-        }).join('');
+            if (rowsFragment.children.length > 0) tbody.append(rowsFragment);
+            else tbody.innerHTML = '<tr><td colspan="5" class="text-secondary">No downloadable assets found.</td></tr>';
+
+            fragment.append(repoNode);
+        }
+
+        grid.replaceChildren(fragment);
     } catch {
-        grid.innerHTML = '<p class="text-secondary text-danger">Failed to load downloads.</p>';
+        createNotification('Failed to load downloads', 'error');
     }
 }

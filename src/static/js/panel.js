@@ -18,6 +18,38 @@ function getTokenFromURL() {
     return token || '';
 }
 
+/**
+ * Sets the current session state, including account information and tokens, and stores them in localStorage.
+ * 
+ * @param {*} account - The account information object to store in the session.
+ * @param {*} userToken - The user token string to store in the session.
+ * @param {*} refreshToken - The refresh token string to store in the session.
+ */
+function setSession(account = null, userToken = '', refreshToken = '') {
+    state.account = account;
+    state.userToken = userToken;
+    state.refreshToken = refreshToken;
+
+    const setOrRemove = (key, val) => val ? localStorage.setItem(key, typeof val === 'object' ? JSON.stringify(val) : val) : localStorage.removeItem(key);
+    setOrRemove('photon-account', account);
+    setOrRemove('photon-user-token', userToken);
+    setOrRemove('photon-refresh-token', refreshToken);
+}
+
+/**
+ * Clears the current session, removing all tokens and account information from the state and localStorage.
+ */
+function clearSession() {
+    state.token = '';
+    state.entitlements = [];
+    setSession(null, '', '');
+}
+
+/**
+ * Updates the visibility of authentication-related UI elements based on the current authentication state.
+ * If the user is authenticated, the sign-in button is hidden and the profile and logout buttons are shown.
+ * If the user is not authenticated, the sign-in button is shown and the profile and logout buttons are hidden.
+ */
 function updateAuthVisibility() {
     const isAuthenticated = !!state.userToken && !!state.account;
     const signInBtn = document.getElementById('nav-signin-btn');

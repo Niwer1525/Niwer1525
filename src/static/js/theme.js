@@ -56,11 +56,11 @@ function applyTheme(mode = getStoredThemePreference()) {
  * @author Niwer
  */
 function updateThemeToggleUI(mode, resolved) {
-    const LABEL = document.getElementById('theme-toggle-label');
+    const BUTTON = document.getElementById('theme-toggle');
     const ICON = document.querySelector('#theme-toggle i');
-    if (!LABEL || !ICON) return;
+    if (!BUTTON || !ICON) return;
 
-    LABEL.textContent = mode.charAt(0).toUpperCase() + mode.slice(1);
+    BUTTON.title = mode.charAt(0).toUpperCase() + mode.slice(1);
 
     ICON.className = 'fa-solid';
     if (mode === 'system') ICON.classList.add('fa-circle-half-stroke');

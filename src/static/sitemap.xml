@@ -1,14 +1,60 @@
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+    
+    <!-- Homepage (Default / English) -->
     <url>
         <loc>https://niwer.dev/</loc>
         <lastmod>2026-04-15T19:04:57+00:00</lastmod>
+        <xhtml:link rel="alternate" hreflang="en" href="https://niwer.dev/" />
+        <xhtml:link rel="alternate" hreflang="fr" href="https://niwer.dev/fr/" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://niwer.dev/" />
     </url>
+
+    <!-- Homepage (French) -->
+    <url>
+        <loc>https://niwer.dev/fr/</loc>
+        <lastmod>2026-04-15T19:04:57+00:00</lastmod>
+        <xhtml:link rel="alternate" hreflang="en" href="https://niwer.dev/" />
+        <xhtml:link rel="alternate" hreflang="fr" href="https://niwer.dev/fr/" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://niwer.dev/" />
+    </url>
+
+    <!-- Store (English) -->
     <url>
         <loc>https://niwer.dev/store</loc>
         <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://niwer.dev/store" />
+        <xhtml:link rel="alternate" hreflang="fr" href="https://niwer.dev/fr/store" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://niwer.dev/store" />
     </url>
+
+    <!-- Store (French) -->
+    <url>
+        <loc>https://niwer.dev/fr/store</loc>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://niwer.dev/store" />
+        <xhtml:link rel="alternate" hreflang="fr" href="https://niwer.dev/fr/store" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://niwer.dev/store" />
+    </url>
+
+    <!-- Legal (English) -->
     <url>
         <loc>https://niwer.dev/legal</loc>
         <priority>0.3</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://niwer.dev/legal" />
+        <xhtml:link rel="alternate" hreflang="fr" href="https://niwer.dev/fr/legal" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://niwer.dev/legal" />
+    </url>
+
+    <!-- Legal (French) -->
+    <url>
+        <loc>https://niwer.dev/fr/legal</loc>
+        <priority>0.3</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://niwer.dev/legal" />
+        <xhtml:link rel="alternate" hreflang="fr" href="https://niwer.dev/fr/legal" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://niwer.dev/legal" />
     </url>
 </urlset>

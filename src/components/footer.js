@@ -35,12 +35,6 @@ export function footer(lang = 'en', langDict) {
                 LinkedIn
             </a>
         </div>
-        <div>
-            <a href="#top" class="back-to-top" title="Back to top" aria-label="Back to top">
-                <i class="fa fa-arrow-up" aria-hidden="true"></i>
-                <span class="sr-only">Back to top</span>
-            </a>
-        </div>
         <ul>
             <li><a href="${legalUrl}#terms_of_service">${getValueWithFallback(langDict, "btn.terms_of_service", "Terms of Service")}</a></li>
             <li><a href="${legalUrl}#terms_of_sale">${getValueWithFallback(langDict, "btn.terms_of_sale", "Terms of Sale")}</a></li>
@@ -52,6 +46,14 @@ export function footer(lang = 'en', langDict) {
         </p>
         <p>${getValueWithFallback(langDict, "copyright", `Copyright ${currentYear} - All rights reserved`)}</p>
     </footer>
+
+    <!-- Back to top button -->
+    <div class="back-to-top-container hidden">
+        <a href="#top" class="back-to-top button" title="Back to top" aria-label="Back to top">
+            <i class="fa fa-arrow-up" aria-hidden="true"></i>
+            <span class="sr-only">Back to top</span>
+        </a>
+    </div>
   `;
 }
 

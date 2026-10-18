@@ -1,5 +1,49 @@
 import { panelLayout } from '../../components/layout.js';
 
+function repositoryTemplate() {
+    return `
+        <template id="tmpl-download-repo">
+            <section class="download-repository">
+                <div class="download-repository-header">
+                    <h3><i class="fa-solid fa-code-branch text-accent"></i> <span class="repo-name"></span></h3>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Release</th>
+                                <th>Pre-Release</th>
+                                <th>Asset</th>
+                                <th>Description</th>
+                                <th>Download</th>
+                            </tr>
+                        </thead>
+                        <tbody class="repo-rows"></tbody>
+                    </table>
+                </div>
+            </section>
+        </template>
+    `
+}
+
+function assetRowTemplate() {
+    return `
+        <template id="tmpl-download-row">
+            <tr>
+                <td class="row-release"></td>
+                <td class="row-prerelease"></td>
+                <td class="row-asset"></td>
+                <td class="row-desc"></td>
+                <td class="download-action">
+                    <a class="button download-link" title="Download" target="_blank">
+                        <i class="fa-solid fa-cloud-arrow-down"></i>
+                    </a>
+                </td>
+            </tr>
+        </template>
+    `
+}
+
 export async function render(lang, langDict) {
     const content = `
         <section>
@@ -8,6 +52,8 @@ export async function render(lang, langDict) {
                 <p class="text-secondary">Loading downloads...</p>
             </div>
         </section>
+        ${repositoryTemplate()}
+        ${assetRowTemplate()}
     `;
 
     return panelLayout({

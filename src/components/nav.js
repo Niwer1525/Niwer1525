@@ -21,9 +21,8 @@ function navigation(lang = 'en', langDict, buttons, additionalActionsContent = '
                         ${additionalActionsContent}
 
                         <!-- Theme Toggle Button -->
-                        <button id="theme-toggle" type="button" aria-label="Theme mode" title="Theme mode">
+                        <button id="theme-toggle" type="button" aria-label="Theme mode" title="System">
                             <i class="fa-solid fa-circle-half-stroke"></i>
-                            <span id="theme-toggle-label">System</span>
                         </button>
 
                         <!-- Language Selection -->

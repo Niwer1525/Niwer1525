@@ -84,8 +84,8 @@ nav > ul > li > a:hover::after { width: 100%; }
     gap: 0.5rem;
 }
 .dashboard-actions-grid button {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.85rem;
+    padding: 0.55rem 1rem;
+    font-size: 0.9rem;
 }
 
 /* Mobile Nav Toggle & Themes */

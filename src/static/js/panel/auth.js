@@ -5,70 +5,38 @@ function clearPurchaseToken() {
     }
 }
 
+async function syncPurchaseSession(body) {
+    if (!state.purchaseToken) return;
+    body.set('token', state.purchaseToken);
+    await api('/stripe/purchase_session', {
+        method: 'POST',
+        body: new URLSearchParams({ checkoutSessionId: state.purchaseToken })
+    }).catch(() => {});
+}
+
 async function restoreSession() {
     if (state.purchaseToken && (state.userToken || state.refreshToken || state.account || state.token)) {
-        await logout();
-        return;
+        return logout();
     }
-
     if (state.account) {
         try {
-            const account = await api('/accounts/me');
-            state.account = account;
+            state.account = await api('/accounts/me');
+            localStorage.setItem('photon-account', JSON.stringify(state.account));
             await loadEntitlements();
-            localStorage.setItem('photon-account', JSON.stringify(account));
         } catch {
-            state.token = '';
-            state.userToken = '';
-            state.refreshToken = '';
-            state.account = null;
-            state.entitlements = [];
-            localStorage.removeItem('photon-account');
-            localStorage.removeItem('photon-user-token');
-            localStorage.removeItem('photon-refresh-token');
+            clearSession();
             document.getElementById('authModal')?.classList.add('open');
         }
     }
-
-    // updateAuthVisibility();
 }
 
-async function login(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('button[type="submit"]');
-    const originalText = btn ? btn.innerHTML : '';
-    if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-    }
+function login(e) {
+    return handleFormSubmit(e, async (form, formData) => {
+        console.log('Submitting login with body:', body.toString());
+        const body = new URLSearchParams(formData);
+        await syncPurchaseSession(body);
 
-    const formData = new FormData(e.target);
-    const body = new URLSearchParams(formData);
-    if (state.purchaseToken) body.set('token', state.purchaseToken);
-
-    try {
-        if (state.purchaseToken) {
-            await fetch('/stripe/purchase_session', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams({ checkoutSessionId: state.purchaseToken })
-            }).catch(() => {});
-        }
-
-        const res = await fetch('http://localhost:17070/accounts/auth_account', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: body.toString(),
-            credentials: 'same-origin'
-        });
-
-        if (!res.ok) {
-            const errText = await res.text();
-            throw new Error(errText || 'Login failed');
-        }
-
-        const payload = await res.json();
-
+        const payload = await api('/accounts/auth_account', { method: 'POST', body });
         if (payload.status === '2FA_REQUIRED' && payload.ticket) {
             state.pending2FATicket = payload.ticket;
             document.querySelectorAll('.modal-panel').forEach((p) => p.classList.remove('active'));
@@ -81,123 +49,43 @@ async function login(e) {
             }
             return;
         }
-
         await handleLoginSuccessPayload(payload);
-    } catch (err) {
-        createNotification(err.message, 'error');
-    } finally {
-        if (btn) {
-            btn.disabled = false;
-            btn.innerHTML = originalText;
-        }
-    }
+    });
 }
 
-async function submit2FALogin(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('button[type="submit"]');
-    const originalText = btn ? btn.innerHTML : '';
-    if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-    }
-
-    const code = new FormData(e.target).get('code');
-
-    try {
-        const res = await fetch('/accounts/auth_account/2fa', {
+function submit2FALogin(e) {
+    return handleFormSubmit(e, async (form, formData) => {
+        const payload = await api('/accounts/auth_account/2fa', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ticket: state.pending2FATicket, code }),
-            credentials: 'same-origin'
+            body: JSON.stringify({ ticket: state.pending2FATicket, code: formData.get('code') })
         });
-
-        if (!res.ok) {
-            const err = await res.text();
-            throw new Error(err || 'Verification failed');
-        }
-
-        const payload = await res.json();
         state.pending2FATicket = '';
         document.getElementById('authTabs')?.classList.remove('hidden');
         await handleLoginSuccessPayload(payload);
-    } catch (err) {
-        createNotification(err.message, 'error');
-    } finally {
-        if (btn) {
-            btn.disabled = false;
-            btn.innerHTML = originalText;
-        }
-    }
+    });
 }
 
-async function register(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('button[type="submit"]');
-    const originalText = btn?.innerHTML || '';
-    if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-    }
+function register(e) {
+    return handleFormSubmit(e, async (form, formData) => {
+        const body = new URLSearchParams(formData);
+        await syncPurchaseSession(body);
 
-    const body = new URLSearchParams(new FormData(e.target));
-    if (state.purchaseToken) body.set('token', state.purchaseToken);
-
-    try {
-        if (state.purchaseToken) {
-            await fetch('/stripe/purchase_session', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams({ checkoutSessionId: state.purchaseToken })
-            }).catch(() => {});
-        }
-
-        const res = await api('/accounts/create_account', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body
-        });
-
-        state.userToken = res.token || '';
-        state.refreshToken = res.refreshToken || '';
-        state.account = res.account || res;
+        const res = await api('/accounts/create_account', { method: 'POST', body });
+        setSession(res.account || res, res.token || '', res.refreshToken || '');
         await loadEntitlements();
-        localStorage.setItem('photon-user-token', state.userToken);
-        localStorage.setItem('photon-refresh-token', state.refreshToken);
-        localStorage.setItem('photon-account', JSON.stringify(state.account));
 
         clearPurchaseToken();
         createNotification('Account created', 'success');
         closeModals();
         updateAuthVisibility();
-    } catch (err) {
-        createNotification(err.message, 'error');
-    } finally {
-        if (btn) {
-            btn.disabled = false;
-            btn.innerHTML = originalText;
-        }
-    }
+    });
 }
 
 async function handleLoginSuccessPayload(payload) {
-    state.account = payload.account || payload;
-    localStorage.setItem('photon-account', JSON.stringify(state.account));
+    setSession(payload.account || payload, payload.isAdmin ? '' : (payload.token || ''), payload.refreshToken || '');
+    if (!payload.isAdmin) await loadEntitlements();
 
-    if (payload.isAdmin) {
-        state.token = '';
-        state.userToken = '';
-        localStorage.removeItem('photon-user-token');
-        createNotification('Signed in as admin', 'success');
-    } else {
-        state.userToken = payload.token || '';
-        localStorage.setItem('photon-user-token', state.userToken);
-        await loadEntitlements();
-        createNotification('Signed in', 'success');
-    }
-    state.refreshToken = payload.refreshToken || '';
-    localStorage.setItem('photon-refresh-token', state.refreshToken);
-
+    createNotification(payload.isAdmin ? 'Signed in as admin' : 'Signed in', 'success');
     clearPurchaseToken();
     closeModals();
     updateAuthVisibility();
@@ -205,72 +93,42 @@ async function handleLoginSuccessPayload(payload) {
 
 async function logout() {
     await api('/accounts/logout', { method: 'POST' }).catch(() => {});
-    state.token = '';
-    state.userToken = '';
-    state.refreshToken = '';
-    state.account = null;
-    state.entitlements = [];
-    localStorage.removeItem('photon-account');
-    localStorage.removeItem('photon-user-token');
-    localStorage.removeItem('photon-refresh-token');
+    clearSession();
     updateAuthVisibility();
-    // navigate('overview');
     createNotification('Logged out');
 }
 
-async function updateProfile(e) {
-    e.preventDefault();
-    const fd = new FormData(e.target);
-    try {
+function updateProfile(e) {
+    return handleFormSubmit(e, async (form, fromData) => {
         const payload = {
-            uuid: state.account.uuid,
-            currentPassword: fd.get('currentPassword'),
-            username: fd.get('username'),
-            email: fd.get('email')
+            uuid: state.account?.uuid,
+            currentPassword: fromData.get('currentPassword'),
+            username: fromData.get('username'),
+            email: fromData.get('email'),
+            ...(fromData.get('newPassword') && { newPassword: fromData.get('newPassword'), confirmPassword: fromData.get('newPassword') }),
+            ...(fromData.get('code') && { code: fromData.get('code').trim() })
         };
 
-        if (fd.get('newPassword')) {
-            payload.newPassword = fd.get('newPassword');
-            payload.confirmPassword = fd.get('newPassword');
-        }
-
-        if (fd.get('code')) {
-            payload.code = fd.get('code').trim();
-        }
-
-        const acc = await api('/accounts/update_profile', {
-            method: 'POST',
-            body: JSON.stringify(payload)
-        });
-
-        state.account = acc;
-        localStorage.setItem('photon-account', JSON.stringify(acc));
+        const acc = await api('/accounts/update_profile', { method: 'POST', body: JSON.stringify(payload) });
+        setSession(acc, state.userToken, state.refreshToken);
         e.target.reset();
         updateAuthVisibility();
         closeModals();
         createNotification('Profile updated', 'success');
-    } catch (err) {
-        createNotification(err.message, 'error');
-    }
+    });
 }
 
 async function open2FASetup() {
     if (state.account?.totpEnabled) {
         if (!confirm('Two-factor authentication is already active. Do you want to disable it?')) return;
-
         const code = prompt('Enter a 6-digit code from your authenticator app to disable 2FA:');
         if (!code) return;
 
         try {
-            await api('/accounts/2fa/disable', {
-                method: 'POST',
-                body: JSON.stringify({ code: code.trim() })
-            });
-
+            await api('/accounts/2fa/disable', { method: 'POST', body: JSON.stringify({ code: code.trim() }) });
             createNotification('2FA has been disabled', 'success');
-            const updatedAccount = await api('/accounts/me');
-            state.account = updatedAccount;
-            localStorage.setItem('photon-account', JSON.stringify(updatedAccount));
+            state.account = await api('/accounts/me');
+            localStorage.setItem('photon-account', JSON.stringify(state.account));
             updateAuthVisibility();
         } catch (err) {
             createNotification(err.message, 'error');
@@ -286,9 +144,7 @@ async function open2FASetup() {
 
     try {
         const data = await api('/accounts/2fa/setup');
-        if (container) {
-            container.innerHTML = `<img src="${data.qrCode}" alt="2FA QR Code" style="width: 180px; height: 180px; border-radius: 12px; background: white; padding: 8px;">`;
-        }
+        if (container) container.innerHTML = `<img src="${data.qrCode}" alt="2FA QR Code" style="width: 180px; height: 180px; border-radius: 12px; background: white; padding: 8px;">`;
         if (manualKey) manualKey.value = data.manualKey;
     } catch (err) {
         if (container) container.innerHTML = `<p class="text-danger text-sm">Failed to load QR code</p>`;
@@ -296,39 +152,17 @@ async function open2FASetup() {
     }
 }
 
-async function confirm2FASetup(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('button[type="submit"]');
-    const originalText = btn?.innerHTML || '';
-    if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-    }
-
-    const code = new FormData(e.target).get('code');
-
-    try {
-        await api('/accounts/2fa/confirm', {
-            method: 'POST',
-            body: JSON.stringify({ code })
-        });
-
+function confirm2FASetup(e) {
+    return handleFormSubmit(e, async (form, formData) => {
+        await api('/accounts/2fa/confirm', { method: 'POST', body: JSON.stringify({ code: formData.get('code') }) });
         createNotification('Two-factor authentication enabled!', 'success');
         closeModals();
         e.target.reset();
 
-        const updatedAccount = await api('/accounts/me');
-        state.account = updatedAccount;
-        localStorage.setItem('photon-account', JSON.stringify(updatedAccount));
+        state.account = await api('/accounts/me');
+        localStorage.setItem('photon-account', JSON.stringify(state.account));
         updateAuthVisibility();
-    } catch (err) {
-        createNotification(err.message, 'error');
-    } finally {
-        if (btn) {
-            btn.disabled = false;
-            btn.innerHTML = originalText;
-        }
-    }
+    });
 }
 
 async function loadEntitlements() {
@@ -340,52 +174,22 @@ async function loadEntitlements() {
     }
 }
 
-async function requestAccountDeletion(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('button[type="submit"]');
-    const originalText = btn ? btn.innerHTML : '';
-    if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
-    }
-
-    const formData = new FormData(e.target);
-    const payload = {
-        password: formData.get('password'),
-        confirmationPhrase: formData.get('confirmationPhrase'),
-        code: formData.get('code') ? formData.get('code').trim() : null
-    };
-
-    try {
+function requestAccountDeletion(e) {
+    return handleFormSubmit(e, async (form, formData) => {
         await api('/accounts/delete_account', {
             method: 'DELETE',
-            body: JSON.stringify(payload)
+            body: JSON.stringify({
+                password: formData.get('password'),
+                confirmationPhrase: formData.get('confirmationPhrase'),
+                code: formData.get('code')?.trim() || null
+            })
         });
 
-        // Close the modal and reset form
         closeModals();
         e.target.reset();
-
-        // Clear local credentials and session state matching logout()
-        state.token = '';
-        state.userToken = '';
-        state.refreshToken = '';
-        state.account = null;
-        state.entitlements = [];
-        localStorage.removeItem('photon-account');
-        localStorage.removeItem('photon-user-token');
-        localStorage.removeItem('photon-refresh-token');
-
-        // Update UI and route to overview
+        clearSession();
         updateAuthVisibility();
         navigate('overview');
         createNotification('Account scheduled for deletion. You have been logged out.', 'success');
-    } catch (err) {
-        createNotification(err.message || 'Failed to request account deletion', 'error');
-    } finally {
-        if (btn) {
-            btn.disabled = false;
-            btn.innerHTML = originalText;
-        }
-    }
+    });
 }

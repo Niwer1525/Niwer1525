@@ -49,6 +49,8 @@ html[data-theme="light"] {
     --scrollbar-bg: rgba(0, 0, 0, 0.1);
     --scrollbar-thumb: #ccc;
     --scrollbar-thumb-hover: #aaa;
+
+    /* Accent */
     --accent-color: #7c3aed;
     --accent-glow: rgba(124, 58, 237, 0.25);
 }

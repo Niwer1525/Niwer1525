@@ -3,8 +3,8 @@ import { panelLayout } from '../../components/layout.js';
 export async function render(lang, langDict) {
     const content = `
         <section>
-            <div class="panel-header">
-                <h2>License Management</h2>
+            <h2>License Management</h2>
+            <div class="section-actions">
                 <button id="btnCreateLicenseModal" class="btn primary"><i class="fa-solid fa-plus"></i> New License</button>
             </div>
             <div class="table-container">
