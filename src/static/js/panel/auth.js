@@ -15,9 +15,7 @@ async function syncPurchaseSession(body) {
 }
 
 async function restoreSession() {
-    if (state.purchaseToken && (state.userToken || state.refreshToken || state.account || state.token)) {
-        return logout();
-    }
+    if (state.purchaseToken && (state.userToken || state.refreshToken || state.account || state.token)) return logout();
     if (state.account) {
         try {
             state.account = await api('/accounts/me');
@@ -28,14 +26,14 @@ async function restoreSession() {
             document.getElementById('authModal')?.classList.add('open');
         }
     }
+    updateAuthVisibility();
 }
 
 function login(e) {
     return handleFormSubmit(e, async (form, formData) => {
-        console.log('Submitting login with body:', body.toString());
         const body = new URLSearchParams(formData);
         await syncPurchaseSession(body);
-
+        
         const payload = await api('/accounts/auth_account', { method: 'POST', body });
         if (payload.status === '2FA_REQUIRED' && payload.ticket) {
             state.pending2FATicket = payload.ticket;
@@ -83,7 +81,7 @@ function register(e) {
 
 async function handleLoginSuccessPayload(payload) {
     setSession(payload.account || payload, payload.isAdmin ? '' : (payload.token || ''), payload.refreshToken || '');
-    if (!payload.isAdmin) await loadEntitlements();
+    if (!payload.isAdmin) await loadEntitlements(); //TODO ??? Why
 
     createNotification(payload.isAdmin ? 'Signed in as admin' : 'Signed in', 'success');
     clearPurchaseToken();

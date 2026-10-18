@@ -51,7 +51,7 @@ function clearSession() {
  * If the user is not authenticated, the sign-in button is shown and the profile and logout buttons are hidden.
  */
 function updateAuthVisibility() {
-    const isAuthenticated = !!state.userToken && !!state.account;
+    const isAuthenticated = !!state.account;
     const signInBtn = document.getElementById('nav-signin-btn');
     const profileBtn = document.getElementById('nav-profile-btn');
     const logoutBtn = document.getElementById('nav-logout-btn');
