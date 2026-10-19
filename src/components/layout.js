@@ -76,6 +76,11 @@ function layout({ title = 'Default Title', description = '', canonical = '', bod
                         file: '/js/utils/events.js',
                         defer: true,
                         type: 'module'
+                    },
+                    {
+                        file: '/js/utils/storage.js',
+                        defer: true,
+                        type: 'module'
                     }
                 ])}
                 ${addScripts(additionalScripts)}

@@ -1,45 +1,29 @@
+import { handleFormSubmit } from '../main.js';
 import { createNotification } from './toast.js';
 import { hidePopup } from './modals.js';
 import { loadDownloads, loadPublicServers } from '../panel/public.js';
+import { loadLicenses } from '../panel/licenses.js';
 import { restoreSession, login, submit2FALogin, register } from '../panel/auth.js';
-import { state } from '../panel.js';
+import { panelState, updateAuthVisibility } from '../panel.js';
+import { STATE_STORAGE_KEY } from './storage.js';
+
+/* Handle storage events */
+window.addEventListener('storage', (event) => {
+    if (event.key === STATE_STORAGE_KEY && event.newValue) {
+        try {
+            const updated = JSON.parse(event.newValue);
+            Object.assign(panelState, updated);
+            updateAuthVisibility();
+        } catch {
+            // ignore malformed storage payloads
+        }
+    }
+});
 
 /* Prevent CTRL+S (Saving) & CTRL+P (Printing) */
 window.addEventListener('keydown', function(e) {
     if ((e.ctrlKey && e.key === 's') || (e.ctrlKey && e.key === 'p')) e.preventDefault();
 });
-
-/**
- * Handles form submission by preventing the default behavior, disabling the submit button, and executing the provided action function with the form data.
- * 
- * @param {*} e - The event object from the form submission.
- * @param {*} actionFn - The function to execute with the form data. It should return a Promise.
- */
-async function handleFormSubmit(e, actionFn) {
-    e.preventDefault();
-    const btn = e.target.querySelector('button[type="submit"]');
-    const originalText = btn?.innerHTML || '';
-    if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-    }
-
-    try {
-        const form = e.target;
-        const formData = new FormData(form);
-        await actionFn(form, formData);
-
-        /* Clean up the form */
-        // form.reset();
-    } catch (err) {
-        createNotification(err.message, 'error');
-    } finally {
-        if (btn) {
-            btn.disabled = false;
-            btn.innerHTML = originalText;
-        }
-    }
-}
 
 document.addEventListener('submit', function(e) {
     if (e.target && e.target.id === 'contact-popup-form') {
@@ -76,27 +60,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     /* Handle specific loading action depending on the current path */
     const currentPath = window.location.pathname;
-    if(currentPath.startsWith('/panel')) await restoreSession(); // Validate and restore session tokens
-    switch (currentPath) {
-        case '/panel':
-            if (state.purchaseToken && !state.account)
-                document.getElementById('purchase-alert')?.classList.remove('hidden'); // Purchase token detected. The user is not logged in. Show the purchase alert
-            
-            await loadPublicServers();
-            break;
-        case '/panel/downloads':
-            await loadDownloads();
-            break;
-        case '/panel/licenses':
-            await loadLicenses();
-            break;
-        case '/panel/admin':
-            // await loadAdminPanel();
-            break;
-        case '/panel/profile':
-            // await loadProfile();
-            break;
-        default: break;
+    if(currentPath.startsWith('/panel')) {
+        await restoreSession(); // Validate and restore session tokens
+        switch (currentPath) {
+            case '/panel':
+                if (panelState.purchaseToken && !panelState.account)
+                    document.getElementById('purchase-alert')?.classList.remove('hidden'); // Purchase token detected. The user is not logged in. Show the purchase alert
+                
+                await loadPublicServers();
+                break;
+            case '/panel/downloads':
+                await loadDownloads();
+                break;
+            case '/panel/licenses':
+                await loadLicenses();
+                break;
+            case '/panel/admin':
+                // await loadAdminPanel();
+                break;
+            case '/panel/profile':
+                // await loadProfile();
+                break;
+            default: break;
+        }
     }
 
     /* Handle magnet back-to-top button */

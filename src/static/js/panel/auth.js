@@ -1,32 +1,40 @@
+import { handleFormSubmit } from '../main.js';
 import { createNotification } from '../utils/toast.js';
-import { api, state, setSession, clearSession, updateAuthVisibility } from '../panel.js';
+import { showPopupAndSwitchTab } from '../utils/modals.js';
+import { api, panelState, setSession, clearSession, updateAuthVisibility } from '../panel.js';
 
 function clearPurchaseToken() {
-    if (state.purchaseToken) {
-        state.purchaseToken = '';
+    if (panelState.purchaseToken) {
+        panelState.purchaseToken = '';
         window.history.replaceState({}, '', window.location.pathname);
     }
 }
 
 async function syncPurchaseSession(body) {
-    if (!state.purchaseToken) return;
-    body.set('token', state.purchaseToken);
+    if (!panelState.purchaseToken) return;
+    body.set('token', panelState.purchaseToken);
     await api('/stripe/purchase_session', {
         method: 'POST',
-        body: new URLSearchParams({ checkoutSessionId: state.purchaseToken })
+        body: new URLSearchParams({ checkoutSessionId: panelState.purchaseToken })
     }).catch(() => {});
 }
 
 export async function restoreSession() {
-    if (state.purchaseToken && (state.userToken || state.refreshToken || state.account || state.token)) return logout();
-    if (state.account) {
+    if (panelState.purchaseToken && (panelState.userToken || panelState.refreshToken || panelState.account || panelState.token)) {
+        return logout();
+    }
+    
+    if (panelState.account) {
         try {
-            state.account = await api('/accounts/me');
-            localStorage.setItem('photon-account', JSON.stringify(state.account));
+            const res = await api('/accounts/me');
+            panelState.account = res?.account || res?.user || res;
             await loadEntitlements();
-        } catch {
-            clearSession();
-            document.getElementById('authModal')?.classList.add('open');
+        } catch (err) {
+            console.warn('Could not restore session from /accounts/me:', err);
+            if (err.status === 401 || err.status === 403) {
+                clearSession();
+                showPopupAndSwitchTab('auth-modal', 'login');
+            }
         }
     }
     updateAuthVisibility();
@@ -39,7 +47,7 @@ export function login(e) {
         
         const payload = await api('/accounts/auth_account', { method: 'POST', body });
         if (payload.status === '2FA_REQUIRED' && payload.ticket) {
-            state.pending2FATicket = payload.ticket;
+            panelState.pending2FATicket = payload.ticket;
             document.querySelectorAll('.modal-panel').forEach((p) => p.classList.remove('active'));
             document.getElementById('totpLoginForm')?.classList.add('active');
             document.getElementById('authTabs')?.classList.add('hidden');
@@ -58,9 +66,9 @@ export function submit2FALogin(e) {
     return handleFormSubmit(e, async (form, formData) => {
         const payload = await api('/accounts/auth_account/2fa', {
             method: 'POST',
-            body: JSON.stringify({ ticket: state.pending2FATicket, code: formData.get('code') })
+            body: JSON.stringify({ ticket: panelState.pending2FATicket, code: formData.get('code') })
         });
-        state.pending2FATicket = '';
+        panelState.pending2FATicket = '';
         document.getElementById('authTabs')?.classList.remove('hidden');
         await handleLoginSuccessPayload(payload);
     });
@@ -83,7 +91,8 @@ export function register(e) {
 }
 
 async function handleLoginSuccessPayload(payload) {
-    setSession(payload.account || payload, payload.isAdmin ? '' : (payload.token || ''), payload.refreshToken || '');
+    const token = payload.isAdmin ? '' : (payload.token || '');
+    setSession(payload.account || payload, token, payload.refreshToken || '');
     if (!payload.isAdmin) await loadEntitlements(); //TODO ??? Why
 
     createNotification(payload.isAdmin ? 'Signed in as admin' : 'Signed in', 'success');
@@ -103,7 +112,7 @@ window.logout = logout;
 function updateProfile(e) {
     return handleFormSubmit(e, async (form, fromData) => {
         const payload = {
-            uuid: state.account?.uuid,
+            uuid: panelState.account?.uuid,
             currentPassword: fromData.get('currentPassword'),
             username: fromData.get('username'),
             email: fromData.get('email'),
@@ -112,7 +121,7 @@ function updateProfile(e) {
         };
 
         const acc = await api('/accounts/update_profile', { method: 'POST', body: JSON.stringify(payload) });
-        setSession(acc, state.userToken, state.refreshToken);
+        setSession(acc, panelState.userToken, panelState.refreshToken);
         e.target.reset();
         updateAuthVisibility();
         closeModals();
@@ -121,7 +130,7 @@ function updateProfile(e) {
 }
 
 async function open2FASetup() {
-    if (state.account?.totpEnabled) {
+    if (panelState.account?.totpEnabled) {
         if (!confirm('Two-factor authentication is already active. Do you want to disable it?')) return;
         const code = prompt('Enter a 6-digit code from your authenticator app to disable 2FA:');
         if (!code) return;
@@ -129,8 +138,8 @@ async function open2FASetup() {
         try {
             await api('/accounts/2fa/disable', { method: 'POST', body: JSON.stringify({ code: code.trim() }) });
             createNotification('2FA has been disabled', 'success');
-            state.account = await api('/accounts/me');
-            localStorage.setItem('photon-account', JSON.stringify(state.account));
+            panelState.account = await api('/accounts/me');
+            localStorage.setItem('photon-account', JSON.stringify(panelState.account));
             updateAuthVisibility();
         } catch (err) {
             createNotification(err.message, 'error');
@@ -161,8 +170,8 @@ function confirm2FASetup(e) {
         closeModals();
         e.target.reset();
 
-        state.account = await api('/accounts/me');
-        localStorage.setItem('photon-account', JSON.stringify(state.account));
+        panelState.account = await api('/accounts/me');
+        localStorage.setItem('photon-account', JSON.stringify(panelState.account));
         updateAuthVisibility();
     });
 }
@@ -170,9 +179,9 @@ function confirm2FASetup(e) {
 async function loadEntitlements() {
     try {
         const entitlements = await api('/accounts/entitlements');
-        state.entitlements = Array.isArray(entitlements) ? entitlements : [];
+        panelState.entitlements = Array.isArray(entitlements) ? entitlements : [];
     } catch {
-        state.entitlements = [];
+        panelState.entitlements = [];
     }
 }
 

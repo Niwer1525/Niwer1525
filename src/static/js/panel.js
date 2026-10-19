@@ -1,16 +1,28 @@
+import { loadState, saveState, clearState } from './utils/storage.js';
+
+const API_BASE = 'http://localhost:17070';
+
 /**
  * Core Application State
  */
-export const state = {
+const defaultPanelState = {
     token: '',
-    userToken: localStorage.getItem('photon-user-token') || '',
-    refreshToken: localStorage.getItem('photon-refresh-token') || '',
-    account: JSON.parse(localStorage.getItem('photon-account')) || null,
+    userToken: '',
+    refreshToken: '',
+    account: null,
     pending2FATicket: '',
     purchaseToken: getTokenFromURL(),
     licenseProducts: [],
     entitlements: [],
 };
+
+export const panelState = new Proxy(loadState(defaultPanelState), {
+    set(target, prop, value) {
+        target[prop] = value;
+        saveState(target);
+        return true;
+    }
+});
 
 function getTokenFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -22,27 +34,27 @@ function getTokenFromURL() {
  * Sets the current session state, including account information and tokens, and stores them in localStorage.
  * 
  * @param {*} account - The account information object to store in the session.
- * @param {*} userToken - The user token string to store in the session.
+ * @param {*} token - The authentication token string to store in the session.
  * @param {*} refreshToken - The refresh token string to store in the session.
  */
-export function setSession(account = null, userToken = '', refreshToken = '') {
-    state.account = account;
-    state.userToken = userToken;
-    state.refreshToken = refreshToken;
-
-    const setOrRemove = (key, val) => val ? localStorage.setItem(key, typeof val === 'object' ? JSON.stringify(val) : val) : localStorage.removeItem(key);
-    setOrRemove('photon-account', account);
-    setOrRemove('photon-user-token', userToken);
-    setOrRemove('photon-refresh-token', refreshToken);
+export function setSession(account = null, token = '', refreshToken = '') {
+    panelState.account = account;
+    panelState.token = token; // Sets Authorization: Bearer
+    panelState.userToken = token; // Sets X-Photon-User-Token (if used interchangeably)
+    panelState.refreshToken = refreshToken;
 }
-
 /**
- * Clears the current session, removing all tokens and account information from the state and localStorage.
+ * Clears session and removes saved state
  */
 export function clearSession() {
-    state.token = '';
-    state.entitlements = [];
-    setSession(null, '', '');
+    panelState.token = '';
+    panelState.userToken = '';
+    panelState.refreshToken = '';
+    panelState.account = null;
+    panelState.entitlements = [];
+    panelState.licenseProducts = [];
+    panelState.pending2FATicket = '';
+    clearState();
 }
 
 /**
@@ -51,7 +63,7 @@ export function clearSession() {
  * If the user is not authenticated, the sign-in button is shown and the profile and logout buttons are hidden.
  */
 export function updateAuthVisibility() {
-    const isAuthenticated = !!state.account;
+    const isAuthenticated = !!panelState.account;
     const signInBtn = document.getElementById('nav-signin-btn');
     const profileBtn = document.getElementById('nav-profile-btn');
     const logoutBtn = document.getElementById('nav-logout-btn');
@@ -66,8 +78,8 @@ export async function api(path, options = {}) {
 
     for (let attempt = 0; attempt < (retryable ? 2 : 1); attempt += 1) {
         const headers = new Headers(options.headers || {});
-        if (state.token) headers.set('Authorization', `Bearer ${state.token}`);
-        if (state.userToken) headers.set('X-Photon-User-Token', state.userToken);
+        if (panelState.token) headers.set('Authorization', `Bearer ${panelState.token}`);
+        if (panelState.userToken) headers.set('X-Photon-User-Token', panelState.userToken);
 
         const method = (options.method || 'GET').toUpperCase();
         if (path.startsWith('/api/admin') && ['POST', 'PUT', 'DELETE', 'PATCH'].includes(method)) {
@@ -79,13 +91,13 @@ export async function api(path, options = {}) {
         const isURLSearch = options.body instanceof URLSearchParams;
         if (options.body && !isFormData && !isURLSearch && !headers.has('Content-Type')) headers.set('Content-Type', 'application/json');
 
-        const res = await fetch('http://localhost:17070'+path, { credentials: 'same-origin', ...options, headers });
+        const res = await fetch(API_BASE + path, { credentials: 'same-origin', ...options, headers });
         const contentType = res.headers.get('content-type') || '';
         const payload = contentType.includes('json') ? await res.json() : await res.text();
 
         if (res.ok) return payload;
         if (attempt === 0 && retryable && (res.status === 401 || res.status === 403)
-            && state.refreshToken && await refreshSession()) continue;
+            && panelState.refreshToken && await refreshSession()) continue;
 
         const error = new Error(typeof payload === 'string' ? payload : payload?.message || res.statusText);
         error.status = res.status;
@@ -94,34 +106,32 @@ export async function api(path, options = {}) {
 }
 
 export async function refreshSession() {
+    if (!panelState.refreshToken) return false;
+
     try {
-        const res = await fetch('/accounts/refresh', {
+        const res = await fetch(API_BASE + '/accounts/refresh', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'same-origin',
-            body: JSON.stringify({ refreshToken: state.refreshToken })
+            body: JSON.stringify({ refreshToken: panelState.refreshToken })
         });
-        if (!res.ok) throw new Error('Refresh failed');
+        
+        if (!res.ok) throw new Error('Refresh failed with status ' + res.status);
 
         const payload = await res.json();
-        state.userToken = payload.token || '';
-        state.refreshToken = payload.refreshToken || '';
-        state.account = payload.account || null;
-        localStorage.setItem('photon-refresh-token', state.refreshToken);
-        if (state.userToken) localStorage.setItem('photon-user-token', state.userToken);
-        else localStorage.removeItem('photon-user-token');
-        if (state.account) localStorage.setItem('photon-account', JSON.stringify(state.account));
+        const newToken = payload.token || '';
+        
+        // Update both token formats
+        panelState.token = newToken;
+        panelState.userToken = newToken;
+        if (payload.refreshToken) panelState.refreshToken = payload.refreshToken;
+        if (payload.account) panelState.account = payload.account;
+        
         return true;
-    } catch {
-        state.token = '';
-        state.userToken = '';
-        state.refreshToken = '';
-        state.account = null;
-        localStorage.removeItem('photon-account');
-        localStorage.removeItem('photon-user-token');
-        localStorage.removeItem('photon-refresh-token');
-        window.location.hash = 'overview';
-        document.getElementById('authModal')?.classList.add('open');
+    } catch (err) {
+        console.error('Session refresh failed:', err);
+        clearSession();
+        updateAuthVisibility();
         return false;
     }
 }

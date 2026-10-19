@@ -91,3 +91,35 @@ export function formatProductId(productId) {
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ');
 }
+
+/**
+ * Handles form submission by preventing the default behavior, disabling the submit button, and executing the provided action function with the form data.
+ * 
+ * @param {*} e - The event object from the form submission.
+ * @param {*} actionFn - The function to execute with the form data. It should return a Promise.
+ */
+export async function handleFormSubmit(e, actionFn) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type="submit"]');
+    const originalText = btn?.innerHTML || '';
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+    }
+
+    try {
+        const form = e.target;
+        const formData = new FormData(form);
+        await actionFn(form, formData);
+
+        /* Clean up the form */
+        // form.reset();
+    } catch (err) {
+        createNotification(err.message, 'error');
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        }
+    }
+}

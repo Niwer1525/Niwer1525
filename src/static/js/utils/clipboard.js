@@ -19,6 +19,7 @@ window.copyEmail = copyEmail;
 export function copyToClipboardWithNotification(text, notificationMessage) {
     copyToClipboard(text).then(() => createNotification(notificationMessage));
 }
+window.copyToClipboardWithNotification = copyToClipboardWithNotification;
 
 /**
  * Copies the provided text to the clipboard and shows a toast notification indicating success or failure.
@@ -30,3 +31,4 @@ export async function copyToClipboard(text) {
         await navigator.clipboard.writeText(text);
     } catch {}
 }
+window.copyToClipboard = copyToClipboard;

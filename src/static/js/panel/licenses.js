@@ -1,11 +1,13 @@
-async function loadLicenses() {
+import { createNotification } from '../utils/toast.js';
+import { api, panelState, setSession, clearSession, updateAuthVisibility } from '../panel.js';
+
+export async function loadLicenses() {
     const tbody = document.getElementById('licenses-table-body');
     if (!tbody) return;
 
     try {
         await loadLicenseProducts();
         const licenses = await api('/accounts/licenses');
-        console.log('Licenses:', licenses);
 
         if (!licenses || !licenses.length) {
             tbody.innerHTML = '<tr><td colspan="5" class="text-secondary text-center">No licenses found.</td></tr>';
@@ -45,7 +47,7 @@ async function loadLicenses() {
                                 </button>
                                 <button class="icon-btn revoke-key-btn" data-key="${escapeHTML(key)}" style="color:var(--danger-color)" title="Revoke">
                                     <i class="fa-solid fa-trash"></i>
-                                </button>
+                                </button>state.
                             ` : ''}
                         </div>
                     </td>
@@ -60,7 +62,8 @@ async function loadLicenses() {
         tbody.querySelectorAll('.revoke-key-btn').forEach((btn) => {
             btn.addEventListener('click', () => revokeLicense(btn.dataset.key));
         });
-    } catch {
+    } catch (e) {
+        console.error('Failed to load licenses:', e);
         createNotification('Failed to load licenses', 'error');
     }
 }
@@ -72,13 +75,14 @@ async function loadLicenseProducts() {
     select.innerHTML = '<option value="">Loading products...</option>';
     try {
         const products = await api('/accounts/license-products');
-        state.licenseProducts = Array.isArray(products) ? products : [];
-        select.innerHTML = state.licenseProducts.length
-            ? state.licenseProducts.map((p) => `<option value="${escapeHTML(p.id)}">${escapeHTML(p.name || p.id)}</option>`).join('')
+        panelState.licenseProducts = Array.isArray(products) ? products : [];
+        select.innerHTML = panelState.licenseProducts.length
+            ? panelState.licenseProducts.map((p) => `<option value="${escapeHTML(p.id)}">${escapeHTML(p.name || p.id)}</option>`).join('')
             : '<option value="">No products available</option>';
     } catch (error) {
-        state.licenseProducts = [];
+        panelState.licenseProducts = [];
         select.innerHTML = '<option value="">Unable to load products</option>';
+        console.error('Failed to load license products:', error);
         createNotification(error.message || 'Failed to load license products', 'error');
     }
 }
