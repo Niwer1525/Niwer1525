@@ -136,6 +136,8 @@ article header {
 
 article main {
     display: flex;
+    justify-content: center;
+    align-items: center;
     flex-direction: column;
     gap: 0.5rem;
     flex: 1;

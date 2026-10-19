@@ -80,3 +80,21 @@ export function panelNavigation(lang = 'en', langDict) {
         </div>
     `);
 }
+
+export function jumpBar(langDict, hoverLabel = 'Sub Sections', title, jumpLinks = []) {
+    return `
+        <div class="jump-bar-container">
+            <nav class="jump-bar" aria-label="${hoverLabel}">
+                <span class="jump-title">${title}:</span>
+                <div class="jump-links">
+                    ${jumpLinks.map(link => `
+                        <a href="#section-${link.id}" class="jump-pill">
+                            <span>${link.label}</span>
+                            ${link.count ? `<small>${link.count}</small>` : ''}
+                        </a>
+                    `).join('')}
+                </div>
+            </nav>
+        </div>
+    `;
+}

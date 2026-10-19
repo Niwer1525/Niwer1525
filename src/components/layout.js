@@ -1,7 +1,7 @@
-import { defaultNavigation, panelNavigation } from './nav.js';
 import { footer } from './footer.js';
-import { contactModal } from './modals/contact_modal.js';
 import { authModal } from './modals/auth_modal.js';
+import { contactModal } from './modals/contact_modal.js';
+import { defaultNavigation, panelNavigation } from './nav.js';
 
 function addScripts(scripts) {
     return scripts.map(script => {

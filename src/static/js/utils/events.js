@@ -1,11 +1,12 @@
 import { handleFormSubmit } from '../main.js';
-import { createNotification } from './toast.js';
-import { hidePopup } from './modals.js';
-import { loadDownloads, loadPublicServers } from '../panel/public.js';
-import { loadLicenses, createLicense } from '../panel/licenses.js';
-import { restoreSession, login, submit2FALogin, register } from '../panel/auth.js';
 import { panelState, updateAuthVisibility } from '../panel.js';
+import { login, register, restoreSession, submit2FALogin } from '../panel/auth.js';
+import { createLicense, loadLicenses } from '../panel/licenses.js';
+import { loadDownloads, loadPublicServers } from '../panel/public.js';
+import { loadProfileDetails } from '../panel/user_profile.js';
+import { hidePopup } from './modals.js';
 import { STATE_STORAGE_KEY } from './storage.js';
+import { createNotification } from './toast.js';
 
 /* Handle storage events */
 window.addEventListener('storage', (event) => {
@@ -80,7 +81,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 // await loadAdminPanel();
                 break;
             case '/panel/profile':
-                // await loadProfile();
+                await loadProfileDetails();
                 break;
             default: break;
         }

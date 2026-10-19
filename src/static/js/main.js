@@ -95,6 +95,20 @@ export function formatProductId(productId) {
 }
 
 /**
+ * Formats a camelCased string into a more readable format by adding spaces before capital letters and capitalizing the first letter of the resulting string.
+ * 
+ * @param {*} str The camelCased string to format. 
+ * @returns {string} The formatted string with spaces and capitalization.
+ */
+export function formatCamelCasedString(str) {
+    if (!str) return 'Unknown';
+    return str
+        .replace(/([A-Z])/g, ' $1') // Add space before capital letters
+        .replace(/^./, (s) => s.toUpperCase()) // Capitalize the first letter
+        .trim();
+}
+
+/**
  * Handles form submission by preventing the default behavior, disabling the submit button, and executing the provided action function with the form data.
  * 
  * @param {*} e - The event object from the form submission.
