@@ -33,6 +33,11 @@ h1, h2, h3, h4 {
     color: var(--text-primary);
     letter-spacing: -0.02em;
 }
+hr {
+    border-radius: 5px;
+    color: var(--text-primary);
+    margin: 1rem 0;
+}
 
 h1 { font-size: 3rem; }
 h2 { 
@@ -57,11 +62,40 @@ h2::after {
     box-shadow: var(--glow-text);
 }
 
-p { color: var(--text-secondary); margin-bottom: 1.5rem; }
-a { text-decoration: none; color: inherit; transition: color 0.2s; }
-ul { list-style: none; padding: 0; margin: 0; }
-img { max-width: 100%; display: block; }
-span { font-size: 0.85rem; color: var(--accent-color); }
+code {
+    font-family: 'Fira Code', monospace;
+    background: var(--surface-glass);
+    padding: 0.2rem 0.4rem;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+}
+p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s;
+}
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+img {
+    max-width: 100%;
+    display: block;
+}
+span {
+    font-size: 0.85rem;
+    color: var(--accent-color);
+}
+
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-success { color: var(--success-color); }
+.text-danger { color: var(--error-color); }
 
 /* Scrollbar & Selection */
 ::-webkit-scrollbar { width: 8px; }

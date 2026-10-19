@@ -16,6 +16,10 @@ const defaultPanelState = {
     entitlements: [],
 };
 
+/**
+ * A Proxy object that wraps the panel state, allowing for automatic saving to localStorage whenever a property is set.
+ * This ensures that the application state persists across page reloads and sessions.
+ */
 export const panelState = new Proxy(loadState(defaultPanelState), {
     set(target, prop, value) {
         target[prop] = value;
@@ -91,7 +95,7 @@ export async function api(path, options = {}) {
         const isURLSearch = options.body instanceof URLSearchParams;
         if (options.body && !isFormData && !isURLSearch && !headers.has('Content-Type')) headers.set('Content-Type', 'application/json');
 
-        const res = await fetch(API_BASE + path, { credentials: 'same-origin', ...options, headers });
+        const res = await fetch(API_BASE + path, { credentials: 'include', ...options, headers });
         const contentType = res.headers.get('content-type') || '';
         const payload = contentType.includes('json') ? await res.json() : await res.text();
 
@@ -112,7 +116,7 @@ export async function refreshSession() {
         const res = await fetch(API_BASE + '/accounts/refresh', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            credentials: 'same-origin',
+            credentials: 'include',
             body: JSON.stringify({ refreshToken: panelState.refreshToken })
         });
         

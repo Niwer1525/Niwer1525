@@ -6,7 +6,7 @@ function cardTemplate() {
             <article>
                 <header>
                     <h2 class="card-name"></h2>
-                    <span class="card-project-id"></span>
+                    <span class="card-project-id text-secondary"></span>
                 </header>
                 <main class="card-motd"></main>
                 <footer>

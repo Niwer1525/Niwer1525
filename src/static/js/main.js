@@ -1,3 +1,5 @@
+import { createNotification } from './utils/toast.js';
+
 /* Environement variables */
 export const GITHUB_USERNAME = 'Niwer1525';
 
@@ -115,7 +117,8 @@ export async function handleFormSubmit(e, actionFn) {
         /* Clean up the form */
         // form.reset();
     } catch (err) {
-        createNotification(err.message, 'error');
+        console.log('Form submission error:', err);
+        createNotification('Failed to submit form', 'error');
     } finally {
         if (btn) {
             btn.disabled = false;

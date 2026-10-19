@@ -20,6 +20,9 @@
     /* Accent */
     --accent-color: #d8b4fe;
     --accent-glow: rgba(216, 180, 254, 0.3);
+    --success-color: rgb(34, 197, 94);
+    --warning-color: rgb(245, 158, 11);
+    --error-color: rgb(239, 68, 68);
 
     /* Functional */
     --border-radius: 16px;

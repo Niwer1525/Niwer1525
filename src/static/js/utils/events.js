@@ -2,7 +2,7 @@ import { handleFormSubmit } from '../main.js';
 import { createNotification } from './toast.js';
 import { hidePopup } from './modals.js';
 import { loadDownloads, loadPublicServers } from '../panel/public.js';
-import { loadLicenses } from '../panel/licenses.js';
+import { loadLicenses, createLicense } from '../panel/licenses.js';
 import { restoreSession, login, submit2FALogin, register } from '../panel/auth.js';
 import { panelState, updateAuthVisibility } from '../panel.js';
 import { STATE_STORAGE_KEY } from './storage.js';
@@ -52,6 +52,7 @@ document.addEventListener('submit', function(e) {
     else if (e.target && e.target.id === 'auth-popup-login-form') login(e);
     else if (e.target && e.target.id === 'totp-login-form') submit2FALogin(e);
     else if (e.target && e.target.id === 'auth-popup-register-form') register(e);
+    else if (e.target && e.target.id === 'create-license-popup-form') createLicense(e);
 });
 
 /* On document loaded */

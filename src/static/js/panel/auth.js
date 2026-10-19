@@ -1,6 +1,6 @@
 import { handleFormSubmit } from '../main.js';
 import { createNotification } from '../utils/toast.js';
-import { showPopupAndSwitchTab } from '../utils/modals.js';
+import { showPopupAndSwitchTab, closeModals } from '../utils/modals.js';
 import { api, panelState, setSession, clearSession, updateAuthVisibility } from '../panel.js';
 
 function clearPurchaseToken() {
@@ -93,7 +93,7 @@ export function register(e) {
 async function handleLoginSuccessPayload(payload) {
     const token = payload.isAdmin ? '' : (payload.token || '');
     setSession(payload.account || payload, token, payload.refreshToken || '');
-    if (!payload.isAdmin) await loadEntitlements(); //TODO ??? Why
+    await loadEntitlements();
 
     createNotification(payload.isAdmin ? 'Signed in as admin' : 'Signed in', 'success');
     clearPurchaseToken();
@@ -103,6 +103,7 @@ async function handleLoginSuccessPayload(payload) {
 
 async function logout() {
     await api('/accounts/logout', { method: 'POST' }).catch(() => {});
+    window.location.href = '/panel';
     clearSession();
     updateAuthVisibility();
     createNotification('Logged out');

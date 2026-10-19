@@ -106,6 +106,8 @@ form {
 label {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
     background: var(--surface-glass-hover);
     border-radius: 8px;
     padding: 0.5rem 1rem;
@@ -115,7 +117,7 @@ label {
 label:focus-within {
     border-color: var(--accent-color);
 }
-label i {
+input i {
     color: var(--text-secondary);
     margin-right: 10px;
 }
@@ -123,8 +125,47 @@ textarea {
     resize: vertical;
     min-height: 100px;
 }
-hr {
-    border-radius: 5px;
+input, textarea, select {
+    background: transparent;
+    border: none;
     color: var(--text-primary);
-    margin: 1rem 0;
+    width: 100%;
+    font-family: inherit;
+    font-size: 1rem;
+    outline: none;
 }
+
+/* Required inputs */
+label:has(:required)::after {
+    content: " *";
+    color: var(--accent-color);
+    font-size: 1.1rem;
+    line-height: 1;
+    margin-left: 0.25rem;
+}
+/* Subtle left border accent on the container holding a required input */
+label:has(:required) {
+    border-left: 3px solid var(--accent-color);
+}
+
+.form-control {
+    width: 200px;
+    padding: 0.8rem 1.6rem;
+    border-radius: 50px;
+    border: 1px solid var(--border-color);
+    background: var(--surface-glass);
+    transition: all var(--transition-speed);
+}
+.form-control {
+    background: rgba(216, 180, 254, 0.15);
+    border-color: var(--accent-color);
+    box-shadow: 0 4px 12px rgba(216, 180, 254, 0.2);
+}
+/* input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    display: none;
+}
+input[type="number"]::-moz-number-spin-up, 
+input[type="number"]::-moz-number-spin-down {
+    display: none;
+} */

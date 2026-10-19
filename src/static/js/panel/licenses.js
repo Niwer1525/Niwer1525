@@ -1,67 +1,86 @@
+import { escapeHtml, formatDate, handleFormSubmit } from '../main.js';
+import { api, panelState } from '../panel.js';
+import { closeModals } from '../utils/modals.js';
 import { createNotification } from '../utils/toast.js';
-import { api, panelState, setSession, clearSession, updateAuthVisibility } from '../panel.js';
+import { copyToClipboardWithNotification } from '../utils/clipboard.js';
 
+/**
+ * Sets up a license row with the provided data.
+ */
+function setupLicenseRow(root, license) {
+    const status = String(license.status || license.state || 'UNKNOWN').toUpperCase();
+    const isExpired = status === 'EXPIRED' || (license.expiresAt && new Date(license.expiresAt) < new Date());
+    const isRevoked = status === 'REVOKED';
+    const key = license.licenseKey || license.key || '';
+
+    // Populate text content safely
+    root.querySelector('.license-name').textContent = license.name || license.customerName || '—';
+    root.querySelector('.license-product').textContent = license.productId || license.product_id || '—';
+    root.querySelector('.license-created').textContent = formatDate(license.createdAt || license.created_at).split(',')[0];
+    root.querySelector('.license-expires').textContent = formatDate(license.expiresAt || license.expires_at).split(',')[0];
+    root.querySelector('.license-key').textContent = key || '—';
+
+    // Status Badge
+    const badge = root.querySelector('.license-badge');
+    badge.textContent = status;
+    if (status === 'ACTIVE') badge.classList.add('active');
+    else if (isRevoked) badge.classList.add('revoked');
+    else if (isExpired) badge.classList.add('expired');
+
+    // Actions & dataset binding
+    const actions = root.querySelector('.license-actions');
+    if (isRevoked || isExpired) actions.remove();
+    else {
+        const copyBtn = root.querySelector('.copy-key-btn');
+        const revokeBtn = root.querySelector('.revoke-key-btn');
+        if (copyBtn) copyBtn.dataset.key = key;
+        if (revokeBtn) revokeBtn.dataset.key = key;
+    }
+
+    return root;
+}
+
+/**
+ * Loads licenses from the API and populates the licenses table.
+ * 
+ * @returns {Promise<void>} 
+ */
 export async function loadLicenses() {
     const tbody = document.getElementById('licenses-table-body');
-    if (!tbody) return;
+    const tmpl = document.getElementById('tmpl-license-row');
+    if (!tbody || !tmpl) return;
+
+    if (!tbody.dataset.bound) {
+        tbody.onclick = (e) => {
+            const copyBtn = e.target.closest('.copy-key-btn');
+            if (copyBtn?.dataset.key) {
+                copyToClipboardWithNotification(copyBtn.dataset.key, `Copied license key: ${copyBtn.dataset.key}`);
+                return;
+            }
+
+            const revokeBtn = e.target.closest('.revoke-key-btn');
+            if (revokeBtn?.dataset.key) revokeLicense(revokeBtn.dataset.key);
+        };
+        tbody.dataset.bound = 'true';
+    }
 
     try {
         await loadLicenseProducts();
         const licenses = await api('/accounts/licenses');
 
-        if (!licenses || !licenses.length) {
+        /* Populate the licenses table */
+        if (!licenses?.length) {
             tbody.innerHTML = '<tr><td colspan="5" class="text-secondary text-center">No licenses found.</td></tr>';
             return;
         }
 
-        tbody.innerHTML = licenses.map((l) => {
-            const status = String(l.status || l.state || 'UNKNOWN').toUpperCase();
-            const isExpired = status === 'EXPIRED' || (l.expiresAt && new Date(l.expiresAt) < new Date());
-            const isRevoked = status === 'REVOKED';
-            const badgeClass = status === 'ACTIVE' ? 'active' : (isRevoked || isExpired ? 'danger' : '');
-            const key = l.licenseKey || l.key || '';
-            console.log('License Key:', key, 'Status:', status, 'Expired:', isExpired, 'Revoked:', isRevoked);
-            return `
-                <tr>
-                    <td>
-                        <strong>${escapeHTML(l.name || l.customerName || '—')}</strong><br>
-                        <span class="text-secondary text-sm">${escapeHTML(l.productId || l.product_id || '—')}</span>
-                    </td>
-                    <td>
-                        <span class="text-sm">
-                            <i class="fa-solid fa-arrow-right-to-bracket text-success" style="margin-right:4px;"></i> ${formatDate(l.createdAt || l.created_at).split(',')[0]}<br>
-                            <i class="fa-solid fa-arrow-right-from-bracket text-danger" style="margin-right:4px;"></i> ${formatDate(l.expiresAt || l.expires_at).split(',')[0]}
-                        </span>
-                    </td>
-                    <td>
-                        <code class="font-mono text-sm" style="background: var(--surface-glass); padding: 0.3rem 0.5rem; border-radius: 6px; border: 1px solid var(--border-color);">
-                            ${escapeHTML(key || '—')}
-                        </code>
-                    </td>
-                    <td><span class="badge ${badgeClass}">${escapeHTML(status)}</span></td>
-                    <td>
-                        <div style="display: flex; gap: 0.5rem;">
-                            ${!isRevoked && !isExpired ? `
-                                <button class="icon-btn copy-key-btn" data-key="${escapeHTML(key)}" title="Copy Key">
-                                    <i class="fa-regular fa-copy"></i>
-                                </button>
-                                <button class="icon-btn revoke-key-btn" data-key="${escapeHTML(key)}" style="color:var(--danger-color)" title="Revoke">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>state.
-                            ` : ''}
-                        </div>
-                    </td>
-                </tr>
-            `;
-        }).join('');
-
-        tbody.querySelectorAll('.copy-key-btn').forEach((btn) => {
-            btn.addEventListener('click', () => copyToClipboard(btn.dataset.key));
+        /* Create a document fragment to hold the new rows */
+        const fragment = document.createDocumentFragment();
+        licenses.forEach((lic) => {
+            fragment.append(setupLicenseRow(tmpl.content.cloneNode(true), lic));
         });
 
-        tbody.querySelectorAll('.revoke-key-btn').forEach((btn) => {
-            btn.addEventListener('click', () => revokeLicense(btn.dataset.key));
-        });
+        tbody.replaceChildren(fragment);
     } catch (e) {
         console.error('Failed to load licenses:', e);
         createNotification('Failed to load licenses', 'error');
@@ -77,34 +96,41 @@ async function loadLicenseProducts() {
         const products = await api('/accounts/license-products');
         panelState.licenseProducts = Array.isArray(products) ? products : [];
         select.innerHTML = panelState.licenseProducts.length
-            ? panelState.licenseProducts.map((p) => `<option value="${escapeHTML(p.id)}">${escapeHTML(p.name || p.id)}</option>`).join('')
+            ? panelState.licenseProducts.map((p) => `<option value="${escapeHtml(p.id)}">${escapeHtml(p.name || p.id)}</option>`).join('')
             : '<option value="">No products available</option>';
     } catch (error) {
         panelState.licenseProducts = [];
         select.innerHTML = '<option value="">Unable to load products</option>';
         console.error('Failed to load license products:', error);
-        createNotification(error.message || 'Failed to load license products', 'error');
+        createNotification('Failed to load license products', 'error');
     }
 }
 
-async function createLicense(e) {
-    e.preventDefault();
-    const fd = new FormData(e.target);
-    const payload = { name: fd.get('name'), product_id: fd.get('product_id') };
-    if (fd.get('duration_days')) payload.duration_days = Number(fd.get('duration_days'));
+/**
+ * Creates a new license.
+ * 
+ * @param {*} e The form submission event. 
+ */
+export async function createLicense(e) {
+    handleFormSubmit(e, async (form, formData) => {
+        const payload = { name: formData.get('name'), product_id: formData.get('product_id') };
+        if (formData.get('duration_days')) payload.duration_days = Number(formData.get('duration_days'));
 
-    try {
-        await api('/accounts/licenses', { method: 'POST', body: JSON.stringify(payload) });
-        closeModals();
-        e.target.reset();
-        createNotification('License created', 'success');
-        loadLicenses();
-    } catch (err) {
-        createNotification(err.message, 'error');
-    }
+        try {
+            await api('/accounts/licenses', { method: 'POST', body: JSON.stringify(payload) });
+            closeModals();
+            form.reset();
+            createNotification('License created', 'success');
+            loadLicenses();
+        } catch (e) {
+            console.error('Failed to create license:', e);
+            createNotification('Failed to create license', 'error');
+        }
+    });
 }
 
 async function revokeLicense(key) {
+    console.log('Attempting to revoke license:', key);
     if (!confirm('Revoke this license?')) return;
     try {
         await api('/accounts/licenses/revoke', { method: 'POST', body: JSON.stringify({ license_key: key }) });

@@ -9,7 +9,7 @@ export function gists(langDict) {
                 <!-- There will be gists -->
             </div>
             <a class="button" href="https://gist.niwer.dev" target="_blank" rel="noopener noreferrer">${getValueWithFallback(langDict, 'explore.gists', 'Explore my Gists')}</a>
-            <input type="number" id="gists-limit" min="1" max="100" value="6" placeholder="Number of gists to show">
+            <input type="number" class="form-control" id="gists-limit" min="1" max="100" value="6" placeholder="Number of gists to show">
         </section>    
     `;
 }
