@@ -74,7 +74,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log(`%c Niwer's Portfolio - Made with ❤️`, 'background: #000000; color: #d8b4fe; padding: 4px 8px; border-radius: 4px; font-size: 14px;');
     
     /* Handle specific loading action depending on the current path */
-    const currentPath = window.location.pathname;
+    let currentPath = window.location.pathname;
+    if (currentPath.endsWith('/') && currentPath.length > 1) currentPath = currentPath.slice(0, -1);
+    console.log(`Current path: ${currentPath}`);
     if(currentPath.startsWith('/panel')) {
         await restoreSession(); // Validate and restore session tokens
         switch (currentPath) {

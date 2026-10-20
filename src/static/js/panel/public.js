@@ -35,14 +35,11 @@ function setupServerCard(root, { serverName = 'Unknown Server', projectId, serve
 }
 
 export async function loadPublicServers() {
-    console.log('Loading public servers...');
     const grid = document.getElementById('servers-grid');
     const tmpl = document.getElementById('tmpl-server-card');
     if (!grid || !tmpl) return;
-    console.log('Found grid and template elements.');
 
     if (!grid.dataset.bound) {
-        console.log('Binding click event for copy buttons...');
         grid.onclick = (e) => {
             const btn = e.target.closest('.copy-ip-btn');
             if (btn?.dataset.ip) copyToClipboardWithNotification(btn.dataset.ip, `Copied IP: ${btn.dataset.ip}`);
@@ -51,9 +48,7 @@ export async function loadPublicServers() {
     }
 
     try {
-        console.log('Fetching public servers from API...');
         const servers = await api('/api/status/servers');
-        console.log('Fetched servers:', servers);
         if (!servers?.length) return (grid.innerHTML = '<p>No servers online.</p>');
 
         const fragment = document.createDocumentFragment();
