@@ -1,6 +1,7 @@
-import { handleFormSubmit, CONFIRMATION_PHRASE } from '../main.js';
+import { CONFIRMATION_PHRASE, handleFormSubmit } from '../main.js';
 import { panelState, updateAuthenticatedVisibility } from '../panel.js';
-import { login, register, restoreSession, submit2FALogin, updateProfile, requestAccountDeletion, confirm2FASetup } from '../panel/auth.js';
+import { loadAdminPanel } from '../panel/admin.js';
+import { confirm2FASetup, login, register, requestAccountDeletion, restoreSession, submit2FALogin, updateProfile } from '../panel/auth.js';
 import { createLicense, loadLicenses } from '../panel/licenses.js';
 import { loadDownloads, loadPublicServers } from '../panel/public.js';
 import { loadProfileDetails } from '../panel/user_profile.js';
@@ -90,7 +91,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 await loadLicenses();
                 break;
             case '/panel/admin':
-                // await loadAdminPanel();
+                await loadAdminPanel();
                 break;
             case '/panel/profile':
                 await loadProfileDetails();
