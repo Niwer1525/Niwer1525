@@ -103,6 +103,11 @@ form {
     flex-direction: column;
     gap: 1rem;
 }
+form>p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    text-align: center;
+}
 label {
     display: flex;
     align-items: center;
@@ -169,3 +174,10 @@ input[type="number"]::-moz-number-spin-up,
 input[type="number"]::-moz-number-spin-down {
     display: none;
 } */
+
+/* TOTP Code Input */
+.totp-code {
+    font-size: 1.5rem;
+    letter-spacing: 0.5rem;
+    text-align: center;
+}

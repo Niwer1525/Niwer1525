@@ -22,6 +22,7 @@
     white-space: nowrap;
 }
 
+/* License badge used on license tables & inside user profile for entitlements */
 .license-badge {
     padding: 0.25rem 0.75rem;
     border-radius: 50px;
@@ -46,4 +47,13 @@
     background: rgba(239, 68, 68, 0.2);
     color: var(--danger-color);
     border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* QR Code Image (inside modal) */
+.qr-code {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    min-height: 180px;
 }

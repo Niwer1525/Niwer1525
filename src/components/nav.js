@@ -1,4 +1,4 @@
-import { getValueWithFallback } from '../utils.js';
+import { getValueWithFallback, getAccessClassForType } from '../utils.js';
 
 function navigation(lang = 'en', langDict, buttons, additionalActionsContent = '') {
     return `
@@ -6,13 +6,15 @@ function navigation(lang = 'en', langDict, buttons, additionalActionsContent = '
             <nav>
                 <!-- Mobile Navigation -->
                 <input type="checkbox" id="menu-toggle">
-                <label for="menu-toggle" class="menu-icon"><i class="fas fa-bars"></i></label> <!-- Mobile menu icon for navigation -->
+                <label for="menu-toggle" class="menu-icon">
+                    <i class="fas fa-bars"></i>
+                </label>
                 
                 <!-- Navigation Links -->
                 <ul id="nav-links">
                     <!-- Navigation buttons -->
                     ${buttons.map(button => `
-                        <li id="${button.id || ''}"><a href="${button.url}" ${button.onClick ? `onclick="${button.onClick}"` : ''}>${getValueWithFallback(langDict, button.labelKey, button.defaultLabel)}</a></li>
+                        <li id="${button.id || ''}" class="${getAccessClassForType(button.accessType)}"><a href="${button.url}" ${button.onClick ? `onclick="${button.onClick}"` : ''}>${getValueWithFallback(langDict, button.labelKey, button.defaultLabel)}</a></li>
                     `).join('')}
 
                     <!-- Theme Toggle and Language Selection -->
@@ -65,8 +67,8 @@ export function panelNavigation(lang = 'en', langDict) {
         { url: `${indexUrl}`, labelKey: 'btn.home', defaultLabel: 'Home' },
         { url: `${panelUrl}`, labelKey: 'btn.overview', defaultLabel: 'Overview' },
         { url: `${downloadsUrl}`, labelKey: 'btn.downloads', defaultLabel: 'Downloads' },
-        { url: `${licensesUrl}`, labelKey: 'btn.licenses', defaultLabel: 'Licenses' },
-        { url: `${adminUrl}`, labelKey: 'btn.admin', defaultLabel: 'Admin' },
+        { url: `${licensesUrl}`, labelKey: 'btn.licenses', defaultLabel: 'Licenses', accessType: 'buyer' },
+        { url: `${adminUrl}`, labelKey: 'btn.admin', defaultLabel: 'Admin', accessType: 'admin' },
     ], `
         <div class="dashboard-actions-grid">
             <!-- Sign In button will be shown when the user is not authenticated, while the Profile and Logout buttons will be shown when the user is authenticated. -->
@@ -88,7 +90,7 @@ export function jumpBar(langDict, hoverLabel = 'Sub Sections', title, jumpLinks 
                 <span class="jump-title">${title}:</span>
                 <div class="jump-links">
                     ${jumpLinks.map(link => `
-                        <a href="#section-${link.id}" class="jump-pill">
+                        <a href="#${link.id}" class="jump-pill">
                             <span>${link.label}</span>
                             ${link.count ? `<small>${link.count}</small>` : ''}
                         </a>

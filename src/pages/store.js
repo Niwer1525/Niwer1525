@@ -7,6 +7,7 @@ import { jumpBar } from '../components/nav.js';
 async function renderCategorySections(node, parentPath, context, outLinks) {
     const id = String(node.id ?? node.slug);
     const currentPath = parentPath ? `${parentPath}-${id}` : id;
+    const sectionId = `section-${currentPath}`;
     const displayName = node.name || id;
 
     let html = '';
@@ -14,7 +15,7 @@ async function renderCategorySections(node, parentPath, context, outLinks) {
 
     // Render cards directly on this category or subcategory
     if (validPackages.length > 0) {
-        outLinks.push({ id: currentPath, label: displayName, count: validPackages.length });
+        outLinks.push({ id: sectionId, label: displayName, count: validPackages.length });
 
         const cardsHtml = (await Promise.all(
             validPackages.map(pkg => renderPackageCard({ ...pkg, categoryId: id }, context))
@@ -23,7 +24,7 @@ async function renderCategorySections(node, parentPath, context, outLinks) {
         const headingTag = parentPath ? 'h3' : 'h2';
 
         html += `
-            <section class="store-section" id="section-${currentPath}">
+            <section class="store-section" id="${sectionId}">
                 <header class="store-section-header">
                     <${headingTag}>${displayName}</${headingTag}>
                 </header>

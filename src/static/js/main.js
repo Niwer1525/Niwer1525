@@ -2,6 +2,7 @@ import { createNotification } from './utils/toast.js';
 
 /* Environement variables */
 export const GITHUB_USERNAME = 'Niwer1525';
+export const CONFIRMATION_PHRASE = 'DELETE MY ACCOUNT';
 
 /**
  * Formats a value for display in the UI.
@@ -103,11 +104,11 @@ export function formatProductId(productId) {
 export function formatCamelCasedString(str) {
     if (!str) return 'Unknown';
     return str
-        .replace(/([A-Z])/g, ' $1') // Add space before capital letters
+        .replace(/([a-z\d])([A-Z])/g, '$1 $2') // Space between lowercase/number and uppercase (e.g., "discordID" -> "discord ID")
+        .replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1 $2') // Space between an acronym and a following word (e.g., "IDNumber" -> "ID Number")
         .replace(/^./, (s) => s.toUpperCase()) // Capitalize the first letter
         .trim();
 }
-
 /**
  * Handles form submission by preventing the default behavior, disabling the submit button, and executing the provided action function with the form data.
  * 
@@ -132,7 +133,7 @@ export async function handleFormSubmit(e, actionFn) {
         // form.reset();
     } catch (err) {
         console.log('Form submission error:', err);
-        createNotification('Failed to submit form', 'error');
+        createNotification(`Failed to submit form ${err}`, 'error');
     } finally {
         if (btn) {
             btn.disabled = false;

@@ -21,11 +21,11 @@ function login(langDict) {
 
 function twoFactorAuth(langDict) {
 	return `
-		<form id="totp-login-form">
+		<form id="totp-login-form" class="hidden">
 			<h2>Two-Factor Auth</h2>
 			<label>
 				<i class="fa-solid fa-key"></i>
-				<input type="text" name="code" id="totpLoginInput" pattern="[0-9]{6}" maxlength="6" inputmode="numeric" autocomplete="one-time-code" required placeholder="123456" style="letter-spacing: 0.3rem; text-align: center; font-size: 1.25rem;">
+				<input class="totp-code" type="text" name="code" id="totpLoginInput" pattern="[0-9]{6}" maxlength="6" inputmode="numeric" autocomplete="one-time-code" required placeholder="123456">
 			</label>
 			<button type="submit">
 				<i class="fa-solid fa-shield-halved"></i>

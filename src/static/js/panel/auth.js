@@ -1,7 +1,7 @@
 import { handleFormSubmit } from '../main.js';
+import { api, clearSession, panelState, setSession, updateAuthenticatedVisibility } from '../panel.js';
+import { closeModals, showPopupAndSwitchTab } from '../utils/modals.js';
 import { createNotification } from '../utils/toast.js';
-import { showPopupAndSwitchTab, closeModals } from '../utils/modals.js';
-import { api, panelState, setSession, clearSession, updateAuthVisibility } from '../panel.js';
 
 function clearPurchaseToken() {
     if (panelState.purchaseToken) {
@@ -21,7 +21,7 @@ async function syncPurchaseSession(body) {
 
 export async function restoreSession() {
     if (panelState.purchaseToken && (panelState.userToken || panelState.refreshToken || panelState.account || panelState.token)) {
-        return logout();
+        return logout(true);
     }
     
     if (panelState.account) {
@@ -37,7 +37,7 @@ export async function restoreSession() {
             }
         }
     }
-    updateAuthVisibility();
+    updateAuthenticatedVisibility();
 }
 
 export function login(e) {
@@ -47,15 +47,11 @@ export function login(e) {
         
         const payload = await api('/accounts/auth_account', { method: 'POST', body });
         if (payload.status === '2FA_REQUIRED' && payload.ticket) {
+            console.log('Login payload:', payload);
             panelState.pending2FATicket = payload.ticket;
-            document.querySelectorAll('.modal-panel').forEach((p) => p.classList.remove('active'));
-            document.getElementById('totpLoginForm')?.classList.add('active');
-            document.getElementById('authTabs')?.classList.add('hidden');
-            const input = document.getElementById('totpLoginInput');
-            if (input) {
-                input.value = '';
-                setTimeout(() => input.focus(), 150);
-            }
+            document.getElementById('auth-popup-login-form')?.classList.add('hidden');
+            document.getElementById('totp-login-form')?.classList.remove('hidden');
+            document.querySelectorAll('.modal-tabs')?.forEach((t) => t.classList.add('hidden'));
             return;
         }
         await handleLoginSuccessPayload(payload);
@@ -86,7 +82,7 @@ export function register(e) {
         clearPurchaseToken();
         createNotification('Account created', 'success');
         closeModals();
-        updateAuthVisibility();
+        updateAuthenticatedVisibility();
     });
 }
 
@@ -98,19 +94,20 @@ async function handleLoginSuccessPayload(payload) {
     createNotification(payload.isAdmin ? 'Signed in as admin' : 'Signed in', 'success');
     clearPurchaseToken();
     closeModals();
-    updateAuthVisibility();
+    updateAuthenticatedVisibility();
 }
 
-async function logout() {
+async function logout(skipConfirmation = false) {
+    if (!skipConfirmation && !confirm('Are you sure you want to log out?')) return;
     await api('/accounts/logout', { method: 'POST' }).catch(() => {});
-    window.location.href = '/panel';
     clearSession();
-    updateAuthVisibility();
+    updateAuthenticatedVisibility();
     createNotification('Logged out');
+    setTimeout(() => window.location.href = '/panel', 500);
 }
 window.logout = logout;
 
-function updateProfile(e) {
+export function updateProfile(e) {
     return handleFormSubmit(e, async (form, fromData) => {
         const payload = {
             uuid: panelState.account?.uuid,
@@ -123,14 +120,15 @@ function updateProfile(e) {
 
         const acc = await api('/accounts/update_profile', { method: 'POST', body: JSON.stringify(payload) });
         setSession(acc, panelState.userToken, panelState.refreshToken);
-        e.target.reset();
-        updateAuthVisibility();
+        form.reset();
+        updateAuthenticatedVisibility();
         closeModals();
         createNotification('Profile updated', 'success');
     });
 }
 
 async function open2FASetup() {
+    /* Disable 2FA if it's already enabled */
     if (panelState.account?.totpEnabled) {
         if (!confirm('Two-factor authentication is already active. Do you want to disable it?')) return;
         const code = prompt('Enter a 6-digit code from your authenticator app to disable 2FA:');
@@ -141,16 +139,17 @@ async function open2FASetup() {
             createNotification('2FA has been disabled', 'success');
             panelState.account = await api('/accounts/me');
             localStorage.setItem('photon-account', JSON.stringify(panelState.account));
-            updateAuthVisibility();
+            updateAuthenticatedVisibility();
         } catch (err) {
             createNotification(err.message, 'error');
         }
         return;
     }
 
-    openModal('totpSetupModal');
-    const container = document.getElementById('totpQrContainer');
-    const manualKey = document.getElementById('totpManualKey');
+    /* Setup 2FA */
+    showPopup('totp-setup-popup');
+    const container = document.getElementById('totp-qr-container');
+    const manualKey = document.getElementById('totp-manual-key');
     if (container) container.innerHTML = '<i class="fa-solid fa-spinner fa-spin fa-2x text-secondary"></i>';
     if (manualKey) manualKey.value = '';
 
@@ -163,17 +162,18 @@ async function open2FASetup() {
         createNotification(err.message, 'error');
     }
 }
+window.open2FASetup = open2FASetup;
 
-function confirm2FASetup(e) {
+export function confirm2FASetup(e) {
     return handleFormSubmit(e, async (form, formData) => {
         await api('/accounts/2fa/confirm', { method: 'POST', body: JSON.stringify({ code: formData.get('code') }) });
         createNotification('Two-factor authentication enabled!', 'success');
         closeModals();
-        e.target.reset();
+        form.reset();
 
         panelState.account = await api('/accounts/me');
         localStorage.setItem('photon-account', JSON.stringify(panelState.account));
-        updateAuthVisibility();
+        updateAuthenticatedVisibility();
     });
 }
 
@@ -186,7 +186,7 @@ async function loadEntitlements() {
     }
 }
 
-function requestAccountDeletion(e) {
+export function requestAccountDeletion(e) {
     return handleFormSubmit(e, async (form, formData) => {
         await api('/accounts/delete_account', {
             method: 'DELETE',
@@ -198,10 +198,10 @@ function requestAccountDeletion(e) {
         });
 
         closeModals();
-        e.target.reset();
+        logout(true);
+        form.reset();
         clearSession();
-        updateAuthVisibility();
-        navigate('overview');
+        updateAuthenticatedVisibility();
         createNotification('Account scheduled for deletion. You have been logged out.', 'success');
     });
 }

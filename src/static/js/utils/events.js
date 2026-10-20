@@ -1,6 +1,6 @@
-import { handleFormSubmit } from '../main.js';
-import { panelState, updateAuthVisibility } from '../panel.js';
-import { login, register, restoreSession, submit2FALogin } from '../panel/auth.js';
+import { handleFormSubmit, CONFIRMATION_PHRASE } from '../main.js';
+import { panelState, updateAuthenticatedVisibility } from '../panel.js';
+import { login, register, restoreSession, submit2FALogin, updateProfile, requestAccountDeletion, confirm2FASetup } from '../panel/auth.js';
 import { createLicense, loadLicenses } from '../panel/licenses.js';
 import { loadDownloads, loadPublicServers } from '../panel/public.js';
 import { loadProfileDetails } from '../panel/user_profile.js';
@@ -14,7 +14,7 @@ window.addEventListener('storage', (event) => {
         try {
             const updated = JSON.parse(event.newValue);
             Object.assign(panelState, updated);
-            updateAuthVisibility();
+            updateAuthenticatedVisibility();
         } catch {
             // ignore malformed storage payloads
         }
@@ -24,6 +24,15 @@ window.addEventListener('storage', (event) => {
 /* Prevent CTRL+S (Saving) & CTRL+P (Printing) */
 window.addEventListener('keydown', function(e) {
     if ((e.ctrlKey && e.key === 's') || (e.ctrlKey && e.key === 'p')) e.preventDefault();
+});
+
+document.addEventListener('input', function(e) {
+    if (e.target && e.target.id === 'delete-phrase-input') {
+        const deleteBtn = document.getElementById('btn-submit-delete');
+        if (deleteBtn) deleteBtn.disabled = e.target.value !== CONFIRMATION_PHRASE;
+    }
+    /* Handle TOTP code input (Removing spaces & non-numeric characters) */
+    if(e.target && e.target.classList.contains('totp-code')) e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 6);
 });
 
 document.addEventListener('submit', function(e) {
@@ -50,9 +59,12 @@ document.addEventListener('submit', function(e) {
             } else throw new Error(data.message || 'An error occurred while sending the message.');
         });
     }
+    else if (e.target && e.target.id === 'auth-popup-register-form') register(e);
     else if (e.target && e.target.id === 'auth-popup-login-form') login(e);
     else if (e.target && e.target.id === 'totp-login-form') submit2FALogin(e);
-    else if (e.target && e.target.id === 'auth-popup-register-form') register(e);
+    else if (e.target && e.target.id === 'totp-setup-popup-form') confirm2FASetup(e);
+    else if (e.target && e.target.id === 'edit-profile-popup-form') updateProfile(e);
+    else if (e.target && e.target.id === 'delete-account-popup-form') requestAccountDeletion(e);
     else if (e.target && e.target.id === 'create-license-popup-form') createLicense(e);
 });
 

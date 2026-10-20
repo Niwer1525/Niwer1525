@@ -23,6 +23,7 @@ export function switchTab(modalId, tabId) {
     const popupElement = getModal(modalId);
     if(!(popupElement instanceof HTMLElement)) return;
 
+    popupElement.querySelectorAll('.modal-tabs').forEach((t) => t.classList.remove('hidden')); // Ensure the tabs are visible
     popupElement.querySelectorAll('.modal-tab').forEach((t) => t.classList.toggle('active', t.dataset.tab === tabId));
     popupElement.querySelectorAll('.modal-panel').forEach((p) => p.classList.remove('active'));
 

@@ -20,7 +20,7 @@ export function createLicenseModal(langDict) {
         <i class="fa-solid fa-calendar-days"></i>
         <input type="number" name="duration_days" placeholder="30" min="1">
         <span class="text-secondary">
-            Duration (Days) or leave blank for default
+            Duration (Days) or leave blank for default.
         </span>
     </label>
     <button type="submit" class="btn primary" style="width: 100%; margin-top: 1rem;">

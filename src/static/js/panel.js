@@ -62,19 +62,41 @@ export function clearSession() {
 }
 
 /**
- * Updates the visibility of authentication-related UI elements based on the current authentication state.
- * If the user is authenticated, the sign-in button is hidden and the profile and logout buttons are shown.
- * If the user is not authenticated, the sign-in button is shown and the profile and logout buttons are hidden.
+ * Updates the visibility of UI elements based on the user's authentication status and entitlements.
+ * This function checks if the user is authenticated and has the necessary entitlements to access certain features.
+ * It toggles the visibility of elements with specific classes based on these conditions.
+ * 
+ * Elements with the following classes are affected:
+ * - .auth-required: Visible only to authenticated users.
+ * - .buyer-required: Visible only to users with subscriptions or entitlements.
+ * - .admin-required: Visible only to admin users.
  */
-export function updateAuthVisibility() {
+export function updateAuthenticatedVisibility() {
     const isAuthenticated = !!panelState.account;
     const signInBtn = document.getElementById('nav-signin-btn');
     const profileBtn = document.getElementById('nav-profile-btn');
     const logoutBtn = document.getElementById('nav-logout-btn');
 
+    /* Sign-in/Out buttons */
     if (signInBtn) signInBtn.style.display = isAuthenticated ? 'none' : 'inline-block';
     if (profileBtn) profileBtn.style.display = isAuthenticated ? 'inline-block' : 'none';
     if (logoutBtn) logoutBtn.style.display = isAuthenticated ? 'inline-block' : 'none';
+
+    /* 2FA */
+    const has2FA = Boolean(panelState.account?.totpEnabled);
+    const logicnCode = document.getElementById('totp-login-code');
+    if(logicnCode) {
+        logicnCode.classList.toggle('hidden', !has2FA);
+        logicnCode.querySelectorAll('input').forEach((input) => input.disabled = !has2FA);
+    }
+
+    /* Access control */
+    const isAdmin = !!panelState.token || panelState.account?.administrator;
+    const isUser = !!panelState.userToken || !!panelState.account;
+    const isBuyer = isUser && panelState.entitlements.length > 0;
+    document.querySelectorAll('.auth-required').forEach((el) => el.classList.toggle('hidden', !isUser));
+    document.querySelectorAll('.buyer-required').forEach((el) => el.classList.toggle('hidden', !isBuyer));
+    document.querySelectorAll('.admin-required').forEach((el) => el.classList.toggle('hidden', !isAdmin));
 }
 
 export async function api(path, options = {}) {
@@ -135,7 +157,7 @@ export async function refreshSession() {
     } catch (err) {
         console.error('Session refresh failed:', err);
         clearSession();
-        updateAuthVisibility();
+        updateAuthenticatedVisibility();
         return false;
     }
 }

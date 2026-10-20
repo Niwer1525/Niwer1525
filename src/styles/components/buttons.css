@@ -38,3 +38,8 @@ button:hover, .button:hover {
 button:active, .button:active {
     transform: scale(0.98);
 }
+
+button:disabled, .button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
