@@ -128,6 +128,7 @@ export async function api(path, options = {}) {
 
         const error = new Error(typeof payload === 'string' ? payload : payload?.message || res.statusText);
         error.status = res.status;
+        console.error('API request failed:', error, { path, options, status: res.status, payload });
         throw error;
     }
 }
