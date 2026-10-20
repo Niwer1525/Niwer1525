@@ -62,13 +62,12 @@ async function processStaticFiles(srcDir, destDir) {
 						await fs.writeFile(destPath, cssCode, 'utf8');
 						break;
 					case '.js':
-						// const jsCode = await fs.readFile(srcPath, 'utf8');
-						// const { code: minifiedJs } = await transformJs(jsCode, {
-						// 	minify: true,
-						// 	target: 'esnext'
-						// });
-						// await fs.writeFile(destPath, minifiedJs, 'utf8');
-                        await fs.copyFile(srcPath, destPath); // Copy JS files as-is for now
+						const jsCode = await fs.readFile(srcPath, 'utf8');
+						const { code: minifiedJs } = await transformJs(jsCode, {
+							minify: true,
+							target: 'esnext'
+						});
+						await fs.writeFile(destPath, minifiedJs, 'utf8');
 						break;
 				}
             }

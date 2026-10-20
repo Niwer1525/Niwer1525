@@ -1,3 +1,5 @@
+import { GITHUB_USERNAME } from './main.js';
+
 /* Client script */
 const STRIPE_DATA_URL = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_USERNAME}/data/stripe_catalog.json`;
 
