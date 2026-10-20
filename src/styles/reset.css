@@ -130,6 +130,10 @@ main {
     margin: 0 auto;
     padding: calc(var(--nav-height) + 2rem) 1.5rem 4rem;
 }
+body>main { 
+    height: 100%;
+    min-height: 80vh;
+}
 
 .section-actions {
     display: flex;

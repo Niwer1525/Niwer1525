@@ -1,6 +1,6 @@
 import { handleFormSubmit } from '../main.js';
 import { api, clearSession, panelState, setSession, updateAuthenticatedVisibility } from '../panel.js';
-import { closeModals, showPopupAndSwitchTab } from '../utils/modals.js';
+import { closeModals, showPopup, showPopupAndSwitchTab } from '../utils/modals.js';
 import { createNotification } from '../utils/toast.js';
 
 function clearPurchaseToken() {
@@ -166,7 +166,9 @@ window.open2FASetup = open2FASetup;
 
 export function confirm2FASetup(e) {
     return handleFormSubmit(e, async (form, formData) => {
-        await api('/accounts/2fa/confirm', { method: 'POST', body: JSON.stringify({ code: formData.get('code') }) });
+        const data = await api('/accounts/2fa/confirm', { method: 'POST', body: JSON.stringify({ code: formData.get('code') }) });
+        console.log('2FA setup confirmed:', data);
+
         createNotification('Two-factor authentication enabled!', 'success');
         closeModals();
         form.reset();
@@ -174,6 +176,10 @@ export function confirm2FASetup(e) {
         panelState.account = await api('/accounts/me');
         localStorage.setItem('photon-account', JSON.stringify(panelState.account));
         updateAuthenticatedVisibility();
+
+        showPopup('recovery-codes-popup');
+        const x = document.getElementById('recovery-codes-textarea')
+        if(x) x.value = (data.recovery_codes || []).join('\n');
     });
 }
 

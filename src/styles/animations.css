@@ -22,3 +22,8 @@
     from { opacity: 1; }
     to { opacity: 0; }
 }
+
+@keyframes infiniteScroll {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-50%); }
+}

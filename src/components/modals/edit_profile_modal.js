@@ -23,6 +23,11 @@ export function editProfileModal(langDict) {
 			<input type="password" name="currentPassword" required placeholder="••••••••">
 			<span class="text-secondary">Current password required to save.</span>
 		</label>
+		<label id="totp-login-code" class="hidden">
+            <i class="fa-solid fa-key left-icon"></i>
+            <input class="totp-code" type="text" name="code" pattern="[0-9]{6}" maxlength="6" inputmode="numeric" autocomplete="one-time-code" required disabled placeholder="123456">
+            <span class="text-secondary">Authenticator Code (2FA)</span>
+        </label>
 		<button type="submit">
 			<i class="fa-solid fa-user-pen"></i>	
 			Save Changes

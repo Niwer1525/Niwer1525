@@ -58,6 +58,16 @@ function layout({ title = 'Default Title', description = '', canonical = '', bod
                         type: 'module'
                     },
                     {
+                        file: '/js/utils/svgs.js',
+                        defer: true,
+                        type: 'module'
+                    },
+                    {
+                        file: '/js/utils/seasonal.js',
+                        defer: true,
+                        type: 'module'
+                    },
+                    {
                         file: '/js/utils/modals.js',
                         defer: true,
                         type: 'module'

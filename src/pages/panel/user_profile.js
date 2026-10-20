@@ -1,6 +1,7 @@
 import { panelLayout } from '../../components/layout.js';
 import { deleteAccountModal } from '../../components/modals/delete_account_modal.js';
 import { editProfileModal } from '../../components/modals/edit_profile_modal.js';
+import { recoveryCodesModal } from '../../components/modals/recovery_codes_modal.js';
 import { totpModal } from '../../components/modals/totp_setup_modal.js';
 import { jumpBar } from '../../components/nav.js';
 import { getValueWithFallback } from '../../utils.js';
@@ -79,6 +80,7 @@ export async function render(lang, langDict) {
 
         <!-- 2FA Setup Modal -->
         ${totpModal(langDict)}
+        ${recoveryCodesModal(langDict)}
     `;
 
     return panelLayout({

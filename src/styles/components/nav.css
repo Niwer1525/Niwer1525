@@ -5,8 +5,7 @@ nav {
     width: 100%;
     height: var(--nav-height);
     background: var(--nav-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: var(--backdrop-filter);
     border-bottom: 1px solid var(--border-color);
     z-index: 1000;
     display: flex;
@@ -120,7 +119,7 @@ nav > ul > li > a:hover::after { width: 100%; }
     gap: 1rem;
     padding: 0.75rem 1.25rem;
     background: var(--surface-glass);
-    backdrop-filter: blur(12px);
+    backdrop-filter: var(--backdrop-filter);
     border: 1px solid var(--border-color);
     border-radius: 9999px;
     box-shadow: var(--shadow-soft);
