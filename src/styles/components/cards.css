@@ -102,7 +102,7 @@ article {
     flex-direction: column;
     transition: all var(--transition-speed);
     position: relative;
-    backdrop-filter: blur(10px);
+    backdrop-filter: var(--backdrop-filter);
     text-align: justify;
 }
 
@@ -136,6 +136,8 @@ article header {
 
 article main {
     display: flex;
+    justify-content: center;
+    align-items: center;
     flex-direction: column;
     gap: 0.5rem;
     flex: 1;

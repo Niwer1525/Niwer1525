@@ -59,3 +59,22 @@ export const getValueWithFallback = (dict = {}, key, fallback = '') => {
     if (key in dict && dict[key] !== undefined && dict[key] !== '') return dict[key];
     return fallback;
 };
+
+/**
+ * Returns a CSS class name based on the provided access type.
+ * 
+ * @param {*} type The access type (e.g., 'authenticated', 'buyer', 'admin').
+ * @returns {string} The corresponding CSS class name for the access type, or an empty string if the type is unrecognized.
+ */
+export function getAccessClassForType(type) {
+    switch (type) {
+        case 'authenticated':
+            return 'auth-required';
+        case 'buyer':
+            return 'buyer-required';
+        case 'admin':
+            return 'admin-required';
+        default:
+            return '';
+    }
+}

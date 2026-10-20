@@ -1,5 +1,8 @@
+import { createNotification } from './utils/toast.js';
+
 /* Environement variables */
-const GITHUB_USERNAME = 'Niwer1525';
+export const GITHUB_USERNAME = 'Niwer1525';
+export const CONFIRMATION_PHRASE = 'DELETE MY ACCOUNT';
 
 /**
  * Formats a value for display in the UI.
@@ -10,7 +13,7 @@ const GITHUB_USERNAME = 'Niwer1525';
  * @param {*} v - The value to format.
  * @returns {string} - The formatted value.
  */
-function formatVal(v) {
+export function formatVal(v) {
     if (v == null || v === '') return '—';
     return typeof v === 'object' ? JSON.stringify(v) : String(v);
 }
@@ -21,7 +24,7 @@ function formatVal(v) {
  * @param {*} v - The date value to format. 
  * @returns {string} - The formatted date string or a dash if the value is invalid.
  */
-function formatDate(v) {
+export function formatDate(v) {
     if (!v) return '—';
     const d = new Date(v);
     return isNaN(d.getTime()) ? v : d.toLocaleString();
@@ -34,7 +37,7 @@ function formatDate(v) {
  * @returns {string} The value of the CSS variable, or an empty string if not found
  * @author Niwer
  */
-function getCSSVar(name) {
+export function getCSSVar(name) {
     return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }
 
@@ -45,7 +48,7 @@ function getCSSVar(name) {
  * @param {*} content - The text content to set on the element
  * @author Niwer
  */
-function getElementByIdAndSetContent(id, content) {
+export function getElementByIdAndSetContent(id, content) {
     const ELEMENT = document.getElementById(id);
     if(ELEMENT) ELEMENT.textContent = content;
 }
@@ -57,7 +60,7 @@ function getElementByIdAndSetContent(id, content) {
  * @returns {string} The trimmed and minified HTML string.
  * @author Niwer
  */
-function trimAndMinifyHTML(html) {
+export function trimAndMinifyHTML(html) {
     return html.trim().replace(/\s+/g, ' ');
 }
 
@@ -68,7 +71,7 @@ function trimAndMinifyHTML(html) {
  * @returns {string} The escaped string, safe for HTML insertion.
  * @author Niwer
  */
-function escapeHtml(value) {
+export function escapeHtml(value) {
     return String(value || '').replace(/[&<>"']/g, (m) => ({
         '&': '&amp;',
         '<': '&lt;',
@@ -83,11 +86,58 @@ function escapeHtml(value) {
  * 
  * @param {*} productId The productId to format.
  */
-function formatProductId(productId) {
+export function formatProductId(productId) {
     if (!productId) return 'Unknown';
     return productId
         .replace(/_/g, ' ')
         .split(' ')
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ');
+}
+
+/**
+ * Formats a camelCased string into a more readable format by adding spaces before capital letters and capitalizing the first letter of the resulting string.
+ * 
+ * @param {*} str The camelCased string to format. 
+ * @returns {string} The formatted string with spaces and capitalization.
+ */
+export function formatCamelCasedString(str) {
+    if (!str) return 'Unknown';
+    return str
+        .replace(/([a-z\d])([A-Z])/g, '$1 $2') // Space between lowercase/number and uppercase (e.g., "discordID" -> "discord ID")
+        .replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1 $2') // Space between an acronym and a following word (e.g., "IDNumber" -> "ID Number")
+        .replace(/^./, (s) => s.toUpperCase()) // Capitalize the first letter
+        .trim();
+}
+/**
+ * Handles form submission by preventing the default behavior, disabling the submit button, and executing the provided action function with the form data.
+ * 
+ * @param {*} e - The event object from the form submission.
+ * @param {*} actionFn - The function to execute with the form data. It should return a Promise.
+ */
+export async function handleFormSubmit(e, actionFn) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type="submit"]');
+    const originalText = btn?.innerHTML || '';
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+    }
+
+    try {
+        const form = e.target;
+        const formData = new FormData(form);
+        await actionFn(form, formData);
+
+        /* Clean up the form */
+        // form.reset();
+    } catch (err) {
+        console.log('Form submission error:', err);
+        createNotification(`Failed to submit form ${err}`, 'error');
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        }
+    }
 }

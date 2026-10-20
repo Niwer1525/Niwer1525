@@ -1,3 +1,6 @@
+import { GITHUB_USERNAME, escapeHtml, trimAndMinifyHTML } from './main.js';
+import { DEFAULT_LANGUAGE_COLOR, LANGUAGE_COLORS } from './stats.js'
+
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const GITHUB_GISTS_API = `https://api.github.com/users/${GITHUB_USERNAME}/gists`;

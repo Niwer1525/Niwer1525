@@ -59,7 +59,7 @@ export async function renderPackageCard(pkg, { lang, langDict, defaultCurrency, 
             <div class="store-package-description">${descriptionHtml}</div>
 
             <footer>
-                <a class="link-button" href="${paymentLink}" rel="noopener noreferrer" target="_blank">${buttonLabel}</a>
+                <a class="button" href="${paymentLink}" rel="noopener noreferrer" target="_blank">${buttonLabel}</a>
             </footer>
         </article>
     `;

@@ -8,8 +8,8 @@ export function gists(langDict) {
             <div id="gists-grid" class="articles-grid">
                 <!-- There will be gists -->
             </div>
-            <a class="link-button" href="https://gist.niwer.dev" target="_blank" rel="noopener noreferrer">${getValueWithFallback(langDict, 'explore.gists', 'Explore my Gists')}</a>
-            <input type="number" id="gists-limit" min="1" max="100" value="6" placeholder="Number of gists to show">
+            <a class="button" href="https://gist.niwer.dev" target="_blank" rel="noopener noreferrer">${getValueWithFallback(langDict, 'explore.gists', 'Explore my Gists')}</a>
+            <input type="number" class="form-control" id="gists-limit" min="1" max="100" value="6" placeholder="Number of gists to show">
         </section>    
     `;
 }

@@ -1,7 +1,7 @@
-import { defaultNavigation, panelNavigation } from './nav.js';
 import { footer } from './footer.js';
-import { contactModal } from './modals/contact_modal.js';
 import { authModal } from './modals/auth_modal.js';
+import { contactModal } from './modals/contact_modal.js';
+import { defaultNavigation, panelNavigation } from './nav.js';
 
 function addScripts(scripts) {
     return scripts.map(script => {
@@ -44,31 +44,53 @@ function layout({ title = 'Default Title', description = '', canonical = '', bod
                 ${addScripts([
                     {
                         file: '/js/main.js',
-                        defer: true
+                        defer: true,
+                        type: 'module'
                     },
                     {
                         file: '/js/stats.js',
-                        defer: true
+                        defer: true,
+                        type: 'module'
                     },
                     {
                         file: '/js/theme.js',
-                        defer: true
+                        defer: true,
+                        type: 'module'
+                    },
+                    {
+                        file: '/js/utils/svgs.js',
+                        defer: true,
+                        type: 'module'
+                    },
+                    {
+                        file: '/js/utils/seasonal.js',
+                        defer: true,
+                        type: 'module'
                     },
                     {
                         file: '/js/utils/modals.js',
-                        defer: true
+                        defer: true,
+                        type: 'module'
                     },
                     {
                         file: '/js/utils/toast.js',
-                        defer: true
+                        defer: true,
+                        type: 'module'
                     },
                     {
                         file: '/js/utils/clipboard.js',
-                        defer: true
+                        defer: true,
+                        type: 'module'
                     },
                     {
                         file: '/js/utils/events.js',
-                        defer: true
+                        defer: true,
+                        type: 'module'
+                    },
+                    {
+                        file: '/js/utils/storage.js',
+                        defer: true,
+                        type: 'module'
                     }
                 ])}
                 ${addScripts(additionalScripts)}

@@ -65,7 +65,7 @@ export async function projects(lang, langDict) {
         <section id="projects">
             <h2>Projects</h2>
             <div class="articles-grid">${await loadArticles(lang, langDict)}</div>
-            <a class="link-button" href="https://git.niwer.dev?tab=repositories" target="_blank" rel="noopener noreferrer">Explore my GitHub</a>
+            <a class="button" href="https://git.niwer.dev?tab=repositories" target="_blank" rel="noopener noreferrer">Explore my GitHub</a>
         </section>
     `;
 }

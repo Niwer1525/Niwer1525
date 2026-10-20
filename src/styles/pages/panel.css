@@ -1,1 +1,59 @@
-.hidden { display: none !important; }
+.hidden {
+    display: none !important;
+}
+
+.download-repository {
+    margin-bottom: 2rem;
+}
+.download-repository:last-child {
+    margin-bottom: 0;
+}
+.download-repository-header {
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+}
+.download-repository-header h3 {
+    margin: 0;
+    font-size: 1rem;
+}
+.download-action {
+    width: 1%;
+    white-space: nowrap;
+}
+
+/* License badge used on license tables & inside user profile for entitlements */
+.license-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: var(--surface-glass);
+    border: 1px
+    solid var(--border-color);
+    color: var(--text-secondary);
+}
+.license-badge.expired {
+    background: rgba(245, 158, 11, 0.18);
+    color: var(--warning-color);
+    border-color: rgba(245, 158, 11, 0.35);
+}
+.license-badge.active {
+    background: rgba(74, 222, 128, 0.2);
+    color: var(--success-color);
+    border-color: rgba(74, 222, 128, 0.3);
+}
+.license-badge.revoked {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--danger-color);
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* QR Code Image (inside modal) */
+.qr-code {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    min-height: 180px;
+}

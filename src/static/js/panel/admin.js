@@ -1,3 +1,7 @@
+import { escapeHtml, formatVal } from '../main.js';
+import { api } from '../panel.js';
+import { createNotification } from '../utils/toast.js';
+
 async function loadTablesList() {
     const sel = document.getElementById('tableSelector');
     if (!sel) return;
@@ -10,13 +14,15 @@ async function loadTablesList() {
             return;
         }
 
-        sel.innerHTML = tables.map((t) => `<option value="${escapeHTML(t.table)}">${escapeHTML(t.label)}</option>`).join('');
+        sel.innerHTML = tables.map((t) => `<option value="${escapeHtml(t.table)}">${escapeHtml(t.label)}</option>`).join('');
         loadTableData();
-    } catch {
+    } catch (e) {
+        console.error('Error loading tables list:', e);
         sel.innerHTML = '<option value="">Error loading tables</option>';
-        toast('Failed to load tables list (API Error)', 'error');
+        createNotification('Failed to load tables list (API Error)', 'error');
     }
 }
+window.loadTablesList = loadTablesList;
 
 async function executeAdminSql() {
     const input = document.getElementById('adminSql');
@@ -28,9 +34,10 @@ async function executeAdminSql() {
         output.textContent = JSON.stringify(result, null, 2);
     } catch (error) {
         output.textContent = error.message;
-        toast(error.message, 'error');
+        createNotification(error.message, 'error');
     }
 }
+window.executeAdminSql = executeAdminSql;
 
 async function loadTableData() {
     const table = document.getElementById('tableSelector')?.value;
@@ -48,12 +55,21 @@ async function loadTableData() {
             return;
         }
 
-        head.innerHTML = `<tr>${data.columns.map((c) => `<th>${escapeHTML(c)}</th>`).join('')}</tr>`;
+        head.innerHTML = `<tr>${data.columns.map((c) => `<th>${escapeHtml(c)}</th>`).join('')}</tr>`;
         body.innerHTML = data.rows.map((row) =>
-            `<tr>${data.columns.map((c) => `<td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis;" title="${escapeHTML(formatVal(row[c]))}">${escapeHTML(formatVal(row[c]))}</td>`).join('')}</tr>`
+            `<tr>${data.columns.map((c) => `<td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis;" title="${escapeHtml(formatVal(row[c]))}">${escapeHtml(formatVal(row[c]))}</td>`).join('')}</tr>`
         ).join('');
-    } catch {
-        toast('Failed to load table data', 'error');
+    } catch (e) {
+        console.error('Error loading table data:', e);
+        createNotification('Failed to load table data', 'error');
         body.innerHTML = '<tr><td class="text-danger">Failed to fetch data.</td></tr>';
     }
+}
+window.loadTableData = loadTableData;
+
+/**
+ * Load the admin panel sections when the admin page is accessed
+ */
+export function loadAdminPanel() {
+    loadTablesList();
 }

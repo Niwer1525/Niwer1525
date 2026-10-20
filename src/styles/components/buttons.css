@@ -1,4 +1,4 @@
-button, .link-button {
+button, .button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -12,12 +12,11 @@ button, .link-button {
     font-weight: 500;
     cursor: pointer;
     transition: all var(--transition-speed);
-    backdrop-filter: blur(4px);
+    backdrop-filter: var(--backdrop-filter);
     font-family: inherit;
     text-decoration: none;
 }
-
-button:hover, .link-button:hover {
+button:hover, .button:hover {
     background: rgba(216, 180, 254, 0.15);
     border-color: var(--accent-color);
     transform: translateY(-2px);
@@ -25,38 +24,22 @@ button:hover, .link-button:hover {
     color: var(--text-primary);
 }
 
-button:active, .link-button:active {
+.danger-button {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--danger-color);
+    border-color: rgba(239, 68, 68, 0.3);
+}
+.danger-button:hover {
+    background: rgba(239, 68, 68, 0.3);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: var(--text-primary);
+}
+
+button:active, .button:active {
     transform: scale(0.98);
 }
 
-input, textarea {
-    background: transparent;
-    border: none;
-    color: var(--text-primary);
-    width: 100%;
-    font-family: inherit;
-    font-size: 1rem;
-    outline: none;
-}
-
-input[type="number"] {
-    width: 200px;
-    padding: 0.8rem 1.6rem;
-    border-radius: 50px;
-    border: 1px solid var(--border-color);
-    background: var(--surface-glass);
-    transition: all var(--transition-speed);
-}
-input[type="number"]:focus {
-    background: rgba(216, 180, 254, 0.15);
-    border-color: var(--accent-color);
-    box-shadow: 0 4px 12px rgba(216, 180, 254, 0.2);
-}
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    display: none;
-}
-input[type="number"]::-moz-number-spin-up, 
-input[type="number"]::-moz-number-spin-down {
-    display: none;
+button:disabled, .button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }

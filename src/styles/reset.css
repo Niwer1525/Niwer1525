@@ -1,25 +1,30 @@
-html {
-    scroll-behavior: smooth;
-    font-size: 16px;
-    box-sizing: border-box;
-}
-
 *, *::before, *::after {
     box-sizing: inherit;
 }
 
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+    box-sizing: border-box;
+    height: 100%;
+}
 body {
     margin: 0;
     padding: 0;
-    background-color: var(--bg-color);
-    color: var(--text-primary);
-    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    min-height: 100vh !important;
+
     line-height: 1.6;
     overflow-x: hidden;
+
+    display: flex !important;
+    flex-direction: column !important;
+    
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    color: var(--text-primary);
+    background-color: var(--bg-color);
     background-image: 
         radial-gradient(circle at 15% 50%, rgba(120, 40, 200, 0.08), transparent 25%),
         radial-gradient(circle at 85% 30%, rgba(120, 40, 200, 0.05), transparent 25%);
-    min-height: 100vh;
 }
 
 h1, h2, h3, h4 {
@@ -27,6 +32,11 @@ h1, h2, h3, h4 {
     font-weight: 700;
     color: var(--text-primary);
     letter-spacing: -0.02em;
+}
+hr {
+    border-radius: 5px;
+    color: var(--text-primary);
+    margin: 1rem 0;
 }
 
 h1 { font-size: 3rem; }
@@ -52,11 +62,40 @@ h2::after {
     box-shadow: var(--glow-text);
 }
 
-p { color: var(--text-secondary); margin-bottom: 1.5rem; }
-a { text-decoration: none; color: inherit; transition: color 0.2s; }
-ul { list-style: none; padding: 0; margin: 0; }
-img { max-width: 100%; display: block; }
-span { font-size: 0.85rem; color: var(--accent-color); }
+code {
+    font-family: 'Fira Code', monospace;
+    background: var(--surface-glass);
+    padding: 0.2rem 0.4rem;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+}
+p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s;
+}
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+img {
+    max-width: 100%;
+    display: block;
+}
+span {
+    font-size: 0.85rem;
+    color: var(--accent-color);
+}
+
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-success { color: var(--success-color); }
+.text-danger { color: var(--error-color); }
 
 /* Scrollbar & Selection */
 ::-webkit-scrollbar { width: 8px; }
@@ -86,11 +125,22 @@ span { font-size: 0.85rem; color: var(--accent-color); }
 
 /* Layout */
 main {
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     padding: calc(var(--nav-height) + 2rem) 1.5rem 4rem;
 }
+body>main { 
+    height: 100%;
+    min-height: 80vh;
+}
 
+.section-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: right;
+    margin-bottom: 2rem;
+}
 section {
     margin-bottom: 6rem;
     animation: fadeIn 0.8s ease-out forwards;

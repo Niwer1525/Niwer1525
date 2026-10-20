@@ -1,4 +1,4 @@
-import { getValueWithFallback } from '../utils.js';
+import { getValueWithFallback, getAccessClassForType } from '../utils.js';
 
 function navigation(lang = 'en', langDict, buttons, additionalActionsContent = '') {
     return `
@@ -6,13 +6,15 @@ function navigation(lang = 'en', langDict, buttons, additionalActionsContent = '
             <nav>
                 <!-- Mobile Navigation -->
                 <input type="checkbox" id="menu-toggle">
-                <label for="menu-toggle" class="menu-icon"><i class="fas fa-bars"></i></label> <!-- Mobile menu icon for navigation -->
+                <label for="menu-toggle" class="menu-icon">
+                    <i class="fas fa-bars"></i>
+                </label>
                 
                 <!-- Navigation Links -->
                 <ul id="nav-links">
                     <!-- Navigation buttons -->
                     ${buttons.map(button => `
-                        <li><a href="${button.url}" ${button.onClick ? `onclick="${button.onClick}"` : ''}>${getValueWithFallback(langDict, button.labelKey, button.defaultLabel)}</a></li>
+                        <li id="${button.id || ''}" class="${getAccessClassForType(button.accessType)}"><a href="${button.url}" ${button.onClick ? `onclick="${button.onClick}"` : ''}>${getValueWithFallback(langDict, button.labelKey, button.defaultLabel)}</a></li>
                     `).join('')}
 
                     <!-- Theme Toggle and Language Selection -->
@@ -21,9 +23,8 @@ function navigation(lang = 'en', langDict, buttons, additionalActionsContent = '
                         ${additionalActionsContent}
 
                         <!-- Theme Toggle Button -->
-                        <button id="theme-toggle" type="button" aria-label="Theme mode" title="Theme mode">
+                        <button id="theme-toggle" type="button" aria-label="Theme mode" title="System">
                             <i class="fa-solid fa-circle-half-stroke"></i>
-                            <span id="theme-toggle-label">System</span>
                         </button>
 
                         <!-- Language Selection -->
@@ -65,19 +66,37 @@ export function panelNavigation(lang = 'en', langDict) {
     return navigation(lang, langDict, [
         { url: `${indexUrl}`, labelKey: 'btn.home', defaultLabel: 'Home' },
         { url: `${panelUrl}`, labelKey: 'btn.overview', defaultLabel: 'Overview' },
-        { url: `${licensesUrl}`, labelKey: 'btn.licenses', defaultLabel: 'Licenses' },
         { url: `${downloadsUrl}`, labelKey: 'btn.downloads', defaultLabel: 'Downloads' },
-        { url: `${adminUrl}`, labelKey: 'btn.admin', defaultLabel: 'Admin' },
+        { url: `${licensesUrl}`, labelKey: 'btn.licenses', defaultLabel: 'Licenses', accessType: 'buyer' },
+        { url: `${adminUrl}`, labelKey: 'btn.admin', defaultLabel: 'Admin', accessType: 'admin' },
     ], `
         <div class="dashboard-actions-grid">
             <!-- Sign In button will be shown when the user is not authenticated, while the Profile and Logout buttons will be shown when the user is authenticated. -->
-            <button id="navSignInBtn" onclick="showPopup('auth-popup')">Sign In</button>
-            <button id="navProfileBtn" title="Profile" onclick="window.location.href='/panel/profile.html'">
+            <button id="nav-signin-btn" onclick="showPopupAndSwitchTab('auth-popup', 'login')">Sign In</button>
+            <button id="nav-profile-btn" title="Profile" onclick="window.location.href='/panel/profile.html'">
                 <i class="fa-solid fa-user"></i>
             </button>
-            <button id="navLogoutBtn" title="Logout" onclick="logout()">
+            <button id="nav-logout-btn" title="Logout" onclick="logout()">
                 <i class="fa-solid fa-sign-out-alt"></i>
             </button>
         </div>
     `);
+}
+
+export function jumpBar(langDict, hoverLabel = 'Sub Sections', title, jumpLinks = []) {
+    return `
+        <div class="jump-bar-container">
+            <nav class="jump-bar" aria-label="${hoverLabel}">
+                <span class="jump-title">${title}:</span>
+                <div class="jump-links">
+                    ${jumpLinks.map(link => `
+                        <a href="#${link.id}" class="jump-pill">
+                            <span>${link.label}</span>
+                            ${link.count ? `<small>${link.count}</small>` : ''}
+                        </a>
+                    `).join('')}
+                </div>
+            </nav>
+        </div>
+    `;
 }

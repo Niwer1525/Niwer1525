@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { minify } from 'html-minifier-terser';
 import { bundle } from 'lightningcss';
+import { transform as transformJs } from 'esbuild';
 
 /* Import page renderers */
 import { render as renderIndex } from './src/pages/index.js';
@@ -13,83 +14,112 @@ import { render as renderPanelLicenses } from './src/pages/panel/licenses.js';
 import { render as renderPanelAdmin } from './src/pages/panel/admin.js';
 import { render as renderPanelProfile } from './src/pages/panel/user_profile.js';
 
-const minifyOptions = {
-	collapseWhitespace: true,
-	removeComments: true,
-	removeRedundantAttributes: true,
-	minifyCSS: true,
-	minifyJS: true
+const MINIFY_OPTIONS = {
+    collapseWhitespace: true,
+    removeComments: true,
+    removeRedundantAttributes: true,
+    minifyCSS: true,
+    minifyJS: true
 };
 
+const PAGES = [
+    { file: 'index.html', render: renderIndex },
+    { file: 'store.html', render: renderStore },
+    { file: 'legal.html', render: renderLegal },
+    { file: 'panel.html', render: renderPanel },
+    { file: 'panel/downloads.html', render: renderPanelDownloads },
+    { file: 'panel/licenses.html', render: renderPanelLicenses },
+    { file: 'panel/admin.html', render: renderPanelAdmin },
+    { file: 'panel/profile.html', render: renderPanelProfile }
+];
+
+async function processStaticFiles(srcDir, destDir) {
+    try {
+        const entries = await fs.readdir(srcDir, { withFileTypes: true });
+        await fs.mkdir(destDir, { recursive: true });
+
+        for (const entry of entries) {
+            const srcPath = path.join(srcDir, entry.name);
+            const destPath = path.join(destDir, entry.name);
+
+            if (entry.isDirectory()) await processStaticFiles(srcPath, destPath); // Recursively process subdirectories
+            else if (entry.isFile()) {
+                const ext = path.extname(entry.name).toLowerCase();
+				if(ext !== '.html' && ext !== '.css' && ext !== '.js') { 
+					await fs.copyFile(srcPath, destPath); // Copy other files as-is
+					continue;
+				}
+
+				/* Process files based on their extension */
+				switch (ext) {
+					case '.html':
+						const html = await fs.readFile(srcPath, 'utf8');
+						const minifiedHtml = await minify(html, MINIFY_OPTIONS);
+						await fs.writeFile(destPath, minifiedHtml, 'utf8');
+						break;
+					case '.css':
+						const { code: cssCode } = bundle({ filename: srcPath, minify: true });
+						await fs.writeFile(destPath, cssCode, 'utf8');
+						break;
+					case '.js':
+						const jsCode = await fs.readFile(srcPath, 'utf8');
+						const { code: minifiedJs } = await transformJs(jsCode, {
+							minify: true,
+							target: 'esnext'
+						});
+						await fs.writeFile(destPath, minifiedJs, 'utf8');
+						break;
+				}
+            }
+        }
+    } catch (err) {
+        console.warn('Warning: Could not process static assets:', err.message);
+    }
+}
+
 async function build() {
-	const rootDir = process.cwd();
-	const distDir = path.join(rootDir, 'dist');
-	const staticDir = path.join(rootDir, 'src/static');
+    const rootDir = process.cwd();
+    const distDir = path.join(rootDir, 'dist');
 
-	console.log('Building website...');
+    console.log('Building website...');
 
-	// Reset dist directory
-	await fs.rm(distDir, { recursive: true, force: true });
-	await fs.mkdir(distDir, { recursive: true });
+    /* Reset dist directory & copy static assets & process/minify static assets */
+    await fs.rm(distDir, { recursive: true, force: true });
+    await processStaticFiles(path.join(rootDir, 'src/static'), distDir);
 
-	// Copy static assets (excluding raw CSS if any were in static)
-	try {
-		await fs.cp(staticDir, distDir, { recursive: true });
-	} catch (err) {
-		console.warn('Warning: Could not copy static assets from src/static:', err.message);
-	}
+    /* Render and write HTML pages for each language */
+    for (const lang of ['en', 'fr']) {
+        const jsonPath = path.join(rootDir, `src/data/langs/${lang}/global.json`);
+        const dict = JSON.parse(await fs.readFile(jsonPath, 'utf8'));
+        const outFolder = lang === 'en' ? distDir : path.join(distDir, lang);
 
-	// Render and write HTML pages first
-	const languages = ['en', 'fr'];
-	for (const lang of languages) {
-		const jsonPath = path.join(rootDir, `src/data/langs/${lang}/global.json`);
-		const rawData = await fs.readFile(jsonPath, 'utf8');
-		const dict = JSON.parse(rawData);
+        for (const { file, render } of PAGES) {
+            const html = await render(lang, dict);
+            const minifiedHtml = await minify(html, MINIFY_OPTIONS);
+            const destPath = path.join(outFolder, file);
 
-		const outFolder = lang === 'en' ? distDir : path.join(distDir, lang);
-		await fs.mkdir(outFolder, { recursive: true });
-		
-		const pages = [
-			{ filename: 'index.html', html: await renderIndex(lang, dict) },
-			{ filename: 'store.html', html: await renderStore(lang, dict) },
-			{ filename: 'legal.html', html: await renderLegal(lang, dict) },
-			{ filename: 'panel.html', html: await renderPanel(lang, dict) },
-			{ filename: '/panel/downloads.html', html: await renderPanelDownloads(lang, dict) },
-			{ filename: '/panel/licenses.html', html: await renderPanelLicenses(lang, dict) },
-			{ filename: '/panel/admin.html', html: await renderPanelAdmin(lang, dict) },
-			{ filename: '/panel/profile.html', html: await renderPanelProfile(lang, dict) }
-		];
+            await fs.mkdir(path.dirname(destPath), { recursive: true });
+            await fs.writeFile(destPath, minifiedHtml, 'utf8');
+            
+            console.log(`✓ [${lang.toUpperCase()}] Generated ${path.join(lang === 'en' ? '' : lang, file)}`);
+        }
+    }
+    
+    /* Bundle CSS */
+    console.log('Bundling modular CSS...');
+    const { code: cssBuffer } = bundle({
+        filename: path.join(rootDir, 'src/styles/main.css'),
+        minify: true
+    });
 
-		for (const page of pages) {
-			const minifiedHtml = await minify(page.html, minifyOptions);
-			await fs.mkdir(path.dirname(path.join(outFolder, page.filename)), { recursive: true });
-			await fs.writeFile(path.join(outFolder, page.filename), minifiedHtml, 'utf8');
-			console.log(`✓ [${lang.toUpperCase()}] Generated ${path.join(lang === 'en' ? '' : lang, page.filename)}`);
-		}
-	}
-	
-	// Bundle all modular CSS files into a single CSS string
-	console.log('Bundling modular CSS...');
-	const entryCssPath = path.join(rootDir, 'src/styles/main.css');
-	
-	const { code: bundledCssBuffer } = bundle({
-		filename: entryCssPath,
-		minify: true
-	});
-	const bundledCssString = bundledCssBuffer.toString('utf8');
+    const outCssDir = path.join(distDir, 'assets');
+    await fs.mkdir(outCssDir, { recursive: true });
+    await fs.writeFile(path.join(outCssDir, 'main.css'), cssBuffer.toString('utf8'), 'utf8');
 
-	// Minify the purged result and write to dist/assets/main.css
-	const outCssDir = path.join(distDir, 'assets');
-	await fs.mkdir(outCssDir, { recursive: true });
-
-	const distCssPath = path.join(outCssDir, 'main.css');
-	await fs.writeFile(distCssPath, bundledCssString, 'utf8');
-	console.log('✓ CSS bundled, purged, and written to dist/css/main.css');
-
-	console.log('✓ Build complete! Static assets and pre-rendered pages ready in ./dist');
+    console.log('✓ Build complete! Static assets and pages ready in ./dist');
 }
 
 build().catch((err) => {
-	console.error('Build process failed:', err);
-	process.exit(1);
+    console.error('Build process failed:', err);
+    process.exit(1);
 });

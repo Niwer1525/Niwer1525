@@ -58,7 +58,8 @@ export async function render(lang, langDict) {
     additionalScripts: [
       {
           file: '/js/gists.js',
-          defer: true
+          defer: true,
+          type: 'module'
       }
     ]
   });

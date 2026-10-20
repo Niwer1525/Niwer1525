@@ -1,8 +1,85 @@
+/* z-index: 2 should allow to click on the elements */
+.seasonal-bg {
+    position: relative;
+    bottom: calc(100% + 15px);
+    left: 0;
+    width: 100%;
+    height: 80px;
+    z-index: 2;
+    pointer-events: none;
+    overflow: visible;
+}
+
+.seasonal-svg {
+    position: absolute;
+    pointer-events: auto;
+    cursor: pointer;
+    opacity: 0.8;
+    transform: rotate(var(--rot, 0deg)); /* Rot is injected via JS */
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.4s ease, opacity 0.4s ease;
+    filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.15));
+}
+.seasonal-svg:hover {
+    opacity: 0.95;
+    transform: translateY(-6px) scale(1.04) rotate(var(--rot, 0deg)); /* Rot is injected via JS */
+}
+
+/* Why do we have a terminal here?! */
+.terminal-rain-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+}
+.code-stream {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 13px;
+    color: #00ff66;
+    opacity: 0.35;
+    filter: blur(1px);
+    pointer-events: none;
+    white-space: nowrap;
+    padding: 10px;
+    animation: infiniteScroll 5s linear infinite;
+}
+/* Light theme adjustments */
+[data-theme="light"] .code-stream {
+    color: #0b6623;
+    opacity: 0.95;
+}
+
+/* Some lights? */
+.seasonal-svg.is-lit {
+    opacity: 1;
+    transform: translateY(-10px) scale(1.08) rotate(var(--rot, 0deg));
+    filter: drop-shadow(0 0 35px var(--seasonal-glow, #ff7b00)) brightness(1.15);
+}
+.seasonal-svg.is-lit .pumpkin-face {
+    fill: #fff3b0;
+    filter: drop-shadow(0 0 8px #ffba08);
+}
+.seasonal-svg.is-lit .garland-lit {
+    stroke: #ffea00;
+    stroke-width: 3.5;
+    filter: drop-shadow(0 0 4px #ffea00);
+}
+
+/* Footer */
 footer {
+    position: relative;
+    z-index: 3;
+    margin-top: auto;
     border-top: 1px solid var(--border-color);
     padding: 3rem 1rem;
     text-align: center;
     background: var(--footer-bg);
+    backdrop-filter: var(--backdrop-filter);
+}
+footer > *:not(.seasonal-bg) {
+    position: relative;
+    z-index: 2;
 }
 footer a:hover { color: var(--accent-color); }
 footer hr {
@@ -27,8 +104,29 @@ footer p {
     font-size: 0.9rem;
     margin: 0;
 }
-.back-to-top > i {
+.back-to-top-container {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
     font-size: 1.5rem;
+    z-index: 999;
     animation: float 3s ease-in-out infinite;
-    margin: 0.5rem 0;
+}
+.back-to-top {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px var(--shadow-soft);
+    transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
+}
+.back-to-top > i {
+    font-size: 1.25rem;
+    pointer-events: none;
+}
+.back-to-top-container.is-attracted {
+    animation-play-state: paused;
 }

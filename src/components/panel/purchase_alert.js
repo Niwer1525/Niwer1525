@@ -2,7 +2,7 @@ import { getValueWithFallback } from '../../utils.js';
 
 export function purchaseAlert(langDict) {
     return `
-        <section id="purchase-alert hidden" class="alert-section">
+        <section id="purchase-alert" class="alert-section hidden">
             <div>
                 <h3>
                     <i class="fa-solid fa-basket-shopping"></i>
@@ -12,7 +12,7 @@ export function purchaseAlert(langDict) {
                     We noticed you have a pending checkout session.
                     Sign in or register to link it automatically.
                 </p>
-                <button onclick="showPopup('auth-popup')">Link Account</button>
+                <button onclick="showPopupAndSwitchTab('auth-popup', 'register')">Link Account</button>
             </div>
         </section>
     `;

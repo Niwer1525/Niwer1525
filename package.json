@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Niwer1525/Niwer1525#readme",
   "devDependencies": {
+    "esbuild": "^0.28.2",
     "html-minifier-terser": "^7.2.0",
     "lightningcss": "^1.33.0",
     "marked": "^18.1.0"

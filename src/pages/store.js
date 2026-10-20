@@ -1,11 +1,13 @@
 import { defaultLayout } from '../components/layout.js';
 import { loadJson, getValueWithFallback } from '../utils.js';
 import { renderPackageCard } from '../components/store/packageCard.js';
+import { jumpBar } from '../components/nav.js';
 
 // Recursive helper to render sections and collect anchor links
 async function renderCategorySections(node, parentPath, context, outLinks) {
     const id = String(node.id ?? node.slug);
     const currentPath = parentPath ? `${parentPath}-${id}` : id;
+    const sectionId = `section-${currentPath}`;
     const displayName = node.name || id;
 
     let html = '';
@@ -13,7 +15,7 @@ async function renderCategorySections(node, parentPath, context, outLinks) {
 
     // Render cards directly on this category or subcategory
     if (validPackages.length > 0) {
-        outLinks.push({ id: currentPath, label: displayName, count: validPackages.length });
+        outLinks.push({ id: sectionId, label: displayName, count: validPackages.length });
 
         const cardsHtml = (await Promise.all(
             validPackages.map(pkg => renderPackageCard({ ...pkg, categoryId: id }, context))
@@ -22,7 +24,7 @@ async function renderCategorySections(node, parentPath, context, outLinks) {
         const headingTag = parentPath ? 'h3' : 'h2';
 
         html += `
-            <section class="store-section" id="section-${currentPath}">
+            <section class="store-section" id="${sectionId}">
                 <header class="store-section-header">
                     <${headingTag}>${displayName}</${headingTag}>
                 </header>
@@ -54,28 +56,11 @@ export async function render(lang = 'en', langDict = {}) {
     const jumpLinks = [];
     let sectionsHtml = '';
 
-    for (const cat of categories) {
-        sectionsHtml += await renderCategorySections(cat, '', context, jumpLinks);
-    }
-
-    // Top Jump-to Navigation Bar
-    const navBarHtml = jumpLinks.length > 0 ? `
-        <nav class="store-jump-bar" aria-label="Store Sections">
-            <span class="jump-title">${getValueWithFallback(langDict, 'store.categories', 'Categories')}:</span>
-            <div class="jump-links">
-                ${jumpLinks.map(link => `
-                    <a href="#section-${link.id}" class="jump-pill">
-                        <span>${link.label}</span>
-                        <small>${link.count}</small>
-                    </a>
-                `).join('')}
-            </div>
-        </nav>
-    ` : '';
-
+    for (const cat of categories) sectionsHtml += await renderCategorySections(cat, '', context, jumpLinks);
+    
     const content = `
         <div class="store-container">
-            ${navBarHtml}
+            ${jumpLinks.length > 0 ? jumpBar(langDict, 'Store Sections', getValueWithFallback(langDict, 'store.categories', 'Categories'), jumpLinks) : ''}
             <div class="store-sections-wrapper">
                 ${sectionsHtml || `<article class="store-empty-card"><header><h2>${getValueWithFallback(langDict, 'store.no_packages', 'No packages available')}</h2></header><p>${getValueWithFallback(langDict, 'store.no_packages_copy', 'Try another category or come back later.')}</p></article>`}
             </div>
@@ -92,7 +77,8 @@ export async function render(lang = 'en', langDict = {}) {
         additionalScripts: [
             {
                 file: '/js/store.js',
-                defer: true
+                defer: true,
+                type: 'module'
             }
         ]
     });

@@ -1,6 +1,6 @@
 import { panelLayout } from '../components/layout.js';
 import { servers } from '../components/panel/servers.js';
-import { purchaseAlert } from '../components/panel/purhcase_alert.js';
+import { purchaseAlert } from '../components/panel/purchase_alert.js';
 
 export async function render(lang, langDict) {
 	return panelLayout({
@@ -15,28 +15,19 @@ export async function render(lang, langDict) {
 		`,
         additionalScripts: [
             {
-                file: '/js/panel/panel_state.js',
-                defer: true
-            },
-            {
                 file: '/js/panel.js',
-                defer: true
+                defer: true,
+          		type: 'module'
             },
 			{
-				file: '/js/panel/services/public.js',
-				defer: true
+				file: '/js/panel/public.js',
+				defer: true,
+          		type: 'module'
 			},
 			{
-				file: '/js/panel/services/auth.js',
-				defer: true
-			},
-			{
-				file: '/js/panel/services/licenses.js',
-				defer: true
-			},
-			{
-				file: '/js/panel/services/admin.js',
-				defer: true
+				file: '/js/panel/auth.js',
+				defer: true,
+          		type: 'module'
 			}
         ]
 	});
