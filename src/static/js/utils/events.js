@@ -75,8 +75,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     /* Handle specific loading action depending on the current path */
     let currentPath = window.location.pathname;
-    if (currentPath.endsWith('/') && currentPath.length > 1) currentPath = currentPath.slice(0, -1);
-    console.log(`Current path: ${currentPath}`);
+    if (currentPath.endsWith('.html')) currentPath = currentPath.slice(0, -5); // Remove .html extension for consistency
+    if (currentPath.endsWith('/') && currentPath.length > 1) currentPath = currentPath.slice(0, -1); // Remove trailing slash for non-root paths
+    console.debug(`Current path: ${currentPath}`);
+
     if(currentPath.startsWith('/panel')) {
         await restoreSession(); // Validate and restore session tokens
         switch (currentPath) {
