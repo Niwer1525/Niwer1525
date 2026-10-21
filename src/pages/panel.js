@@ -1,6 +1,6 @@
 import { panelLayout } from '../components/layout.js';
 import { servers } from '../components/panel/servers.js';
-import { purchaseAlert } from '../components/panel/purchase_alert.js';
+import { purchaseAlert } from '../components/section_alerts.js';
 
 export async function render(lang, langDict) {
 	return panelLayout({

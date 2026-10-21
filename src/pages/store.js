@@ -2,6 +2,7 @@ import { defaultLayout } from '../components/layout.js';
 import { loadJson, getValueWithFallback } from '../utils.js';
 import { renderPackageCard } from '../components/store/packageCard.js';
 import { jumpBar } from '../components/nav.js';
+import { sectionAlert } from '../components/section_alerts.js';
 
 // Recursive helper to render sections and collect anchor links
 async function renderCategorySections(node, parentPath, context, outLinks) {
@@ -58,6 +59,12 @@ export async function render(lang = 'en', langDict = {}) {
 
     for (const cat of categories) sectionsHtml += await renderCategorySections(cat, '', context, jumpLinks);
     
+    const alertActionButon = `
+        <a href="/panel" class="button" onclick="showPopupAndSwitchTab('auth-popup', 'login')">
+            ${getValueWithFallback(langDict, 'store.alert.action', 'Sign In')} <i class="fa-solid fa-arrow-right"></i>
+        </a>
+    `;
+
     const content = `
         <div class="store-container">
             ${jumpLinks.length > 0 ? jumpBar(langDict, 'Store Sections', getValueWithFallback(langDict, 'store.categories', 'Categories'), jumpLinks) : ''}
@@ -65,6 +72,14 @@ export async function render(lang = 'en', langDict = {}) {
                 ${sectionsHtml || `<article class="store-empty-card"><header><h2>${getValueWithFallback(langDict, 'store.no_packages', 'No packages available')}</h2></header><p>${getValueWithFallback(langDict, 'store.no_packages_copy', 'Try another category or come back later.')}</p></article>`}
             </div>
         </div>
+        <section>
+            ${sectionAlert(
+                'fa-solid fa-basket-shopping', 
+                getValueWithFallback(langDict, 'store.alert.title', 'Already bought or subscribed to a product?'),
+                getValueWithFallback(langDict, 'store.alert.description', 'Sign in to access your downloads and licenses.'),
+                alertActionButon
+        )}
+        </section>
     `;
 
     return defaultLayout({

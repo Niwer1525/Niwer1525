@@ -1,7 +1,6 @@
 import { getValueWithFallback } from '../../utils.js';
 
 export function renderFilterPills(categories, visiblePackages, langDict) {
-    // Collect all unique filters you want to display
     const pillDefs = [
         { id: 'all', label: getValueWithFallback(langDict, 'store.all_categories', 'All') }
     ];

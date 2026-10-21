@@ -63,9 +63,9 @@ async function loadArticles(lang, langDict) {
 export async function projects(lang, langDict) {
     return `
         <section id="projects">
-            <h2>Projects</h2>
+            <h2>${getValueWithFallback(langDict, 'title.projects', '&#10094;Projects&#10095;')}</h2>
             <div class="articles-grid">${await loadArticles(lang, langDict)}</div>
-            <a class="button" href="https://git.niwer.dev?tab=repositories" target="_blank" rel="noopener noreferrer">Explore my GitHub</a>
+            <a class="button" href="https://git.niwer.dev?tab=repositories" target="_blank" rel="noopener noreferrer">${getValueWithFallback(langDict, 'explore.github', 'Explore my GitHub')}</a>
         </section>
     `;
 }

@@ -15,3 +15,15 @@
 @import "./pages/panel.css";
 
 @import "./responsive.css";
+
+.text-content {
+    text-align: justify;
+}
+.text-content p, .text-content ul {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+.text-content ul {
+    padding-left: 1.5rem;
+    list-style-type: disc;
+}

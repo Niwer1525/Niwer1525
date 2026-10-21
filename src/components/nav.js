@@ -29,10 +29,10 @@ function navigation(lang = 'en', langDict, buttons, additionalActionsContent = '
 
                         <!-- Language Selection -->
                         <div class="languages-grid">
-                            <a href="/">
+                            <a href="/" title="English">
                                 <img loading="lazy" draggable="false" src="/assets/icons/united-kingdom.webp" alt="united_kingdom_logo">
                             </a>
-                            <a href="/fr/">
+                            <a href="/fr/" title="Français">
                                 <img loading="lazy" draggable="false" src="/assets/icons/france.webp" alt="france_logo">
                             </a>
                         </div>
@@ -63,6 +63,7 @@ export function panelNavigation(lang = 'en', langDict) {
     const downloadsUrl = lang === 'en' ? '/panel/downloads.html' : `/${lang}/panel/downloads.html`;
     const licensesUrl = lang === 'en' ? '/panel/licenses.html' : `/${lang}/panel/licenses.html`;
     const adminUrl = lang === 'en' ? '/panel/admin.html' : `/${lang}/panel/admin.html`;
+    const profileUrl = lang === 'en' ? '/panel/profile.html' : `/${lang}/panel/profile.html`;
     return navigation(lang, langDict, [
         { url: `${indexUrl}`, labelKey: 'btn.home', defaultLabel: 'Home' },
         { url: `${panelUrl}`, labelKey: 'btn.overview', defaultLabel: 'Overview' },
@@ -73,7 +74,7 @@ export function panelNavigation(lang = 'en', langDict) {
         <div class="dashboard-actions-grid">
             <!-- Sign In button will be shown when the user is not authenticated, while the Profile and Logout buttons will be shown when the user is authenticated. -->
             <button id="nav-signin-btn" onclick="showPopupAndSwitchTab('auth-popup', 'login')">Sign In</button>
-            <button id="nav-profile-btn" title="Profile" onclick="window.location.href='/panel/profile.html'">
+            <button id="nav-profile-btn" title="Profile" onclick="window.location.href='${profileUrl}'">
                 <i class="fa-solid fa-user"></i>
             </button>
             <button id="nav-logout-btn" title="Logout" onclick="logout()">

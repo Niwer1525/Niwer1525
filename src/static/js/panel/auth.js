@@ -33,7 +33,7 @@ export async function restoreSession() {
             console.warn('Could not restore session from /accounts/me:', err);
             if (err.status === 401 || err.status === 403) {
                 clearSession();
-                showPopupAndSwitchTab('auth-modal', 'login');
+                showPopupAndSwitchTab('auth-popup', 'login');
             }
         }
     }

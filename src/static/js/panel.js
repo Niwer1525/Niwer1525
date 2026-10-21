@@ -96,7 +96,7 @@ export function updateAuthenticatedVisibility() {
     const isUser = !!panelState.userToken || !!panelState.account;
     const isBuyer = isUser && panelState.entitlements.length > 0;
     document.querySelectorAll('.auth-required').forEach((el) => el.classList.toggle('hidden', !isUser));
-    document.querySelectorAll('.buyer-required').forEach((el) => el.classList.toggle('hidden', !isBuyer));
+    document.querySelectorAll('.buyer-required').forEach((el) => el.classList.toggle('hidden', !isBuyer && !isAdmin)); // Buyers and Admins can access buyer-required features
     document.querySelectorAll('.admin-required').forEach((el) => el.classList.toggle('hidden', !isAdmin));
 }
 

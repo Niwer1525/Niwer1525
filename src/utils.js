@@ -67,13 +67,14 @@ export const getValueWithFallback = (dict = {}, key, fallback = '') => {
  * @returns {string} The corresponding CSS class name for the access type, or an empty string if the type is unrecognized.
  */
 export function getAccessClassForType(type) {
+    const hiddenClass = 'hidden';
     switch (type) {
         case 'authenticated':
-            return 'auth-required';
+            return hiddenClass + ' ' + 'auth-required';
         case 'buyer':
-            return 'buyer-required';
+            return hiddenClass + ' ' + 'buyer-required';
         case 'admin':
-            return 'admin-required';
+            return hiddenClass + ' ' + 'admin-required';
         default:
             return '';
     }

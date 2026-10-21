@@ -15,25 +15,25 @@ export async function render(lang, langDict) {
 			{ id: 'terms_of_sale', label: getValueWithFallback(langDict, 'btn.terms_of_sale', 'Terms of Sale') },
 			{ id: 'privacy_policy', label: getValueWithFallback(langDict, 'btn.privacy_policy', 'Privacy Policy') }
 		])}
-		<section id="copyright_notice">
+		<section id="copyright_notice" class="text-content">
 			<h1>${getValueWithFallback(langDict, 'title.legal', 'Legal Notice')}</h1>
 			${copyrightHtml}
 		</section>
 		<hr>
 		<!-- Terms Of Service -->
-		<section id="terms_of_service">
+		<section id="terms_of_service" class="text-content">
 			<h2>${getValueWithFallback(langDict, 'btn.terms_of_service', 'Terms of Service')}</h2>
 			${tosHtml}
 		</section>
 		<hr>
 		<!-- Terms of Sale -->
-		<section id="terms_of_sale">
+		<section id="terms_of_sale" class="text-content">
 			<h2>${getValueWithFallback(langDict, 'btn.terms_of_sale', 'Terms of Sale')}</h2>
 			${termsOfSaleHtml}
 		</section>
 		<hr>
 		<!-- Privacy Policy -->
-		<section id="privacy_policy">
+		<section id="privacy_policy" class="text-content">
 			<h2>${getValueWithFallback(langDict, 'btn.privacy_policy', 'Privacy Policy')}</h2>
 			${privacyHtml}
 		</section>
