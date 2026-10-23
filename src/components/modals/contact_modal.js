@@ -4,7 +4,7 @@ import { basicModal } from './modal.js';
 export function contactModal(langDict) {
   return basicModal(langDict, 'contact-popup', `
     <input type="hidden" name="access_key" value="f18de961-019b-4e2a-ad3d-dffbb5136e1f">
-    <h2>${translate(langDict, 'form.title')}</h2>
+    <h2>${translate(langDict, 'form.contact.title')}</h2>
     <label>
         <i class="fa fa-user"></i>
         <input type="text" name="name" placeholder="Name" required autocomplete="name">

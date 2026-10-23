@@ -20,15 +20,15 @@ export function sectionAlert(iconClass, title, message, actionButton = '') {
 export function purchaseAlert(langDict) {
     const actionButon = `
         <a href="/panel" class="button" onclick="showPopupAndSwitchTab('auth-popup', 'login')">
-            Sign In <i class="fa-solid fa-arrow-right"></i>
+            ${translate(langDict, 'purchase_alert.action')} <i class="fa-solid fa-arrow-right"></i>
         </a>
     `;
     return `
         <section id="purchase-alert" class="hidden">
             ${sectionAlert(
                 'fa-solid fa-basket-shopping',
-                translate(langDict, 'store.purchase_detected'),
-                translate(langDict, 'store.pending_checkout'),
+                translate(langDict, 'purchase_alert.title'),
+                translate(langDict, 'purchase_alert.description'),
                 actionButon
             )}
         </section>

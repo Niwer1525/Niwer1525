@@ -3,7 +3,7 @@ import { multiTabModal } from './modal.js';
 
 function login(langDict) {
 	return `
-		<h2>Authentication</h2>
+		<h2>${translate(langDict, "form.auth.login.title")}</h2>
 		<label>
 			<i class="fa fa-envelope"></i>
 			<input type="email" name="email" required placeholder="joe@gmail.com">
@@ -14,7 +14,7 @@ function login(langDict) {
 		</label>
 		<button type="submit">
 			<i class="fa-solid fa-fingerprint"></i>
-			Login
+			${translate(langDict, "form.auth.login.action")}
 		</button>
 	`;
 }
@@ -22,23 +22,25 @@ function login(langDict) {
 function twoFactorAuth(langDict) {
 	return `
 		<form id="totp-login-form" class="hidden">
-			<h2>Two-Factor Auth</h2>
+			<h2>${translate(langDict, "form.auth.2fa.title")}</h2>
 			<label>
 				<i class="fa-solid fa-key"></i>
 				<input class="totp-code" type="text" name="code" id="totpLoginInput" pattern="[0-9]{6}" maxlength="6" inputmode="numeric" autocomplete="one-time-code" required placeholder="123456">
 			</label>
 			<button type="submit">
 				<i class="fa-solid fa-shield-halved"></i>
-				Verify & Continue
+				${translate(langDict, "form.auth.2fa.action")}
 			</button>
-			<button type="button" id="btnCancel2FA" onclick="showPopupAndSwitchTab('auth-popup', 'login')">Back to Login</button>
+			<button type="button" id="btnCancel2FA" onclick="showPopupAndSwitchTab('auth-popup', 'login')">
+				${translate(langDict, "form.auth.2fa.back")}
+			</button>
 		</form>
 	`
 }
 
 function register(langDict) {
 	return `
-		<h2>Create Account</h2>
+		<h2>${translate(langDict, "form.auth.register.title")}</h2>
 		<label>
 			<i class="fa fa-user"></i>
 			<input type="text" name="username" required placeholder="JoeDalton_">
@@ -53,7 +55,7 @@ function register(langDict) {
 		</label>
 		<button type="submit">
 			<i class="fa-solid fa-user-plus"></i>
-			Register
+			${translate(langDict, "form.auth.register.action")}
 		</button>
 	`;
 }

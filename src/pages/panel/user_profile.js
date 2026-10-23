@@ -6,7 +6,7 @@ import { totpModal } from '../../components/modals/totp_setup_modal.js';
 import { jumpBar } from '../../components/nav.js';
 import { translate } from '../../utils.js';
 
-function profileDetailTemplte() {
+function profileDetailTemplte(langDict) {
     return `
         <template id="tmpl-profile-detail">
             <article>
@@ -15,7 +15,7 @@ function profileDetailTemplte() {
                 </header>
                 <main class="detail-val"></main>
                 <footer class="detail-footer">
-                    <button class="btn icon-btn copy-btn" title="Copy">
+                    <button class="btn icon-btn copy-btn" title="${translate(langDict, 'btn.title.copy')}"">
                         <i class="fa-regular fa-copy"></i>
                     </button>
                 </footer>
@@ -43,35 +43,37 @@ function entitlementTemplte() {
 
 export async function render(lang, langDict) {
     const content = `
-        ${jumpBar(langDict, 'User Profile Sections', translate(langDict, 'panel.user_profile'), [
-            { id: 'user-products', label: translate(langDict, 'panel.user_products') },
-            { id: 'profile-details', label: translate(langDict, 'panel.profile_details') }
+        ${jumpBar(langDict, 'User Profile Sections', translate(langDict, 'jumpbar.panel.profile.title'), [
+            { id: 'user-products', label: translate(langDict, 'jumpbar.panel.profile.products') },
+            { id: 'profile-details', label: translate(langDict, 'jumpbar.panel.profile.details') }
         ])}
         <section id="user-products">
-            <h2>Your Products</h2>
+            <h2>${translate(langDict, "title.products")}</h2>
             <div class="panel">
                 <div class="articles-grid" id="entitlements-grid">
-                    <p class="text-secondary">Sign in to view your products.</p>
+                    <p class="text-secondary">
+                        ${translate(langDict, "description.sign_in_required")}
+                    </p>
                 </div>
             </div>
         </section>
         <section id="profile-details">
-            <h2>Your Profile</h2>
+            <h2>${translate(langDict, "title.profile")}</h2>
             <div class="section-actions">
-                <button id="btn-setup-2FA" title="Configure 2FA" onclick="open2FASetup()">
+                <button id="btn-setup-2FA" title="${translate(langDict, 'btn.title.enable2fa')}" onclick="open2FASetup()">
                     <i class="fa-solid fa-shield-halved"></i>
                 </button>
-                <button title="Edit Profile" onclick="showPopup('edit-profile-popup')">
+                <button title="${translate(langDict, 'btn.title.edit_profile')}" onclick="showPopup('edit-profile-popup')">
                     <i class="fa-solid fa-pen"></i>
                 </button>
-                <button class="danger-button" title="Delete Account" onclick="showPopup('delete-account-popup')">
+                <button class="danger-button" title="${translate(langDict, 'btn.title.delete_account')}" onclick="showPopup('delete-account-popup')">
                     <i class="fa-solid fa-trash-can"></i>
                 </button>
             </div>
             <div class="articles-grid" id="profile-details-grid"></div>
         </section>
         <!-- Templates -->
-        ${profileDetailTemplte()}
+        ${profileDetailTemplte(langDict)}
         ${entitlementTemplte()}
 
         <!-- Modals -->

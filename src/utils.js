@@ -68,8 +68,8 @@ export const getValueWithFallback = (dict = {}, key, fallback = '') => {
  * @param {*} fallback The value to return if the key is not found in the dictionary. Defaults to an empty string.
  * @returns The value associated with the key in the dictionary, or the fallback value if the key is not found.
  */
-export const translate = (dict = {}, key) => {
-    return getValueWithFallback(dict, key, key);
+export const translate = (dict = {}, key, object = []) => {
+    return getValueWithFallback(dict, key, key).replace(/%s/g, object || '');
 };
 
 /**

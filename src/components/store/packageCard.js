@@ -46,19 +46,18 @@ export async function renderPackageCard(pkg, { lang, langDict, defaultCurrency, 
         : translate(langDict, 'btn.buy_now');
 
     return `
-        <article class="store-package-card" data-package-id="${pkg.id}" ${pkg.price_id ? `data-price-id="${pkg.price_id}"` : ''}>
+        <article data-package-id="${pkg.id}" ${pkg.price_id ? `data-price-id="${pkg.price_id}"` : ''}>
             <header class="store-package-header">
                 <div>
                     <h3>${pkg.name || formatDefaultTitle(pkg.slug || 'Package')}</h3>
                 </div>
-                <div class="store-price">${price}</div>
             </header>
-
             ${carouselHtml}
-
-            <div class="store-package-description">${descriptionHtml}</div>
-
+            <main>
+                <div class="text-content">${descriptionHtml}</div>
+            </main>
             <footer>
+                <div class="store-price">${price}</div>
                 <a class="button" href="${paymentLink}" rel="noopener noreferrer" target="_blank">${buttonLabel}</a>
             </footer>
         </article>

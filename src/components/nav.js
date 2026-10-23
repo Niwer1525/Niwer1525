@@ -67,13 +67,13 @@ export function panelNavigation(lang = 'en', langDict) {
     return navigation(lang, langDict, [
         { url: `${indexUrl}`, labelKey: 'btn.home' },
         { url: `${panelUrl}`, labelKey: 'btn.overview' },
-        { url: `${downloadsUrl}`, labelKey: 'btn.downloads' },
+        { url: `${downloadsUrl}`, labelKey: 'btn.download' },
         { url: `${licensesUrl}`, labelKey: 'btn.licenses', accessType: 'buyer' },
         { url: `${adminUrl}`, labelKey: 'btn.admin', accessType: 'admin' },
     ], `
         <div class="dashboard-actions-grid">
             <!-- Sign In button will be shown when the user is not authenticated, while the Profile and Logout buttons will be shown when the user is authenticated. -->
-            <button id="nav-signin-btn" onclick="showPopupAndSwitchTab('auth-popup', 'login')">Sign In</button>
+            <button id="nav-signin-btn" onclick="showPopupAndSwitchTab('auth-popup', 'login')">${translate(langDict, "btn.signin")}</button>
             <button id="nav-profile-btn" title="Profile" onclick="window.location.href='${profileUrl}'">
                 <i class="fa-solid fa-user"></i>
             </button>

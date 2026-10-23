@@ -46,8 +46,10 @@ async function loadArticles(lang, langDict) {
                     <h2>${translate(langDict, `project.title.${project.name}`)}</h2>
                     ${appendImageOrVideo(project)}
                 </header>
-                <div class="project-description">${projectDescription}</div>
-                ${project.tags && Array.isArray(project.tags) ? `<p class="project-tags">${project.tags.map(tag => `#${tag}`).join(', ')}</p>` : ''}
+                <main>
+                    <div class="project-description">${projectDescription}</div>
+                    ${project.tags && Array.isArray(project.tags) ? `<p class="project-tags">${project.tags.map(tag => `#${tag}`).join(', ')}</p>` : ''}
+                </main>
                 <footer>
                     ${project.links && typeof project.links === 'object' 
                         ? Object.entries(project.links).map(([link, type]) => `<a href="${link}" target="_blank">${formatDefaultButtonName(type, langDict)} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`).join('') 

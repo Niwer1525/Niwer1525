@@ -1,5 +1,6 @@
 import { panelLayout } from '../../components/layout.js';
 import { createLicenseModal } from '../../components/modals/create_license_modal.js';
+import { translate } from '../../utils.js';
 
 function licenseRowTemplate(langDict) {
     return `
@@ -25,10 +26,10 @@ function licenseRowTemplate(langDict) {
                 </td>
                 <td>
                     <div class="license-actions">
-                        <button class="copy-key-btn" title="Copy Key">
+                        <button class="copy-key-btn" title="${translate(langDict, "btn.title.copy")}">
                             <i class="fa-regular fa-copy"></i>
                         </button>
-                        <button class="revoke-key-btn danger-button" title="Revoke">
+                        <button class="revoke-key-btn danger-button" title="${translate(langDict, "btn.title.revoke_licenses")}">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </div>
@@ -41,23 +42,26 @@ function licenseRowTemplate(langDict) {
 export async function render(lang, langDict) {
     const content = `
         <section>
-            <h2>License Management</h2>
+            <h2>${translate(langDict, "title.licenses")}</h2>
             <div class="section-actions">
-                <button onclick="showPopup('create-license-popup')"><i class="fa-solid fa-plus"></i> New License</button>
+                <button onclick="showPopup('create-license-popup')">
+                    <i class="fa-solid fa-plus"></i>
+                    ${translate(langDict, "btn.new_license")}
+                </button>
             </div>
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
-                            <th>Name / Product</th>
-                            <th>Validity</th>
-                            <th>License Key</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                            <th>${translate(langDict, "licenses.table_header.product")}</th>
+                            <th>${translate(langDict, "licenses.table_header.validity")}</th>
+                            <th>${translate(langDict, "licenses.table_header.license_key")}</th>
+                            <th>${translate(langDict, "licenses.table_header.status")}</th>
+                            <th>${translate(langDict, "licenses.table_header.actions")}</th>
                         </tr>
                     </thead>
                     <tbody id="licenses-table-body">
-                        <tr><td colspan="5">Loading licenses...</td></tr>
+                        <tr><td colspan="5">${translate(langDict, "licenses.loading")}</td></tr>
                     </tbody>
                 </table>
             </div>

@@ -29,7 +29,7 @@ async function renderCategorySections(node, parentPath, context, outLinks) {
                 <header class="store-section-header">
                     <${headingTag}>${displayName}</${headingTag}>
                 </header>
-                <div class="articles-grid">
+                <div class="articles-grid large-card">
                     ${cardsHtml}
                 </div>
             </section>

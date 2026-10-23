@@ -5,9 +5,12 @@ const CONFIRMATION_PHRASE = 'DELETE MY ACCOUNT';
 
 export function deleteAccountModal(langDict) {
     return basicModal(langDict, 'delete-account-popup', `
-        <h2><i class="fa-solid fa-triangle-exclamation text-danger"></i> Delete Account</h2>
+        <h2>
+            <i class="fa-solid fa-triangle-exclamation text-danger"></i>
+            ${translate(langDict, 'form.delete_account.title')}
+        </h2>
         <p class="text-secondary">
-            This action starts your grace period and revokes all active sessions immediately.
+            ${translate(langDict, 'form.delete_account.description')}
         </p>
         <label>
             <i class="fa-solid fa-lock"></i>
@@ -16,17 +19,18 @@ export function deleteAccountModal(langDict) {
         <label id="totp-login-code" class="hidden">
             <i class="fa-solid fa-key left-icon"></i>
             <input class="totp-code" type="text" name="code" pattern="[0-9]{6}" maxlength="6" inputmode="numeric" autocomplete="one-time-code" required disabled placeholder="123456">
-            <span class="text-secondary">Authenticator Code (2FA)</span>
+            <span class="text-secondary">${translate(langDict, 'form.delete_account.description.authenticator_code')}</span>
         </label>
         <label>
             <i class="fa-solid fa-keyboard"></i>
             <input type="text" id="delete-phrase-input" name="confirmationPhrase" autocomplete="off" required placeholder="${CONFIRMATION_PHRASE}">
             <span class="text-secondary">
-                Type <span class="text-danger">${CONFIRMATION_PHRASE}</span> to confirm
+                ${translate(langDict, 'form.delete_account.description.phrase', [`<span class="text-danger">${CONFIRMATION_PHRASE}</span>`])}</span>
             </span>
         </label>
         <button type="submit" id="btn-submit-delete" class="button-danger" disabled>
-            <i class="fa-solid fa-trash-can"></i> Confirm Deletion
+            <i class="fa-solid fa-trash-can"></i>
+            ${translate(langDict, 'form.delete_account.action')}
         </button>
     `);
 }

@@ -1,6 +1,7 @@
 import { panelLayout } from '../../components/layout.js';
+import { translate } from '../../utils.js';
 
-function repositoryTemplate() {
+function repositoryTemplate(langDict) {
     return `
         <template id="tmpl-download-repo">
             <section class="download-repository">
@@ -11,11 +12,11 @@ function repositoryTemplate() {
                     <table>
                         <thead>
                             <tr>
-                                <th>Release</th>
-                                <th>Pre-Release</th>
-                                <th>Asset</th>
-                                <th>Description</th>
-                                <th>Download</th>
+                                <th>${translate(langDict, "downloads.release")}</th>
+                                <th>${translate(langDict, "downloads.prerelease")}</th>
+                                <th>${translate(langDict, "downloads.asset")}</th>
+                                <th>${translate(langDict, "downloads.description")}</th>
+                                <th>${translate(langDict, "downloads.download")}</th>
                             </tr>
                         </thead>
                         <tbody class="repo-rows"></tbody>
@@ -26,7 +27,7 @@ function repositoryTemplate() {
     `
 }
 
-function assetRowTemplate() {
+function assetRowTemplate(langDict) {
     return `
         <template id="tmpl-download-row">
             <tr>
@@ -47,13 +48,13 @@ function assetRowTemplate() {
 export async function render(lang, langDict) {
     const content = `
         <section>
-            <h2>Downloads</h2>
+            <h2>${translate(langDict, "title.downloads")}</h2>
             <div id="downloads-grid">
-                <p class="text-secondary">Loading downloads...</p>
+                <p class="text-secondary">${translate(langDict, "downloads.loading")}</p>
             </div>
         </section>
-        ${repositoryTemplate()}
-        ${assetRowTemplate()}
+        ${repositoryTemplate(langDict)}
+        ${assetRowTemplate(langDict)}
     `;
 
     return panelLayout({

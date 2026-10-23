@@ -3,15 +3,15 @@ import { basicModal } from './modal.js';
 
 export function totpModal(langDict) {
 	return basicModal(langDict, 'totp-setup-popup', `
-		<h2>Enable 2FA</h2>
-		<p class="text-secondary">Scan this code with Google Authenticator, Authy, or 1Password</p>
+		<h2>${translate(langDict, 'form.totp_setup.title')}</h2>
+		<p class="text-secondary">${translate(langDict, 'form.totp_setup.description')}</p>
 		<div id="totp-qr-container" class="qr-code">
 			<i class="fa-solid fa-spinner fa-spin fa-2x text-secondary"></i>
 		</div>
 		<label>
 			<i class="fa-solid fa-key"></i>
 			<input type="text" id="totp-manual-key" readonly title="Click to copy">
-			<span class="text-secondary">Manual Secret Key</span>
+			<span class="text-secondary">${translate(langDict, 'form.totp_setup.description.manual_key')}</span>
 		</label>
 		<hr>
 		<label>
@@ -20,7 +20,7 @@ export function totpModal(langDict) {
 		</label>
 		<button type="submit">
 			<i class="fa-solid fa-shield-halved text-accent"></i>
-			Activate 2FA
+			${translate(langDict, 'form.totp_setup.action')}
 		</button>
 	`);
 }
