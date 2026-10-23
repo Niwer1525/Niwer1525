@@ -1,7 +1,6 @@
 import { loadState, saveState, clearState } from './utils/storage.js';
 
-const DEV_API_URL = 'http://localhost:17070';
-const API_BASE = 'https://panel.niwer.dev';
+const API_BASE = process.env.API_BASE_URL || 'https://panel.niwer.dev'; // Get the correct API base URL from environment variables or use the default
 
 /**
  * Core Application State

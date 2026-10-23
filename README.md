@@ -28,6 +28,7 @@
 ![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
 ![MySQL](https://img.shields.io/badge/mysql-%2307405e.svg?style=for-the-badge&logo=mysql&logoColor=white)
 ![PhpMyAdmin](https://img.shields.io/badge/phpmyadmin-%2307405e.svg?style=for-the-badge&logo=phpmyadmin&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%2307405e.svg?style=for-the-badge&logo=docker&logoColor=white)
 <!-- Other skills -->
 - Other skills :
    - IT Technician

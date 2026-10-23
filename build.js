@@ -35,6 +35,8 @@ const PAGES = [
 
 async function processStaticFiles(srcDir, destDir) {
     try {
+        const API_BASE_URL = process.env.API_BASE_URL || (process.env.NODE_ENV === 'production' ? 'https://panel.niwer.dev' : 'http://localhost:17070');
+
         const entries = await fs.readdir(srcDir, { withFileTypes: true });
         await fs.mkdir(destDir, { recursive: true });
 
@@ -65,7 +67,8 @@ async function processStaticFiles(srcDir, destDir) {
 						const jsCode = await fs.readFile(srcPath, 'utf8');
 						const { code: minifiedJs } = await transformJs(jsCode, {
 							minify: true,
-							target: 'esnext'
+							target: 'esnext',
+                            define: {'process.env.API_BASE_URL': JSON.stringify(API_BASE_URL)}
 						});
 						await fs.writeFile(destPath, minifiedJs, 'utf8');
 						break;
