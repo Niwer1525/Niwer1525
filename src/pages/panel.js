@@ -4,6 +4,7 @@ import { purchaseAlert } from '../components/section_alerts.js';
 
 export async function render(lang, langDict) {
 	return panelLayout({
+		page: 'panel',
 		lang,
     	langDict,
 		title: 'Dashboard | Erwin Redoté',

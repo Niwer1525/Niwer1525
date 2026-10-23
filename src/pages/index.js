@@ -49,6 +49,7 @@ export async function render(lang, langDict) {
   `;
 
   return defaultLayout({
+    page: 'index',
     lang,
     langDict,
     title: 'Erwin Redoté (Niwer) - Developer Portfolio',

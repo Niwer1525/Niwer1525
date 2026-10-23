@@ -83,6 +83,7 @@ export async function render(lang = 'en', langDict = {}) {
     `;
 
     return defaultLayout({
+        page: 'store',
         lang,
         langDict,
         title: `${translate(langDict, 'btn.store')} | Erwin Redoté (Niwer)`,

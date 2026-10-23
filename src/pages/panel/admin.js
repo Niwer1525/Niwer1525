@@ -40,6 +40,7 @@ export async function render(lang, langDict) {
     `;
 
     return panelLayout({
+        page: 'admin',
         lang,
         langDict,
         title: 'Dashboard | Erwin Redoté',

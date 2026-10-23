@@ -99,13 +99,13 @@ function layout({ title = 'Default Title', description = '', canonical = '', bod
     `;
 }
 
-export function defaultLayout({ lang = 'en', langDict = [], title, description, canonical, content, additionalScripts = [] }) {
+export function defaultLayout({ page, lang = 'en', langDict = [], title, description, canonical, content, additionalScripts = [] }) {
     return layout({
         title,
         description,
         canonical,
         body: `
-            ${defaultNavigation(lang, langDict)}
+            ${defaultNavigation(page, lang, langDict)}
             <main>
                 ${content}
                 ${contactModal(langDict)}
@@ -116,13 +116,13 @@ export function defaultLayout({ lang = 'en', langDict = [], title, description, 
     });
 }
 
-export function panelLayout({ lang = 'en', langDict = [], title, description, canonical, content, additionalScripts = [] }) {
+export function panelLayout({ page, lang = 'en', langDict = [], title, description, canonical, content, additionalScripts = [] }) {
     return layout({
         title,
         description,
         canonical,
         body: `
-            ${panelNavigation(lang, langDict)}
+            ${panelNavigation(page, lang, langDict)}
             <main>
                 ${content}
                 ${contactModal(langDict)}

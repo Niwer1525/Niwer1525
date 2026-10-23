@@ -7,11 +7,11 @@ export function contactModal(langDict) {
     <h2>${translate(langDict, 'form.contact.title')}</h2>
     <label>
         <i class="fa fa-user"></i>
-        <input type="text" name="name" placeholder="Name" required autocomplete="name">
+        <input type="text" name="name" placeholder="John Doe" required autocomplete="name">
     </label>
     <label>
         <i class="fa fa-envelope"></i>
-        <input type="email" name="email" placeholder="Email" required autocomplete="email">
+        <input type="email" name="email" placeholder="john.doe@example.com" required autocomplete="email">
     </label>
     <label>
         <i class="fa fa-comment"></i>

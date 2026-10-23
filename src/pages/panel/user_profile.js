@@ -86,6 +86,7 @@ export async function render(lang, langDict) {
     `;
 
     return panelLayout({
+        page: 'profile',
         lang,
         langDict,
         title: 'Dashboard - User Profile | Erwin Redoté',

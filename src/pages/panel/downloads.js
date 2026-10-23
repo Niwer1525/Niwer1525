@@ -58,6 +58,7 @@ export async function render(lang, langDict) {
     `;
 
     return panelLayout({
+        page: 'downloads',
         lang,
         langDict,
         title: 'Dashboard - Downloads | Erwin Redoté',

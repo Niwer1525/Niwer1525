@@ -1,6 +1,23 @@
 import { translate, getAccessClassForType } from '../utils.js';
 
-function navigation(lang = 'en', langDict, buttons, additionalActionsContent = '') {
+function getHrefForPage(page, lang) {
+    const isDefaultLang = lang === 'en';
+    switch (page) {
+        case 'index': return isDefaultLang ? '/index.html' : `/${lang}/index.html`;
+        case 'store': return isDefaultLang ? '/store.html' : `/${lang}/store.html`;
+        case 'legal': return isDefaultLang ? '/legal.html' : `/${lang}/legal.html`;
+
+        /* Panel Pages */
+        case 'panel': return isDefaultLang ? '/panel.html' : `/${lang}/panel.html`;
+        case 'downloads': return isDefaultLang ? '/panel/downloads.html' : `/${lang}/panel/downloads.html`;
+        case 'licenses': return isDefaultLang ? '/panel/licenses.html' : `/${lang}/panel/licenses.html`;
+        case 'admin': return isDefaultLang ? '/panel/admin.html' : `/${lang}/panel/admin.html`;
+        case 'profile': return isDefaultLang ? '/panel/profile.html' : `/${lang}/panel/profile.html`;
+        default: return isDefaultLang ? '/index.html' : `/${lang}/index.html`;
+    }
+}
+
+function navigation(page, lang = 'en', langDict, buttons, additionalActionsContent = '') {
     return `
         <header id="top">
             <nav>
@@ -29,10 +46,10 @@ function navigation(lang = 'en', langDict, buttons, additionalActionsContent = '
 
                         <!-- Language Selection -->
                         <div class="languages-grid">
-                            <a href="/" title="English">
+                            <a href="${getHrefForPage(page, 'en')}" title="English">
                                 <img loading="lazy" draggable="false" src="/assets/icons/united-kingdom.webp" alt="united_kingdom_logo">
                             </a>
-                            <a href="/fr/" title="Français">
+                            <a href="${getHrefForPage(page, 'fr')}" title="Français">
                                 <img loading="lazy" draggable="false" src="/assets/icons/france.webp" alt="france_logo">
                             </a>
                         </div>
@@ -43,38 +60,31 @@ function navigation(lang = 'en', langDict, buttons, additionalActionsContent = '
     `;
 }
 
-export function defaultNavigation(lang = 'en', langDict) {
-    const indexUrl = lang === 'en' ? '/index.html' : `/${lang}/index.html`;
-    const storeUrl = lang === 'en' ? '/store.html' : `/${lang}/store.html`;
-    return navigation(lang, langDict, [
+export function defaultNavigation(page, lang = 'en', langDict) {
+    const indexUrl = getHrefForPage('index', lang);
+    return navigation(page, lang, langDict, [
         { url: `${indexUrl}#presentation`, labelKey: 'btn.about' },
         { url: `${indexUrl}#skills`, labelKey: 'btn.skills' },
         { url: `${indexUrl}#stats`, labelKey: 'btn.github_stats' },
         { url: `${indexUrl}#projects`, labelKey: 'btn.projects' },
         { url: `${indexUrl}#gists`, labelKey: 'btn.gists' },
-        { url: storeUrl, labelKey: 'btn.store' },
+        { url: getHrefForPage('store', lang), labelKey: 'btn.store' },
         { url: '#', labelKey: 'btn.contact', onClick: "showPopup('contact-popup')" }
     ]);
 }
 
-export function panelNavigation(lang = 'en', langDict) {
-    const indexUrl = lang === 'en' ? '/index.html' : `/${lang}/index.html`;
-    const panelUrl = lang === 'en' ? '/panel.html' : `/${lang}/panel.html`;
-    const downloadsUrl = lang === 'en' ? '/panel/downloads.html' : `/${lang}/panel/downloads.html`;
-    const licensesUrl = lang === 'en' ? '/panel/licenses.html' : `/${lang}/panel/licenses.html`;
-    const adminUrl = lang === 'en' ? '/panel/admin.html' : `/${lang}/panel/admin.html`;
-    const profileUrl = lang === 'en' ? '/panel/profile.html' : `/${lang}/panel/profile.html`;
-    return navigation(lang, langDict, [
-        { url: `${indexUrl}`, labelKey: 'btn.home' },
-        { url: `${panelUrl}`, labelKey: 'btn.overview' },
-        { url: `${downloadsUrl}`, labelKey: 'btn.download' },
-        { url: `${licensesUrl}`, labelKey: 'btn.licenses', accessType: 'buyer' },
-        { url: `${adminUrl}`, labelKey: 'btn.admin', accessType: 'admin' },
+export function panelNavigation(page, lang = 'en', langDict) {
+    return navigation(page, lang, langDict, [
+        { url: getHrefForPage('index', lang), labelKey: 'btn.home' },
+        { url: getHrefForPage('panel', lang), labelKey: 'btn.overview' },
+        { url: getHrefForPage('downloads', lang), labelKey: 'btn.download' },
+        { url: getHrefForPage('licenses', lang), labelKey: 'btn.licenses', accessType: 'buyer' },
+        { url: getHrefForPage('admin', lang), labelKey: 'btn.admin', accessType: 'admin' },
     ], `
         <div class="dashboard-actions-grid">
             <!-- Sign In button will be shown when the user is not authenticated, while the Profile and Logout buttons will be shown when the user is authenticated. -->
             <button id="nav-signin-btn" onclick="showPopupAndSwitchTab('auth-popup', 'login')">${translate(langDict, "btn.signin")}</button>
-            <button id="nav-profile-btn" title="Profile" onclick="window.location.href='${profileUrl}'">
+            <button id="nav-profile-btn" title="Profile" onclick="window.location.href='${getHrefForPage('profile', lang)}'">
                 <i class="fa-solid fa-user"></i>
             </button>
             <button id="nav-logout-btn" title="Logout" onclick="logout()">

@@ -40,6 +40,7 @@ export async function render(lang, langDict) {
 	`;
 
 	return defaultLayout({
+		page: 'legal',
 		lang,
     	langDict,
 		title: 'Terms of Service & Privacy Policy | Erwin Redoté',

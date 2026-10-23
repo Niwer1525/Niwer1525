@@ -71,6 +71,7 @@ export async function render(lang, langDict) {
     `;
 
     return panelLayout({
+        page: 'licenses',
         lang,
         langDict,
         title: 'Dashboard - Access keys | Erwin Redoté',
