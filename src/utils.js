@@ -61,6 +61,18 @@ export const getValueWithFallback = (dict = {}, key, fallback = '') => {
 };
 
 /**
+ * Retrieves a value from a dictionary using the specified key, returning a fallback value if the key is not found.
+ * 
+ * @param {*} dict The dictionary from which to retrieve the value.
+ * @param {*} key The key to look up in the dictionary.
+ * @param {*} fallback The value to return if the key is not found in the dictionary. Defaults to an empty string.
+ * @returns The value associated with the key in the dictionary, or the fallback value if the key is not found.
+ */
+export const translate = (dict = {}, key, object = []) => {
+    return getValueWithFallback(dict, key, key).replace(/%s/g, object || '');
+};
+
+/**
  * Returns a CSS class name based on the provided access type.
  * 
  * @param {*} type The access type (e.g., 'authenticated', 'buyer', 'admin').

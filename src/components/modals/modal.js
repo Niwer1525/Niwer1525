@@ -1,11 +1,11 @@
-import { getValueWithFallback } from '../../utils.js';
+import { translate } from '../../utils.js';
 
 function tabNavigation(langDict, id, tabs = []) {
 	return `
 		<div class="modal-tabs" id="${id}-tabs">
 			${tabs.map(tab => `
 				<div class="modal-tab ${tab.isActive ? 'active' : ''}" data-tab="${tab.id}" onclick="switchTab('${id}', '${tab.id}')">
-					${getValueWithFallback(langDict, tab.titleKey, tab.defaultTitle)}
+					${translate(langDict, tab.titleKey)}
 				</div>
 			`).join('')}
 		</div>

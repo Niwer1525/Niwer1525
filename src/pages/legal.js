@@ -1,6 +1,6 @@
 import { defaultLayout } from '../components/layout.js';
 import { jumpBar } from '../components/nav.js';
-import { loadMd, getValueWithFallback } from '../utils.js';
+import { loadMd, translate } from '../utils.js';
 
 export async function render(lang, langDict) {
 	const legalDir = 'src/data/langs/' + lang + '/';
@@ -9,32 +9,32 @@ export async function render(lang, langDict) {
 	const termsOfSaleHtml = await loadMd(legalDir, 'terms_of_sale.md');
 	const privacyHtml = await loadMd(legalDir, 'privacy_policy.md');
 	const content = `
-		${jumpBar(langDict, 'Legal Sections', getValueWithFallback(langDict, 'title.legal', 'Legal Notice'), [
-			{ id: 'copyright_notice', label: getValueWithFallback(langDict, 'btn.copyright_notice', 'Copyright Notice') },
-			{ id: 'terms_of_service', label: getValueWithFallback(langDict, 'btn.terms_of_service', 'Terms of Service') },
-			{ id: 'terms_of_sale', label: getValueWithFallback(langDict, 'btn.terms_of_sale', 'Terms of Sale') },
-			{ id: 'privacy_policy', label: getValueWithFallback(langDict, 'btn.privacy_policy', 'Privacy Policy') }
+		${jumpBar(langDict, 'Legal Sections', translate(langDict, 'title.legal'), [
+			{ id: 'copyright_notice', label: translate(langDict, 'btn.copyright_notice') },
+			{ id: 'terms_of_service', label: translate(langDict, 'btn.terms_of_service') },
+			{ id: 'terms_of_sale', label: translate(langDict, 'btn.terms_of_sale') },
+			{ id: 'privacy_policy', label: translate(langDict, 'btn.privacy_policy') }
 		])}
 		<section id="copyright_notice" class="text-content">
-			<h1>${getValueWithFallback(langDict, 'title.legal', 'Legal Notice')}</h1>
+			<h1>${translate(langDict, 'title.legal')}</h1>
 			${copyrightHtml}
 		</section>
 		<hr>
 		<!-- Terms Of Service -->
 		<section id="terms_of_service" class="text-content">
-			<h2>${getValueWithFallback(langDict, 'btn.terms_of_service', 'Terms of Service')}</h2>
+			<h2>${translate(langDict, 'btn.terms_of_service')}</h2>
 			${tosHtml}
 		</section>
 		<hr>
 		<!-- Terms of Sale -->
 		<section id="terms_of_sale" class="text-content">
-			<h2>${getValueWithFallback(langDict, 'btn.terms_of_sale', 'Terms of Sale')}</h2>
+			<h2>${translate(langDict, 'btn.terms_of_sale')}</h2>
 			${termsOfSaleHtml}
 		</section>
 		<hr>
 		<!-- Privacy Policy -->
 		<section id="privacy_policy" class="text-content">
-			<h2>${getValueWithFallback(langDict, 'btn.privacy_policy', 'Privacy Policy')}</h2>
+			<h2>${translate(langDict, 'btn.privacy_policy')}</h2>
 			${privacyHtml}
 		</section>
 	`;

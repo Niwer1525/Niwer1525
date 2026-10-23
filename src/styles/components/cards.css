@@ -92,6 +92,10 @@
     gap: 2rem;
     margin-bottom: 2rem;
 }
+.large-card .articles-grid {
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 2.5rem;
+}
 
 article {
     background: var(--surface-glass);
@@ -154,12 +158,6 @@ article h2 {
 
 article h2::after {
     display: none;
-}
-
-article p {
-    padding: 0 1rem 1rem;
-    font-size: 0.95rem;
-    flex: 1;
 }
 
 article footer {

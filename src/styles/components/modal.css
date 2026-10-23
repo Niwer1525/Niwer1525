@@ -122,10 +122,6 @@ label {
 label:focus-within {
     border-color: var(--accent-color);
 }
-input i {
-    color: var(--text-secondary);
-    margin-right: 10px;
-}
 textarea {
     resize: vertical;
     min-height: 100px;

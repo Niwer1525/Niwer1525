@@ -1,8 +1,8 @@
-import { getValueWithFallback } from '../../utils.js';
+import { translate } from '../../utils.js';
 
 export function renderFilterPills(categories, visiblePackages, langDict) {
     const pillDefs = [
-        { id: 'all', label: getValueWithFallback(langDict, 'store.all_categories', 'All') }
+        { id: 'all', label: translate(langDict, 'store.all_categories') }
     ];
 
     categories.forEach(cat => {

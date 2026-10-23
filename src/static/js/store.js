@@ -15,11 +15,9 @@ function initCarousels() {
 
         const slideWidth = track.clientWidth;
 
-        if (btn.hasAttribute('data-carousel-prev')) {
-            track.scrollBy({ left: -slideWidth, behavior: 'smooth' });
-        } else if (btn.hasAttribute('data-carousel-next')) {
-            track.scrollBy({ left: slideWidth, behavior: 'smooth' });
-        } else if (btn.hasAttribute('data-carousel-dot')) {
+        if (btn.hasAttribute('data-carousel-prev')) track.scrollBy({ left: -slideWidth, behavior: 'smooth' });
+        else if (btn.hasAttribute('data-carousel-next')) track.scrollBy({ left: slideWidth, behavior: 'smooth' });
+        else if (btn.hasAttribute('data-carousel-dot')) {
             const index = Number(btn.getAttribute('data-carousel-dot'));
             track.scrollTo({ left: index * slideWidth, behavior: 'smooth' });
         }

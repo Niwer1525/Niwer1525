@@ -1,4 +1,4 @@
-import { formatDefaultTitle, loadMd, getValueWithFallback } from '../../utils.js';
+import { formatDefaultTitle, loadMd, translate } from '../../utils.js';
 import { formatCurrency } from './catalogHelper.js';
 
 export async function renderPackageCard(pkg, { lang, langDict, defaultCurrency, catalogPaymentLink }) {
@@ -7,7 +7,7 @@ export async function renderPackageCard(pkg, { lang, langDict, defaultCurrency, 
 
     const price = formatCurrency(pkg.displayed_price ?? pkg.price ?? 0, pkg.currency || defaultCurrency);
     const descriptionHtml = await loadMd(`src/data/store/${pkg.slug}/`, `store_description_${lang}.md`)
-        .catch(() => `<p>${getValueWithFallback(langDict, 'description.unavailable', 'Description unavailable.')}</p>`);
+        .catch(() => `<p>${translate(langDict, 'description.unavailable')}</p>`);
 
     const images = Array.isArray(pkg.images) && pkg.images.length > 0 
         ? pkg.images 
@@ -42,23 +42,22 @@ export async function renderPackageCard(pkg, { lang, langDict, defaultCurrency, 
 
     const isSubscription = pkg.payment_type === 'subscription';
     const buttonLabel = isSubscription
-        ? getValueWithFallback(langDict, 'btn.subscribe_now', 'Subscribe')
-        : getValueWithFallback(langDict, 'btn.buy_now', 'Buy');
+        ? translate(langDict, 'btn.subscribe_now')
+        : translate(langDict, 'btn.buy_now');
 
     return `
-        <article class="store-package-card" data-package-id="${pkg.id}" ${pkg.price_id ? `data-price-id="${pkg.price_id}"` : ''}>
+        <article data-package-id="${pkg.id}" ${pkg.price_id ? `data-price-id="${pkg.price_id}"` : ''}>
             <header class="store-package-header">
                 <div>
                     <h3>${pkg.name || formatDefaultTitle(pkg.slug || 'Package')}</h3>
                 </div>
-                <div class="store-price">${price}</div>
             </header>
-
             ${carouselHtml}
-
-            <div class="store-package-description">${descriptionHtml}</div>
-
+            <main>
+                <div class="text-content">${descriptionHtml}</div>
+            </main>
             <footer>
+                <div class="store-price">${price}</div>
                 <a class="button" href="${paymentLink}" rel="noopener noreferrer" target="_blank">${buttonLabel}</a>
             </footer>
         </article>

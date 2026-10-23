@@ -1,4 +1,4 @@
-import { getValueWithFallback } from '../../utils.js';
+import { translate } from '../../utils.js';
 
 function cardTemplate() {
     return `
@@ -28,9 +28,9 @@ function cardTemplate() {
 export function servers(langDict) {
     return `
         <section>
-            <h2>${getValueWithFallback(langDict, 'title.servers', 'Public Servers')}</h2>
+            <h2>${translate(langDict, 'title.servers')}</h2>
 			<div id="servers-grid" class="articles-grid">
-				<p>${getValueWithFallback(langDict, 'servers.loading', 'Loading servers...')}</p>
+				<p>${translate(langDict, 'servers.loading')}</p>
 			</div>
             ${cardTemplate()}
         </section>

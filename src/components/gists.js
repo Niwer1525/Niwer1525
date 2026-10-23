@@ -1,4 +1,4 @@
-import { getValueWithFallback } from '../utils.js';
+import { translate } from '../utils.js';
 
 
 export function gists(langDict) {
@@ -8,7 +8,7 @@ export function gists(langDict) {
             <div id="gists-grid" class="articles-grid">
                 <!-- There will be gists -->
             </div>
-            <a class="button" href="https://gist.niwer.dev" target="_blank" rel="noopener noreferrer">${getValueWithFallback(langDict, 'explore.gists', 'Explore my Gists')}</a>
+            <a class="button" href="https://gist.niwer.dev" target="_blank" rel="noopener noreferrer">${translate(langDict, 'explore.gists')}</a>
             <input type="number" class="form-control" id="gists-limit" min="1" max="100" value="6" placeholder="Number of gists to show">
         </section>    
     `;
