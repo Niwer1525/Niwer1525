@@ -1,4 +1,4 @@
-import { loadMd, loadJson, getValueWithFallback, formatDefaultTitle } from '../utils.js';
+import { loadMd, loadJson, translate } from '../utils.js';
 
 /**
  * Appends an image or video element based on the project's properties.
@@ -27,10 +27,10 @@ function appendImageOrVideo(project) {
  */
 function formatDefaultButtonName(type, langDict) {
     switch(type.toLowerCase()) {
-        case 'read': return getValueWithFallback(langDict, 'btn.read', 'Read more');
-        case 'see': return getValueWithFallback(langDict, 'btn.see', 'See more');
-        case 'play': return getValueWithFallback(langDict, 'btn.play', 'Play');
-        default: return getValueWithFallback(langDict, 'btn.read', 'Read more');
+        case 'read': return translate(langDict, 'btn.read');
+        case 'see': return translate(langDict, 'btn.see');
+        case 'play': return translate(langDict, 'btn.play');
+        default: return translate(langDict, 'btn.read');
     }
 }
 
@@ -43,7 +43,7 @@ async function loadArticles(lang, langDict) {
         return `
             <article>
                 <header>
-                    <h2>${getValueWithFallback(langDict, `project.title.${project.name}`, formatDefaultTitle(project.name))}</h2>
+                    <h2>${translate(langDict, `project.title.${project.name}`)}</h2>
                     ${appendImageOrVideo(project)}
                 </header>
                 <div class="project-description">${projectDescription}</div>
@@ -63,9 +63,9 @@ async function loadArticles(lang, langDict) {
 export async function projects(lang, langDict) {
     return `
         <section id="projects">
-            <h2>${getValueWithFallback(langDict, 'title.projects', '&#10094;Projects&#10095;')}</h2>
+            <h2>${translate(langDict, 'title.projects')}</h2>
             <div class="articles-grid">${await loadArticles(lang, langDict)}</div>
-            <a class="button" href="https://git.niwer.dev?tab=repositories" target="_blank" rel="noopener noreferrer">${getValueWithFallback(langDict, 'explore.github', 'Explore my GitHub')}</a>
+            <a class="button" href="https://git.niwer.dev?tab=repositories" target="_blank" rel="noopener noreferrer">${translate(langDict, 'explore.github')}</a>
         </section>
     `;
 }

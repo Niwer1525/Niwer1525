@@ -1,4 +1,4 @@
-import { getValueWithFallback } from '../utils.js';
+import { translate } from '../utils.js';
 
 function createCard(iconClass, skillName) {
     return `
@@ -12,7 +12,7 @@ function createCard(iconClass, skillName) {
 export function skillsCards(langDict) {
   return `
     <section id="skills">
-        <h2>${getValueWithFallback(langDict, 'title.skills', 'Skills')}</h2>
+        <h2>${translate(langDict, 'title.skills')}</h2>
         <div class="flex-center-wrap">
             <!-- Game/App dev -->
             ${createCard('fa-brands fa-java', 'Java')}

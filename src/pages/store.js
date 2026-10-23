@@ -1,5 +1,5 @@
 import { defaultLayout } from '../components/layout.js';
-import { loadJson, getValueWithFallback } from '../utils.js';
+import { loadJson, translate } from '../utils.js';
 import { renderPackageCard } from '../components/store/packageCard.js';
 import { jumpBar } from '../components/nav.js';
 import { sectionAlert } from '../components/section_alerts.js';
@@ -61,22 +61,22 @@ export async function render(lang = 'en', langDict = {}) {
     
     const alertActionButon = `
         <a href="/panel" class="button" onclick="showPopupAndSwitchTab('auth-popup', 'login')">
-            ${getValueWithFallback(langDict, 'store.alert.action', 'Sign In')} <i class="fa-solid fa-arrow-right"></i>
+            ${translate(langDict, 'store.alert.action')} <i class="fa-solid fa-arrow-right"></i>
         </a>
     `;
 
     const content = `
         <div class="store-container">
-            ${jumpLinks.length > 0 ? jumpBar(langDict, 'Store Sections', getValueWithFallback(langDict, 'store.categories', 'Categories'), jumpLinks) : ''}
+            ${jumpLinks.length > 0 ? jumpBar(langDict, 'Store Sections', translate(langDict, 'store.categories'), jumpLinks) : ''}
             <div class="store-sections-wrapper">
-                ${sectionsHtml || `<article class="store-empty-card"><header><h2>${getValueWithFallback(langDict, 'store.no_packages', 'No packages available')}</h2></header><p>${getValueWithFallback(langDict, 'store.no_packages_copy', 'Try another category or come back later.')}</p></article>`}
+                ${sectionsHtml || `<article class="store-empty-card"><header><h2>${translate(langDict, 'store.no_packages')}</h2></header><p>${translate(langDict, 'store.no_packages_copy')}</p></article>`}
             </div>
         </div>
         <section>
             ${sectionAlert(
                 'fa-solid fa-basket-shopping', 
-                getValueWithFallback(langDict, 'store.alert.title', 'Already bought or subscribed to a product?'),
-                getValueWithFallback(langDict, 'store.alert.description', 'Sign in to access your downloads and licenses.'),
+                translate(langDict, 'store.alert.title'),
+                translate(langDict, 'store.alert.description'),
                 alertActionButon
         )}
         </section>
@@ -85,7 +85,7 @@ export async function render(lang = 'en', langDict = {}) {
     return defaultLayout({
         lang,
         langDict,
-        title: `${getValueWithFallback(langDict, 'btn.store', 'Store')} | Erwin Redoté (Niwer)`,
+        title: `${translate(langDict, 'btn.store')} | Erwin Redoté (Niwer)`,
         description: 'Explore software products, Minecraft mods, and development services by Erwin Redoté.',
         canonical: 'https://niwer.dev/store.html',
         content,

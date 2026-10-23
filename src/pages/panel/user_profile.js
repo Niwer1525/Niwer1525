@@ -4,7 +4,7 @@ import { editProfileModal } from '../../components/modals/edit_profile_modal.js'
 import { recoveryCodesModal } from '../../components/modals/recovery_codes_modal.js';
 import { totpModal } from '../../components/modals/totp_setup_modal.js';
 import { jumpBar } from '../../components/nav.js';
-import { getValueWithFallback } from '../../utils.js';
+import { translate } from '../../utils.js';
 
 function profileDetailTemplte() {
     return `
@@ -43,9 +43,9 @@ function entitlementTemplte() {
 
 export async function render(lang, langDict) {
     const content = `
-        ${jumpBar(langDict, 'User Profile Sections', getValueWithFallback(langDict, 'panel.user_profile', 'User Profile Sections'), [
-            { id: 'user-products', label: getValueWithFallback(langDict, 'panel.user_products', 'Your Products') },
-            { id: 'profile-details', label: getValueWithFallback(langDict, 'panel.profile_details', 'Your Profile') }
+        ${jumpBar(langDict, 'User Profile Sections', translate(langDict, 'panel.user_profile'), [
+            { id: 'user-products', label: translate(langDict, 'panel.user_products') },
+            { id: 'profile-details', label: translate(langDict, 'panel.profile_details') }
         ])}
         <section id="user-products">
             <h2>Your Products</h2>

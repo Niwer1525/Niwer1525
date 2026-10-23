@@ -1,13 +1,13 @@
 import { panelLayout } from '../../components/layout.js';
 import { jumpBar } from '../../components/nav.js';
-import { getValueWithFallback } from '../../utils.js';
+import { translate } from '../../utils.js';
 
 export async function render(lang, langDict) {
     const content = `
-        ${jumpBar(langDict, 'Admin Sections', getValueWithFallback(langDict, 'panel.admin', 'Admin Sections'), [
-            { id: 'sql', label: getValueWithFallback(langDict, 'panel.sql', 'Safe SQL') },
-            { id: 'data-table', label: getValueWithFallback(langDict, 'panel.data_table', 'Data Table') },
-            { id: 'blog-posts', label: getValueWithFallback(langDict, 'panel.blog_posts', 'Blog Posts') }
+        ${jumpBar(langDict, 'Admin Sections', translate(langDict, 'panel.admin'), [
+            { id: 'sql', label: translate(langDict, 'panel.sql') },
+            { id: 'data-table', label: translate(langDict, 'panel.data_table') },
+            { id: 'blog-posts', label: translate(langDict, 'panel.blog_posts') }
         ])}
         <section id="sql">
             <h2>Safe SQL</h2>

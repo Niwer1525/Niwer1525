@@ -1,10 +1,10 @@
-import { getValueWithFallback } from '../utils.js';
+import { translate } from '../utils.js';
 
-function createStatCard(langDict, id, label) {
+function createStatCard(langDict, id) {
   return `
     <div class="badge-card github-card">
         <span id="${id}">0</span>
-        <p>${getValueWithFallback(langDict, `github_stats.${id}`, label)}</p>
+        <p>${translate(langDict, `github_stats.${id}`)}</p>
     </div>
   `;
 }
@@ -12,22 +12,22 @@ function createStatCard(langDict, id, label) {
 export function stats(langDict) {
   return `
     <section id="stats">
-        <h2>${getValueWithFallback(langDict, "title.github_stats", "Statistics")}</h2>
+        <h2>${translate(langDict, "title.github_stats")}</h2>
         <div class="flex-center-wrap">
             <!-- Hours spent -->
             <div class="large-card-container">
                 <a class="badge-card github-card large-card" href="https://wakatime.com/Niwer" target="_blank" rel="noopener noreferrer">
                     <span id="coding_time">0h</span>
-                    <p>${getValueWithFallback(langDict, 'github_stats.coding_time', 'Coding Time <span id="coding_time_start_date">Since 2023</span>s')}</p>
+                    <p>${translate(langDict, 'github_stats.coding_time', 'Coding Time <span id="coding_time_start_date">Since 2023</span>s')}</p>
                     <i class="top-right-external-link fa-solid fa-arrow-up-right-from-square"></i>
                 </a>
             </div>
 
             <!-- Other stats -->
-            ${createStatCard(langDict, 'contributions', 'Contributions')}
-            ${createStatCard(langDict, 'total_issues', 'Total Issues')}
-            ${createStatCard(langDict, 'total_prs', 'Total PRs')}
-            ${createStatCard(langDict, 'total_stars', 'Total Stars')}
+            ${createStatCard(langDict, 'contributions')}
+            ${createStatCard(langDict, 'total_issues')}
+            ${createStatCard(langDict, 'total_prs')}
+            ${createStatCard(langDict, 'total_stars')}
         </div>
         <div class="chart-container">
             <div id="waka-language-filters" class="waka-language-filters"></div>

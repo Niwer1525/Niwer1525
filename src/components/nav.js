@@ -1,4 +1,4 @@
-import { getValueWithFallback, getAccessClassForType } from '../utils.js';
+import { translate, getAccessClassForType } from '../utils.js';
 
 function navigation(lang = 'en', langDict, buttons, additionalActionsContent = '') {
     return `
@@ -14,7 +14,7 @@ function navigation(lang = 'en', langDict, buttons, additionalActionsContent = '
                 <ul id="nav-links">
                     <!-- Navigation buttons -->
                     ${buttons.map(button => `
-                        <li id="${button.id || ''}" class="${getAccessClassForType(button.accessType)}"><a href="${button.url}" ${button.onClick ? `onclick="${button.onClick}"` : ''}>${getValueWithFallback(langDict, button.labelKey, button.defaultLabel)}</a></li>
+                        <li id="${button.id || ''}" class="${getAccessClassForType(button.accessType)}"><a href="${button.url}" ${button.onClick ? `onclick="${button.onClick}"` : ''}>${translate(langDict, button.labelKey)}</a></li>
                     `).join('')}
 
                     <!-- Theme Toggle and Language Selection -->
@@ -47,13 +47,13 @@ export function defaultNavigation(lang = 'en', langDict) {
     const indexUrl = lang === 'en' ? '/index.html' : `/${lang}/index.html`;
     const storeUrl = lang === 'en' ? '/store.html' : `/${lang}/store.html`;
     return navigation(lang, langDict, [
-        { url: `${indexUrl}#presentation`, labelKey: 'btn.about', defaultLabel: 'About' },
-        { url: `${indexUrl}#skills`, labelKey: 'btn.skills', defaultLabel: 'Skills' },
-        { url: `${indexUrl}#stats`, labelKey: 'btn.github_stats', defaultLabel: 'Statistics' },
-        { url: `${indexUrl}#projects`, labelKey: 'btn.projects', defaultLabel: 'Projects' },
-        { url: `${indexUrl}#gists`, labelKey: 'btn.gists', defaultLabel: 'Gists' },
-        { url: storeUrl, labelKey: 'btn.store', defaultLabel: 'Store' },
-        { url: '#', labelKey: 'btn.contact', defaultLabel: 'Contact', onClick: "showPopup('contact-popup')" }
+        { url: `${indexUrl}#presentation`, labelKey: 'btn.about' },
+        { url: `${indexUrl}#skills`, labelKey: 'btn.skills' },
+        { url: `${indexUrl}#stats`, labelKey: 'btn.github_stats' },
+        { url: `${indexUrl}#projects`, labelKey: 'btn.projects' },
+        { url: `${indexUrl}#gists`, labelKey: 'btn.gists' },
+        { url: storeUrl, labelKey: 'btn.store' },
+        { url: '#', labelKey: 'btn.contact', onClick: "showPopup('contact-popup')" }
     ]);
 }
 
@@ -65,11 +65,11 @@ export function panelNavigation(lang = 'en', langDict) {
     const adminUrl = lang === 'en' ? '/panel/admin.html' : `/${lang}/panel/admin.html`;
     const profileUrl = lang === 'en' ? '/panel/profile.html' : `/${lang}/panel/profile.html`;
     return navigation(lang, langDict, [
-        { url: `${indexUrl}`, labelKey: 'btn.home', defaultLabel: 'Home' },
-        { url: `${panelUrl}`, labelKey: 'btn.overview', defaultLabel: 'Overview' },
-        { url: `${downloadsUrl}`, labelKey: 'btn.downloads', defaultLabel: 'Downloads' },
-        { url: `${licensesUrl}`, labelKey: 'btn.licenses', defaultLabel: 'Licenses', accessType: 'buyer' },
-        { url: `${adminUrl}`, labelKey: 'btn.admin', defaultLabel: 'Admin', accessType: 'admin' },
+        { url: `${indexUrl}`, labelKey: 'btn.home' },
+        { url: `${panelUrl}`, labelKey: 'btn.overview' },
+        { url: `${downloadsUrl}`, labelKey: 'btn.downloads' },
+        { url: `${licensesUrl}`, labelKey: 'btn.licenses', accessType: 'buyer' },
+        { url: `${adminUrl}`, labelKey: 'btn.admin', accessType: 'admin' },
     ], `
         <div class="dashboard-actions-grid">
             <!-- Sign In button will be shown when the user is not authenticated, while the Profile and Logout buttons will be shown when the user is authenticated. -->

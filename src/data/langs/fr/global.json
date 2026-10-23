@@ -61,6 +61,8 @@
     "store.alert.title": "Déjà acheté ou souscrit à un produit ?",
     "store.alert.description": "Connectez-vous pour accéder à vos téléchargements et licences.",
     "store.alert.action": "Se connecter",
+    "store.purchase_detected": "Achat détecté",
+    "store.pending_checkout": "Nous avons remarqué que vous avez une session de paiement en attente. Connectez-vous ou inscrivez-vous pour la lier automatiquement.",
 
     "_comment_projects": "Projects/Articles",
     "projects.loading": "Chargement des projets...",

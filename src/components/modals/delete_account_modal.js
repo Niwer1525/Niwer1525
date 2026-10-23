@@ -1,4 +1,4 @@
-import { getValueWithFallback } from '../../utils.js';
+import { translate } from '../../utils.js';
 import { basicModal } from './modal.js';
 
 const CONFIRMATION_PHRASE = 'DELETE MY ACCOUNT';

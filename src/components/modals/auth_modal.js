@@ -1,4 +1,4 @@
-import { getValueWithFallback } from '../../utils.js';
+import { translate } from '../../utils.js';
 import { multiTabModal } from './modal.js';
 
 function login(langDict) {
@@ -60,7 +60,7 @@ function register(langDict) {
 
 export function authModal(langDict) {
 	return multiTabModal(langDict, 'auth-popup', [
-		{ id: 'login', titleKey: 'modal.login', defaultTitle: 'Login', content: login(langDict), isActive: true },
-		{ id: 'register', titleKey: 'modal.register', defaultTitle: 'Register', content: register(langDict) }
+		{ id: 'login', titleKey: 'modal.login', content: login(langDict), isActive: true },
+		{ id: 'register', titleKey: 'modal.register', content: register(langDict) }
 	], twoFactorAuth(langDict));
 }

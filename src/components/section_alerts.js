@@ -1,4 +1,4 @@
-import { getValueWithFallback } from '../utils.js';
+import { translate } from '../utils.js';
 
 export function sectionAlert(iconClass, title, message, actionButton = '') {
     return `
@@ -27,8 +27,8 @@ export function purchaseAlert(langDict) {
         <section id="purchase-alert" class="hidden">
             ${sectionAlert(
                 'fa-solid fa-basket-shopping',
-                getValueWithFallback(langDict, 'store.purchase_detected', 'Purchase Detected'),
-                getValueWithFallback(langDict, 'store.pending_checkout', 'We noticed you have a pending checkout session. Sign in or register to link it automatically.'),
+                translate(langDict, 'store.purchase_detected'),
+                translate(langDict, 'store.pending_checkout'),
                 actionButon
             )}
         </section>

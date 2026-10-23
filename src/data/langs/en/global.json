@@ -61,6 +61,8 @@
     "store.alert.title": "Already bought or subscribed to a product?",
     "store.alert.description": "Sign in to access your downloads and licenses.",
     "store.alert.action": "Sign In",
+    "store.purchase_detected": "Purchase Detected",
+    "store.pending_checkout": "We noticed you have a pending checkout session. Sign in or register to link it automatically.",
 
     "_comment_projects": "Projects/Articles",
     "projects.loading": "Loading projects...",

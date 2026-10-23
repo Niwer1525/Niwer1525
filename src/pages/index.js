@@ -3,32 +3,32 @@ import { skillsCards } from '../components/skills.js';
 import { gists } from '../components/gists.js';
 import { stats } from '../components/stats.js';
 import { defaultLayout } from '../components/layout.js';
-import { getValueWithFallback } from '../utils.js';
+import { translate } from '../utils.js';
 
 export async function render(lang, langDict) {
   const content = `
     <section id="presentation">
       <div>
         <h1>REDOTÉ Erwin</h1>
-        <p>${getValueWithFallback(langDict, 'content_aboute_me', 'Self-taught developer, passionate about code and backend architecture.')}</p>
+        <p>${translate(langDict, 'content_aboute_me')}</p>
         
         <!-- Open to Work Badge -->
         <div class="flex-center-wrap open-to-work-badge">
             <span class="badge-item">
                 <i class="fa-solid fa-briefcase"></i>
-                <span>${getValueWithFallback(langDict, 'badge.open_to_work', 'Open to Work')}</span>
+                <span>${translate(langDict, 'badge.open_to_work')}</span>
             </span>
             <span class="badge-item">
                 <i class="fa-solid fa-globe"></i>
-                <span>${getValueWithFallback(langDict, 'badge.remote', 'Remote')}</span>
+                <span>${translate(langDict, 'badge.remote')}</span>
             </span>
             <span class="badge-item">
                 <i class="fa-solid fa-handshake"></i>
-                <span>${getValueWithFallback(langDict, 'badge.freelance', 'Freelance')}</span>
+                <span>${translate(langDict, 'badge.freelance')}</span>
             </span>
             <span class="badge-item">
                 <i class="fa-solid fa-clock"></i>
-                <span>${getValueWithFallback(langDict, 'badge.available', 'Available: Immediately')}</span>
+                <span>${translate(langDict, 'badge.available')}</span>
             </span>
         </div>
       </div>
