@@ -12,10 +12,10 @@ function tabNavigation(langDict, id, tabs = []) {
 	`;
 }
 
-export function multiTabModal(langDict, id, tabs = [], additionalContent = '') {
+export function multiTabModal(langDict, id, largeModal = false, tabs = [], additionalContent = '') {
 	return `
 		<div id="${id}" class="modal-overlay">
-			<div class="modal">
+			<div class="modal ${largeModal ? 'large-modal' : ''}">
 				${tabNavigation(langDict, id, tabs)}
 				${tabs.map(tab => `
 					<form id="${id}-${tab.id}-form" data-tab="${tab.id}" class="${!tab.isActive ? 'hidden' : ''}">
@@ -31,10 +31,10 @@ export function multiTabModal(langDict, id, tabs = [], additionalContent = '') {
 	`;
 }
 
-export function basicModal(langDict, id, fromContent) {
+export function basicModal(langDict, id, largeModal = false, fromContent) {
 	return `
 		<div id="${id}" class="modal-overlay">
-			<div class="modal">
+			<div class="modal ${largeModal ? 'large-modal' : ''}">
 				<form id="${id}-form">
 					<button type="button" id="close" onclick="hidePopup('${id}')">
 						<i class="fa-solid fa-xmark"></i>

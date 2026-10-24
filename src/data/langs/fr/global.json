@@ -26,6 +26,7 @@
     "btn.new_license": "Nouvelle licence",
     "btn.signin": "Se connecter",
     "btn.run_query": "Exécuter la requête",
+    "btn.create_post": "Créer un article",
 
     "btn.title.enable2fa": "Activer l'authentification à deux facteurs",
     "btn.title.edit_profile": "Modifier le profil",
@@ -106,6 +107,9 @@
     "form.totp_recovery.title": "Codes de récupération pour l'authentification à deux facteurs",
     "form.totp_recovery.description": "Ces codes peuvent être utilisés pour accéder à votre compte si vous perdez l'accès à votre application d'authentification. Conservez-les dans un endroit sûr.",
     "form.totp_recovery.action": "J'ai sauvegardé mes codes de récupération",
+    "form.create_post.title": "Créer un nouvel article",
+    "form.create_post.description.scheduled_at": "Planifiez l'article pour une date et une heure futures. Laissez vide pour publier immédiatement.",
+    "form.create_post.action": "Créer l'article",
 
     "_comment_stats": "Stats",
     "github_stats.coding_time": "Temps passé à coder depuis <span id=\"coding_time_start_date\">2023</span>",
@@ -143,6 +147,18 @@
     "_comment_sql": "SQL",
     "sql_placeholder_results": "Les résultats apparaîtront ici...",
     "sql.table.select_option": "Sélectionnez une table",
+
+    "_comment_blog": "Blog",
+    "blog.table_header.slug": "Slug",
+    "blog.table_header.lang": "Langue",
+    "blog.table_header.title": "Titre",
+    "blog.table_header.summary": "Résumé",
+    "blog.table_header.status": "Statut",
+    "blog.table_header.published_at": "Publié le",
+    "blog.table_header.created_at": "Créé le",
+    "blog.table_header.updated_at": "Mis à jour le",
+    "blog.table_header.actions": "Actions",
+    "blog.loading": "Chargement des articles...",
 
     "_comment_store": "Store",
     "store.categories": "Catégories",

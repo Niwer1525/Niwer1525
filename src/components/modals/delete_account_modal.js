@@ -4,7 +4,7 @@ import { basicModal } from './modal.js';
 const CONFIRMATION_PHRASE = 'DELETE MY ACCOUNT';
 
 export function deleteAccountModal(langDict) {
-    return basicModal(langDict, 'delete-account-popup', `
+    return basicModal(langDict, 'delete-account-popup', false, `
         <h2>
             <i class="fa-solid fa-triangle-exclamation text-danger"></i>
             ${translate(langDict, 'form.delete_account.title')}
@@ -17,7 +17,7 @@ export function deleteAccountModal(langDict) {
             <input type="password" name="password" required placeholder="••••••••">
         </label>
         <label id="totp-login-code" class="hidden">
-            <i class="fa-solid fa-key left-icon"></i>
+            <i class="fa-solid fa-key"></i>
             <input class="totp-code" type="text" name="code" pattern="[0-9]{6}" maxlength="6" inputmode="numeric" autocomplete="one-time-code" required disabled placeholder="123456">
             <span class="text-secondary">${translate(langDict, 'form.delete_account.description.authenticator_code')}</span>
         </label>

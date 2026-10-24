@@ -2,7 +2,7 @@ import { translate } from '../../utils.js';
 import { basicModal } from './modal.js';
 
 export function totpModal(langDict) {
-	return basicModal(langDict, 'totp-setup-popup', `
+	return basicModal(langDict, 'totp-setup-popup', false, `
 		<h2>${translate(langDict, 'form.totp_setup.title')}</h2>
 		<p class="text-secondary">${translate(langDict, 'form.totp_setup.description')}</p>
 		<div id="totp-qr-container" class="qr-code">

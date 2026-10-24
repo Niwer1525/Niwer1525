@@ -1,4 +1,5 @@
 import { panelLayout } from '../../components/layout.js';
+import { createPostModal } from '../../components/modals/create_post_modal.js';
 import { jumpBar } from '../../components/nav.js';
 import { translate } from '../../utils.js';
 
@@ -35,8 +36,36 @@ export async function render(lang, langDict) {
         </section>
         <section id="blog-posts">
             <h2>Blog Posts</h2>
-            <p>This section is under construction. You can view and manage blog posts here in the future.</p>
+            <div class="section-actions">
+                <button onclick="showPopup('create-post-popup')">
+                    <i class="fa-solid fa-plus"></i>
+                    ${translate(langDict, 'btn.create_post')}
+                </button>
+            </div>
+            <div class="table-container">
+                <table id="blogTable">
+                    <thead id="dataTableHead">
+                        <tr>
+                            <th>${translate(langDict, 'blog.table_header.slug')}</th>
+                            <th>${translate(langDict, 'blog.table_header.lang')}</th>
+                            <th>${translate(langDict, 'blog.table_header.title')}</th>
+                            <th>${translate(langDict, 'blog.table_header.summary')}</th>
+                            <th>${translate(langDict, 'blog.table_header.status')}</th>
+                            <th>${translate(langDict, 'blog.table_header.published_at')}</th>
+                            <th>${translate(langDict, 'blog.table_header.created_at')}</th>
+                            <th>${translate(langDict, 'blog.table_header.updated_at')}</th>
+                            <th>${translate(langDict, 'blog.table_header.actions')}</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dataTableBody">
+                         <tr>
+                            <td colspan="5">${translate(langDict, "blog.loading")}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
+        ${createPostModal(langDict)}
     `;
 
     return panelLayout({

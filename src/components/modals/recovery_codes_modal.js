@@ -2,7 +2,7 @@ import { translate } from '../../utils.js';
 import { basicModal } from './modal.js';
 
 export function recoveryCodesModal(langDict) {
-    return basicModal(langDict, 'recovery-codes-popup', `
+    return basicModal(langDict, 'recovery-codes-popup', false, `
         <h2>${translate(langDict, 'form.totp_recovery.title')}</h2>
         <p class="text-secondary">
             ${translate(langDict, 'form.totp_recovery.description')}

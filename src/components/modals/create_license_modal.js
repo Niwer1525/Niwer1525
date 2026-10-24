@@ -2,7 +2,7 @@ import { translate } from '../../utils.js';
 import { basicModal } from './modal.js';
 
 export function createLicenseModal(langDict) {
-  return basicModal(langDict, 'create-license-popup', `
+  return basicModal(langDict, 'create-license-popup', false, `
     <h2>${translate(langDict, "form.license.title")}</h2>
     <label>
         <i class="fa-solid fa-tag"></i>

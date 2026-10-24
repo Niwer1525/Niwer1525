@@ -29,6 +29,7 @@
     "btn.back_to_home": "Back to Home",
     "explore.github": "Explore my github for more",
     "explore.gists": "See my other Gists",
+    "btn.create_post": "Create a post",
 
     "btn.title.enable2fa": "Enable Two-Factor Authentication",
     "btn.title.edit_profile": "Edit Profile",
@@ -110,6 +111,9 @@
     "form.totp_recovery.title": "Two-Factor Authentication Recovery Codes",
     "form.totp_recovery.description": "These codes can be used to access your account if you lose access to your authenticator app. Store them in a safe place.",
     "form.totp_recovery.action": "I've saved my recovery codes",
+    "form.create_post.title": "Create a New Post",
+    "form.create_post.description.scheduled_at": "Schedule the post for a future date and time. Leave blank to publish immediately.",
+    "form.create_post.action": "Create Post",
 
     "_comment_stats": "Stats",
     "github_stats.coding_time": "Coding Time Since <span id=\"coding_time_start_date\">2023</span>",
@@ -147,6 +151,18 @@
     "_comment_sql": "SQL",
     "sql_placeholder_results": "Results will be displayed here...",
     "sql.table.select_option": "Select a table",
+
+    "_comment_blog": "Blog",
+    "blog.table_header.slug": "Slug",
+    "blog.table_header.lang": "Language",
+    "blog.table_header.title": "Title",
+    "blog.table_header.summary": "Summary",
+    "blog.table_header.status": "Status",
+    "blog.table_header.published_at": "Published at",
+    "blog.table_header.created_at": "Created at",
+    "blog.table_header.updated_at": "Updated at",
+    "blog.table_header.actions": "Actions",
+    "blog.loading": "Loading posts...",
 
     "_comment_store": "Store",
     "store.categories": "Categories",

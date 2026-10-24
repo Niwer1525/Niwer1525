@@ -61,7 +61,7 @@ function register(langDict) {
 }
 
 export function authModal(langDict) {
-	return multiTabModal(langDict, 'auth-popup', [
+	return multiTabModal(langDict, 'auth-popup', false, [
 		{ id: 'login', titleKey: 'modal.login', content: login(langDict), isActive: true },
 		{ id: 'register', titleKey: 'modal.register', content: register(langDict) }
 	], twoFactorAuth(langDict));
