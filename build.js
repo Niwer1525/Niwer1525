@@ -13,6 +13,7 @@ import { render as renderPanelDownloads } from './src/pages/panel/downloads.js';
 import { render as renderPanelLicenses } from './src/pages/panel/licenses.js';
 import { render as renderPanelAdmin } from './src/pages/panel/admin.js';
 import { render as renderPanelProfile } from './src/pages/panel/user_profile.js';
+import { render as render404 } from './src/pages/errors/404.js';
 
 const MINIFY_OPTIONS = {
     collapseWhitespace: true,
@@ -30,7 +31,8 @@ const PAGES = [
     { file: 'panel/downloads.html', render: renderPanelDownloads },
     { file: 'panel/licenses.html', render: renderPanelLicenses },
     { file: 'panel/admin.html', render: renderPanelAdmin },
-    { file: 'panel/profile.html', render: renderPanelProfile }
+    { file: 'panel/profile.html', render: renderPanelProfile },
+    { file: '404.html', render: render404, locale: ['en'] }
 ];
 
 async function processStaticFiles(srcDir, destDir) {
@@ -47,7 +49,7 @@ async function processStaticFiles(srcDir, destDir) {
             if (entry.isDirectory()) await processStaticFiles(srcPath, destPath); // Recursively process subdirectories
             else if (entry.isFile()) {
                 const ext = path.extname(entry.name).toLowerCase();
-				if(ext !== '.html' && ext !== '.css' && ext !== '.js') { 
+				if(ext !== '.html' && ext !== '.css' && ext !== '.js') {
 					await fs.copyFile(srcPath, destPath); // Copy other files as-is
 					continue;
 				}
@@ -96,7 +98,8 @@ async function build() {
         const dict = JSON.parse(await fs.readFile(jsonPath, 'utf8'));
         const outFolder = lang === 'en' ? distDir : path.join(distDir, lang);
 
-        for (const { file, render } of PAGES) {
+        for (const { file, render, locale } of PAGES) {
+            if (locale && !locale.includes(lang)) continue;
             const html = await render(lang, dict);
             const minifiedHtml = await minify(html, MINIFY_OPTIONS);
             const destPath = path.join(outFolder, file);

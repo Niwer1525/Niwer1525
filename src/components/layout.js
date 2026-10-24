@@ -133,3 +133,19 @@ export function panelLayout({ page, lang = 'en', langDict = [], title, descripti
         additionalScripts
     });
 }
+
+export function errorLayout({ lang = 'en', langDict = [], title, description, canonical, content, additionalScripts = [] }) {
+    return layout({
+        title,
+        description,
+        canonical,
+        body: `
+            <main>
+                ${content}
+                ${contactModal(langDict)}
+            </main>
+            ${footer(lang, langDict)}
+        `,
+        additionalScripts
+    });
+}

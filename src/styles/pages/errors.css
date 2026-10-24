@@ -1,0 +1,17 @@
+.error-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.error-page svg .accent {
+    fill: var(--accent-color);
+}
+.error-page svg .shadow {
+    stroke: var(--text-secondary);
+}
+.error-page p {
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+}

@@ -36,6 +36,10 @@
     "description.unavailable": "Description indisponible.",
     "description.sign_in_required": "Connectez-vous pour voir ce contenu.",
 
+    "_comment_errors": "Errors",
+    "404_title": "404 - Page non trouvée",
+    "404_description": "La page que vous recherchez a peut-être été supprimée, son nom a été modifié ou elle est temporairement indisponible.",
+
     "_comment_other": "Other",
     "made_by": "Fait avec ❤️ par Niwer",
     "copyright": "Copyright - Tous droits réservés",

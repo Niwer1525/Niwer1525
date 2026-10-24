@@ -26,6 +26,7 @@
     "btn.new_license": "New license",
     "btn.signin": "Sign In",
     "btn.run_query": "Run query",
+    "btn.back_to_home": "Back to Home",
     "explore.github": "Explore my github for more",
     "explore.gists": "See my other Gists",
 
@@ -37,6 +38,10 @@
 
     "description.unavailable": "Description unavailable.",
     "description.sign_in_required": "Sign in to view this content.",
+
+    "_comment_errors": "Errors",
+    "404_title": "404 - Page Not Found",
+    "404_description": "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.",
 
     "_comment_other": "Other",
     "made_by": "Made with ❤️ by Niwer",
