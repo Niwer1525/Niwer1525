@@ -46,7 +46,7 @@ export async function renderPackageCard(pkg, { lang, langDict, defaultCurrency, 
         : translate(langDict, 'btn.buy_now');
 
     return `
-        <article data-package-id="${pkg.id}" ${pkg.price_id ? `data-price-id="${pkg.price_id}"` : ''}>
+        <article class="store-package-card" data-package-id="${pkg.id}" ${pkg.price_id ? `data-price-id="${pkg.price_id}"` : ''}>
             <header class="store-package-header">
                 <div>
                     <h3>${pkg.name || formatDefaultTitle(pkg.slug || 'Package')}</h3>
