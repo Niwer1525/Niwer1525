@@ -7,7 +7,7 @@ async function loadTablesList() {
     if (!sel) return;
 
     try {
-        const tables = await api('/api/admin/tables');
+        const tables = await api('/admin/tables');
         if (!tables || !tables.length) {
             sel.innerHTML = '<option value="">No tables available</option>';
             document.getElementById('dataTableBody').innerHTML = '<tr><td class="text-secondary">No tables found on server.</td></tr>';
@@ -30,7 +30,7 @@ async function executeAdminSql() {
     if (!input || !output || !input.value.trim()) return;
     if (!window.confirm('Run this restricted SQL? UPDATE statements are backed up first.')) return;
     try {
-        const result = await api('/api/admin/sql', { method: 'POST', body: JSON.stringify({ sql: input.value }) });
+        const result = await api('/admin/sql', { method: 'POST', body: JSON.stringify({ sql: input.value }) });
         output.textContent = JSON.stringify(result, null, 2);
     } catch (error) {
         output.textContent = error.message;
@@ -47,7 +47,7 @@ async function loadTableData() {
     if (!table || !head || !body) return;
 
     try {
-        const data = await api(`/api/admin/tables/${encodeURIComponent(table)}?limit=${limit}`);
+        const data = await api(`/admin/tables/${encodeURIComponent(table)}?limit=${limit}`);
 
         if (!data.columns || !data.rows.length) {
             head.innerHTML = '<tr><th>Notice</th></tr>';

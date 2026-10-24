@@ -108,7 +108,7 @@ export async function api(path, options = {}) {
         if (panelState.userToken) headers.set('X-Photon-User-Token', panelState.userToken);
 
         const method = (options.method || 'GET').toUpperCase();
-        if (path.startsWith('/api/admin') && ['POST', 'PUT', 'DELETE', 'PATCH'].includes(method)) {
+        if (path.startsWith('/admin') && ['POST', 'PUT', 'DELETE', 'PATCH'].includes(method)) {
             const cookie = document.cookie.split(';').map((c) => c.trim()).find((c) => c.startsWith('photon_csrf='));
             if (cookie) headers.set('X-CSRF-Token', decodeURIComponent(cookie.split('=')[1] || ''));
         }

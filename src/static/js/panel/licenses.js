@@ -117,7 +117,7 @@ export async function createLicense(e) {
         if (formData.get('duration_days')) payload.duration_days = Number(formData.get('duration_days'));
 
         try {
-            await api('/accounts/licenses', { method: 'POST', body: JSON.stringify(payload) });
+            await api('/accounts/licenses/create', { method: 'POST', body: JSON.stringify(payload) });
             closeModals();
             form.reset();
             createNotification('License created', 'success');

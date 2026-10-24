@@ -48,7 +48,7 @@ export async function loadPublicServers() {
     }
 
     try {
-        const servers = await api('/api/status/servers');
+        const servers = await api('/servers/status');
         if (!servers?.length) return (grid.innerHTML = '<p>No servers online.</p>');
 
         const fragment = document.createDocumentFragment();
