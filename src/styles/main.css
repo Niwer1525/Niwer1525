@@ -9,6 +9,7 @@
 @import "./components/modal.css";
 @import "./components/cards.css";
 @import "./components/table.css";
+@import "./components/bubbles.css";
 
 @import "./pages/home.css";
 @import "./pages/store.css";

@@ -15,6 +15,7 @@ import { render as renderPanelLicenses } from './src/pages/panel/licenses.js';
 import { render as renderPanelAdmin } from './src/pages/panel/admin.js';
 import { render as renderPanelProfile } from './src/pages/panel/user_profile.js';
 import { render as render404 } from './src/pages/errors/404.js';
+import { render as renderDigitalId } from './src/pages/digital_id.js';
 
 const MINIFY_OPTIONS = {
     collapseWhitespace: true,
@@ -36,7 +37,8 @@ const PAGES = [
     { file: 'panel/licenses.html', render: renderPanelLicenses },
     { file: 'panel/admin.html', render: renderPanelAdmin },
     { file: 'panel/profile.html', render: renderPanelProfile },
-    { file: '404.html', render: render404, locale: ['en'] }
+    { file: '404.html', render: render404, locale: ['en'] },
+    { file: 'digital-id.html', render: renderDigitalId, locale: ['en'] }
 ];
 
 async function processStaticFiles(srcDir, destDir) {

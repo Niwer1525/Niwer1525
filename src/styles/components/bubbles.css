@@ -1,45 +1,10 @@
-:root {
-    /* CSS Copyright - Made by Niwer */
-    --bg-color: #f7f7fb;
-    --surface-glass: rgba(255, 255, 255, 0.75);
-    --text-primary: #1a1a1a;
-    --text-secondary: #4a4a4a;
-    --border-color: rgba(0, 0, 0, 0.12);
-
-    /* Functional */
-    --border-radius: 16px;
-
-    /* Accent */
-    --accent-color: #7c3aed;
-    --accent-glow: rgba(124, 58, 237, 0.25);
-}
-
-/* Base Reset & Typography */
-html {
-    scroll-behavior: smooth;
-    box-sizing: border-box;
-}
-
-*, *:before, *:after {
-    box-sizing: inherit;
-}
-
-body {
-    margin: 0;
-    padding: 0;
-    background-color: var(--bg-color);
-    font-family: 'Roboto', 'Segoe UI', sans-serif;
-    line-height: 1.6;
-    overflow-x: hidden;
-}
-
-section { /* The showcase container on this page */
+.bubbles-container { /* The showcase container on this page */
     padding: 2rem 0;
     position: relative;
     max-width: 800px;
     margin: 0 auto;
 }
-section::before { /* The vertical line */
+.bubbles-container::before { /* The vertical line */
     content: '';
     position: absolute;
     top: 0;
@@ -70,21 +35,6 @@ section::before { /* The vertical line */
     padding-left: 3rem;
     padding-right: 0;
 }
-
-/* The dots on the main line */
-/* .bubble::after {
-    content: '';
-    position: absolute;
-    top: 20px;
-    width: 12px;
-    height: 12px;
-    background: var(--bg-color);
-    border: 2px solid var(--accent-color);
-    border-radius: 50%;
-    box-shadow: 0 0 10px var(--accent-glow);
-    z-index: 2;
-} */
-
 .bubble:nth-child(odd)::after {
     right: -8px;
 }
@@ -96,6 +46,7 @@ section::before { /* The vertical line */
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
     background: var(--surface-glass);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
@@ -105,20 +56,20 @@ section::before { /* The vertical line */
 .bubble-content i {
     font-size: 1.5rem;
 }
-a {
+.bubble a {
     color: var(--text-secondary);
     text-decoration: none;
     font-style: italic;
     border-bottom: 1px dashed var(--accent-color);
 }
-a:hover {
+.bubble a:hover {
     color: var(--accent-color);
     border-bottom: 1px dashed var(--accent-color);
 }
 
 /* Responsiveness */
 @media (max-width: 768px) {
-    section::before { left: 20px; }
+    .bubbles-container::before { left: 20px; }
     
     .bubble {
         width: 100%;
@@ -126,11 +77,6 @@ a:hover {
         padding-right: 0 !important;
         text-align: left !important;
     }
-    
-    /* .bubble::after {
-        left: 14px !important;
-        right: auto !important;
-    } */
 
     .bubble:nth-child(odd), .bubble:nth-child(even) {
         left: 0;
