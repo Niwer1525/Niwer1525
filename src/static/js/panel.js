@@ -1,6 +1,5 @@
 import { loadState, saveState, clearState } from './utils/storage.js';
-
-const API_BASE = process.env.API_BASE_URL || 'https://panel.niwer.dev'; // Get the correct API base URL from environment variables or use the default
+import { apiRequest } from './utils/api.js';
 
 /**
  * Core Application State
@@ -117,18 +116,15 @@ export async function api(path, options = {}) {
         const isURLSearch = options.body instanceof URLSearchParams;
         if (options.body && !isFormData && !isURLSearch && !headers.has('Content-Type')) headers.set('Content-Type', 'application/json');
 
-        const res = await fetch(API_BASE + path, { credentials: 'include', ...options, headers });
-        const contentType = res.headers.get('content-type') || '';
-        const payload = contentType.includes('json') ? await res.json() : await res.text();
-
-        if (res.ok) return payload;
-        if (attempt === 0 && retryable && (res.status === 401 || res.status === 403)
+        try {
+            return await apiRequest(path, { ...options, headers });
+        } catch (error) {
+            if (attempt === 0 && retryable && (error.status === 401 || error.status === 403)
             && panelState.refreshToken && await refreshSession()) continue;
 
-        const error = new Error(typeof payload === 'string' ? payload : payload?.message || res.statusText);
-        error.status = res.status;
-        console.error('API request failed:', error, { path, options, status: res.status, payload });
-        throw error;
+            console.error('API request failed:', error, { path, options, status: error.status });
+            throw error;
+        }
     }
 }
 
@@ -136,16 +132,10 @@ export async function refreshSession() {
     if (!panelState.refreshToken) return false;
 
     try {
-        const res = await fetch(API_BASE + '/accounts/refresh', {
+        const payload = await apiRequest('/accounts/refresh', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
             body: JSON.stringify({ refreshToken: panelState.refreshToken })
         });
-        
-        if (!res.ok) throw new Error('Refresh failed with status ' + res.status);
-
-        const payload = await res.json();
         const newToken = payload.token || '';
         
         // Update both token formats

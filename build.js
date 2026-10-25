@@ -7,6 +7,7 @@ import { transform as transformJs } from 'esbuild';
 /* Import page renderers */
 import { render as renderIndex } from './src/pages/index.js';
 import { render as renderStore } from './src/pages/store.js';
+import { render as renderBlog } from './src/pages/blog.js';
 import { render as renderLegal } from './src/pages/legal.js';
 import { render as renderPanel } from './src/pages/panel.js';
 import { render as renderPanelDownloads } from './src/pages/panel/downloads.js';
@@ -23,9 +24,12 @@ const MINIFY_OPTIONS = {
     minifyJS: true
 };
 
+const API_BASE_URL = process.env.API_BASE_URL || (process.env.NODE_ENV === 'production' ? 'https://panel.niwer.dev' : 'http://localhost:17070');
+
 const PAGES = [
     { file: 'index.html', render: renderIndex },
     { file: 'store.html', render: renderStore },
+    { file: 'blog.html', render: renderBlog },
     { file: 'legal.html', render: renderLegal },
     { file: 'panel.html', render: renderPanel },
     { file: 'panel/downloads.html', render: renderPanelDownloads },
@@ -37,8 +41,6 @@ const PAGES = [
 
 async function processStaticFiles(srcDir, destDir) {
     try {
-        const API_BASE_URL = process.env.API_BASE_URL || (process.env.NODE_ENV === 'production' ? 'https://panel.niwer.dev' : 'http://localhost:17070');
-
         const entries = await fs.readdir(srcDir, { withFileTypes: true });
         await fs.mkdir(destDir, { recursive: true });
 
@@ -100,7 +102,7 @@ async function build() {
 
         for (const { file, render, locale } of PAGES) {
             if (locale && !locale.includes(lang)) continue;
-            const html = await render(lang, dict);
+            const html = await render(lang, dict, { apiBaseUrl: API_BASE_URL });
             const minifiedHtml = await minify(html, MINIFY_OPTIONS);
             const destPath = path.join(outFolder, file);
 

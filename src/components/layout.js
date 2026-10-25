@@ -13,10 +13,10 @@ function addScripts(scripts) {
     }).join('\n');
 }
 
-function layout({ title = 'Default Title', description = '', canonical = '', body = '', additionalScripts = [] }) {
+function layout({ title = 'Default Title', description = '', canonical = '', lang = 'en', body = '', additionalScripts = [] }) {
     return `
         <!DOCTYPE html>
-        <html lang="en">
+        <html lang="${lang}">
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,7 +35,7 @@ function layout({ title = 'Default Title', description = '', canonical = '', bod
                 <meta property="og:image" content="https://niwer.dev/assets/profile.webp">
 
                 <link rel="stylesheet" href="/assets/main.css">
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css">
                 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
             </head>
             <body>
@@ -110,6 +110,7 @@ export function defaultLayout({ page, lang = 'en', langDict = [], title, descrip
         title,
         description,
         canonical,
+        lang,
         body: `
             ${defaultNavigation(page, lang, langDict)}
             <main>
@@ -127,6 +128,7 @@ export function panelLayout({ page, lang = 'en', langDict = [], title, descripti
         title,
         description,
         canonical,
+        lang,
         body: `
             ${panelNavigation(page, lang, langDict)}
             <main>
@@ -145,6 +147,7 @@ export function errorLayout({ lang = 'en', langDict = [], title, description, ca
         title,
         description,
         canonical,
+        lang,
         body: `
             <main>
                 ${content}
