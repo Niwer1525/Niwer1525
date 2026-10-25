@@ -1,4 +1,4 @@
-import { GITHUB_USERNAME } from './main.js';
+import { GITHUB_USERNAME, onDomReady } from './main.js';
 
 /* Client script */
 const STRIPE_DATA_URL = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_USERNAME}/data/stripe_catalog.json`;
@@ -69,10 +69,9 @@ async function hydrateStripePrices() {
     }
 }
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initCarousels, { once: true });
-    document.addEventListener('DOMContentLoaded', hydrateStripePrices, { once: true });
-} else {
-    hydrateStripePrices();
+onDomReady(() => {
+    if (!document.querySelector('.store-image-carousel') && !document.querySelector('.store-package-card[data-price-id]')) return;
+
     initCarousels();
-}
+    hydrateStripePrices();
+});

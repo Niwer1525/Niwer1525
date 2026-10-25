@@ -1,4 +1,4 @@
-import { CONFIRMATION_PHRASE, handleFormSubmit } from '../main.js';
+import { CONFIRMATION_PHRASE, getPagePath, handleFormSubmit, onDomReady } from '../main.js';
 import { panelState, updateAuthenticatedVisibility } from '../panel.js';
 import { loadAdminPanel, createBlogPost, editBlogPost } from '../panel/admin.js';
 import { confirm2FASetup, login, register, requestAccountDeletion, restoreSession, submit2FALogin, updateProfile } from '../panel/auth.js';
@@ -72,14 +72,11 @@ document.addEventListener('submit', function(e) {
 });
 
 /* On document loaded */
-document.addEventListener('DOMContentLoaded', async () => {
+onDomReady(async () => {
     console.log(`%c Niwer's Portfolio - Made with ❤️`, 'background: #000000; color: #d8b4fe; padding: 4px 8px; border-radius: 4px; font-size: 14px;');
     
     /* Handle specific loading action depending on the current path */
-    let currentPath = window.location.pathname;
-    currentPath = currentPath.replace(/^\/[a-z]{2}(-[a-z]{2})?(?=\/|$)/i, '') || '/'; // Remove language prefix if present (e.g., /en, /en-US)
-    if (currentPath.endsWith('.html')) currentPath = currentPath.slice(0, -5); // Remove .html extension for consistency
-    if (currentPath.endsWith('/') && currentPath.length > 1) currentPath = currentPath.slice(0, -1); // Remove trailing slash for non-root paths
+    const currentPath = getPagePath();
     console.debug(`Current path: ${currentPath}`);
 
     /* If we're on the panel page or a sub page of it */

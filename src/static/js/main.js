@@ -4,6 +4,24 @@ import { createNotification } from './utils/toast.js';
 export const GITHUB_USERNAME = 'Niwer1525';
 export const CONFIRMATION_PHRASE = 'DELETE MY ACCOUNT';
 
+export function onDomReady(callback) {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', callback, { once: true });
+        return;
+    }
+
+    callback();
+}
+
+export function getPagePath(pathname = window.location.pathname) {
+    const path = pathname
+        .replace(/^\/[a-z]{2}(-[a-z]{2})?(?=\/|$)/i, '')
+        .replace(/\.html$/, '')
+        .replace(/\/$/, '');
+
+    return path || '/';
+}
+
 /**
  * Formats a value for display in the UI.
  * If the value is null or empty, it returns a dash.

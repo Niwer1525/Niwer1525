@@ -3,7 +3,7 @@
     E.G : https://raw.githubusercontent.com/Niwer1525/Niwer1525/data/github_full_stats.json
 */
 
-import { GITHUB_USERNAME, escapeHtml, trimAndMinifyHTML, getCSSVar, getElementByIdAndSetContent } from './main.js';
+import { GITHUB_USERNAME, escapeHtml, trimAndMinifyHTML, getCSSVar, getElementByIdAndSetContent, onDomReady } from './main.js';
 
 /* WakaTime chart variables */
 export const DEFAULT_LANGUAGE_COLOR = '#cccccc';
@@ -31,17 +31,22 @@ export const LANGUAGE_COLORS = {
 const WAKA_FILTERS_STORAGE_KEY = 'waka-visible-languages';
 let wakaChartInstance = null;
 let wakaLanguagesCache = [];
+let wakaChartDataPromise = null;
 
 /* On document loaded */
-document.addEventListener('DOMContentLoaded', () => {
+onDomReady(() => {
+    if (!document.getElementById('stats')) return;
+
     /* Get wakatime time */
     getWakatimeData().then(data => {
+        if (!data) return;
         getElementByIdAndSetContent('coding_time', `${data.totalHours}h`);
         getElementByIdAndSetContent('coding_time_start_date', `${data.startYear}`);
     });
 
     /* Get github stats */
     getGitHubStats().then(stats => {
+        if (!stats) return;
         getElementByIdAndSetContent('total_commits', stats.commits);
         getElementByIdAndSetContent('contributions', stats.contributions);
         // getElementByIdAndSetContent('streak', 0);
@@ -112,12 +117,19 @@ async function getWakatimeData() {
  * @author Niwer
  */
 export async function renderWakaChart() {
-    try {
-        const RESPONSE = await fetch(`https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_USERNAME}/data/wakatime-chart.json`);
-        if (!RESPONSE.ok) throw new Error('Could not fetch WakaTime chart data', GITHUB_USERNAME);
+    if (!document.getElementById('waka-chart')) return;
 
-        const RESULT = await RESPONSE.json();
-        wakaLanguagesCache = RESULT.data.languages || [];
+    try {
+        if (!wakaChartDataPromise) {
+            wakaChartDataPromise = fetch(`https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_USERNAME}/data/wakatime-chart.json`)
+                .then(response => {
+                    if (!response.ok) throw new Error(`Could not fetch WakaTime chart data: ${response.status}`);
+                    return response.json();
+                })
+                .then(result => result.data?.languages || []);
+        }
+
+        wakaLanguagesCache = await wakaChartDataPromise;
 
         ensureWakaLanguageFiltersUI(wakaLanguagesCache);
         renderFilteredWakaChart();
