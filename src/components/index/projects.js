@@ -1,4 +1,4 @@
-import { loadMd, loadJson, translate } from '../utils.js';
+import { loadMd, loadJson, translate } from '../../utils.js';
 
 /**
  * Appends an image or video element based on the project's properties.

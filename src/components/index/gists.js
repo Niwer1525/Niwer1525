@@ -1,4 +1,4 @@
-import { translate } from '../utils.js';
+import { translate } from '../../utils.js';
 
 
 export function gists(langDict) {

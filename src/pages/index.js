@@ -1,7 +1,7 @@
-import { projects } from '../components/projects.js';
-import { skillsCards } from '../components/skills.js';
-import { gists } from '../components/gists.js';
-import { stats } from '../components/stats.js';
+import { projects } from '../components/index/projects.js';
+import { skillsCards } from '../components/index/skills.js';
+import { gists } from '../components/index/gists.js';
+import { stats } from '../components/index/stats.js';
 import { defaultLayout } from '../components/layout.js';
 import { translate } from '../utils.js';
 

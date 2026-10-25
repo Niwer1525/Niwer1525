@@ -1,9 +1,4 @@
-import { projects } from '../components/projects.js';
-import { skillsCards } from '../components/skills.js';
-import { gists } from '../components/gists.js';
-import { stats } from '../components/stats.js';
-import { defaultLayout } from '../components/layout.js';
-import { translate } from '../utils.js';
+import { emptyLayout } from '../components/layout.js';
 
 function createBubble(iconClass, link, text) {
 	return `
@@ -31,13 +26,19 @@ export async function render(lang, langDict) {
 		</section>
 	`;
 
-	return defaultLayout({
-		page: 'digital_id',
+	return emptyLayout({
 		lang,
 		langDict,
 		title: 'Erwin Redoté (Niwer) - Links and Digital ID',
 		description: 'Digital ID and links for Erwin Redoté (Niwer)',
 		canonical: 'https://niwer.dev',
-		content
+		content,
+		additionalScripts: [
+			{
+				file: '/js/print.js',
+				defer: true,
+				type: 'module'
+			}
+		]
 	});
 }

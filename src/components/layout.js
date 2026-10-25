@@ -105,6 +105,21 @@ function layout({ title = 'Default Title', description = '', canonical = '', lan
     `;
 }
 
+export function emptyLayout({ lang = 'en', langDict = [], title, description, canonical, content, additionalScripts = [] }) {
+    return layout({
+        title,
+        description,
+        canonical,
+        lang,
+        body: `
+            <main>
+                ${content}
+            </main>
+        `,
+        additionalScripts
+    });
+}
+
 export function defaultLayout({ page, lang = 'en', langDict = [], title, description, canonical, content, additionalScripts = [] }) {
     return layout({
         title,
