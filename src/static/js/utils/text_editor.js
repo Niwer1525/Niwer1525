@@ -53,8 +53,44 @@ function insertLink(editor, image = false) {
     replaceSelection(editor, image ? `![${selected}](${url})` : `[${selected}](${url})`);
 }
 
-function runEditorCommand(editor, command) {
-    if (command in INLINE_MARKERS) wrapSelection(editor, INLINE_MARKERS[command]);
+function getPreviewElement(editor) {
+    const previewId = `${editor.id}-preview`;
+    let preview = document.getElementById(previewId);
+    if (preview) return preview;
+
+    preview = document.createElement('div');
+    preview.id = previewId;
+    preview.className = 'text-editor-preview hidden';
+    preview.setAttribute('aria-live', 'polite');
+    editor.closest('label')?.after(preview);
+    return preview;
+}
+
+function renderPreview(editor, preview) {
+    if (!window.marked?.parse) {
+        const error = new Error('Markdown preview is unavailable because the Markdown renderer could not be loaded.');
+        console.error(error);
+        preview.textContent = error.message;
+        return;
+    }
+
+    preview.innerHTML = window.marked.parse(editor.value, { breaks: true });
+}
+
+function togglePreview(editor, button) {
+    const preview = getPreviewElement(editor);
+    const isPreviewVisible = preview.classList.toggle('hidden');
+    const editorLabel = editor.closest('label');
+    editorLabel?.classList.toggle('hidden', !isPreviewVisible);
+    button.setAttribute('aria-pressed', String(!isPreviewVisible));
+    button.classList.toggle('active', !isPreviewVisible);
+
+    if (!isPreviewVisible) renderPreview(editor, preview);
+}
+
+function runEditorCommand(editor, command, button) {
+    if (command === 'preview') togglePreview(editor, button);
+    else if (command in INLINE_MARKERS) wrapSelection(editor, INLINE_MARKERS[command]);
     else if (command === 'unordered-list') formatList(editor, false);
     else if (command === 'ordered-list') formatList(editor, true);
     else if (command === 'link') insertLink(editor);
@@ -67,5 +103,12 @@ document.addEventListener('click', (event) => {
 
     event.preventDefault();
     const editor = document.getElementById(button.dataset.editorTarget);
-    if (editor instanceof HTMLTextAreaElement) runEditorCommand(editor, button.dataset.editorCommand);
+    if (editor instanceof HTMLTextAreaElement) runEditorCommand(editor, button.dataset.editorCommand, button);
+});
+
+document.addEventListener('input', (event) => {
+    if (!(event.target instanceof HTMLTextAreaElement)) return;
+
+    const preview = document.getElementById(`${event.target.id}-preview`);
+    if (preview && !preview.classList.contains('hidden')) renderPreview(event.target, preview);
 });

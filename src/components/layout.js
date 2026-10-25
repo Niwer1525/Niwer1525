@@ -25,6 +25,7 @@ function layout({ title = 'Default Title', description = '', canonical = '', bod
                 <link rel="canonical" href="${canonical}">
                 <link rel="shortcut icon" href="/assets/profile.webp">
                 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+                <script src="https://cdn.jsdelivr.net/npm/marked@18.0.0/lib/marked.umd.js" defer></script>
                 <script type="module" src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.min.js"></script>
 
                 <!-- Open Graph -->

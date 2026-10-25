@@ -11,6 +11,9 @@ const TOOLBAR_ACTIONS = [
 export function textEditorToolbar(editorId) {
 	return `
 		<div class="text-editor-toolbar" role="toolbar" aria-label="Text formatting">
+			<button type="button" data-editor-target="${editorId}" data-editor-command="preview" title="Toggle preview" aria-label="Toggle preview" aria-pressed="false">
+				<i class="fa-solid fa-eye" aria-hidden="true"></i>
+			</button>
 			${TOOLBAR_ACTIONS.map(({ command, icon, label }) => `
 				<button type="button" data-editor-target="${editorId}" data-editor-command="${command}" title="${label}" aria-label="${label}">
 					<i class="fa-solid ${icon}" aria-hidden="true"></i>
