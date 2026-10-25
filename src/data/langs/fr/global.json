@@ -33,6 +33,8 @@
     "btn.title.delete_account": "Supprimer le compte",
     "btn.title.copy": "Copier dans le presse-papiers",
     "btn.title.revoke_licenses": "Révoquer la licence",
+    "btn.title.refresh": "Rafraîchir",
+    "btn.title.table_limit": "Limite de lignes",
 
     "description.unavailable": "Description indisponible.",
     "description.sign_in_required": "Connectez-vous pour voir ce contenu.",
@@ -46,6 +48,8 @@
     "copyright": "Copyright - Tous droits réservés",
     "sponsor": "Jette un sou au Niwer",
     "content_aboute_me": "Bonjour, je suis <span>Erwin</span> (alias <span>Niwer</span>).<br><br>Développeur autodidacte avec près de 8 ans d'expérience. Spécialiste en <span>Java</span> et dans le <span>développement web</span>, développant des applications robustes et explorant de nouvelles technologies. Toujours avide de nouveaux défis !",
+    
+    "_comment_titles": "Titles",
     "title.legal": "Mentions Légales",
     "title.skills": "&#10094;Compétences&#10095;",
     "title.projects": "&#10094;Projets&#10095;",
@@ -55,6 +59,7 @@
     "title.licenses": "Gestion des licences",
     "title.sql": "SQL sécurisé",
     "title.tables": "Tables de données",
+    "title.blog_posts": "Articles de blog",
     "title.products": "Produits",
     "title.profile": "Profil",
     "explore.github": "Explorez mon Github pour en voir plus",
@@ -109,7 +114,11 @@
     "form.totp_recovery.action": "J'ai sauvegardé mes codes de récupération",
     "form.create_post.title": "Créer un nouvel article",
     "form.create_post.description.scheduled_at": "Planifiez l'article pour une date et une heure futures. Laissez vide pour publier immédiatement.",
-    "form.create_post.action": "Créer l'article",
+    "form.create_post.action": "Publier ou planifier l'article",
+    "form.create_post.action_save": "Enregistrer l'article",
+    "form.edit_post.title": "Modifier l'article",
+    "form.edit_post.description.scheduled_at": "Planifiez l'article pour une date et une heure futures. Laissez vide pour publier immédiatement.",
+    "form.edit_post.action": "Enregistrer les modifications",
 
     "_comment_stats": "Stats",
     "github_stats.coding_time": "Temps passé à coder depuis <span id=\"coding_time_start_date\">2023</span>",

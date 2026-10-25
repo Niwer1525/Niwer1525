@@ -137,6 +137,7 @@ body>main {
 
 .section-actions {
     display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
     justify-content: right;
     margin-bottom: 2rem;

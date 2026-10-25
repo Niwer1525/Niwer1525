@@ -117,7 +117,7 @@ export function formatCamelCasedString(str) {
  */
 export async function handleFormSubmit(e, actionFn) {
     e.preventDefault();
-    const btn = e.target.querySelector('button[type="submit"]');
+    const btn = e.submitter || e.target.querySelector('button[type="submit"]');
     const originalText = btn?.innerHTML || '';
     if (btn) {
         btn.disabled = true;

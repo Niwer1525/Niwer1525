@@ -64,7 +64,11 @@ export function createPostModal(langDict) {
 			<textarea type="text" name="content_fr" id="createPostContent_fr" required></textarea>
 		</label>
 
-		<button type="submit">
+        <button type="submit" id="savePostButton" data-draft="true">
+            <i class="fa-solid fa-save"></i>
+            ${translate(langDict, 'form.create_post.action_save')}
+        </button>
+		<button type="submit" data-draft="false">
 			<i class="fa-solid fa-plus"></i>
 			${translate(langDict, 'form.create_post.action')}
 		</button>

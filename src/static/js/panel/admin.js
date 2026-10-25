@@ -1,5 +1,6 @@
-import { escapeHtml, formatVal } from '../main.js';
+import { escapeHtml, formatVal, handleFormSubmit } from '../main.js';
 import { api } from '../panel.js';
+import { closeModals, showPopup } from '../utils/modals.js';
 import { createNotification } from '../utils/toast.js';
 
 async function loadTablesList() {
@@ -67,9 +68,130 @@ async function loadTableData() {
 }
 window.loadTableData = loadTableData;
 
+async function loadBlogPosts() {
+    const body = document.getElementById('blogTableBody');
+    if (!body) return;
+    
+    try {
+        const posts = await api('/admin/blog/posts');
+        if (!posts || !posts.length) {
+            body.innerHTML = '<tr><td class="text-secondary">No blog posts found.</td></tr>';
+            return;
+        }
+
+        body.innerHTML = posts.map((post) => `
+            <tr>
+                <td>${escapeHtml(post.slug)}</td>
+                <td>${escapeHtml(post.lang)}</td>
+                <td>${escapeHtml(post.title)}</td>
+                <td>${escapeHtml(post.summary)}</td>
+                <td>${escapeHtml(post.status)}</td>
+                <td>${escapeHtml(post.published_at || 'N/A')}</td>
+                <td>${escapeHtml(post.created_at)}</td>
+                <td>${escapeHtml(post.updated_at)}</td>
+                <td>
+                    ${post.status.toUpperCase() !== 'DELETED' ? `
+                        <button onclick="prepareEditBlogPost('${escapeHtml(post.id)}', '${escapeHtml(post.slug)}')">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button onclick="deleteBlogPost('${escapeHtml(post.id)}', '${escapeHtml(post.slug)}')" class="danger-button">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    ` : ``}
+                </td>
+            </tr>
+        `).join('');
+    } catch (e) {
+        console.error('Error loading blog posts:', e);
+        createNotification('Failed to load blog posts', 'error');
+        body.innerHTML = '<tr><td class="text-danger">Failed to fetch blog posts.</td></tr>';
+    }
+}
+
+async function prepareEditBlogPost(id, slug) {
+    if (!id) return;
+    showPopup('edit-post-popup');
+
+    const postIdInput = document.getElementById('editPostId');
+    const postSlugInput = document.getElementById('editPostSlug');
+    const postScheduledAtInput = document.getElementById('editPostScheduledAt');
+    const postTitleEnInput = document.getElementById('editPostTitle');
+    const postSummaryEnInput = document.getElementById('editPostSummary');
+    const postContentEnInput = document.getElementById('editPostContent');
+
+    try {
+        const post = await api(`/admin/blog/posts/${encodeURIComponent(id)}`);
+        if (!post) throw new Error('Blog post not found');
+
+        // Show the scheduled at field if the post has a scheduled date
+        const postScheduledAtLabel = document.getElementById('editPostScheduledAtLabel');
+        if (postScheduledAtLabel && post.status.toUpperCase() === 'SCHEDULED' && post.published_at) postScheduledAtLabel.classList.remove('hidden');
+
+        // Populate the form fields with the existing blog post data
+        if (postIdInput) postIdInput.value = post.id || '';
+        if (postSlugInput) postSlugInput.value = post.slug || '';
+        if (postScheduledAtInput) postScheduledAtInput.value = post.scheduled_at || '';
+        if (postTitleEnInput) postTitleEnInput.value = post.title || '';
+        if (postSummaryEnInput) postSummaryEnInput.value = post.summary || '';
+        if (postContentEnInput) postContentEnInput.value = post.content_markdown || '';
+    } catch (e) {
+        console.error('Error fetching blog post for editing:', e);
+        createNotification(`Failed to load blog post "${slug}" for editing.`, 'error');
+        closeModals();
+    }
+}
+window.prepareEditBlogPost = prepareEditBlogPost;
+
+/**
+ * Handle the form submission for editing an existing blog post
+ * 
+ * @param {*} e The form submission event
+ */
+export async function editBlogPost(e) {
+    return handleFormSubmit(e, async (form, formData) => {
+        const postId = formData.get('post_id');
+        if (!postId) throw new Error('Blog post ID is missing');
+        
+        const jsonBody = Object.fromEntries(formData.entries());
+        const result = await api(`/admin/blog/posts/update`, { method: 'POST', body: JSON.stringify(jsonBody), headers: { 'Content-Type': 'application/json' } });
+        if (result.success) loadBlogPosts();
+        closeModals();
+    });
+}
+
+async function deleteBlogPost(id, slug) {
+    if (!id || !window.confirm(`Are you sure you want to delete the blog post with slug "${slug}"? This action cannot be undone.`)) return;
+    
+    try {
+        const result = await api(`/admin/blog/posts/delete/${encodeURIComponent(id)}`, { method: 'POST' });
+        if (result.success) loadBlogPosts();
+    } catch (e) {
+        console.error('Error deleting blog post:', e);
+        createNotification(`Error deleting blog post "${slug}".`, 'error');
+    }
+}
+window.deleteBlogPost = deleteBlogPost;
+
+/**
+ * Handle the form submission for creating a new blog post
+ * 
+ * @param {*} e The form submission event 
+ * @returns The result of the form submission, or an error notification if it fails
+ */
+export async function createBlogPost(e) {
+    return handleFormSubmit(e, async (form, formData) => {
+        const jsonBody = Object.fromEntries(formData.entries());
+        jsonBody.draft = e.submitter?.dataset.draft === 'true';
+        const result = await api('/admin/blog/posts/create', { method: 'POST', body: JSON.stringify(jsonBody), headers: { 'Content-Type': 'application/json' } });
+        if (result.success) loadBlogPosts();
+        closeModals();
+    });
+}
+
 /**
  * Load the admin panel sections when the admin page is accessed
  */
 export function loadAdminPanel() {
     loadTablesList();
+    loadBlogPosts();
 }
