@@ -83,6 +83,11 @@ function layout({ title = 'Default Title', description = '', canonical = '', bod
                         type: 'module'
                     },
                     {
+                        file: '/js/utils/text_editor.js',
+                        defer: true,
+                        type: 'module'
+                    },
+                    {
                         file: '/js/utils/events.js',
                         defer: true,
                         type: 'module'

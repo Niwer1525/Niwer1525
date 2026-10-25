@@ -1,5 +1,6 @@
 import { translate } from '../../utils.js';
 import { basicModal } from './modal.js';
+import { textEditorToolbar } from '../text_editor_toolbar.js';
 
 export function editPostModal(langDict) {
 	return basicModal(langDict, 'edit-post-popup', true, `
@@ -23,15 +24,7 @@ export function editPostModal(langDict) {
 			<i class="fa-solid fa-align-left"></i>
 			<input type="text" name="summary" id="editPostSummary" placeholder="A brief summary of the post...">
 		</label>
-        <div class="text-editor-toolbar">
-            <button type="button"><i class="fa-solid fa-bold"></i></button>
-            <button type="button"><i class="fa-solid fa-italic"></i></button>
-            <button type="button"><i class="fa-solid fa-underline"></i></button>
-            <button type="button"><i class="fa-solid fa-list"></i></button>
-            <button type="button"><i class="fa-solid fa-list-ol"></i></button>
-            <button type="button"><i class="fa-solid fa-link"></i></button>
-            <button type="button"><i class="fa-solid fa-image"></i></button>
-        </div>
+        ${textEditorToolbar('editPostContent')}
 		<label>
 			<i class="fa-solid fa-align-left"></i>
 			<textarea type="text" name="content" id="editPostContent" required></textarea>
