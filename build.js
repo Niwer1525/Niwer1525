@@ -31,6 +31,13 @@ const BUILD_CONTEXT = Object.freeze({
     apiBaseUrl: API_BASE_URL
 });
 
+const SCRIPT_ENTRIES = {
+    public: 'src/scripts/entries/public.js',
+    home: 'src/scripts/entries/home.js',
+    panel: 'src/scripts/entries/panel.js',
+    print: 'src/scripts/entries/print.js'
+};
+
 const PAGES = [
     { file: 'index.html', render: renderIndex },
     { file: 'store.html', render: renderStore },
@@ -112,6 +119,25 @@ async function processStaticFiles(srcDir, destDir) {
     }
 }
 
+async function bundleScripts(rootDir, distDir) {
+    const outputDir = path.join(distDir, 'js');
+    await fs.mkdir(outputDir, { recursive: true });
+
+    for (const [name, entry] of Object.entries(SCRIPT_ENTRIES)) {
+        const { outputFiles } = await buildJs({
+            entryPoints: [path.join(rootDir, entry)],
+            bundle: true,
+            minify: true,
+            format: 'esm',
+            target: 'esnext',
+            define: { 'process.env.API_BASE_URL': JSON.stringify(API_BASE_URL) },
+            write: false
+        });
+        await fs.writeFile(path.join(outputDir, `${name}.js`), outputFiles[0].text, 'utf8');
+        console.log(`✓ Bundled ${name}.js`);
+    }
+}
+
 async function build() {
     const rootDir = process.cwd();
     const distDir = path.join(rootDir, 'dist');
@@ -121,6 +147,7 @@ async function build() {
     /* Reset dist directory & copy static assets & process/minify static assets */
     await fs.rm(distDir, { recursive: true, force: true });
     await processStaticFiles(path.join(rootDir, 'src/static'), distDir);
+    await bundleScripts(rootDir, distDir);
 
     /* Render and write HTML pages for each language */
     for (const lang of ['en', 'fr']) {

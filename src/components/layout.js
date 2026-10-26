@@ -14,7 +14,7 @@ function addScripts(scripts) {
     }).join('\n');
 }
 
-function layout({ title = 'Default Title', description = '', canonical = '', lang = 'en', body = '', additionalScripts = [] }) {
+function layout({ title = 'Default Title', description = '', canonical = '', lang = 'en', body = '', additionalScripts = [], scripts = ['/js/public.js'], headScripts = [] }) {
     const SEASONAL = seasonal();
     return `
         <!DOCTYPE html>
@@ -26,8 +26,7 @@ function layout({ title = 'Default Title', description = '', canonical = '', lan
                 <meta name="description" content="${description}">
                 <link rel="canonical" href="${canonical}">
                 <link rel="shortcut icon" href="/assets/profile.webp">
-                <script src="https://cdn.jsdelivr.net/npm/marked@18.0.0/lib/marked.umd.js" defer></script>
-                <script type="module" src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.min.js"></script>
+                ${headScripts.map(script => `<script ${script}></script>`).join('\n')}
 
                 <!-- Open Graph -->
                 <meta property="og:title" content="${title}">
@@ -43,55 +42,14 @@ function layout({ title = 'Default Title', description = '', canonical = '', lan
                 ${body}
 
                 <!-- Scripts -->
-                ${addScripts([
-                    {
-                        file: '/js/main.js',
-                        defer: true,
-                        type: 'module'
-                    },
-                    {
-                        file: '/js/theme.js',
-                        defer: true,
-                        type: 'module'
-                    },
-                    {
-                        file: '/js/utils/modals.js',
-                        defer: true,
-                        type: 'module'
-                    },
-                    {
-                        file: '/js/utils/toast.js',
-                        defer: true,
-                        type: 'module'
-                    },
-                    {
-                        file: '/js/utils/clipboard.js',
-                        defer: true,
-                        type: 'module'
-                    },
-                    {
-                        file: '/js/utils/text_editor.js',
-                        defer: true,
-                        type: 'module'
-                    },
-                    {
-                        file: '/js/utils/events.js',
-                        defer: true,
-                        type: 'module'
-                    },
-                    {
-                        file: '/js/utils/storage.js',
-                        defer: true,
-                        type: 'module'
-                    }
-                ])}
+                ${addScripts(scripts.map(file => ({ file, defer: true, type: 'module' })))}
                 ${addScripts(additionalScripts)}
             </body>
         </html>
     `;
 }
 
-export function emptyLayout({ lang = 'en', langDict = [], title, description, canonical, content, additionalScripts = [] }) {
+export function emptyLayout({ lang = 'en', langDict = [], title, description, canonical, content, additionalScripts = [], scripts = [] }) {
     return layout({
         title,
         description,
@@ -102,11 +60,12 @@ export function emptyLayout({ lang = 'en', langDict = [], title, description, ca
                 ${content}
             </main>
         `,
-        additionalScripts
+        additionalScripts,
+        scripts
     });
 }
 
-export function defaultLayout({ page, lang = 'en', langDict = [], title, description, canonical, content, additionalScripts = [] }) {
+export function defaultLayout({ page, lang = 'en', langDict = [], title, description, canonical, content, additionalScripts = [], scripts = ['/js/public.js'], headScripts = [] }) {
     return layout({
         title,
         description,
@@ -120,7 +79,9 @@ export function defaultLayout({ page, lang = 'en', langDict = [], title, descrip
             </main>
             ${footer(lang, langDict, seasonal())}
         `,
-        additionalScripts
+        scripts,
+        additionalScripts,
+        headScripts
     });
 }
 
@@ -139,7 +100,8 @@ export function panelLayout({ page, lang = 'en', langDict = [], title, descripti
             </main>
             ${footer(lang, langDict, seasonal())}
         `,
-        additionalScripts
+        scripts: ['/js/panel.js'],
+        additionalScripts: [],
     });
 }
 

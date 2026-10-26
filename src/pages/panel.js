@@ -13,23 +13,6 @@ export async function render(lang, langDict) {
 		content: `
 			${purchaseAlert(langDict)}
 			${servers(langDict)}
-		`,
-        additionalScripts: [
-            {
-                file: '/js/panel.js',
-                defer: true,
-          		type: 'module'
-            },
-			{
-				file: '/js/panel/public.js',
-				defer: true,
-          		type: 'module'
-			},
-			{
-				file: '/js/panel/auth.js',
-				defer: true,
-          		type: 'module'
-			}
-        ]
+		`
 	});
 }

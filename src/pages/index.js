@@ -69,12 +69,9 @@ export async function render(lang, langDict, { apiBaseUrl = '' } = {}) {
 		description: 'Portfolio of Erwin Redoté, a Java and Web developer showcasing recent work and open source projects.',
 		canonical: 'https://niwer.dev',
 		content,
-		additionalScripts: [
-			{
-				file: '/js/stats.js',
-				defer: true,
-				type: 'module'
-			}
+		scripts: ['/js/home.js'],
+		headScripts: [
+			'src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.min.js"'
 		]
 	});
 }

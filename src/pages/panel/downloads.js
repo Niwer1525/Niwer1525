@@ -64,23 +64,6 @@ export async function render(lang, langDict) {
         title: 'Dashboard - Downloads | Erwin Redoté',
         description: 'Download the latest releases and assets for our projects. Stay up-to-date with the newest features and improvements.',
         canonical: 'https://niwer.dev/panel/downloads.html',
-        content,
-        additionalScripts: [
-            {
-                file: '/js/panel.js',
-                defer: true,
-                type: 'module'
-            },
-			{
-				file: '/js/panel/public.js',
-				defer: true,
-                type: 'module'
-			},
-			{
-				file: '/js/panel/auth.js',
-				defer: true,
-                type: 'module'
-			}
-        ]
+        content
     });
 }

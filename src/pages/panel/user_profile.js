@@ -92,23 +92,6 @@ export async function render(lang, langDict) {
         title: 'Dashboard - User Profile | Erwin Redoté',
         description: 'Manage your account, view your products, and configure your profile settings on the user profile page of the dashboard.',
         canonical: 'https://niwer.dev/panel/user_profile.html',
-        content,
-        additionalScripts: [
-            {
-                file: '/js/panel.js',
-                defer: true,
-                type: 'module'
-            },
-			{
-				file: '/js/panel/auth.js',
-				defer: true,
-                type: 'module'
-			},
-			{
-				file: '/js/panel/user_profile.js',
-				defer: true,
-                type: 'module'
-			}
-        ]
+        content
     });
 }

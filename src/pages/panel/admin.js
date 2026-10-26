@@ -80,23 +80,6 @@ export async function render(lang, langDict) {
         title: 'Dashboard | Erwin Redoté',
         description: 'The dashboard for niwer.dev, where you can manage your account, view your purchases, and access exclusive content.',
         canonical: 'https://niwer.dev/panel.html',
-        content,
-        additionalScripts: [
-            {
-                file: '/js/panel.js',
-                defer: true,
-                type: 'module'
-            },
-			{
-				file: '/js/panel/auth.js',
-				defer: true,
-                type: 'module'
-			},
-			{
-				file: '/js/panel/admin.js',
-				defer: true,
-                type: 'module'
-			}
-        ]
+        content
     });
 }
