@@ -66,7 +66,7 @@
     "blog.rss": "Flux RSS",
     "blog.rss_copied": "URL du flux RSS copiée",
     "blog.rss_copy_error": "Impossible de copier l'URL du flux RSS",
-    "blog.loading": "Chargement des articles...",
+    "blog.no_posts": "Aucun article de blog disponible",
     "blog.reading_time": "min de lecture",
     "blog.share": "Partager",
     "blog.link_copied": "Lien copié",

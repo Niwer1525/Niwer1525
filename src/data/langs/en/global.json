@@ -68,7 +68,7 @@
     "blog.rss": "RSS feed",
     "blog.rss_copied": "RSS URL copied",
     "blog.rss_copy_error": "Unable to copy RSS URL",
-    "blog.loading": "Loading posts...",
+    "blog.no_posts": "No blog posts available",
     "blog.reading_time": "min read",
     "blog.share": "Share",
     "blog.link_copied": "Link copied",
