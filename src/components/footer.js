@@ -1,9 +1,9 @@
 import { translate } from '../utils.js';
 
-export function footer(lang = 'en', langDict) {
+export function footer(lang = 'en', langDict, seasonal = {}) {
   const legalUrl = lang === 'en' ? '/legal.html' : `/${lang}/legal.html`;
   return `
-    <div id="seasonal-bg" class="seasonal-bg" aria-hidden="true"></div>
+    <div id="seasonal-bg" class="seasonal-bg" aria-hidden="true">${seasonal.background || ''}</div>
     <footer id="links">
         <div class="links">
             <span class="button" onclick="showPopup('contact-popup')" title="Contact" aria-label="Contact">
@@ -42,7 +42,7 @@ export function footer(lang = 'en', langDict) {
         </ul>
         <hr>
         <p id="footer-made-by">
-            ${translate(langDict, "made_by")} - <a href="https://sponsor.niwer.dev">${translate(langDict, "sponsor")}</a>
+            ${translate(langDict, "made_by")} ${seasonal.emoji || '❤️'} - <a href="https://sponsor.niwer.dev">${translate(langDict, "sponsor")}</a>
         </p>
         <p>${translate(langDict, "copyright")}</p>
     </footer>

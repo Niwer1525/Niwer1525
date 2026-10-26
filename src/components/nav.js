@@ -5,7 +5,7 @@ function getHrefForPage(page, lang) {
     switch (page) {
         case 'index': return isDefaultLang ? '/index.html' : `/${lang}/index.html`;
         case 'store': return isDefaultLang ? '/store.html' : `/${lang}/store.html`;
-        case 'blog': return isDefaultLang ? '/blog.html' : `/${lang}/blog.html`;
+        case 'blog': return isDefaultLang ? '/blog/' : `/${lang}/blog/`;
         case 'legal': return isDefaultLang ? '/legal.html' : `/${lang}/legal.html`;
 
         /* Panel Pages */

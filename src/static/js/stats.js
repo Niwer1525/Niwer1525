@@ -34,6 +34,10 @@ onDomReady(() => {
     renderWakaChart();
 });
 
+document.addEventListener('themechange', () => {
+    renderWakaChart();
+});
+
 /**
  * Reads build-embedded WakaTime data and refreshes the Chart.js doughnut when the theme or language selection changes.
  * 

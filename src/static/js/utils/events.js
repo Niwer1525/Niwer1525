@@ -102,6 +102,11 @@ function initCarousels() {
     }, { capture: true, passive: true });
 }
 
+document.addEventListener('click', (event) => {
+    const seasonal = event.target.closest('.seasonal-clickable');
+    if (seasonal) seasonal.classList.toggle('is-lit');
+});
+
 /* On document loaded */
 onDomReady(async () => {
     initCarousels();

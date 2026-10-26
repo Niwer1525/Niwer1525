@@ -2,6 +2,7 @@ import { footer } from './footer.js';
 import { authModal } from './modals/auth_modal.js';
 import { contactModal } from './modals/contact_modal.js';
 import { defaultNavigation, panelNavigation } from './nav.js';
+import { seasonal } from './seasonal.js';
 
 function addScripts(scripts) {
     return scripts.map(script => {
@@ -14,9 +15,10 @@ function addScripts(scripts) {
 }
 
 function layout({ title = 'Default Title', description = '', canonical = '', lang = 'en', body = '', additionalScripts = [] }) {
+    const SEASONAL = seasonal();
     return `
         <!DOCTYPE html>
-        <html lang="${lang}">
+        <html lang="${lang}"${SEASONAL.glow ? ` style="--seasonal-glow:${SEASONAL.glow}"` : ''}>
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -48,17 +50,7 @@ function layout({ title = 'Default Title', description = '', canonical = '', lan
                         type: 'module'
                     },
                     {
-                        file: '/js/stats.js',
-                        defer: true,
-                        type: 'module'
-                    },
-                    {
                         file: '/js/theme.js',
-                        defer: true,
-                        type: 'module'
-                    },
-                    {
-                        file: '/js/utils/seasonal.js',
                         defer: true,
                         type: 'module'
                     },
@@ -126,7 +118,7 @@ export function defaultLayout({ page, lang = 'en', langDict = [], title, descrip
                 ${content}
                 ${contactModal(langDict)}
             </main>
-            ${footer(lang, langDict)}
+            ${footer(lang, langDict, seasonal())}
         `,
         additionalScripts
     });
@@ -145,7 +137,7 @@ export function panelLayout({ page, lang = 'en', langDict = [], title, descripti
                 ${contactModal(langDict)}
                 ${authModal(langDict)}
             </main>
-            ${footer(lang, langDict)}
+            ${footer(lang, langDict, seasonal())}
         `,
         additionalScripts
     });
@@ -162,7 +154,7 @@ export function errorLayout({ lang = 'en', langDict = [], title, description, ca
                 ${content}
                 ${contactModal(langDict)}
             </main>
-            ${footer(lang, langDict)}
+            ${footer(lang, langDict, seasonal())}
         `,
         additionalScripts
     });

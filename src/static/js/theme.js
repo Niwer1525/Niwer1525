@@ -1,4 +1,3 @@
-import { renderWakaChart } from './stats.js';
 import { onDomReady } from './main.js';
 
 /* Theme variables */
@@ -47,7 +46,9 @@ function applyTheme(mode = getStoredThemePreference()) {
     const RESOLVED = getResolvedTheme(mode);
     document.documentElement.setAttribute('data-theme', RESOLVED);
     updateThemeToggleUI(mode, RESOLVED);
-    renderWakaChart();
+    document.dispatchEvent(new CustomEvent('themechange', {
+        detail: { mode, resolved: RESOLVED }
+    }));
 }
 
 /**

@@ -7,7 +7,7 @@ import { build as buildJs, transform as transformJs } from 'esbuild';
 /* Import page renderers */
 import { render as renderIndex } from './src/pages/index.js';
 import { render as renderStore } from './src/pages/store.js';
-import { render as renderBlog } from './src/pages/blog.js';
+import { fetchPosts as fetchBlogPosts, render as renderBlog, renderPost as renderBlogPost } from './src/pages/blog.js';
 import { render as renderLegal } from './src/pages/legal.js';
 import { render as renderPanel } from './src/pages/panel.js';
 import { render as renderPanelDownloads } from './src/pages/panel/downloads.js';
@@ -34,7 +34,15 @@ const BUILD_CONTEXT = Object.freeze({
 const PAGES = [
     { file: 'index.html', render: renderIndex },
     { file: 'store.html', render: renderStore },
-    { file: 'blog.html', render: renderBlog },
+    {
+        file: 'blog/index.html',
+        render: renderBlog,
+        data: fetchBlogPosts,
+        children: (posts, lang, dict) => posts.map(post => ({
+            file: `blog/${encodeURIComponent(post.slug)}.html`,
+            render: () => renderBlogPost(post, lang, dict)
+        }))
+    },
     { file: 'legal.html', render: renderLegal },
     { file: 'panel.html', render: renderPanel },
     { file: 'panel/downloads.html', render: renderPanelDownloads },
@@ -120,9 +128,10 @@ async function build() {
         const dict = JSON.parse(await fs.readFile(jsonPath, 'utf8'));
         const outFolder = lang === 'en' ? distDir : path.join(distDir, lang);
 
-        for (const { file, render, locale } of PAGES) {
+        for (const { file, render, locale, data, children } of PAGES) {
             if (locale && !locale.includes(lang)) continue;
-            const html = await render(lang, dict, BUILD_CONTEXT);
+            const pageData = data ? await data(BUILD_CONTEXT.apiBaseUrl, lang) : undefined;
+            const html = await render(lang, dict, BUILD_CONTEXT, pageData);
             const minifiedHtml = await minify(html, MINIFY_OPTIONS);
             const destPath = path.join(outFolder, file);
 
@@ -130,6 +139,16 @@ async function build() {
             await fs.writeFile(destPath, minifiedHtml, 'utf8');
             
             console.log(`✓ [${lang.toUpperCase()}] Generated ${path.join(lang === 'en' ? '' : lang, file)}`);
+
+            if (children) {
+                for (const child of children(pageData, lang, dict)) {
+                    const childHtml = await child.render();
+                    const childPath = path.join(outFolder, child.file);
+                    await fs.mkdir(path.dirname(childPath), { recursive: true });
+                    await fs.writeFile(childPath, await minify(childHtml, MINIFY_OPTIONS), 'utf8');
+                    console.log(`✓ [${lang.toUpperCase()}] Generated ${path.join(lang === 'en' ? '' : lang, child.file)}`);
+                }
+            }
         }
     }
     

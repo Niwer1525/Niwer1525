@@ -24,7 +24,7 @@ export async function render(lang, langDict, { apiBaseUrl = '' } = {}) {
 			<div>
 				<h1>REDOTÉ Erwin</h1>
 				<p>${translate(langDict, 'content_aboute_me')}</p>
-				
+
 				<!-- Open to Work Badge -->
 				<div class="flex-center-wrap open-to-work-badge">
 					<span class="badge-item">
@@ -68,6 +68,13 @@ export async function render(lang, langDict, { apiBaseUrl = '' } = {}) {
 		title: 'Erwin Redoté (Niwer) - Developer Portfolio',
 		description: 'Portfolio of Erwin Redoté, a Java and Web developer showcasing recent work and open source projects.',
 		canonical: 'https://niwer.dev',
-		content
+		content,
+		additionalScripts: [
+			{
+				file: '/js/stats.js',
+				defer: true,
+				type: 'module'
+			}
+		]
 	});
 }
