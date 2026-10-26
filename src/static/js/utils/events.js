@@ -71,8 +71,40 @@ document.addEventListener('submit', function(e) {
     else if (e.target && e.target.id === 'edit-post-popup-form') editBlogPost(e);
 });
 
+function initCarousels() {
+    document.addEventListener('click', (event) => {
+        const BUTTON = event.target.closest('[data-carousel-prev], [data-carousel-next], [data-carousel-dot]');
+        if (!BUTTON) return;
+
+        const CAROUSEL = BUTTON.closest('.image-carousel');
+        const TRACK = CAROUSEL?.querySelector('.carousel-track');
+        if (!TRACK) return;
+
+        const SLIDE_WIDTH = TRACK.clientWidth;
+        if (BUTTON.hasAttribute('data-carousel-prev')) TRACK.scrollBy({ left: -SLIDE_WIDTH, behavior: 'smooth' });
+        else if (BUTTON.hasAttribute('data-carousel-next')) TRACK.scrollBy({ left: SLIDE_WIDTH, behavior: 'smooth' });
+        else {
+            const INDEX = Number(BUTTON.getAttribute('data-carousel-dot'));
+            TRACK.scrollTo({ left: INDEX * SLIDE_WIDTH, behavior: 'smooth' });
+        }
+    });
+
+    document.addEventListener('scroll', (event) => {
+        const TRACK = event.target;
+        if (!TRACK?.classList?.contains('carousel-track')) return;
+
+        const CAROUSEL = TRACK.closest('.image-carousel');
+        const DOTS = CAROUSEL?.querySelectorAll('.carousel-dot');
+        if (!DOTS?.length) return;
+
+        const ACTIVE_INDEX = Math.round(TRACK.scrollLeft / TRACK.clientWidth);
+        DOTS.forEach((dot, index) => dot.classList.toggle('is-active', index === ACTIVE_INDEX));
+    }, { capture: true, passive: true });
+}
+
 /* On document loaded */
 onDomReady(async () => {
+    initCarousels();
     console.log(`%c Niwer's Portfolio - Made with ❤️`, 'background: #000000; color: #d8b4fe; padding: 4px 8px; border-radius: 4px; font-size: 14px;');
     
     /* Handle specific loading action depending on the current path */

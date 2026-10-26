@@ -2,6 +2,25 @@ import path from 'node:path';
 import fs from 'node:fs/promises';
 import { marked } from 'marked';
 
+export const DEFAULT_LANGUAGE_COLOR = '#cccccc';
+export const LANGUAGE_COLORS = {
+    JSON: '#292929',
+    Shell: '#89e051',
+    Markdown: '#083fa1',
+    SQL: '#e38c00',
+    Groovy: '#e69f56',
+    Java: '#b07219',
+    'C#': '#178600',
+    GLSL: '#5686a5',
+    HTML: '#e34c26',
+    CSS: '#563d7c',
+    JavaScript: '#f1e05a',
+    TypeScript: '#2076bb',
+    PHP: '#4F5D95',
+    Python: '#3572A5',
+    Rust: '#dea584'
+};
+
 /**
  * Loads a Markdown file from the specified folder and converts it to HTML using the marked library.
  * 
@@ -90,4 +109,19 @@ export function getAccessClassForType(type) {
         default:
             return '';
     }
+}
+
+/**
+ * Escapes special HTML characters in a string to prevent XSS attacks and ensure safe rendering in the browser.
+ * 
+ * @param {*} value - The string value to escape for safe HTML rendering.
+ * @returns {string} - The escaped string, safe for HTML rendering.
+ */
+export function escapeHtml(value) {
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
 }

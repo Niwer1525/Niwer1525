@@ -1,7 +1,6 @@
 import { createNotification } from './utils/toast.js';
 
 /* Environement variables */
-export const GITHUB_USERNAME = 'Niwer1525';
 export const CONFIRMATION_PHRASE = 'DELETE MY ACCOUNT';
 
 export function onDomReady(callback) {
@@ -57,18 +56,6 @@ export function formatDate(v) {
  */
 export function getCSSVar(name) {
     return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-}
-
-/**
- * Utility function to get an element by ID and set its text content
- * 
- * @param {*} id - The ID of the element to find
- * @param {*} content - The text content to set on the element
- * @author Niwer
- */
-export function getElementByIdAndSetContent(id, content) {
-    const ELEMENT = document.getElementById(id);
-    if(ELEMENT) ELEMENT.textContent = content;
 }
 
 /**

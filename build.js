@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { minify } from 'html-minifier-terser';
 import { bundle } from 'lightningcss';
-import { transform as transformJs } from 'esbuild';
+import { build as buildJs, transform as transformJs } from 'esbuild';
 
 /* Import page renderers */
 import { render as renderIndex } from './src/pages/index.js';
@@ -26,6 +26,10 @@ const MINIFY_OPTIONS = {
 };
 
 const API_BASE_URL = process.env.API_BASE_URL || (process.env.NODE_ENV === 'production' ? 'https://panel.niwer.dev' : 'http://localhost:17070');
+
+const BUILD_CONTEXT = Object.freeze({
+    apiBaseUrl: API_BASE_URL
+});
 
 const PAGES = [
     { file: 'index.html', render: renderIndex },
@@ -71,12 +75,26 @@ async function processStaticFiles(srcDir, destDir) {
 						break;
 					case '.js':
 						const jsCode = await fs.readFile(srcPath, 'utf8');
-						const { code: minifiedJs } = await transformJs(jsCode, {
-							minify: true,
-							target: 'esnext',
-                            define: {'process.env.API_BASE_URL': JSON.stringify(API_BASE_URL)}
-						});
-						await fs.writeFile(destPath, minifiedJs, 'utf8');
+						if (srcPath.endsWith(path.join('static', 'js', 'stats.js'))) {
+							const { outputFiles } = await buildJs({
+								entryPoints: [srcPath],
+								bundle: true,
+								minify: true,
+								format: 'esm',
+								target: 'esnext',
+								define: {'process.env.API_BASE_URL': JSON.stringify(API_BASE_URL)},
+								write: false
+							});
+							await fs.writeFile(destPath, outputFiles[0].text, 'utf8');
+						} else {
+							const { code: minifiedJs } = await transformJs(jsCode, {
+								minify: true,
+								format: 'esm',
+								target: 'esnext',
+                                define: {'process.env.API_BASE_URL': JSON.stringify(API_BASE_URL)}
+							});
+							await fs.writeFile(destPath, minifiedJs, 'utf8');
+						}
 						break;
 				}
             }
@@ -104,7 +122,7 @@ async function build() {
 
         for (const { file, render, locale } of PAGES) {
             if (locale && !locale.includes(lang)) continue;
-            const html = await render(lang, dict, { apiBaseUrl: API_BASE_URL });
+            const html = await render(lang, dict, BUILD_CONTEXT);
             const minifiedHtml = await minify(html, MINIFY_OPTIONS);
             const destPath = path.join(outFolder, file);
 

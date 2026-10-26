@@ -24,7 +24,6 @@ function layout({ title = 'Default Title', description = '', canonical = '', lan
                 <meta name="description" content="${description}">
                 <link rel="canonical" href="${canonical}">
                 <link rel="shortcut icon" href="/assets/profile.webp">
-                <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
                 <script src="https://cdn.jsdelivr.net/npm/marked@18.0.0/lib/marked.umd.js" defer></script>
                 <script type="module" src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.min.js"></script>
 
@@ -55,11 +54,6 @@ function layout({ title = 'Default Title', description = '', canonical = '', lan
                     },
                     {
                         file: '/js/theme.js',
-                        defer: true,
-                        type: 'module'
-                    },
-                    {
-                        file: '/js/utils/svgs.js',
                         defer: true,
                         type: 'module'
                     },

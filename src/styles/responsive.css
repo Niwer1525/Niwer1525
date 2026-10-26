@@ -65,10 +65,10 @@
         flex-direction: column;
         align-items: flex-start;
     }
-    .store-image-carousel {
+    .image-carousel {
         margin: 0 0.75rem 0.75rem;
     }
-    .store-carousel-slide img,
+    .carousel-slide img,
     .store-package-card iframe {
         height: 180px;
     }
