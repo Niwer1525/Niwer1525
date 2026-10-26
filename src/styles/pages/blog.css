@@ -52,6 +52,11 @@
     margin-top: auto;
 }
 
+.blog-card-reading-time {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
 .blog-post {
     padding: 2rem;
     text-align: left;
@@ -67,6 +72,35 @@
     margin-bottom: 2rem;
 }
 
+.blog-post-footer {
+    margin-top: 2rem;
+    padding: 1rem 0 0;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.blog-post-reading-time {
+    color: var(--text-secondary);
+}
+
+.blog-share-button {
+    flex-shrink: 0;
+}
+
+.blog-post-back {
+    margin-top: 1.5rem;
+}
+
 .blog-post-content img {
     margin: 1rem auto;
+}
+
+@media (max-width: 480px) {
+    .blog-post-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
 }
