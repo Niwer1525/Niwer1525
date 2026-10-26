@@ -71,7 +71,7 @@ export async function render(lang, langDict, { apiBaseUrl = '' } = {}) {
 		content,
 		scripts: ['/js/home.js'],
 		headScripts: [
-			'src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.min.js"'
+			'src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.min.js" type="module" defer'
 		]
 	});
 }

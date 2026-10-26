@@ -33,12 +33,6 @@ export async function render(lang, langDict) {
 		description: 'Digital ID and links for Erwin Redoté (Niwer)',
 		canonical: 'https://niwer.dev',
 		content,
-		additionalScripts: [
-			{
-				file: '/js/print.js',
-				defer: true,
-				type: 'module'
-			}
-		]
+		scripts: [ '/js/print.js' ]
 	});
 }
