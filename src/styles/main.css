@@ -9,9 +9,12 @@
 @import "./components/modal.css";
 @import "./components/cards.css";
 @import "./components/table.css";
+@import "./components/bubbles.css";
+@import "./components/carousel.css";
 
 @import "./pages/home.css";
 @import "./pages/store.css";
+@import "./pages/blog.css";
 @import "./pages/panel.css";
 @import "./pages/errors.css";
 

@@ -77,23 +77,6 @@ export async function render(lang, langDict) {
         title: 'Dashboard - Access keys | Erwin Redoté',
         description: 'Manage your licenses/access keys and view their details.',
         canonical: 'https://niwer.dev/panel/licenses.html',
-        content,
-        additionalScripts: [
-            {
-                file: '/js/panel.js',
-                defer: true,
-                type: 'module'
-            },
-			{
-				file: '/js/panel/auth.js',
-				defer: true,
-                type: 'module'
-			},
-			{
-				file: '/js/panel/licenses.js',
-				defer: true,
-                type: 'module'
-			}
-        ]
+        content
     });
 }

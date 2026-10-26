@@ -1,5 +1,6 @@
 import { translate } from '../../utils.js';
 import { basicModal } from './modal.js';
+import { textEditorToolbar } from '../text_editor_toolbar.js';
 
 export function createPostModal(langDict) {
 	return basicModal(langDict, 'create-post-popup', true, `
@@ -25,15 +26,7 @@ export function createPostModal(langDict) {
 			<i class="fa-solid fa-align-left"></i>
 			<input type="text" name="summary_en" id="createPostSummary_en" placeholder="A brief summary of the post...">
 		</label>
-        <div class="text-editor-toolbar">
-            <button type="button"><i class="fa-solid fa-bold"></i></button>
-            <button type="button"><i class="fa-solid fa-italic"></i></button>
-            <button type="button"><i class="fa-solid fa-underline"></i></button>
-            <button type="button"><i class="fa-solid fa-list"></i></button>
-            <button type="button"><i class="fa-solid fa-list-ol"></i></button>
-            <button type="button"><i class="fa-solid fa-link"></i></button>
-            <button type="button"><i class="fa-solid fa-image"></i></button>
-        </div>
+        ${textEditorToolbar('createPostContent_en')}
 		<label>
 			<i class="fa-solid fa-align-left"></i>
 			<textarea type="text" name="content_en" id="createPostContent_en" required></textarea>
@@ -50,21 +43,17 @@ export function createPostModal(langDict) {
 			<i class="fa-solid fa-align-left"></i>
 			<input type="text" name="summary_fr" id="createPostSummary_fr" placeholder="Un résumé bref du post...">
 		</label>
-        <div class="text-editor-toolbar">
-            <button type="button"><i class="fa-solid fa-bold"></i></button>
-            <button type="button"><i class="fa-solid fa-italic"></i></button>
-            <button type="button"><i class="fa-solid fa-underline"></i></button>
-            <button type="button"><i class="fa-solid fa-list"></i></button>
-            <button type="button"><i class="fa-solid fa-list-ol"></i></button>
-            <button type="button"><i class="fa-solid fa-link"></i></button>
-            <button type="button"><i class="fa-solid fa-image"></i></button>
-        </div>
+        ${textEditorToolbar('createPostContent_fr')}
 		<label>
 			<i class="fa-solid fa-align-left"></i>
 			<textarea type="text" name="content_fr" id="createPostContent_fr" required></textarea>
 		</label>
 
-		<button type="submit">
+        <button type="submit" id="savePostButton" data-draft="true">
+            <i class="fa-solid fa-save"></i>
+            ${translate(langDict, 'form.create_post.action_save')}
+        </button>
+		<button type="submit" data-draft="false">
 			<i class="fa-solid fa-plus"></i>
 			${translate(langDict, 'form.create_post.action')}
 		</button>

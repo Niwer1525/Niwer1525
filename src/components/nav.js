@@ -5,6 +5,7 @@ function getHrefForPage(page, lang) {
     switch (page) {
         case 'index': return isDefaultLang ? '/index.html' : `/${lang}/index.html`;
         case 'store': return isDefaultLang ? '/store.html' : `/${lang}/store.html`;
+        case 'blog': return isDefaultLang ? '/blog/' : `/${lang}/blog/`;
         case 'legal': return isDefaultLang ? '/legal.html' : `/${lang}/legal.html`;
 
         /* Panel Pages */
@@ -69,6 +70,7 @@ export function defaultNavigation(page, lang = 'en', langDict) {
         { url: `${indexUrl}#projects`, labelKey: 'btn.projects' },
         { url: `${indexUrl}#gists`, labelKey: 'btn.gists' },
         { url: getHrefForPage('store', lang), labelKey: 'btn.store' },
+        { url: getHrefForPage('blog', lang), labelKey: 'btn.blog' },
         { url: '#', labelKey: 'btn.contact', onClick: "showPopup('contact-popup')" }
     ]);
 }

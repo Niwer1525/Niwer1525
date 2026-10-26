@@ -1,4 +1,4 @@
-import { translate } from '../utils.js';
+import { translate } from '../../utils.js';
 
 function createCard(iconClass, skillName) {
     return `

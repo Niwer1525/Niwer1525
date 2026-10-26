@@ -60,6 +60,8 @@
     flex-direction: column;
     gap: 1rem;
     position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 .large-modal {
     max-width: 800px;
@@ -154,14 +156,33 @@ label:has(:required) {
 
 .text-editor-toolbar {
     display: flex;
+    flex-wrap: wrap;
     gap: 0.25rem;
     margin-bottom: 0.5rem;
     align-items: end;
     justify-content: end;
 }
+.text-editor-toolbar button[data-editor-command="preview"] {
+    margin-right: auto;
+}
 .text-editor-toolbar button, .text-editor-toolbar .button {
     font-size: 1rem;
     padding: 0.5rem;
+}
+.text-editor-preview {
+    min-height: 100px;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 1rem;
+    overflow-wrap: anywhere;
+    background: var(--surface-glass-hover);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+.text-editor-preview > :first-child {
+    margin-top: 0;
+}
+.text-editor-preview > :last-child {
+    margin-bottom: 0;
 }
 
 .form-control {

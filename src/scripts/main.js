@@ -1,8 +1,25 @@
 import { createNotification } from './utils/toast.js';
 
 /* Environement variables */
-export const GITHUB_USERNAME = 'Niwer1525';
 export const CONFIRMATION_PHRASE = 'DELETE MY ACCOUNT';
+
+export function onDomReady(callback) {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', callback, { once: true });
+        return;
+    }
+
+    callback();
+}
+
+export function getPagePath(pathname = window.location.pathname) {
+    const path = pathname
+        .replace(/^\/[a-z]{2}(-[a-z]{2})?(?=\/|$)/i, '')
+        .replace(/\.html$/, '')
+        .replace(/\/$/, '');
+
+    return path || '/';
+}
 
 /**
  * Formats a value for display in the UI.
@@ -39,18 +56,6 @@ export function formatDate(v) {
  */
 export function getCSSVar(name) {
     return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-}
-
-/**
- * Utility function to get an element by ID and set its text content
- * 
- * @param {*} id - The ID of the element to find
- * @param {*} content - The text content to set on the element
- * @author Niwer
- */
-export function getElementByIdAndSetContent(id, content) {
-    const ELEMENT = document.getElementById(id);
-    if(ELEMENT) ELEMENT.textContent = content;
 }
 
 /**
@@ -117,7 +122,7 @@ export function formatCamelCasedString(str) {
  */
 export async function handleFormSubmit(e, actionFn) {
     e.preventDefault();
-    const btn = e.target.querySelector('button[type="submit"]');
+    const btn = e.submitter || e.target.querySelector('button[type="submit"]');
     const originalText = btn?.innerHTML || '';
     if (btn) {
         btn.disabled = true;

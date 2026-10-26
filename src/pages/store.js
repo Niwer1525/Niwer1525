@@ -11,7 +11,7 @@ async function renderCategorySections(node, parentPath, context, outLinks) {
     const sectionId = `section-${currentPath}`;
     const displayName = node.name || id;
 
-    let html = '';
+    let html = ''; 
     const validPackages = (node.packages || []).filter(p => Boolean(p.paymentLink || p.payment_link || context.catalogPaymentLink));
 
     // Render cards directly on this category or subcategory
@@ -44,14 +44,54 @@ async function renderCategorySections(node, parentPath, context, outLinks) {
     return html;
 }
 
-export async function render(lang = 'en', langDict = {}) {
+async function fetchStripePrices(apiBaseUrl) {
+    try {
+        const response = await fetch(`${apiBaseUrl}/stripe_prices`);
+        if (!response.ok) throw new Error(`Could not fetch Stripe prices: ${response.statusText}`);
+
+        const payload = await response.json();
+        const prices = Array.isArray(payload) ? payload : payload.data;
+        if (!Array.isArray(prices)) throw new Error('Stripe prices response does not contain a data array');
+
+        const byId = {};
+        const byProduct = {};
+        for (const price of prices) {
+            if (!price?.id || price.unit_amount == null) continue;
+
+            const value = {
+                amount: Number(price.unit_amount) / 100,
+                currency: price.currency || 'EUR'
+            };
+            byId[price.id] = value;
+
+            const productId = price.product?.metadata?.product_id;
+            if (productId) {
+                const productKey = String(productId).replace(/-/g, '_');
+                (byProduct[productKey] ||= []).push({
+                    ...value,
+                    id: price.id,
+                    isDefault: price.product.default_price === price.id
+                });
+            }
+        }
+
+        return { byId, byProduct };
+    } catch (error) {
+        console.error('Error loading Stripe prices:', error);
+        return {};
+    }
+}
+
+export async function render(lang = 'en', langDict = {}, { apiBaseUrl = '' } = {}) {
     const catalog = await loadJson('src/data/', 'store_catalog.json');
     const categories = Array.isArray(catalog.categories) ? catalog.categories : [];
+    const stripePrices = await fetchStripePrices(apiBaseUrl);
     const context = {
         lang,
         langDict,
         defaultCurrency: catalog.currency || 'EUR',
-        catalogPaymentLink: catalog.paymentLink || ''
+        catalogPaymentLink: catalog.paymentLink || '',
+        stripePrices
     };
 
     const jumpLinks = [];
@@ -89,13 +129,6 @@ export async function render(lang = 'en', langDict = {}) {
         title: `${translate(langDict, 'btn.store')} | Erwin Redoté (Niwer)`,
         description: 'Explore software products, Minecraft mods, and development services by Erwin Redoté.',
         canonical: 'https://niwer.dev/store.html',
-        content,
-        additionalScripts: [
-            {
-                file: '/js/store.js',
-                defer: true,
-                type: 'module'
-            }
-        ]
+        content
     });
 }

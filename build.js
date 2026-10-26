@@ -2,11 +2,12 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { minify } from 'html-minifier-terser';
 import { bundle } from 'lightningcss';
-import { transform as transformJs } from 'esbuild';
+import { build as buildJs, transform as transformJs } from 'esbuild';
 
 /* Import page renderers */
 import { render as renderIndex } from './src/pages/index.js';
 import { render as renderStore } from './src/pages/store.js';
+import { fetchPosts as fetchBlogPosts, render as renderBlog, renderPost as renderBlogPost } from './src/pages/blog.js';
 import { render as renderLegal } from './src/pages/legal.js';
 import { render as renderPanel } from './src/pages/panel.js';
 import { render as renderPanelDownloads } from './src/pages/panel/downloads.js';
@@ -14,6 +15,7 @@ import { render as renderPanelLicenses } from './src/pages/panel/licenses.js';
 import { render as renderPanelAdmin } from './src/pages/panel/admin.js';
 import { render as renderPanelProfile } from './src/pages/panel/user_profile.js';
 import { render as render404 } from './src/pages/errors/404.js';
+import { render as renderDigitalId } from './src/pages/digital_id.js';
 
 const MINIFY_OPTIONS = {
     collapseWhitespace: true,
@@ -23,22 +25,43 @@ const MINIFY_OPTIONS = {
     minifyJS: true
 };
 
+const API_BASE_URL = process.env.API_BASE_URL || (process.env.NODE_ENV === 'production' ? 'https://panel.niwer.dev' : 'http://localhost:17070');
+
+const BUILD_CONTEXT = Object.freeze({
+    apiBaseUrl: API_BASE_URL
+});
+
+const SCRIPT_ENTRIES = {
+    public: 'src/scripts/entries/public.js',
+    home: 'src/scripts/entries/home.js',
+    panel: 'src/scripts/entries/panel.js',
+    print: 'src/scripts/entries/print.js'
+};
+
 const PAGES = [
     { file: 'index.html', render: renderIndex },
     { file: 'store.html', render: renderStore },
+    {
+        file: 'blog/index.html',
+        render: renderBlog,
+        data: fetchBlogPosts,
+        children: (posts, lang, dict) => posts.map(post => ({
+            file: `blog/${encodeURIComponent(post.slug)}.html`,
+            render: () => renderBlogPost(post, lang, dict)
+        }))
+    },
     { file: 'legal.html', render: renderLegal },
     { file: 'panel.html', render: renderPanel },
     { file: 'panel/downloads.html', render: renderPanelDownloads },
     { file: 'panel/licenses.html', render: renderPanelLicenses },
     { file: 'panel/admin.html', render: renderPanelAdmin },
     { file: 'panel/profile.html', render: renderPanelProfile },
-    { file: '404.html', render: render404, locale: ['en'] }
+    { file: '404.html', render: render404, locale: ['en'] },
+    { file: 'digital-id.html', render: renderDigitalId, locale: ['en'] }
 ];
 
 async function processStaticFiles(srcDir, destDir) {
     try {
-        const API_BASE_URL = process.env.API_BASE_URL || (process.env.NODE_ENV === 'production' ? 'https://panel.niwer.dev' : 'http://localhost:17070');
-
         const entries = await fs.readdir(srcDir, { withFileTypes: true });
         await fs.mkdir(destDir, { recursive: true });
 
@@ -67,18 +90,51 @@ async function processStaticFiles(srcDir, destDir) {
 						break;
 					case '.js':
 						const jsCode = await fs.readFile(srcPath, 'utf8');
-						const { code: minifiedJs } = await transformJs(jsCode, {
-							minify: true,
-							target: 'esnext',
-                            define: {'process.env.API_BASE_URL': JSON.stringify(API_BASE_URL)}
-						});
-						await fs.writeFile(destPath, minifiedJs, 'utf8');
+						if (srcPath.endsWith(path.join('static', 'js', 'stats.js'))) {
+							const { outputFiles } = await buildJs({
+								entryPoints: [srcPath],
+								bundle: true,
+								minify: true,
+								format: 'esm',
+								target: 'esnext',
+								define: {'process.env.API_BASE_URL': JSON.stringify(API_BASE_URL)},
+								write: false
+							});
+							await fs.writeFile(destPath, outputFiles[0].text, 'utf8');
+						} else {
+							const { code: minifiedJs } = await transformJs(jsCode, {
+								minify: true,
+								format: 'esm',
+								target: 'esnext',
+                                define: {'process.env.API_BASE_URL': JSON.stringify(API_BASE_URL)}
+							});
+							await fs.writeFile(destPath, minifiedJs, 'utf8');
+						}
 						break;
 				}
             }
         }
     } catch (err) {
         console.warn('Warning: Could not process static assets:', err.message);
+    }
+}
+
+async function bundleScripts(rootDir, distDir) {
+    const outputDir = path.join(distDir, 'js');
+    await fs.mkdir(outputDir, { recursive: true });
+
+    for (const [name, entry] of Object.entries(SCRIPT_ENTRIES)) {
+        const { outputFiles } = await buildJs({
+            entryPoints: [path.join(rootDir, entry)],
+            bundle: true,
+            minify: true,
+            format: 'esm',
+            target: 'esnext',
+            define: { 'process.env.API_BASE_URL': JSON.stringify(API_BASE_URL) },
+            write: false
+        });
+        await fs.writeFile(path.join(outputDir, `${name}.js`), outputFiles[0].text, 'utf8');
+        console.log(`✓ Bundled ${name}.js`);
     }
 }
 
@@ -91,6 +147,7 @@ async function build() {
     /* Reset dist directory & copy static assets & process/minify static assets */
     await fs.rm(distDir, { recursive: true, force: true });
     await processStaticFiles(path.join(rootDir, 'src/static'), distDir);
+    await bundleScripts(rootDir, distDir);
 
     /* Render and write HTML pages for each language */
     for (const lang of ['en', 'fr']) {
@@ -98,9 +155,10 @@ async function build() {
         const dict = JSON.parse(await fs.readFile(jsonPath, 'utf8'));
         const outFolder = lang === 'en' ? distDir : path.join(distDir, lang);
 
-        for (const { file, render, locale } of PAGES) {
+        for (const { file, render, locale, data, children } of PAGES) {
             if (locale && !locale.includes(lang)) continue;
-            const html = await render(lang, dict);
+            const pageData = data ? await data(BUILD_CONTEXT.apiBaseUrl, lang) : undefined;
+            const html = await render(lang, dict, BUILD_CONTEXT, pageData);
             const minifiedHtml = await minify(html, MINIFY_OPTIONS);
             const destPath = path.join(outFolder, file);
 
@@ -108,6 +166,16 @@ async function build() {
             await fs.writeFile(destPath, minifiedHtml, 'utf8');
             
             console.log(`✓ [${lang.toUpperCase()}] Generated ${path.join(lang === 'en' ? '' : lang, file)}`);
+
+            if (children) {
+                for (const child of children(pageData, lang, dict)) {
+                    const childHtml = await child.render();
+                    const childPath = path.join(outFolder, child.file);
+                    await fs.mkdir(path.dirname(childPath), { recursive: true });
+                    await fs.writeFile(childPath, await minify(childHtml, MINIFY_OPTIONS), 'utf8');
+                    console.log(`✓ [${lang.toUpperCase()}] Generated ${path.join(lang === 'en' ? '' : lang, child.file)}`);
+                }
+            }
         }
     }
     
