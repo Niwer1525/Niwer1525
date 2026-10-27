@@ -45,7 +45,7 @@ export async function render(lang, langDict, { apiBaseUrl = '' } = {}) {
 					</span>
 				</div>
 			</div>
-			<img src="/assets/profile.webp" alt="REDOTÉ Erwin" fetchpriority="high">
+			<img src="/assets/profile.webp" alt="REDOTÉ Erwin" fetchpriority="high" decoding="async" loading="eager" draggable="false">
 		</section>
 
 		<!-- Skills -->

@@ -28,7 +28,7 @@ export async function renderPackageCard(pkg, { lang, langDict, defaultCurrency, 
             <div class="carousel-track">
                 ${images.map((src, idx) => `
                     <div class="carousel-slide">
-                        <img src="${src}" alt="${pkg.name || 'Package'} preview${idx + 1}" loading="lazy" draggable="false">
+                        <img src="${src}" alt="${pkg.name || 'Package'} preview${idx + 1}" loading="lazy" decoding="async" draggable="false">
                     </div>
                 `).join('')}
             </div>
