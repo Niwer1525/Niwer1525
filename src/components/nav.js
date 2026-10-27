@@ -48,10 +48,10 @@ function navigation(page, lang = 'en', langDict, buttons, additionalActionsConte
                         <!-- Language Selection -->
                         <div class="languages-grid">
                             <a href="${getHrefForPage(page, 'en')}" title="English">
-                                <img loading="lazy" draggable="false" src="/assets/icons/united-kingdom.webp" alt="united_kingdom_logo">
+                                <img loading="lazy" decoding="async" draggable="false" src="/assets/icons/united-kingdom.webp" alt="united_kingdom_logo">
                             </a>
                             <a href="${getHrefForPage(page, 'fr')}" title="Français">
-                                <img loading="lazy" draggable="false" src="/assets/icons/france.webp" alt="france_logo">
+                                <img loading="lazy" decoding="async" draggable="false" src="/assets/icons/france.webp" alt="france_logo">
                             </a>
                         </div>
                     </li>
