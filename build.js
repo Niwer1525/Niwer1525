@@ -31,13 +31,6 @@ const BUILD_CONTEXT = Object.freeze({
     apiBaseUrl: API_BASE_URL
 });
 
-const SCRIPT_ENTRIES = {
-    public: 'src/scripts/entries/public.js',
-    home: 'src/scripts/entries/home.js',
-    panel: 'src/scripts/entries/panel.js',
-    print: 'src/scripts/entries/print.js'
-};
-
 const PAGES = [
     { file: 'index.html', render: renderIndex },
     { file: 'store.html', render: renderStore },
@@ -60,82 +53,116 @@ const PAGES = [
     { file: 'digital-id.html', render: renderDigitalId, locale: ['en'] }
 ];
 
-async function processStaticFiles(srcDir, destDir) {
-    try {
-        const entries = await fs.readdir(srcDir, { withFileTypes: true });
-        await fs.mkdir(destDir, { recursive: true });
+const JS_BUILD_OPTIONS = {
+    bundle: true,
+    minify: true,
+    format: 'esm',
+    target: 'esnext',
+    write: false
+};
 
-        for (const entry of entries) {
-            const srcPath = path.join(srcDir, entry.name);
-            const destPath = path.join(destDir, entry.name);
+const MINIFIED_JS_OPTIONS = {
+    minify: true,
+    format: 'esm',
+    target: 'esnext',
+    define: { 'process.env.API_BASE_URL': JSON.stringify(API_BASE_URL) }
+};
 
-            if (entry.isDirectory()) await processStaticFiles(srcPath, destPath); // Recursively process subdirectories
-            else if (entry.isFile()) {
-                const ext = path.extname(entry.name).toLowerCase();
-				if(ext !== '.html' && ext !== '.css' && ext !== '.js') {
-					await fs.copyFile(srcPath, destPath); // Copy other files as-is
-					continue;
-				}
+const logGeneratedPage = (lang, file) => {
+    console.log(`✓ [${lang.toUpperCase()}] Generated ${path.join(lang === 'en' ? '' : lang, file)}`);
+};
 
-				/* Process files based on their extension */
-				switch (ext) {
-					case '.html':
-						const html = await fs.readFile(srcPath, 'utf8');
-						const minifiedHtml = await minify(html, MINIFY_OPTIONS);
-						await fs.writeFile(destPath, minifiedHtml, 'utf8');
-						break;
-					case '.css':
-						const { code: cssCode } = bundle({ filename: srcPath, minify: true });
-						await fs.writeFile(destPath, cssCode, 'utf8');
-						break;
-					case '.js':
-						const jsCode = await fs.readFile(srcPath, 'utf8');
-						if (srcPath.endsWith(path.join('static', 'js', 'stats.js'))) {
-							const { outputFiles } = await buildJs({
-								entryPoints: [srcPath],
-								bundle: true,
-								minify: true,
-								format: 'esm',
-								target: 'esnext',
-								define: {'process.env.API_BASE_URL': JSON.stringify(API_BASE_URL)},
-								write: false
-							});
-							await fs.writeFile(destPath, outputFiles[0].text, 'utf8');
-						} else {
-							const { code: minifiedJs } = await transformJs(jsCode, {
-								minify: true,
-								format: 'esm',
-								target: 'esnext',
-                                define: {'process.env.API_BASE_URL': JSON.stringify(API_BASE_URL)}
-							});
-							await fs.writeFile(destPath, minifiedJs, 'utf8');
-						}
-						break;
-				}
-            }
-        }
-    } catch (err) {
-        console.warn('Warning: Could not process static assets:', err.message);
+async function getScriptEntries(rootDir) {
+    const entriesDir = path.join(rootDir, 'src/scripts/entries');
+    const entries = await fs.readdir(entriesDir, { withFileTypes: true });
+
+    return entries
+        .filter(entry => entry.isFile() && path.extname(entry.name) === '.js')
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map(entry => [
+            path.basename(entry.name, '.js'),
+            path.join('src/scripts/entries', entry.name)
+        ]);
+}
+
+async function writeMinifiedHtml(file, html) {
+    await fs.mkdir(path.dirname(file), { recursive: true });
+    await fs.writeFile(file, await minify(html, MINIFY_OPTIONS), 'utf8');
+}
+
+async function processStaticFile(srcPath, destPath) {
+    const ext = path.extname(srcPath).toLowerCase();
+
+    if (!['.html', '.css', '.js'].includes(ext)) return fs.copyFile(srcPath, destPath);
+    if (ext === '.html') return writeMinifiedHtml(destPath, await fs.readFile(srcPath, 'utf8'));
+    if (ext === '.css') {
+        const { code } = bundle({ filename: srcPath, minify: true });
+        return fs.writeFile(destPath, code, 'utf8');
     }
+
+    if (srcPath.endsWith(path.join('static', 'js', 'stats.js'))) {
+        const { outputFiles } = await buildJs({
+            ...JS_BUILD_OPTIONS,
+            entryPoints: [srcPath],
+            define: MINIFIED_JS_OPTIONS.define
+        });
+        return fs.writeFile(destPath, outputFiles[0].text, 'utf8');
+    }
+
+    const source = await fs.readFile(srcPath, 'utf8');
+    const { code } = await transformJs(source, MINIFIED_JS_OPTIONS);
+    return fs.writeFile(destPath, code, 'utf8');
+}
+
+async function processStaticFiles(srcDir, destDir) {
+    const entries = await fs.readdir(srcDir, { withFileTypes: true });
+    await fs.mkdir(destDir, { recursive: true });
+
+    await Promise.all(entries.map(async entry => {
+        const srcPath = path.join(srcDir, entry.name);
+        const destPath = path.join(destDir, entry.name);
+
+        if (entry.isDirectory()) return processStaticFiles(srcPath, destPath);
+        if (entry.isFile()) return processStaticFile(srcPath, destPath);
+        return undefined;
+    }));
 }
 
 async function bundleScripts(rootDir, distDir) {
     const outputDir = path.join(distDir, 'js');
     await fs.mkdir(outputDir, { recursive: true });
+    const scriptEntries = await getScriptEntries(rootDir);
 
-    for (const [name, entry] of Object.entries(SCRIPT_ENTRIES)) {
+    await Promise.all(scriptEntries.map(async ([name, entry]) => {
         const { outputFiles } = await buildJs({
+            ...JS_BUILD_OPTIONS,
             entryPoints: [path.join(rootDir, entry)],
-            bundle: true,
-            minify: true,
-            format: 'esm',
-            target: 'esnext',
-            define: { 'process.env.API_BASE_URL': JSON.stringify(API_BASE_URL) },
-            write: false
+            define: MINIFIED_JS_OPTIONS.define
         });
         await fs.writeFile(path.join(outputDir, `${name}.js`), outputFiles[0].text, 'utf8');
         console.log(`✓ Bundled ${name}.js`);
-    }
+    }));
+}
+
+async function renderPage(page, lang, dict, outFolder) {
+    const { file, render, locale, data, children } = page;
+    if (locale && !locale.includes(lang)) return;
+
+    const pageData = data ? await data(BUILD_CONTEXT.apiBaseUrl, lang) : undefined;
+    await writeMinifiedHtml(
+        path.join(outFolder, file),
+        await render(lang, dict, BUILD_CONTEXT, pageData)
+    );
+    logGeneratedPage(lang, file);
+
+    if (!children) return;
+    await Promise.all(children(pageData, lang, dict).map(async child => {
+        await writeMinifiedHtml(
+            path.join(outFolder, child.file),
+            await child.render()
+        );
+        logGeneratedPage(lang, child.file);
+    }));
 }
 
 async function build() {
@@ -150,34 +177,13 @@ async function build() {
     await bundleScripts(rootDir, distDir);
 
     /* Render and write HTML pages for each language */
-    for (const lang of ['en', 'fr']) {
+    await Promise.all(['en', 'fr'].map(async lang => {
         const jsonPath = path.join(rootDir, `src/data/langs/${lang}/global.json`);
         const dict = JSON.parse(await fs.readFile(jsonPath, 'utf8'));
         const outFolder = lang === 'en' ? distDir : path.join(distDir, lang);
 
-        for (const { file, render, locale, data, children } of PAGES) {
-            if (locale && !locale.includes(lang)) continue;
-            const pageData = data ? await data(BUILD_CONTEXT.apiBaseUrl, lang) : undefined;
-            const html = await render(lang, dict, BUILD_CONTEXT, pageData);
-            const minifiedHtml = await minify(html, MINIFY_OPTIONS);
-            const destPath = path.join(outFolder, file);
-
-            await fs.mkdir(path.dirname(destPath), { recursive: true });
-            await fs.writeFile(destPath, minifiedHtml, 'utf8');
-            
-            console.log(`✓ [${lang.toUpperCase()}] Generated ${path.join(lang === 'en' ? '' : lang, file)}`);
-
-            if (children) {
-                for (const child of children(pageData, lang, dict)) {
-                    const childHtml = await child.render();
-                    const childPath = path.join(outFolder, child.file);
-                    await fs.mkdir(path.dirname(childPath), { recursive: true });
-                    await fs.writeFile(childPath, await minify(childHtml, MINIFY_OPTIONS), 'utf8');
-                    console.log(`✓ [${lang.toUpperCase()}] Generated ${path.join(lang === 'en' ? '' : lang, child.file)}`);
-                }
-            }
-        }
-    }
+        await Promise.all(PAGES.map(page => renderPage(page, lang, dict, outFolder)));
+    }));
     
     /* Bundle CSS */
     console.log('Bundling modular CSS...');
