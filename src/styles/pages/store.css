@@ -25,6 +25,10 @@
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 1.5rem;
 }
+.store-sections-wrapper .articles-grid.large-card {
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 2.5rem;
+}
 
 .store-price {
     display: inline-flex;

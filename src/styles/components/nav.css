@@ -123,21 +123,33 @@ nav > ul > li > a:hover::after { width: 100%; }
     border: 1px solid var(--border-color);
     border-radius: 9999px;
     box-shadow: var(--shadow-soft);
-    overflow-x: auto;
-    scrollbar-width: none;
+    overflow: hidden;
 }
-.jump-bar::-webkit-scrollbar { display: none; }
 .jump-title {
     font-size: 0.88rem;
     font-weight: 600;
     color: var(--text-secondary);
     white-space: nowrap;
+    flex: 0 0 auto;
 }
 .jump-links {
     display: flex;
     align-items: center;
+    padding: 0 0.5rem;
     gap: 0.5rem;
+    min-width: 0;
+    flex: 1 1 auto;
+    overflow-x: auto;
+    scrollbar-width: none;
+    mask-image: linear-gradient(
+        to right,
+        transparent,
+        #000 1rem,
+        #000 calc(100% - 1rem),
+        transparent
+    );
 }
+.jump-links::-webkit-scrollbar { display: none; }
 .jump-pill {
     display: inline-flex;
     align-items: center;

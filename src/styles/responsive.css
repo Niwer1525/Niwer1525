@@ -28,7 +28,7 @@
     nav > ul > li > a { font-size: 1.5rem; }
 }
 
-@media (max-width: 768px) {    
+@media (max-width: 768px) {
     #presentation {
         flex-direction: column-reverse;
         text-align: center;
@@ -48,6 +48,10 @@
     .large-card {
         width: 100%;
         padding: 1.25rem 2.5rem 1.25rem 1.25rem;
+    }
+    .store-sections-wrapper .articles-grid.large-card {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.5rem;
     }
     .top-right-external-link {
         top: 8px;

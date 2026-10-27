@@ -4,12 +4,22 @@ import { renderPackageCard } from '../components/store/packageCard.js';
 import { jumpBar } from '../components/nav.js';
 import { sectionAlert } from '../components/section_alerts.js';
 
+function slugify(value) {
+    return String(value)
+        .normalize('NFKD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '') || 'category';
+}
+
 // Recursive helper to render sections and collect anchor links
 async function renderCategorySections(node, parentPath, context, outLinks) {
-    const id = String(node.id ?? node.slug);
+    const id = slugify(node.id ?? node.slug ?? node.name);
     const currentPath = parentPath ? `${parentPath}-${id}` : id;
     const sectionId = `section-${currentPath}`;
-    const displayName = node.name || id;
+    const displayName = node.name || node.id || node.slug || id;
 
     let html = ''; 
     const validPackages = (node.packages || []).filter(p => Boolean(p.paymentLink || p.payment_link || context.catalogPaymentLink));

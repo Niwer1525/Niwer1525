@@ -41,8 +41,8 @@ export function footer(lang = 'en', langDict, seasonal = {}) {
             <li><a href="${legalUrl}#privacy_policy">${translate(langDict, "btn.privacy_policy")}</a></li>
         </ul>
         <hr>
-        <p id="footer-made-by">
-            ${translate(langDict, "made_by")} ${seasonal.emoji || '❤️'} - <a href="https://sponsor.niwer.dev">${translate(langDict, "sponsor")}</a>
+        <p>
+            ${translate(langDict, "made_by").replace('{emoji}', seasonal.emoji || '❤️')} - <a href="https://sponsor.niwer.dev">${translate(langDict, "sponsor")}</a>
         </p>
         <p>${translate(langDict, "copyright")}</p>
     </footer>

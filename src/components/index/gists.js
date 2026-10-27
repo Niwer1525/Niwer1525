@@ -38,7 +38,7 @@ function renderGist(gist) {
 
     return `
         <article class="gist-card">
-            <header><p>${escapeHtml(description)}</p></header>
+            <main><p class="text-bold">${escapeHtml(description)}</p></main>
             ${progressBar}
             ${legend}
             <div class="gist-info">

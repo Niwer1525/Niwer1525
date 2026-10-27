@@ -92,7 +92,8 @@
     gap: 2rem;
     margin-bottom: 2rem;
 }
-.large-card .articles-grid {
+.articles-grid.large-card {
+    width: 100%;
     grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
     gap: 2.5rem;
 }

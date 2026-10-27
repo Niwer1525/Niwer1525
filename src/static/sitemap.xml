@@ -40,6 +40,24 @@
         <xhtml:link rel="alternate" hreflang="x-default" href="https://niwer.dev/store" />
     </url>
 
+    <!-- Blog (English) -->
+    <url>
+        <loc>https://niwer.dev/blog/</loc>
+        <priority>0.5</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://niwer.dev/blog/" />
+        <xhtml:link rel="alternate" hreflang="fr" href="https://niwer.dev/fr/blog/" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://niwer.dev/blog/" />
+    </url>
+
+    <!-- Blog (French) -->
+    <url>
+        <loc>https://niwer.dev/fr/blog/</loc>
+        <priority>0.5</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://niwer.dev/blog/" />
+        <xhtml:link rel="alternate" hreflang="fr" href="https://niwer.dev/fr/blog/" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://niwer.dev/blog/" />
+    </url>
+
     <!-- Legal (English) -->
     <url>
         <loc>https://niwer.dev/legal</loc>

@@ -48,7 +48,7 @@
     "404_description": "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.",
 
     "_comment_other": "Other",
-    "made_by": "Made with ❤️ by Niwer",
+    "made_by": "Made with {emoji} by Niwer",
     "copyright": "Copyright - All rights reserved",
     "sponsor": "Toss a coin to your Niwer",
     "content_aboute_me": "Hi, I'm <span>Erwin</span> (aka <span>Niwer</span>).<br><br>Self-taught developer with 8+ years of experience. I specialize in <span>Java</span> and <span>web development</span>, building robust applications and exploring new technologies. Always eager for new challenges.",
