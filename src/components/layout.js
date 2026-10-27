@@ -14,7 +14,13 @@ function addScripts(scripts) {
     }).join('\n');
 }
 
-function layout({ title = 'Default Title', description = '', canonical = '', lang = 'en', body = '', additionalScripts = [], scripts = ['/js/public.js'], headScripts = [] }) {
+function addStylesheets(stylesheets) {
+    return stylesheets
+        .map(stylesheet => `<link rel="stylesheet" href="${stylesheet}">`)
+        .join('\n');
+}
+
+function layout({ title = 'Default Title', description = '', canonical = '', lang = 'en', body = '', headCss = [], scripts = ['/js/public.js'], headScripts = [] }) {
     const SEASONAL = seasonal();
     return `
         <!DOCTYPE html>
@@ -36,20 +42,19 @@ function layout({ title = 'Default Title', description = '', canonical = '', lan
 
                 <link rel="stylesheet" href="/assets/main.css">
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css">
-                <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+                ${addStylesheets(headCss)}
             </head>
             <body>
                 ${body}
 
                 <!-- Scripts -->
                 ${addScripts(scripts.map(file => ({ file, defer: true, type: 'module' })))}
-                ${addScripts(additionalScripts)}
             </body>
         </html>
     `;
 }
 
-export function emptyLayout({ lang = 'en', langDict = [], title, description, canonical, content, additionalScripts = [], scripts = [] }) {
+export function emptyLayout({ lang = 'en', langDict = [], title, description, canonical, content, headCss = [], scripts = [] }) {
     return layout({
         title,
         description,
@@ -60,12 +65,12 @@ export function emptyLayout({ lang = 'en', langDict = [], title, description, ca
                 ${content}
             </main>
         `,
-        additionalScripts,
+        headCss,
         scripts
     });
 }
 
-export function defaultLayout({ page, lang = 'en', langDict = [], title, description, canonical, content, additionalScripts = [], scripts = ['/js/public.js'], headScripts = [] }) {
+export function defaultLayout({ page, lang = 'en', langDict = [], title, description, canonical, content, headCss = [], scripts = ['/js/public.js'], headScripts = [] }) {
     return layout({
         title,
         description,
@@ -80,12 +85,12 @@ export function defaultLayout({ page, lang = 'en', langDict = [], title, descrip
             ${footer(lang, langDict, seasonal())}
         `,
         scripts,
-        additionalScripts,
+        headCss,
         headScripts
     });
 }
 
-export function panelLayout({ page, lang = 'en', langDict = [], title, description, canonical, content, additionalScripts = [] }) {
+export function panelLayout({ page, lang = 'en', langDict = [], title, description, canonical, content, headCss = [] }) {
     return layout({
         title,
         description,
@@ -101,11 +106,11 @@ export function panelLayout({ page, lang = 'en', langDict = [], title, descripti
             ${footer(lang, langDict, seasonal())}
         `,
         scripts: ['/js/panel.js'],
-        additionalScripts: [],
+        headCss,
     });
 }
 
-export function errorLayout({ lang = 'en', langDict = [], title, description, canonical, content, additionalScripts = [] }) {
+export function errorLayout({ lang = 'en', langDict = [], title, description, canonical, content, headCss = [] }) {
     return layout({
         title,
         description,
@@ -118,6 +123,6 @@ export function errorLayout({ lang = 'en', langDict = [], title, description, ca
             </main>
             ${footer(lang, langDict, seasonal())}
         `,
-        additionalScripts
+        headCss
     });
 }

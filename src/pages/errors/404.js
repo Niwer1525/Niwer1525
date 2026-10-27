@@ -49,7 +49,6 @@ export async function render(lang, langDict) {
 		title: 'Oops! Page not found',
 		description: 'The page you are looking for does not exist.',
 		canonical: 'https://niwer.dev/error/404',
-		content,
-		additionalScripts: []
+		content
 	});
 }

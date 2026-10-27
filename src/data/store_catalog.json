@@ -68,12 +68,12 @@
                             "paymentLink": "https://buy.stripe.com/eVqbJ047Lbuk2L39mmcfK05",
                             "payment_type": "one_time_purchase",
                             "images": [
-                                "/assets/armo/armo_1.png",
-                                "/assets/armo/armo_2.png",
-                                "/assets/armo/armo_3.png",
-                                "/assets/armo/armo_scaling.png",
-                                "/assets/armo/armo_gui.png",
-                                "/assets/armo/armo_4.png"
+                                "/assets/armo/armo_1.webp",
+                                "/assets/armo/armo_2.webp",
+                                "/assets/armo/armo_3.webp",
+                                "/assets/armo/armo_scaling.webp",
+                                "/assets/armo/armo_gui.webp",
+                                "/assets/armo/armo_4.webp"
                             ]
                         }
                     ]

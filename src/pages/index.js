@@ -70,6 +70,9 @@ export async function render(lang, langDict, { apiBaseUrl = '' } = {}) {
 		canonical: 'https://niwer.dev',
 		content,
 		scripts: ['/js/home.js'],
+		headCss: [
+			'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css'
+		],
 		headScripts: [
 			'src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.min.js" type="module" defer'
 		]
