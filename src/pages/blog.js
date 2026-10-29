@@ -4,7 +4,7 @@ import { escapeHtml, translate } from '../utils.js';
 
 const blogPrefix = (lang) => (lang === 'en' ? '/blog/' : `/${lang}/blog/`);
 
-function formatDate(val, lang) {
+function renderDate(val, lang) {
     const d = new Date(val);
     if(isNaN(d)) return escapeHtml(val || '')
         
@@ -28,7 +28,7 @@ function readingTime(minutes) {
     `;
 }
 
-function renderSources(sources, lang) {
+function sources(sources, lang) {
     if (!sources?.length) return '';
 
     const list = sources.map(({ date, url = '', authors = [] }) => {
@@ -40,7 +40,7 @@ function renderSources(sources, lang) {
 
         return `
             <div>
-                ${formatDate(date, lang)}
+                ${renderDate(date, lang)}
                 -
                 <span class="text-secondary">
                     ${link}
@@ -52,14 +52,14 @@ function renderSources(sources, lang) {
     return `<div class="article-info">${list}</div>`;
 }
 
-function renderCard(post, lang, fullScreen = false) {
+function card(post, lang) {
     return `
         <article>
             <header><h2>${escapeHtml(post.title)}</h2></header>
             <main><p>${escapeHtml(post.summary || '')}</p></main>
             <footer>
                 ${readingTime(post.reading_time_minutes)}
-                <span class="text-secondary">${formatDate(post.published_at, lang)}</span>
+                <span class="text-secondary">${renderDate(post.published_at, lang)}</span>
                 <a href="${blogPrefix(lang)}${encodeURIComponent(post.slug)}.html">
                     ${escapeHtml(lang === 'fr' ? "Lire l'article" : 'Read more')}
                     <i class="fa-solid fa-arrow-right"></i>
@@ -82,7 +82,7 @@ export function renderPost(post, lang = 'en', langDict = {}) {
         <article>
             <header><h2>${escapeHtml(post.title)}</h2></header>
             <main><p>${marked.parse(post.content_markdown || '')}</p></main>
-            ${renderSources(post.sources, lang)}
+            ${sources(post.sources, lang)}
             <footer>
                 <div>
                     <a href="${blogPrefix(lang)}" class="button">
@@ -92,7 +92,7 @@ export function renderPost(post, lang = 'en', langDict = {}) {
                         <i class="fa-solid fa-share-nodes"></i>
                     </button>
                 </div>
-                ${formatDate(post.published_at, lang)}
+                ${renderDate(post.published_at, lang)}
                 ${readingTime(post.reading_time_minutes)}
             </footer>
         </article>`;
@@ -110,7 +110,7 @@ export function renderPost(post, lang = 'en', langDict = {}) {
  * Renders the blog page with a list of posts.
  */
 export function render(lang = 'en', langDict = {}, { apiBaseUrl = '' } = {}, posts = []) {
-    const postCards = posts.map(p => renderCard(p, lang, false)).join('');
+    const postCards = posts.map(p => card(p, lang, false)).join('');
     const rssUrl = `${apiBaseUrl}/blog/rss?lang=${encodeURIComponent(lang)}`;
 
     const content = `
@@ -123,7 +123,7 @@ export function render(lang = 'en', langDict = {}, { apiBaseUrl = '' } = {}, pos
                     ${translate(langDict, 'blog.rss')}
                 </button>
             </div>
-            ${posts.length ? `<div class="articles-grid large-card">${postCards}</div>` : `<div class="blog-status" role="status">${translate(langDict, 'blog.no_posts')}</div>`}
+            ${posts.length ? `<div class="articles-grid large-card">${postCards}</div>` : `<h4>${translate(langDict, 'blog.no_posts')}</h4>`}
         </section>`;
 
     return defaultLayout({
