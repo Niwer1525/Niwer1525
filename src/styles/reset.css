@@ -22,9 +22,9 @@ body {
     font-family: 'Roboto', 'Segoe UI', sans-serif;
     color: var(--text-primary);
     background-color: var(--bg-color);
-    background-image: 
+    /* background-image: 
         radial-gradient(circle at 15% 50%, rgba(120, 40, 200, 0.08), transparent 25%),
-        radial-gradient(circle at 85% 30%, rgba(120, 40, 200, 0.05), transparent 25%);
+        radial-gradient(circle at 85% 30%, rgba(120, 40, 200, 0.05), transparent 25%); */
 }
 
 h1, h2, h3, h4 {
