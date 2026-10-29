@@ -115,6 +115,7 @@
     "form.delete_account.action": "Confirm & Delete Account",
     "form.edit_profile.title": "Edit Profile",
     "form.edit_profile.description.new_password": "New password or leave blank to keep current.",
+    "form.edit_profile.description.confirm_new_password": "Confirm new password.",
     "form.edit_profile.description.confirm_password": "Current password required to save.",
     "form.edit_profile.description.authenticator_code": "Authenticator Code (2FA)",
     "form.edit_profile.action": "Save Changes",

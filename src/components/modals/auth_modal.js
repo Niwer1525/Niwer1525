@@ -53,6 +53,10 @@ function register(langDict) {
 			<i class="fa-solid fa-lock"></i>
 			<input type="password" name="password" required minlength="8" placeholder="••••••••">
 		</label>
+		<label>
+			<i class="fa-solid fa-lock"></i>
+			<input type="password" name="confirm_password" required minlength="8" placeholder="••••••••">
+		</label>
 		<button type="submit">
 			<i class="fa-solid fa-user-plus"></i>
 			${translate(langDict, "form.auth.register.action")}

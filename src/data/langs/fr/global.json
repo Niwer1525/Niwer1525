@@ -113,6 +113,7 @@
     "form.delete_account.action": "Confirmer & Supprimer le compte",
     "form.edit_profile.title": "Modifier le profil",
     "form.edit_profile.description.new_password": "Nouveau mot de passe ou laissez vide pour conserver l'actuel.",
+    "form.edit_profile.description.confirm_new_password": "Confirmez le nouveau mot de passe.",
     "form.edit_profile.description.confirm_password": "Mot de passe actuel requis pour enregistrer.",
     "form.edit_profile.description.authenticator_code": "Code d'authentification (2FA)",
     "form.edit_profile.action": "Enregistrer les modifications",

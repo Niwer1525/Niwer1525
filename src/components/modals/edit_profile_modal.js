@@ -17,6 +17,11 @@ export function editProfileModal(langDict) {
 			<input type="password" name="newPassword" id="editNewPassword" minlength="8" placeholder="••••••••">
 			<span class="text-secondary">${translate(langDict, 'form.edit_profile.description.new_password')}</span>
 		</label>
+		<label>
+			<i class="fa-solid fa-lock"></i>
+			<input type="password" name="confirmNewPassword" minlength="8" placeholder="••••••••">
+			<span class="text-secondary">${translate(langDict, 'form.edit_profile.description.confirm_new_password')}</span>
+		</label>
 		<hr>
 		<label>
 			<i class="fa-solid fa-lock"></i>
