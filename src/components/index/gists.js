@@ -41,7 +41,7 @@ function renderGist(gist) {
             <main><p class="text-bold">${escapeHtml(description)}</p></main>
             ${progressBar}
             ${legend}
-            <div class="gist-info">
+            <div class="article-info">
                 <span class="gist-file-count"><i class="fa-solid fa-file"></i> ${fileCount} ${fileCount === 1 ? 'file' : 'files'}</span>
                 <span class="gist-date"><i class="fa-solid fa-calendar"></i> ${date}</span>
             </div>

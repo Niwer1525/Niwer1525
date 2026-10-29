@@ -1,138 +1,136 @@
+import { marked } from 'marked';
 import { defaultLayout } from '../components/layout.js';
 import { escapeHtml, translate } from '../utils.js';
-import { marked } from 'marked';
 
-function formatDate(value, lang) {
-    const date = new Date(value);
-    return Number.isNaN(date.getTime()) ? escapeHtml(value || '') : date.toLocaleDateString(lang);
-}
+const blogPrefix = (lang) => (lang === 'en' ? '/blog/' : `/${lang}/blog/`);
 
-function postUrl(post, lang) {
-    return `/${lang === 'en' ? '' : `${lang}/`}blog/${encodeURIComponent(post.slug)}.html`;
-}
-
-function readingTime(post, label) {
-    const minutes = Number(post.reading_time_minutes);
-    return Number.isFinite(minutes) && minutes > 0
-        ? `${escapeHtml(minutes)} ${escapeHtml(label)}`
-        : '';
-}
-
-function renderSources(sources, lang, label) {
-    if (!Array.isArray(sources) || !sources.length) return '';
-
+function formatDate(val, lang) {
+    const d = new Date(val);
+    if(isNaN(d)) return escapeHtml(val || '')
+        
     return `
-        <section class="blog-post-sources" aria-label="${escapeHtml(label)}">
-            <h2>${escapeHtml(label)}</h2>
-            <ul>
-                ${sources.map((source) => {
-                    const date = formatDate(source?.date, lang);
-                    const url = String(source?.url || '');
-                    const authors = Array.isArray(source?.authors)
-                        ? source.authors.filter(Boolean).join(', ')
-                        : '';
-                    let sourceLink = escapeHtml(url);
-
-                    try {
-                        const parsedUrl = new URL(url);
-                        if (['http:', 'https:'].includes(parsedUrl.protocol)) {
-                            sourceLink = `<a href="${escapeHtml(parsedUrl.href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(parsedUrl.href)}</a>`;
-                        }
-                    } catch {
-                        // Keep malformed URLs as escaped text.
-                    }
-
-                    return `
-                        <li>
-                            <span class="blog-source-date">${escapeHtml(date)}</span>
-                            ${sourceLink}
-                            ${authors ? `<span class="blog-source-authors">${escapeHtml(authors)}</span>` : ''}
-                        </li>
-                    `;
-                }).join('')}
-            </ul>
-        </section>
+        <span class="text-secondary">
+            <i class="fa-solid fa-calendar-days"></i>
+            ${d.toLocaleDateString(lang)}
+        </span>
     `;
 }
 
-function renderCard(post, lang, label) {
+function readingTime(minutes) {
+    const n = Number(minutes);
+    if(n < 0 || isNaN(n)) return '';
+
     return `
-        <article class="blog-card">
-            <header><h2>${escapeHtml(post.title)}</h2><span>${formatDate(post.published_at, lang)}</span></header>
+        <span class="text-secondary">
+            <i class="fa-solid fa-stopwatch"></i>
+            ${n} min
+        </span>
+    `;
+}
+
+function renderSources(sources, lang) {
+    if (!sources?.length) return '';
+
+    const list = sources.map(({ date, url = '', authors = [] }) => {
+        const isHttp = /^https?:\/\//i.test(url);
+        const link = isHttp
+            ? `<a class="text-bold" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(url)}</a>`
+            : escapeHtml(url);
+        const authorStr = authors.filter(Boolean).join(', ');
+
+        return `
+            <div>
+                ${formatDate(date, lang)}
+                -
+                <span class="text-secondary">
+                    ${link}
+                    ${authorStr ? `<span>(${escapeHtml(authorStr)}</span>)` : ''}
+                </span>
+            </div>`;
+    }).join('');
+
+    return `<div class="article-info">${list}</div>`;
+}
+
+function renderCard(post, lang, fullScreen = false) {
+    return `
+        <article>
+            <header><h2>${escapeHtml(post.title)}</h2></header>
             <main><p>${escapeHtml(post.summary || '')}</p></main>
             <footer>
-                <span class="blog-card-reading-time">${readingTime(post, label)}</span>
-                <a href="${postUrl(post, lang)}">${escapeHtml(lang === 'fr' ? "Lire l'article" : 'Read more')} <i class="fa-solid fa-arrow-right"></i></a>
+                ${readingTime(post.reading_time_minutes)}
+                <span class="text-secondary">${formatDate(post.published_at, lang)}</span>
+                <a href="${blogPrefix(lang)}${encodeURIComponent(post.slug)}.html">
+                    ${escapeHtml(lang === 'fr' ? "Lire l'article" : 'Read more')}
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
             </footer>
-        </article>
-    `;
+        </article>`;
 }
 
 export async function fetchPosts(apiBaseUrl, lang) {
-    const response = await fetch(`${apiBaseUrl}/blog/posts?lang=${encodeURIComponent(lang)}`);
-    if (!response.ok) throw new Error(`Could not fetch blog posts: ${response.statusText}`);
-    const payload = await response.json();
-    const posts = Array.isArray(payload) ? payload : payload.posts;
-    return Array.isArray(posts) ? posts : [];
+    const res = await fetch(`${apiBaseUrl}/blog/posts?lang=${encodeURIComponent(lang)}`);
+    if (!res.ok) throw new Error(`Could not fetch blog posts: ${res.statusText}`);
+    const data = await res.json();
+    return Array.isArray(data) ? data : data.posts ?? [];
 }
 
 export function renderPost(post, lang = 'en', langDict = {}) {
-    const readingTimeLabel = translate(langDict, 'blog.reading_time');
-    const sourcesLabel = translate(langDict, 'blog.sources');
+    const slugUrl = `${blogPrefix(lang)}${encodeURIComponent(post.slug)}.html`;
+
     const content = `
-        <article class="blog-post text-content">
-            <h1>${escapeHtml(post.title)}</h1>
-            <span class="blog-post-meta">${formatDate(post.published_at, lang)}</span>
-            <div class="blog-post-content">${marked.parse(post.content_markdown || '')}</div>
-            <footer class="blog-post-footer">
-                ${renderSources(post.sources, lang, sourcesLabel)}
-                <span class="blog-post-reading-time">${readingTime(post, readingTimeLabel)}</span>
-                <button class="button blog-share-button" type="button" onclick="navigator.share ? navigator.share({ title: document.title, url: location.href }) : copyToClipboardWithNotification(location.href, ${escapeHtml(JSON.stringify(translate(langDict, 'blog.link_copied')))})">
-                    <i class="fa-solid fa-share-nodes"></i>
-                    <span>${escapeHtml(translate(langDict, 'blog.share'))}</span>
-                </button>
+        <article>
+            <header><h2>${escapeHtml(post.title)}</h2></header>
+            <main><p>${marked.parse(post.content_markdown || '')}</p></main>
+            ${renderSources(post.sources, lang)}
+            <footer>
+                <div>
+                    <a href="${blogPrefix(lang)}" class="button">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </a>
+                    <button class="button" type="button" title="${translate(langDict, 'blog.share')}" onclick="navigator.share ? navigator.share({ title: document.title, url: location.href }) : copyToClipboardWithNotification(location.href, ${escapeHtml(JSON.stringify(translate(langDict, 'blog.link_copied')))})">
+                        <i class="fa-solid fa-share-nodes"></i>
+                    </button>
+                </div>
+                ${formatDate(post.published_at, lang)}
+                ${readingTime(post.reading_time_minutes)}
             </footer>
-            <p class="blog-post-back"><a href="/${lang === 'en' ? '' : `${lang}/`}blog/"><i class="fa-solid fa-arrow-left"></i> ${escapeHtml(lang === 'fr' ? 'Tous les articles' : 'All posts')}</a></p>
-        </article>
-    `;
+        </article>`;
 
     return defaultLayout({
-        page: 'blog',
-        lang,
-        langDict,
+        page: 'blog', lang, langDict,
         title: `${escapeHtml(post.title)} | ${translate(langDict, 'title.blog')}`,
         description: translate(langDict, 'blog.description'),
-        canonical: `https://niwer.dev/${lang === 'en' ? '' : `${lang}/`}blog/${encodeURIComponent(post.slug)}.html`,
+        canonical: `https://niwer.dev${slugUrl}`,
         content
     });
 }
 
+/**
+ * Renders the blog page with a list of posts.
+ */
 export function render(lang = 'en', langDict = {}, { apiBaseUrl = '' } = {}, posts = []) {
-    const readingTimeLabel = translate(langDict, 'blog.reading_time');
-    const postCards = posts.map(post => renderCard(post, lang, readingTimeLabel)).join('');
+    const postCards = posts.map(p => renderCard(p, lang, false)).join('');
+    const rssUrl = `${apiBaseUrl}/blog/rss?lang=${encodeURIComponent(lang)}`;
+
     const content = `
-        <section class="blog-page">
-            <header class="blog-header">
-                <h1>${translate(langDict, 'title.blog')}</h1>
-                <p>${translate(langDict, 'blog.description')}</p>
-                <button class="button" type="button" onclick="copyToClipboardWithNotification(${escapeHtml(JSON.stringify(`${apiBaseUrl}/blog/rss?lang=${encodeURIComponent(lang)}`))}, ${escapeHtml(JSON.stringify(translate(langDict, 'blog.rss_copied')))})">
-                    <i class="fa-solid fa-rss"></i>
-                    <span>${translate(langDict, 'blog.rss')}</span>
-                </button>
-            </header>
-            ${posts.length
-                ? `<div class="articles-grid">${postCards}</div>`
-                : `<div class="blog-status" role="status">${translate(langDict, 'blog.no_posts')}</div>`}
-        </section>
-    `;
+    <section class="blog-page">
+        <h2>${translate(langDict, 'title.blog')}</h2>
+        <header class="blog-header">
+            <p>${translate(langDict, 'blog.description')}</p>
+            <button class="button" type="button" onclick="copyToClipboardWithNotification(${escapeHtml(JSON.stringify(rssUrl))}, ${escapeHtml(JSON.stringify(translate(langDict, 'blog.rss_copied')))})">
+                <i class="fa-solid fa-rss"></i>
+                ${translate(langDict, 'blog.rss')}
+            </button>
+        </header>
+        ${posts.length ? `<div class="articles-grid large-card">${postCards}</div>` : `<div class="blog-status" role="status">${translate(langDict, 'blog.no_posts')}</div>`}
+    </section>`;
 
     return defaultLayout({
-        page: 'blog',
-        lang,
-        langDict,
+        page: 'blog', lang, langDict,
         title: `${translate(langDict, 'title.blog')} | Erwin Redoté`,
         description: translate(langDict, 'blog.description'),
-        canonical: `https://niwer.dev/${lang === 'en' ? '' : `${lang}/`}blog/`,
+        canonical: `https://niwer.dev${blogPrefix(lang)}`,
         content
     });
 }
