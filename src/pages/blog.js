@@ -114,17 +114,17 @@ export function render(lang = 'en', langDict = {}, { apiBaseUrl = '' } = {}, pos
     const rssUrl = `${apiBaseUrl}/blog/rss?lang=${encodeURIComponent(lang)}`;
 
     const content = `
-    <section class="blog-page">
-        <h2>${translate(langDict, 'title.blog')}</h2>
-        <header class="blog-header">
-            <p>${translate(langDict, 'blog.description')}</p>
-            <button class="button" type="button" onclick="copyToClipboardWithNotification(${escapeHtml(JSON.stringify(rssUrl))}, ${escapeHtml(JSON.stringify(translate(langDict, 'blog.rss_copied')))})">
-                <i class="fa-solid fa-rss"></i>
-                ${translate(langDict, 'blog.rss')}
-            </button>
-        </header>
-        ${posts.length ? `<div class="articles-grid large-card">${postCards}</div>` : `<div class="blog-status" role="status">${translate(langDict, 'blog.no_posts')}</div>`}
-    </section>`;
+        <section>
+            <h2>${translate(langDict, 'title.blog')}</h2>
+            <h3>${translate(langDict, 'blog.description')}</h3>
+            <div class="section-actions">
+                <button type="button" onclick="copyToClipboardWithNotification(${escapeHtml(JSON.stringify(rssUrl))}, ${escapeHtml(JSON.stringify(translate(langDict, 'blog.rss_copied')))})">
+                    <i class="fa-solid fa-rss"></i>
+                    ${translate(langDict, 'blog.rss')}
+                </button>
+            </div>
+            ${posts.length ? `<div class="articles-grid large-card">${postCards}</div>` : `<div class="blog-status" role="status">${translate(langDict, 'blog.no_posts')}</div>`}
+        </section>`;
 
     return defaultLayout({
         page: 'blog', lang, langDict,
