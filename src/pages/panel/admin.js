@@ -54,6 +54,7 @@ export async function render(lang, langDict) {
                             <th>${translate(langDict, 'blog.table_header.lang')}</th>
                             <th>${translate(langDict, 'blog.table_header.title')}</th>
                             <th>${translate(langDict, 'blog.table_header.summary')}</th>
+                            <th>${translate(langDict, 'blog.table_header.sources')}</th>
                             <th>${translate(langDict, 'blog.table_header.status')}</th>
                             <th>${translate(langDict, 'blog.table_header.published_at')}</th>
                             <th>${translate(langDict, 'blog.table_header.created_at')}</th>
@@ -63,7 +64,7 @@ export async function render(lang, langDict) {
                     </thead>
                     <tbody id="blogTableBody">
                          <tr>
-                            <td colspan="5">${translate(langDict, "blog.loading")}</td>
+                            <td colspan="10">${translate(langDict, "blog.loading")}</td>
                         </tr>
                     </tbody>
                 </table>

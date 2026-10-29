@@ -30,6 +30,18 @@ export function editPostModal(langDict) {
 			<textarea type="text" name="content" id="editPostContent" required></textarea>
 		</label>
 
+        <hr>
+
+        <div class="create-post-sources-header">
+            <h3>${translate(langDict, 'form.edit_post.sources.title')}</h3>
+            <button type="button" id="addEditPostSourceButton" data-sources-container="editPostSources">
+                <i class="fa-solid fa-plus"></i>
+                ${translate(langDict, 'form.edit_post.sources.add')}
+            </button>
+        </div>
+        <p class="text-secondary">${translate(langDict, 'form.edit_post.sources.description')}</p>
+        <div id="editPostSources"></div>
+
 		<button type="submit">
 			<i class="fa-solid fa-plus"></i>
 			${translate(langDict, 'form.edit_post.action')}

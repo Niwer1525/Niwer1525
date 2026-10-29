@@ -49,9 +49,20 @@ export function createPostModal(langDict) {
 			<textarea type="text" name="content_fr" id="createPostContent_fr" required></textarea>
 		</label>
 
-        <button type="submit" id="savePostButton" data-draft="true">
-            <i class="fa-solid fa-save"></i>
-            ${translate(langDict, 'form.create_post.action_save')}
+		<hr>
+
+		<div class="create-post-sources-header">
+			<p class="text-secondary">${translate(langDict, 'form.create_post.sources.description')}</p>
+		    <button type="button" id="addPostSourceButton" data-sources-container="createPostSources">
+		        <i class="fa-solid fa-plus"></i>
+		        ${translate(langDict, 'form.create_post.sources.add')}
+		    </button>
+		</div>
+		<div id="createPostSources"></div>
+
+		<button type="submit" id="savePostButton" data-draft="true">
+		    <i class="fa-solid fa-save"></i>
+		    ${translate(langDict, 'form.create_post.action_save')}
         </button>
 		<button type="submit" data-draft="false">
 			<i class="fa-solid fa-plus"></i>

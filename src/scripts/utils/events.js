@@ -1,6 +1,6 @@
 import { CONFIRMATION_PHRASE, getPagePath, onDomReady } from '../main.js';
 import { panelState, updateAuthenticatedVisibility } from '../panel.js';
-import { createBlogPost, editBlogPost, loadAdminPanel } from '../panel/admin.js';
+import { addPostSource, createBlogPost, editBlogPost, loadAdminPanel, removePostSource } from '../panel/admin.js';
 import { confirm2FASetup, login, register, requestAccountDeletion, restoreSession, submit2FALogin, updateProfile } from '../panel/auth.js';
 import { createLicense, loadLicenses } from '../panel/licenses.js';
 import { loadDownloads, loadPublicServers } from '../panel/public.js';
@@ -32,6 +32,12 @@ document.addEventListener('input', function(e) {
     }
     /* Handle TOTP code input (Removing spaces & non-numeric characters) */
     if(e.target && e.target.classList.contains('totp-code')) e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 6);
+});
+
+document.addEventListener('click', function(e) {
+    const addSourceButton = e.target.closest('[data-sources-container]');
+    if (addSourceButton) addPostSource(addSourceButton.dataset.sourcesContainer);
+    else if (e.target.closest('.remove-post-source')) removePostSource(e.target.closest('.remove-post-source'));
 });
 
 document.addEventListener('submit', function(e) {

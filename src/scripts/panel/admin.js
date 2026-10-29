@@ -85,6 +85,7 @@ async function loadBlogPosts() {
                 <td>${escapeHtml(post.lang)}</td>
                 <td>${escapeHtml(post.title)}</td>
                 <td>${escapeHtml(post.summary)}</td>
+                <td class="blog-sources-cell">${renderBlogSources(post.sources)}</td>
                 <td>${escapeHtml(post.status)}</td>
                 <td>${escapeHtml(post.published_at || 'N/A')}</td>
                 <td>${escapeHtml(post.created_at)}</td>
@@ -106,6 +107,28 @@ async function loadBlogPosts() {
         createNotification('Failed to load blog posts', 'error');
         body.innerHTML = '<tr><td class="text-danger">Failed to fetch blog posts.</td></tr>';
     }
+
+    function renderBlogSources(sources) {
+        if (!Array.isArray(sources) || !sources.length) return '<span class="text-secondary">N/A</span>';
+
+        return `<ul class="blog-sources-list">${sources.map((source) => {
+            const date = escapeHtml(source?.date || '');
+            const url = String(source?.url || '');
+            const authors = Array.isArray(source?.authors) ? source.authors.filter(Boolean).join(', ') : '';
+            let link = escapeHtml(url);
+
+            try {
+                const parsedUrl = new URL(url);
+                if (['http:', 'https:'].includes(parsedUrl.protocol)) {
+                    link = `<a href="${escapeHtml(parsedUrl.href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(parsedUrl.href)}</a>`;
+                }
+            } catch {
+                // Display malformed source URLs as text.
+            }
+
+            return `<li><span>${date}</span> ${link}${authors ? `<small>${escapeHtml(authors)}</small>` : ''}</li>`;
+        }).join('')}</ul>`;
+    }
 }
 
 async function prepareEditBlogPost(id, slug) {
@@ -118,6 +141,7 @@ async function prepareEditBlogPost(id, slug) {
     const postTitleEnInput = document.getElementById('editPostTitle');
     const postSummaryEnInput = document.getElementById('editPostSummary');
     const postContentEnInput = document.getElementById('editPostContent');
+    const postSources = document.getElementById('editPostSources');
 
     try {
         const post = await api(`/admin/blog/posts/${encodeURIComponent(id)}`);
@@ -134,6 +158,10 @@ async function prepareEditBlogPost(id, slug) {
         if (postTitleEnInput) postTitleEnInput.value = post.title || '';
         if (postSummaryEnInput) postSummaryEnInput.value = post.summary || '';
         if (postContentEnInput) postContentEnInput.value = post.content_markdown || '';
+        if (postSources) {
+            postSources.replaceChildren();
+            (post.sources || []).forEach((source) => postSources.append(createPostSourceRow(source)));
+        }
     } catch (e) {
         console.error('Error fetching blog post for editing:', e);
         createNotification(`Failed to load blog post "${slug}" for editing.`, 'error');
@@ -153,6 +181,10 @@ export async function editBlogPost(e) {
         if (!postId) throw new Error('Blog post ID is missing');
         
         const jsonBody = Object.fromEntries(formData.entries());
+        delete jsonBody.source_date;
+        delete jsonBody.source_url;
+        delete jsonBody.source_authors;
+        jsonBody.sources = getPostSources(form);
         const result = await api(`/admin/blog/posts/update`, { method: 'POST', body: JSON.stringify(jsonBody), headers: { 'Content-Type': 'application/json' } });
         if (result.success) loadBlogPosts();
         closeModals();
@@ -182,11 +214,82 @@ export async function createBlogPost(e) {
     return handleFormSubmit(e, async (form, formData) => {
         const jsonBody = Object.fromEntries(formData.entries());
         jsonBody.draft = e.submitter?.dataset.draft === 'true';
+        delete jsonBody.source_date;
+        delete jsonBody.source_url;
+        delete jsonBody.source_authors;
+        const sources = getPostSources(form);
+        if (sources.length) jsonBody.sources = sources;
+
         const result = await api('/admin/blog/posts/create', { method: 'POST', body: JSON.stringify(jsonBody), headers: { 'Content-Type': 'application/json' } });
         if (result.success) loadBlogPosts();
         closeModals();
     });
 }
+
+function createPostSourceRow(source = {}) {
+    const row = document.createElement('div');
+    row.className = 'create-post-source';
+    row.innerHTML = `
+        <label>
+            <i class="fa-solid fa-calendar"></i>
+            <input type="date" name="source_date" aria-label="Source date">
+        </label>
+        <label>
+            <i class="fa-solid fa-link"></i>
+            <input type="url" name="source_url" placeholder="https://example.com/article" aria-label="Source URL">
+        </label>
+        <label>
+            <i class="fa-solid fa-users"></i>
+            <input type="text" name="source_authors" placeholder="Author 1, Author 2" aria-label="Source authors">
+        </label>
+        <button type="button" class="danger-button remove-post-source" aria-label="Remove source">
+            <i class="fa-solid fa-trash"></i>
+        </button>
+    `;
+    row.querySelector('[name="source_date"]').value = source.date || '';
+    row.querySelector('[name="source_url"]').value = source.url || '';
+    row.querySelector('[name="source_authors"]').value = Array.isArray(source.authors) ? source.authors.join(', ') : '';
+    return row;
+}
+
+function getPostSources(form) {
+    return [...form.querySelectorAll('.create-post-source')].map((sourceRow, index) => {
+        const date = sourceRow.querySelector('[name="source_date"]')?.value.trim();
+        const url = sourceRow.querySelector('[name="source_url"]')?.value.trim();
+        const authors = sourceRow.querySelector('[name="source_authors"]')?.value.trim();
+
+        if (!date && !url && !authors) return null;
+        if (!date || !url) throw new Error(`Source ${index + 1} requires both a date and a URL.`);
+        const parsedDate = new Date(`${date}T00:00:00Z`);
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || Number.isNaN(parsedDate.getTime()) || parsedDate.toISOString().slice(0, 10) !== date) {
+            throw new Error(`Source ${index + 1} must use a valid ISO date.`);
+        }
+
+        try {
+            const parsedUrl = new URL(url);
+            if (!['http:', 'https:'].includes(parsedUrl.protocol)) throw new Error('Unsupported URL protocol');
+        } catch {
+            throw new Error(`Source ${index + 1} must use a valid HTTP(S) URL.`);
+        }
+
+        return {
+            date,
+            url,
+            ...(authors ? { authors: authors.split(',').map((author) => author.trim()).filter(Boolean) } : {})
+        };
+    }).filter(Boolean);
+}
+
+export function addPostSource(containerId = 'createPostSources') {
+    document.getElementById(containerId)?.append(createPostSourceRow());
+}
+
+export function removePostSource(button) {
+    button.closest('.create-post-source')?.remove();
+}
+
+window.addPostSource = addPostSource;
+window.removePostSource = removePostSource;
 
 /**
  * Load the admin panel sections when the admin page is accessed

@@ -31,3 +31,25 @@ tr:last-child td {
 tr:hover td {
     background: var(--surface-glass-hover);
 }
+.blog-sources-cell {
+    min-width: 220px;
+}
+.blog-sources-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.blog-sources-list li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+.blog-sources-list a {
+    overflow-wrap: anywhere;
+}
+.blog-sources-list small {
+    color: var(--text-secondary);
+}

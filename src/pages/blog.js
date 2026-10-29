@@ -18,6 +18,43 @@ function readingTime(post, label) {
         : '';
 }
 
+function renderSources(sources, lang, label) {
+    if (!Array.isArray(sources) || !sources.length) return '';
+
+    return `
+        <section class="blog-post-sources" aria-label="${escapeHtml(label)}">
+            <h2>${escapeHtml(label)}</h2>
+            <ul>
+                ${sources.map((source) => {
+                    const date = formatDate(source?.date, lang);
+                    const url = String(source?.url || '');
+                    const authors = Array.isArray(source?.authors)
+                        ? source.authors.filter(Boolean).join(', ')
+                        : '';
+                    let sourceLink = escapeHtml(url);
+
+                    try {
+                        const parsedUrl = new URL(url);
+                        if (['http:', 'https:'].includes(parsedUrl.protocol)) {
+                            sourceLink = `<a href="${escapeHtml(parsedUrl.href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(parsedUrl.href)}</a>`;
+                        }
+                    } catch {
+                        // Keep malformed URLs as escaped text.
+                    }
+
+                    return `
+                        <li>
+                            <span class="blog-source-date">${escapeHtml(date)}</span>
+                            ${sourceLink}
+                            ${authors ? `<span class="blog-source-authors">${escapeHtml(authors)}</span>` : ''}
+                        </li>
+                    `;
+                }).join('')}
+            </ul>
+        </section>
+    `;
+}
+
 function renderCard(post, lang, label) {
     return `
         <article class="blog-card">
@@ -41,12 +78,14 @@ export async function fetchPosts(apiBaseUrl, lang) {
 
 export function renderPost(post, lang = 'en', langDict = {}) {
     const readingTimeLabel = translate(langDict, 'blog.reading_time');
+    const sourcesLabel = translate(langDict, 'blog.sources');
     const content = `
         <article class="blog-post text-content">
             <h1>${escapeHtml(post.title)}</h1>
             <span class="blog-post-meta">${formatDate(post.published_at, lang)}</span>
             <div class="blog-post-content">${marked.parse(post.content_markdown || '')}</div>
             <footer class="blog-post-footer">
+                ${renderSources(post.sources, lang, sourcesLabel)}
                 <span class="blog-post-reading-time">${readingTime(post, readingTimeLabel)}</span>
                 <button class="button blog-share-button" type="button" onclick="navigator.share ? navigator.share({ title: document.title, url: location.href }) : copyToClipboardWithNotification(location.href, ${escapeHtml(JSON.stringify(translate(langDict, 'blog.link_copied')))})">
                     <i class="fa-solid fa-share-nodes"></i>
