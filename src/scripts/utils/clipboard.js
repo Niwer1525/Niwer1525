@@ -40,26 +40,39 @@ window.copyToClipboard = copyToClipboard;
  * @param {*} url  - The URL to share. If not provided, defaults to the current window's URL.
  * @param {*} message - The message to display in the notification if the Web Share API is not available and the URL is copied to the clipboard.
  */
-let isSharing = false;
-export async function handleShare(event, title, url, message) {
-    if (isSharing) return; // Prevent duplicate concurrent triggers
-    isSharing = true;
+export async function handleShare(title, url, message) {
+    const shareUrl = typeof url === 'string' ? url : window.location.href;
+    const shareTitle = typeof title === 'string' ? title : document.title; 
+    
+    const shareData = {
+        title: shareTitle,
+        url: shareUrl
+    };
 
-    if (event?.currentTarget?.blur) event.currentTarget.blur(); // On iOS Safari, releasing focus from the tapped element prevents swallowed taps
-
-    const shareData = { title: title || document.title, url: url || window.location.href };
-    try {
-        if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
-            await navigator.share(shareData);
-            return;
-        }
-    } catch (err) {
-        if (err.name === 'AbortError') return; // AbortError = user dismissed/cancelled the sheet
-        console.warn('Share failed, using fallback:', err);
-    } finally {
-        setTimeout(() => { isSharing = false; }, 400); // Add a slight delay before releasing lock so the mobile OS cleans up
+    // Fallback immediately if the browser doesn't support Web Share at all
+    if (!navigator.share || !navigator.canShare || !navigator.canShare(shareData)) {
+        copyToClipboardWithNotification(shareUrl, message);
+        return;
     }
 
-    copyToClipboardWithNotification(shareData.url, message); // Fallback if navigator.share wasn't available or errored out (non-Abort)
+    try {
+        await navigator.share(shareData);
+    } catch (err) {
+        if (err.name === 'AbortError') {
+            // The user successfully cancelled/closed the modal normally. Do nothing.
+            return; 
+        } 
+        
+        if (err.name === 'InvalidStateError' || err.message.includes('usable')) {
+            // BROWSER BUG CAUGHT: The browser is stuck from a previous share attempt.
+            // Seamlessly fallback to copying the link so the user isn't left stranded.
+            console.warn("Browser share state stuck. Falling back to clipboard.");
+            copyToClipboardWithNotification(shareUrl, message);
+        } else {
+            // For other rare errors (like NotAllowedError if not triggered by a user click)
+            console.error('Web Share API failed:', err.name, err.message);
+            copyToClipboardWithNotification(shareUrl, message);
+        }
+    }
 }
 window.handleShare = handleShare;
