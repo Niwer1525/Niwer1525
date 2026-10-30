@@ -95,7 +95,7 @@ export function renderPost(post, lang = 'en', langDict = {}) {
                 <a href="${blogPrefix(lang)}" class="button">
                     <i class="fa-solid fa-arrow-left"></i>
                 </a>
-                <button class="button" type="button" title="${translate(langDict, 'blog.share')}" onclick="handleShare(document.title, window.location.href, '${sharedNotificationMessage}')">
+                <button class="button" type="button" title="${translate(langDict, 'blog.share')}" onclick="handleShare(event, document.title, window.location.href, 'Link copied!')">
                     <i class="fa-solid fa-share-nodes"></i>
                 </button>
             </div>

@@ -40,20 +40,26 @@ window.copyToClipboard = copyToClipboard;
  * @param {*} url  - The URL to share. If not provided, defaults to the current window's URL.
  * @param {*} message - The message to display in the notification if the Web Share API is not available and the URL is copied to the clipboard.
  */
-export async function handleShare(title, url, message) {
-    // Web Share API requires HTTPS and navigator.canShare check if supported
-    if (navigator.share) {
-        try {
-            await navigator.share({
-                title: title || document.title,
-                url: url || window.location.href
-            });
+let isSharing = false;
+export async function handleShare(event, title, url, message) {
+    if (isSharing) return; // Prevent duplicate concurrent triggers
+    isSharing = true;
+
+    if (event?.currentTarget?.blur) event.currentTarget.blur(); // On iOS Safari, releasing focus from the tapped element prevents swallowed taps
+
+    const shareData = { title: title || document.title, url: url || window.location.href };
+    try {
+        if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+            await navigator.share(shareData);
             return;
-        } catch (err) {
-            if (err.name === 'AbortError') return; // AbortError indicates user dismissed the share modal; ignore it
         }
+    } catch (err) {
+        if (err.name === 'AbortError') return; // AbortError = user dismissed/cancelled the sheet
+        console.warn('Share failed, using fallback:', err);
+    } finally {
+        setTimeout(() => { isSharing = false; }, 400); // Add a slight delay before releasing lock so the mobile OS cleans up
     }
 
-    copyToClipboardWithNotification(url || window.location.href, message); // Fallback
+    copyToClipboardWithNotification(shareData.url, message); // Fallback if navigator.share wasn't available or errored out (non-Abort)
 }
 window.handleShare = handleShare;
