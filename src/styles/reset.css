@@ -110,6 +110,7 @@ span {
 .text-secondary { color: var(--text-secondary); }
 .text-success { color: var(--success-color); }
 .text-danger { color: var(--error-color); }
+.text-bold { font-weight: bold; }
 
 /* Scrollbar & Selection */
 ::-webkit-scrollbar { width: 8px; }

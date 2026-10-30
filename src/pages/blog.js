@@ -79,25 +79,31 @@ export function renderPost(post, lang = 'en', langDict = {}) {
     const slugUrl = `${blogPrefix(lang)}${encodeURIComponent(post.slug)}.html`;
 
     const content = `
-        <article>
-            <header><h2>${escapeHtml(post.title)}</h2></header>
-            <main>
-                <section class="text-content">${marked.parse(post.content_markdown || '')}</section>
-            </main>
-            ${sources(post.sources, lang)}
-            <footer>
-                <div>
-                    <a href="${blogPrefix(lang)}" class="button">
-                        <i class="fa-solid fa-arrow-left"></i>
-                    </a>
-                    <button class="button" type="button" title="${translate(langDict, 'blog.share')}" onclick="navigator.share ? navigator.share({ title: document.title, url: location.href }) : copyToClipboardWithNotification(location.href, ${escapeHtml(JSON.stringify(translate(langDict, 'blog.link_copied')))})">
-                        <i class="fa-solid fa-share-nodes"></i>
-                    </button>
-                </div>
-                ${renderDate(post.published_at, lang)}
-                ${readingTime(post.reading_time_minutes)}
-            </footer>
-        </article>`;
+        <section>
+            <h2>${escapeHtml(post.title)}</h2>
+            <h3>
+                ${renderDate(post.published_at, lang)} - ${readingTime(post.reading_time_minutes)}
+            </h3>
+            <div class="section-actions">
+                <a href="${blogPrefix(lang)}" class="button">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <button class="button" type="button" title="${translate(langDict, 'blog.share')}" onclick="navigator.share ? navigator.share({ title: document.title, url: location.href }) : copyToClipboardWithNotification(location.href, ${escapeHtml(JSON.stringify(translate(langDict, 'blog.link_copied')))})">
+                    <i class="fa-solid fa-share-nodes"></i>
+                </button>
+            </div>
+            <div class="text-content">
+             ${marked.parse(post.content_markdown || '')}
+             </div>
+        </section>
+        ${post.sources?.length ? `
+            <hr>
+            <section class="text-content">
+                <h2>Sources</h2>
+                ${sources(post.sources, lang)}
+            </section>
+        ` : ''}
+    `;
 
     return defaultLayout({
         page: 'blog', lang, langDict,

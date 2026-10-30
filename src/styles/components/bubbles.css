@@ -64,7 +64,6 @@
 }
 .bubble a:hover {
     color: var(--accent-color);
-    border-bottom: 1px dashed var(--accent-color);
 }
 
 /* Responsiveness */

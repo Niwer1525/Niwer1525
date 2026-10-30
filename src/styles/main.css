@@ -38,6 +38,11 @@
     margin-left: 0;
     color: var(--text-secondary);
 }
-.text-bold {
-    font-weight: bold;
+.text-content a {
+    text-decoration: none;
+    font-style: italic;
+    border-bottom: 1px dashed var(--accent-color);
+}
+.bubble a:hover {
+    color: var(--accent-color);
 }
