@@ -81,7 +81,9 @@ export function renderPost(post, lang = 'en', langDict = {}) {
     const content = `
         <article>
             <header><h2>${escapeHtml(post.title)}</h2></header>
-            <main><p>${marked.parse(post.content_markdown || '')}</p></main>
+            <main>
+                <section class="text-content">${marked.parse(post.content_markdown || '')}</section>
+            </main>
             ${sources(post.sources, lang)}
             <footer>
                 <div>

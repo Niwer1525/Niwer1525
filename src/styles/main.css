@@ -30,6 +30,14 @@
     padding-left: 1.5rem;
     list-style-type: disc;
 }
+.text-content blockquote {
+    background: var(--article-footer-bg);
+    border-left: 3px solid var(--accent-color);
+    border-radius: 0.45rem;
+    padding: 0.25rem 1rem;
+    margin-left: 0;
+    color: var(--text-secondary);
+}
 .text-bold {
     font-weight: bold;
 }
