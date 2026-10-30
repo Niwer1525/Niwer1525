@@ -32,3 +32,28 @@ export async function copyToClipboard(text) {
     } catch {}
 }
 window.copyToClipboard = copyToClipboard;
+
+/**
+ * Handles sharing the provided title and URL using the Web Share API if available, or falls back to copying the URL to the clipboard with a notification.
+ * 
+ * @param {*} title - The title to share. If not provided, defaults to the document's title. 
+ * @param {*} url  - The URL to share. If not provided, defaults to the current window's URL.
+ * @param {*} message - The message to display in the notification if the Web Share API is not available and the URL is copied to the clipboard.
+ */
+export async function handleShare(title, url, message) {
+    // Web Share API requires HTTPS and navigator.canShare check if supported
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: title || document.title,
+                url: url || window.location.href
+            });
+            return;
+        } catch (err) {
+            if (err.name === 'AbortError') return; // AbortError indicates user dismissed the share modal; ignore it
+        }
+    }
+
+    copyToClipboardWithNotification(url || window.location.href, message); // Fallback
+}
+window.handleShare = handleShare;

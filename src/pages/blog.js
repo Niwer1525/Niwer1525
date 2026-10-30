@@ -84,6 +84,7 @@ export async function fetchPosts(apiBaseUrl, lang) {
 export function renderPost(post, lang = 'en', langDict = {}) {
     const slugUrl = `${blogPrefix(lang)}${encodeURIComponent(post.slug)}.html`;
 
+    const sharedNotificationMessage = escapeHtml(translate(langDict, 'blog.link_copied'));
     const content = `
         <section>
             <h2>${escapeHtml(post.title)}</h2>
@@ -94,7 +95,7 @@ export function renderPost(post, lang = 'en', langDict = {}) {
                 <a href="${blogPrefix(lang)}" class="button">
                     <i class="fa-solid fa-arrow-left"></i>
                 </a>
-                <button class="button" type="button" title="${translate(langDict, 'blog.share')}" onclick="navigator.share ? navigator.share({ title: document.title, url: location.href }) : copyToClipboardWithNotification(location.href, ${escapeHtml(JSON.stringify(translate(langDict, 'blog.link_copied')))})">
+                <button class="button" type="button" title="${translate(langDict, 'blog.share')}" onclick="handleShare(document.title, window.location.href, '${sharedNotificationMessage}')">
                     <i class="fa-solid fa-share-nodes"></i>
                 </button>
             </div>
