@@ -1,6 +1,6 @@
 import { marked } from 'marked';
 import { defaultLayout } from '../components/layout.js';
-import { escapeHtml, translate } from '../utils.js';
+import { escapeHtml, translate, formatUrlLabel } from '../utils.js';
 
 const blogPrefix = (lang) => (lang === 'en' ? '/blog/' : `/${lang}/blog/`);
 
@@ -33,9 +33,15 @@ function sources(sources, lang) {
 
     const list = sources.map(({ date, url = '', authors = [] }) => {
         const isHttp = /^https?:\/\//i.test(url);
-        const link = isHttp
-            ? `<a class="text-bold" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(url)}</a>`
-            : escapeHtml(url);
+        const displayLabel = isHttp ? formatUrlLabel(url, { onlyDomain: true }) : url;
+        const escapeUrl = escapeHtml(url);
+
+        const link = isHttp ? `
+            <a class="text-bold" href="${escapeUrl}" title="${escapeUrl}" target="_blank" rel="noopener noreferrer">
+                ${escapeHtml(displayLabel)}
+            </a>`
+        : escapeUrl;
+
         const authorStr = authors.filter(Boolean).join(', ');
 
         return `
@@ -44,7 +50,7 @@ function sources(sources, lang) {
                 -
                 <span class="text-secondary">
                     ${link}
-                    ${authorStr ? `<span>(${escapeHtml(authorStr)}</span>)` : ''}
+                    ${authorStr ? `<span>(${escapeHtml(authorStr)})</span>` : ''}
                 </span>
             </div>`;
     }).join('');
