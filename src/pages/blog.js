@@ -58,7 +58,7 @@ function sources(sources, lang) {
     return `<div class="article-info">${list}</div>`;
 }
 
-function card(post, lang) {
+function card(post, lang, langDict) {
     return `
         <article>
             <header><h2>${escapeHtml(post.title)}</h2></header>
@@ -67,7 +67,7 @@ function card(post, lang) {
                 ${readingTime(post.reading_time_minutes)}
                 <span class="text-secondary">${renderDate(post.published_at, lang)}</span>
                 <a href="${blogPrefix(lang)}${encodeURIComponent(post.slug)}.html">
-                    ${escapeHtml(lang === 'fr' ? "Lire l'article" : 'Read more')}
+                    ${translate(langDict, 'btn.read')}
                     <i class="fa-solid fa-arrow-right"></i>
                 </a>
             </footer>
@@ -100,8 +100,8 @@ export function renderPost(post, lang = 'en', langDict = {}) {
                 </button>
             </div>
             <div class="text-content">
-             ${marked.parse(post.content_markdown || '')}
-             </div>
+                ${marked.parse(post.content_markdown || '')}
+            </div>
         </section>
         ${post.sources?.length ? `
             <hr>
@@ -125,7 +125,7 @@ export function renderPost(post, lang = 'en', langDict = {}) {
  * Renders the blog page with a list of posts.
  */
 export function render(lang = 'en', langDict = {}, { apiBaseUrl = '' } = {}, posts = []) {
-    const postCards = posts.map(p => card(p, lang, false)).join('');
+    const postCards = posts.map(p => card(p, lang, langDict)).join('');
     const rssUrl = `${apiBaseUrl}/blog/rss?lang=${encodeURIComponent(lang)}`;
 
     const content = `

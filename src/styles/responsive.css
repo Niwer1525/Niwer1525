@@ -49,7 +49,8 @@
         width: 100%;
         padding: 1.25rem 2.5rem 1.25rem 1.25rem;
     }
-    .store-sections-wrapper .articles-grid.large-card {
+    .store-sections-wrapper .articles-grid.large-card,
+    .articles-grid.large-card {
         grid-template-columns: minmax(0, 1fr);
         gap: 1.5rem;
     }
@@ -64,23 +65,8 @@
         font-size: 0.85rem;
     }
 
-    /* Store Mobile */
-    .store-package-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
     .image-carousel {
         margin: 0 0.75rem 0.75rem;
-    }
-    .carousel-slide img,
-    .store-package-card iframe {
-        height: 180px;
-    }
-    .store-package-header,
-    .store-package-card p,
-    .store-package-description {
-        padding-left: 0.75rem;
-        padding-right: 0.75rem;
     }
     .alert-section {
         flex-direction: column;

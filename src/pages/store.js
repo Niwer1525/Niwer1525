@@ -21,7 +21,7 @@ async function renderCategorySections(node, parentPath, context, outLinks) {
     const sectionId = `section-${currentPath}`;
     const displayName = node.name || node.id || node.slug || id;
 
-    let html = ''; 
+    let html = '';
     const validPackages = (node.packages || []).filter(p => Boolean(p.paymentLink || p.payment_link || context.catalogPaymentLink));
 
     // Render cards directly on this category or subcategory

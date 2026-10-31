@@ -58,9 +58,7 @@ export async function renderPackageCard(pkg, { lang, langDict, defaultCurrency, 
     return `
         <article class="store-package-card" data-package-id="${pkg.id}" ${pkg.price_id ? `data-price-id="${pkg.price_id}"` : ''}>
             <header class="store-package-header">
-                <div>
-                    <h3>${pkg.name || formatDefaultTitle(pkg.slug || 'Package')}</h3>
-                </div>
+                <h2>${pkg.name || formatDefaultTitle(pkg.slug || 'Package')}</h2>
             </header>
             ${carouselHtml}
             <main>
