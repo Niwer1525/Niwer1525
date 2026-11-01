@@ -39,6 +39,7 @@
     "btn.title.revoke_licenses": "Revoke License",
     "btn.title.refresh": "Refresh",
     "btn.title.table_limit": "Row Limit",
+    "btn.title.read_more_about": "Read more about %s",
 
     "description.unavailable": "Description unavailable.",
     "description.sign_in_required": "Sign in to view this content.",

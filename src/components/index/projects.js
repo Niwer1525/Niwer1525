@@ -40,20 +40,28 @@ async function loadArticles(lang, langDict) {
     
     const projectCards = await Promise.all(DATA.projects.map(async project => {
         const projectDescription = await loadMd(`src/data/projects/${project.name}/`, `project_description_${lang}.md`);
+        const projectTitle = translate(langDict, `project.title.${project.name}`);
         return `
             <article>
                 <header>
-                    <h2>${translate(langDict, `project.title.${project.name}`)}</h2>
+                    <h2>${projectTitle}</h2>
                     ${appendImageOrVideo(project)}
                 </header>
                 <main>
                     <div class="project-description">${projectDescription}</div>
-                    ${project.tags && Array.isArray(project.tags) ? `<p class="project-tags">${project.tags.map(tag => `#${tag}`).join(', ')}</p>` : ''}
+                    ${project.tags && Array.isArray(project.tags) ? `
+                        <p class="project-tags">
+                            ${project.tags.map(tag => `#${tag}`).join(', ')}
+                        </p>`
+                    : ''}
                 </main>
                 <footer>
-                    ${project.links && typeof project.links === 'object' 
-                        ? Object.entries(project.links).map(([link, type]) => `<a href="${link}" target="_blank">${formatDefaultButtonName(type, langDict)} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`).join('') 
-                        : ''}
+                    ${project.links && typeof project.links === 'object' ? Object.entries(project.links).map(([link, type]) => `
+                        <a href="${link}" target="_blank" title="${translate(langDict, 'btn.title.read_more_about', projectTitle)}" rel="noopener noreferrer">
+                            ${formatDefaultButtonName(type, langDict)}
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
+                    `).join('') : ''}
                 </footer>
             </article>
         `;

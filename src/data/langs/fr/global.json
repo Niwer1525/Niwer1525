@@ -36,6 +36,7 @@
     "btn.title.revoke_licenses": "Révoquer la licence",
     "btn.title.refresh": "Rafraîchir",
     "btn.title.table_limit": "Limite de lignes",
+    "btn.title.read_more_about": "En savoir plus sur %s",
 
     "description.unavailable": "Description indisponible.",
     "description.sign_in_required": "Connectez-vous pour voir ce contenu.",

@@ -46,7 +46,7 @@
         },
         {
             "name": "armo",
-            "image": "armo/armo.png",
+            "image": "armo/armo.webp",
             "links": { "https://modrinth.com/resourcepack/3d-military-police-armor": "see" },
             "tags": ["java", "spigot", "glsl", "maven", "glsl_obfuscator", "lumen" ]
         },
