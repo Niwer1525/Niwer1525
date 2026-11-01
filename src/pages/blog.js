@@ -66,7 +66,7 @@ function card(post, lang, langDict) {
             <footer>
                 ${readingTime(post.reading_time_minutes)}
                 <span class="text-secondary">${renderDate(post.published_at, lang)}</span>
-                <a href="${blogPrefix(lang)}${encodeURIComponent(post.slug)}.html">
+                <a class="link-button" href="${blogPrefix(lang)}${encodeURIComponent(post.slug)}.html">
                     ${translate(langDict, 'btn.read')}
                     <i class="fa-solid fa-arrow-right"></i>
                 </a>

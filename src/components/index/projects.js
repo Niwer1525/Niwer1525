@@ -25,12 +25,12 @@ function appendImageOrVideo(project) {
  * @returns  {string} - A formatted button name corresponding to the provided type, with a default fallback of "Read more".
  * @author Niwer
  */
-function formatDefaultButtonName(type, langDict) {
+function formatDefaultButtonName(type, langDict, object = []) {
     switch(type.toLowerCase()) {
-        case 'read': return translate(langDict, 'btn.read');
-        case 'see': return translate(langDict, 'btn.see');
-        case 'play': return translate(langDict, 'btn.play');
-        default: return translate(langDict, 'btn.read');
+        case 'read': return translate(langDict, 'btn.read', object);
+        case 'see': return translate(langDict, 'btn.see', object);
+        case 'play': return translate(langDict, 'btn.play', object);
+        default: return translate(langDict, 'btn.read', object);
     }
 }
 
@@ -56,12 +56,14 @@ async function loadArticles(lang, langDict) {
                     : ''}
                 </main>
                 <footer>
-                    ${project.links && typeof project.links === 'object' ? Object.entries(project.links).map(([link, type]) => `
-                        <a href="${link}" target="_blank" title="${translate(langDict, 'btn.title.read_more_about', projectTitle)}" rel="noopener noreferrer">
-                            ${formatDefaultButtonName(type, langDict)}
-                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        </a>
-                    `).join('') : ''}
+                    ${project.links && typeof project.links === 'object' ? Object.entries(project.links).map(([link, type]) => {
+                        const buttonName = formatDefaultButtonName(type, langDict, projectTitle);
+                        return `<a class="link-button" href="${link}" target="_blank" title="${buttonName}" rel="noopener noreferrer">
+                                    ${buttonName}
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>`
+                    }
+                ).join('') : ''}
                 </footer>
             </article>
         `;

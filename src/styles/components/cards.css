@@ -170,6 +170,10 @@ article footer {
     background: var(--article-footer-bg);
 }
 
+.link-button {
+    font-size: 0.9rem;
+}
+
 .project-tags {
     font-size: 0.8rem;
     color: var(--accent-color);
