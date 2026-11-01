@@ -41,7 +41,7 @@ function layout({ title = 'Default Title', description = '', canonical = '', lan
                 <meta property="og:image" content="https://niwer.dev/assets/profile.webp">
 
                 <link rel="stylesheet" href="/assets/main.css">
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css">
+                <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
                 ${addStylesheets(headCss)}
             </head>
             <body>
