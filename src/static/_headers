@@ -1,0 +1,11 @@
+# Long cache for assets in /assets/
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Exception for CSS files in /assets/ to allow for immediate updates
+/assets/*.css
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Do not cache HTML files to ensure users always receive the latest content
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
