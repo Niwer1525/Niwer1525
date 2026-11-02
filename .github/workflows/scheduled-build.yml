@@ -1,0 +1,14 @@
+name: Scheduled Cloudflare Rebuild
+
+on:
+  schedule:
+    # Rebuild every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  trigger-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Cloudflare Pages Deploy Hook
+        run: curl -X POST -s "${{ secrets.CF_DEPLOY_HOOK }}" > /dev/null
