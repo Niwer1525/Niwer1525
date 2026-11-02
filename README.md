@@ -34,7 +34,6 @@
    - IT Technician
    - Basics of Networking
    - Linux/Unix, Windows CLI
-   - And bunch of other things that I can't remember right now
 
 ## Gists
 Besides my main repositories, I also maintain several gists. You can find them [here](https://gist.niwer.dev)

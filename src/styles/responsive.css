@@ -42,7 +42,11 @@
         padding: 1rem;
         font-size: 0.85rem;
     }
-    .skill-icon { font-size: 2rem; }
+    .skill-icon {
+        font-size: 2rem;
+        width: 2rem;
+        height: 2rem;
+    }
     .github-card > span { font-size: 1.5rem; }
 
     .large-card {

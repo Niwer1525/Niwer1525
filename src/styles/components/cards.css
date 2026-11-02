@@ -33,12 +33,16 @@
 
 .skill-icon {
     font-size: 3rem;
+    width: 3rem;
+    height: 3rem;
     color: var(--text-primary);
+    fill: var(--text-primary);
     transition: color 0.3s;
 }
 
 .skills-card:hover .skill-icon {
     color: var(--accent-color);
+    fill: var(--accent-color);
     filter: drop-shadow(0 0 5px var(--accent-glow));
 }
 
