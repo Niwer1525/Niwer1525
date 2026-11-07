@@ -1,5 +1,6 @@
 import { panelLayout } from '../../components/layout.ts';
 import { createPostModal } from '../../components/modals/create_post_modal.ts';
+import { deletePostModal } from '../../components/modals/delete_post_modal.ts';
 import { editPostModal } from '../../components/modals/edit_post_modal.ts';
 import { jumpBar } from '../../components/nav.ts';
 import { translate } from '../../utils.ts';
@@ -72,6 +73,7 @@ export async function render(lang: string, langDict: Record<string, string> = {}
         </section>
         ${createPostModal(langDict)}
         ${editPostModal(langDict)}
+        ${deletePostModal(langDict)}
     `;
 
     return panelLayout({

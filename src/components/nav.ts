@@ -90,7 +90,7 @@ export function panelNavigation(page: string, lang = 'en', langDict: LangDict = 
             <button id="nav-profile-btn" title="Profile" onclick="window.location.href='${getHrefForPage('profile', lang)}'">
                 <i class="fa-solid fa-user"></i>
             </button>
-            <button id="nav-logout-btn" title="Logout" onclick="logout()">
+            <button id="nav-logout-btn" title="Logout" onclick="showPopup('logout-popup')">
                 <i class="fa-solid fa-sign-out-alt"></i>
             </button>
         </div>

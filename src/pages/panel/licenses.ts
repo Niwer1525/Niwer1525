@@ -2,6 +2,7 @@ import type { LangDict } from '../../types.ts';
 import { panelLayout } from '../../components/layout.ts';
 import { createLicenseModal } from '../../components/modals/create_license_modal.ts';
 import { translate } from '../../utils.ts';
+import { revokeLicenseModal } from '../../components/modals/revoke_license_modal.ts';
 
 function licenseRowTemplate(langDict: LangDict) {
     return `
@@ -69,6 +70,7 @@ export async function render(lang: string, langDict: LangDict) {
         </section>
         ${licenseRowTemplate(langDict)}
         ${createLicenseModal(langDict)}
+        ${revokeLicenseModal(langDict)}
     `;
 
     return panelLayout({

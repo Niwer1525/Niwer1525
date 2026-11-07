@@ -9,14 +9,12 @@ export function createLicenseModal(langDict: LangDict) {
         <i class="fa-solid fa-tag"></i>
         <input type="text" name="name" required placeholder="${translate(langDict, "form.license.placeholder.name")}">
     </label>
-    <div class="form-group">
-        <label>
-            <i class="fa-solid fa-box"></i>
-            <select name="product_id" id="licenseProductSelect" required>
-                <option value="">${translate(langDict, "form.license.loading_product")}</option>
-            </select>
-        </label>
-    </div>
+    <label>
+        <i class="fa-solid fa-box"></i>
+        <select name="product_id" id="licenseProductSelect" required>
+            <option value="">${translate(langDict, "form.license.loading_product")}</option>
+        </select>
+    </label>
     <label>
         <i class="fa-solid fa-calendar-days"></i>
         <input type="number" name="duration_days" placeholder="30" min="1">

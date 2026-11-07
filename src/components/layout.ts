@@ -1,9 +1,10 @@
+import type { LangDict } from '../types.ts';
 import { footer } from './footer.ts';
 import { authModal } from './modals/auth_modal.ts';
 import { contactModal } from './modals/contact_modal.ts';
+import { logoutModal } from './modals/logout_modal.ts';
 import { defaultNavigation, panelNavigation } from './nav.ts';
 import { seasonal } from './seasonal.ts';
-import type { LangDict, SeasonalData } from '../types.ts';
 
 interface LayoutOptions {
     title?: string;
@@ -116,6 +117,7 @@ export function panelLayout({ page = 'panel', lang = 'en', langDict = {}, title,
                 ${content}
                 ${contactModal(langDict)}
                 ${authModal(langDict)}
+                ${logoutModal(langDict)}
             </main>
             ${footer(lang, langDict, seasonal())}
         `,

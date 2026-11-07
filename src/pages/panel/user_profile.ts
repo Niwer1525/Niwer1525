@@ -4,6 +4,7 @@ import { deleteAccountModal } from '../../components/modals/delete_account_modal
 import { editProfileModal } from '../../components/modals/edit_profile_modal.ts';
 import { recoveryCodesModal } from '../../components/modals/recovery_codes_modal.ts';
 import { totpModal } from '../../components/modals/totp_setup_modal.ts';
+import { totpDisableModal } from '../../components/modals/totp_disable_modal.ts';
 import { jumpBar } from '../../components/nav.ts';
 import { translate } from '../../utils.ts';
 
@@ -83,6 +84,7 @@ export async function render(lang: string, langDict: LangDict) {
 
         <!-- 2FA Setup Modal -->
         ${totpModal(langDict)}
+        ${totpDisableModal(langDict)}
         ${recoveryCodesModal(langDict)}
     `;
 
