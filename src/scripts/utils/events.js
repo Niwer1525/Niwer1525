@@ -1,7 +1,7 @@
 import { CONFIRMATION_PHRASE, getPagePath, onDomReady } from '../main.js';
 import { panelState, updateAuthenticatedVisibility } from '../panel.js';
 import { addPostSource, createBlogPost, editBlogPost, loadAdminPanel, removePostSource } from '../panel/admin.js';
-import { confirm2FASetup, login, register, requestAccountDeletion, restoreSession, submit2FALogin, updateProfile } from '../panel/auth.js';
+import { confirm2FASetup, disableTotp, login, register, requestAccountDeletion, restoreSession, submit2FALogin, updateProfile } from '../panel/auth.js';
 import { createLicense, loadLicenses } from '../panel/licenses.js';
 import { loadDownloads, loadPublicServers } from '../panel/public.js';
 import { loadProfileDetails } from '../panel/user_profile.js';
@@ -45,6 +45,7 @@ document.addEventListener('submit', function(e) {
     else if (e.target && e.target.id === 'auth-popup-login-form') login(e);
     else if (e.target && e.target.id === 'totp-login-form') submit2FALogin(e);
     else if (e.target && e.target.id === 'totp-setup-popup-form') confirm2FASetup(e);
+    else if (e.target && e.target.id === 'disable-totp-popup-form') disableTotp(e);
     else if (e.target && e.target.id === 'edit-profile-popup-form') updateProfile(e);
     else if (e.target && e.target.id === 'delete-account-popup-form') requestAccountDeletion(e);
     else if (e.target && e.target.id === 'create-license-popup-form') createLicense(e);

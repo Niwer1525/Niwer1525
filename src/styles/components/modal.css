@@ -209,19 +209,14 @@ label:has(:required) {
     margin-bottom: 0;
 }
 
-.form-control {
-    width: 200px;
-    padding: 0.8rem 1.6rem;
-    border-radius: 50px;
-    border: 1px solid var(--border-color);
-    background: var(--surface-glass);
-    transition: all var(--transition-speed);
+/* form-buttons allows modals with two or more action buttons. E.G : Logout modal */
+.form-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
 }
-.form-control {
-    background: rgba(216, 180, 254, 0.15);
-    border-color: var(--accent-color);
-    box-shadow: 0 4px 12px rgba(216, 180, 254, 0.2);
-}
+
 /* input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
     display: none;

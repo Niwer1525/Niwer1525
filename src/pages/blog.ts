@@ -1,0 +1,152 @@
+import { marked } from 'marked';
+import { defaultLayout } from '../components/layout.ts';
+import { escapeHtml, translate, formatUrlLabel } from '../utils.ts';
+import type { BlogPost, BlogSource, LangDict } from '../types.ts';
+
+const blogPrefix = (lang: string): string => (lang === 'en' ? '/blog/' : `/${lang}/blog/`);
+
+function renderDate(val: string, lang: string): string {
+    const d = new Date(val);
+    if(isNaN(d.getTime())) return escapeHtml(val || '')
+        
+    return `
+        <span class="text-secondary">
+            <i class="fa-solid fa-calendar-days"></i>
+            ${d.toLocaleDateString(lang)}
+        </span>
+    `;
+}
+
+function readingTime(minutes: number | undefined): string {
+    const n = Number(minutes);
+    if(n < 0 || isNaN(n)) return '';
+
+    return `
+        <span class="text-secondary">
+            <i class="fa-solid fa-stopwatch"></i>
+            ${n} min
+        </span>
+    `;
+}
+
+function sources(sources: BlogSource[] | undefined, lang: string): string {
+    if (!sources?.length) return '';
+
+    const list = sources.map(({ date, url = '', authors = [] }: BlogSource) => {
+        const isHttp = /^https?:\/\//i.test(url);
+        const displayLabel = isHttp ? formatUrlLabel(url, { onlyDomain: true }) : url;
+        const escapeUrl = escapeHtml(url);
+
+        const link = isHttp ? `
+            <a class="text-bold" href="${escapeUrl}" title="${escapeUrl}" target="_blank" rel="noopener noreferrer">
+                ${escapeHtml(displayLabel)}
+            </a>`
+        : escapeUrl;
+
+        const authorStr = authors.filter(Boolean).join(', ');
+
+        return `
+            <div>
+                ${renderDate(date, lang)}
+                -
+                <span class="text-secondary">
+                    ${link}
+                    ${authorStr ? `<span>(${escapeHtml(authorStr)})</span>` : ''}
+                </span>
+            </div>`;
+    }).join('');
+
+    return `<div class="article-info">${list}</div>`;
+}
+
+function card(post: BlogPost, lang: string, langDict: LangDict): string {
+    return `
+        <article>
+            <header><h2>${escapeHtml(post.title)}</h2></header>
+            <main><p>${escapeHtml(post.summary || '')}</p></main>
+            <footer>
+                ${readingTime(post.reading_time_minutes)}
+                <span class="text-secondary">${renderDate(post.published_at, lang)}</span>
+                <a class="link-button" href="${blogPrefix(lang)}${encodeURIComponent(post.slug)}.html">
+                    ${translate(langDict, 'btn.read')}
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </footer>
+        </article>`;
+}
+
+export async function fetchPosts(apiBaseUrl: string, lang: string): Promise<BlogPost[]> {
+    const res = await fetch(`${apiBaseUrl}/blog/posts?lang=${encodeURIComponent(lang)}`);
+    if (!res.ok) throw new Error(`Could not fetch blog posts: ${res.statusText}`);
+    const data = await res.json();
+    return (Array.isArray(data) ? data : (data as { posts?: BlogPost[] }).posts ?? []) as BlogPost[];
+}
+
+export function renderPost(post: BlogPost, lang = 'en', langDict: LangDict = {}): string {
+    const slugUrl = `${blogPrefix(lang)}${encodeURIComponent(post.slug)}.html`;
+
+    const sharedNotificationMessage = escapeHtml(translate(langDict, 'blog.link_copied'));
+    const content = `
+        <section>
+            <h2>${escapeHtml(post.title)}</h2>
+            <h3>
+                ${renderDate(post.published_at, lang)} - ${readingTime(post.reading_time_minutes)}
+            </h3>
+            <div class="section-actions">
+                <a href="${blogPrefix(lang)}" class="button">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <button class="button" type="button" title="${translate(langDict, 'blog.share')}" onclick="handleShare(document.title, window.location.href, '${sharedNotificationMessage}')">
+                    <i class="fa-solid fa-share-nodes"></i>
+                </button>
+            </div>
+            <div class="text-content">
+                ${marked.parse(post.content_markdown || '')}
+            </div>
+        </section>
+        ${post.sources?.length ? `
+            <hr>
+            <section class="text-content">
+                <h2>Sources</h2>
+                ${sources(post.sources, lang)}
+            </section>
+        ` : ''}
+    `;
+
+    return defaultLayout({
+        page: 'blog', lang, langDict,
+        title: `${escapeHtml(post.title)} | ${translate(langDict, 'title.blog')}`,
+        description: translate(langDict, 'blog.description'),
+        canonical: `https://niwer.dev${slugUrl}`,
+        content
+    });
+}
+
+/**
+ * Renders the blog page with a list of posts.
+ */
+export function render(lang = 'en', langDict: LangDict = {}, { apiBaseUrl = '' }: { apiBaseUrl?: string } = {}, posts: BlogPost[] = []): string {
+    const postCards = posts.map(p => card(p, lang, langDict)).join('');
+    const rssUrl = `${apiBaseUrl}/blog/rss?lang=${encodeURIComponent(lang)}`;
+
+    const content = `
+        <section>
+            <h2>${translate(langDict, 'title.blog')}</h2>
+            <h3>${translate(langDict, 'blog.description')}</h3>
+            <div class="section-actions">
+                <button type="button" onclick="copyToClipboardWithNotification(${escapeHtml(JSON.stringify(rssUrl))}, ${escapeHtml(JSON.stringify(translate(langDict, 'blog.rss_copied')))})">
+                    <i class="fa-solid fa-rss"></i>
+                    ${translate(langDict, 'blog.rss')}
+                </button>
+            </div>
+            ${posts.length ? `<div class="articles-grid large-card">${postCards}</div>` : `<h4>${translate(langDict, 'blog.no_posts')}</h4>`}
+        </section>`;
+
+    return defaultLayout({
+        page: 'blog', lang, langDict,
+        title: `${translate(langDict, 'title.blog')} | Erwin Redoté`,
+        description: translate(langDict, 'blog.description'),
+        canonical: `https://niwer.dev${blogPrefix(lang)}`,
+        content
+    });
+}

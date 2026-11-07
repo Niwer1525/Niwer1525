@@ -59,7 +59,7 @@ export async function loadLicenses() {
             }
 
             const revokeBtn = e.target.closest('.revoke-key-btn');
-            if (revokeBtn?.dataset.key) revokeLicense(revokeBtn.dataset.key);
+            if (revokeBtn?.dataset.key) openRevokeLicenseModal(revokeBtn.dataset.key);
         };
         tbody.dataset.bound = 'true';
     }
@@ -129,14 +129,34 @@ export async function createLicense(e) {
     });
 }
 
-async function revokeLicense(key) {
-    console.log('Attempting to revoke license:', key);
-    if (!confirm('Revoke this license?')) return;
+function openRevokeLicenseModal(licenseKey) {
+    const modal = document.getElementById('revoke-license-popup');
+    if (!(modal instanceof HTMLElement)) {
+        createNotification('Unable to revoke license: modal is unavailable', 'error');
+        return;
+    }
+
+    modal.dataset.licenseKey = licenseKey;
+    showPopup('revoke-license-popup');
+}
+window.openRevokeLicenseModal = openRevokeLicenseModal;
+
+async function revokeLicense() {
+    const modal = document.getElementById('revoke-license-popup');
+    const licenseKey = modal?.dataset.licenseKey;
+    if (!licenseKey) {
+        createNotification('Unable to revoke license: missing license key', 'error');
+        return;
+    }
+
+    delete modal.dataset.licenseKey;
+    closeModals();
     try {
-        await api('/accounts/licenses/revoke', { method: 'POST', body: JSON.stringify({ license_key: key }) });
+        await api('/accounts/licenses/revoke', { method: 'POST', body: JSON.stringify({ license_key: licenseKey }) });
         createNotification('License revoked', 'success');
         loadLicenses();
     } catch (err) {
         createNotification(err.message, 'error');
     }
 }
+window.revokeLicense = revokeLicense;

@@ -21,7 +21,7 @@ async function syncPurchaseSession(body) {
 
 export async function restoreSession() {
     if (panelState.purchaseToken && (panelState.userToken || panelState.refreshToken || panelState.account || panelState.token)) {
-        return logout(true);
+        return logout();
     }
     
     if (panelState.account) {
@@ -97,8 +97,7 @@ async function handleLoginSuccessPayload(payload) {
     updateAuthenticatedVisibility();
 }
 
-async function logout(skipConfirmation = false) {
-    if (!skipConfirmation && !confirm('Are you sure you want to log out?')) return;
+async function logout() {
     await api('/accounts/logout', { method: 'POST' }).catch(() => {});
     clearSession();
     updateAuthenticatedVisibility();
@@ -130,19 +129,7 @@ export function updateProfile(e) {
 async function open2FASetup() {
     /* Disable 2FA if it's already enabled */
     if (panelState.account?.totpEnabled) {
-        if (!confirm('Two-factor authentication is already active. Do you want to disable it?')) return;
-        const code = prompt('Enter a 6-digit code from your authenticator app to disable 2FA:');
-        if (!code) return;
-
-        try {
-            await api('/accounts/2fa/disable', { method: 'POST', body: JSON.stringify({ code: code.trim() }) });
-            createNotification('2FA has been disabled', 'success');
-            panelState.account = await api('/accounts/me');
-            localStorage.setItem('photon-account', JSON.stringify(panelState.account));
-            updateAuthenticatedVisibility();
-        } catch (err) {
-            createNotification(err.message, 'error');
-        }
+        showPopup('disable-totp-popup');
         return;
     }
 
@@ -163,6 +150,26 @@ async function open2FASetup() {
     }
 }
 window.open2FASetup = open2FASetup;
+
+export async function disableTotp(e) {
+    e.preventDefault();
+    const form = e.target;
+    const code = new FormData(form).get('code');
+    if (typeof code !== 'string' || !code.trim()) return;
+
+    form.reset();
+    closeModals();
+
+    try {
+        await api('/accounts/2fa/disable', { method: 'POST', body: JSON.stringify({ code: code.trim() }) });
+        createNotification('2FA has been disabled', 'success');
+        panelState.account = await api('/accounts/me');
+        localStorage.setItem('photon-account', JSON.stringify(panelState.account));
+        updateAuthenticatedVisibility();
+    } catch (err) {
+        createNotification(err.message, 'error');
+    }
+}
 
 export function confirm2FASetup(e) {
     return handleFormSubmit(e, async (form, formData) => {
@@ -204,7 +211,7 @@ export function requestAccountDeletion(e) {
         });
 
         closeModals();
-        logout(true);
+        logout();
         form.reset();
         clearSession();
         updateAuthenticatedVisibility();

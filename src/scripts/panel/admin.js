@@ -95,7 +95,7 @@ async function loadBlogPosts() {
                         <button onclick="prepareEditBlogPost('${escapeHtml(post.id)}', '${escapeHtml(post.slug)}')">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
-                        <button onclick="deleteBlogPost('${escapeHtml(post.id)}', '${escapeHtml(post.slug)}')" class="danger-button">
+                        <button onclick="openDeleteBlogPostModal('${escapeHtml(post.id)}', '${escapeHtml(post.slug)}')" class="danger-button">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     ` : ``}
@@ -191,8 +191,31 @@ export async function editBlogPost(e) {
     });
 }
 
-async function deleteBlogPost(id, slug) {
-    if (!id || !window.confirm(`Are you sure you want to delete the blog post with slug "${slug}"? This action cannot be undone.`)) return;
+function openDeleteBlogPostModal(id, slug) {
+    const modal = document.getElementById('delete-post-popup');
+    if (!(modal instanceof HTMLElement)) {
+        createNotification('Unable to delete blog post: modal is unavailable', 'error');
+        return;
+    }
+
+    modal.dataset.postId = id;
+    modal.dataset.postSlug = slug;
+    showPopup('delete-post-popup');
+}
+window.openDeleteBlogPostModal = openDeleteBlogPostModal;
+
+async function deleteBlogPost() {
+    const modal = document.getElementById('delete-post-popup');
+    const id = modal?.dataset.postId;
+    const slug = modal?.dataset.postSlug;
+    if (!id || !slug) {
+        createNotification('Unable to delete blog post: missing post details', 'error');
+        return;
+    }
+
+    delete modal.dataset.postId;
+    delete modal.dataset.postSlug;
+    closeModals();
     
     try {
         const result = await api(`/admin/blog/posts/delete/${encodeURIComponent(id)}`, { method: 'POST' });

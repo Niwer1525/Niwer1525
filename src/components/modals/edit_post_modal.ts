@@ -1,0 +1,51 @@
+import type { LangDict } from '../../types.ts';
+import { translate } from '../../utils.ts';
+import { basicModal } from './modal.ts';
+import { textEditorToolbar } from '../text_editor_toolbar.ts';
+
+export function editPostModal(langDict: LangDict) {
+	return basicModal(langDict, 'edit-post-popup', true, `
+		<h2>${translate(langDict, 'form.edit_post.title')}</h2>
+		<input type="hidden" name="post_id" id="editPostId">
+		<label>
+			<i class="fa-solid fa-link"></i>
+			<input type="text" name="slug" id="editPostSlug" required placeholder="debian-or-fedora">
+		</label>
+        <label class="hidden" id="editPostScheduledAtLabel">
+			<i class="fa-solid fa-calendar"></i>
+            <input type="datetime-local" name="scheduled_at" id="editPostScheduledAt">
+            <span class="text-secondary">${translate(langDict, 'form.edit_post.description.scheduled_at')}</span>
+		</label>
+
+		<label>
+			<i class="fa-solid fa-text-height"></i>
+			<input type="text" name="title" id="editPostTitle" required placeholder="Debian Or Feodra?">
+		</label>
+		<label>
+			<i class="fa-solid fa-align-left"></i>
+			<input type="text" name="summary" id="editPostSummary" placeholder="A brief summary of the post...">
+		</label>
+        ${textEditorToolbar('editPostContent')}
+		<label>
+			<i class="fa-solid fa-align-left"></i>
+			<textarea type="text" name="content" id="editPostContent" required></textarea>
+		</label>
+
+        <hr>
+
+        <div class="create-post-sources-header">
+            <h3>${translate(langDict, 'form.edit_post.sources.title')}</h3>
+            <button type="button" id="addEditPostSourceButton" data-sources-container="editPostSources">
+                <i class="fa-solid fa-plus"></i>
+                ${translate(langDict, 'form.edit_post.sources.add')}
+            </button>
+        </div>
+        <p class="text-secondary">${translate(langDict, 'form.edit_post.sources.description')}</p>
+        <div id="editPostSources"></div>
+
+		<button type="submit">
+			<i class="fa-solid fa-plus"></i>
+			${translate(langDict, 'form.edit_post.action')}
+		</button>
+	`);
+}
