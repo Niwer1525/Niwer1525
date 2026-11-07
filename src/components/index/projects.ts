@@ -25,7 +25,7 @@ function appendImageOrVideo(project) {
  * @returns  {string} - A formatted button name corresponding to the provided type, with a default fallback of "Read more".
  * @author Niwer
  */
-function formatDefaultButtonName(type, langDict, object = []) {
+function formatDefaultButtonName(type: string, langDict: Record<string, string> = {}, object = []) {
     switch(type.toLowerCase()) {
         case 'read': return translate(langDict, 'btn.read', object);
         case 'see': return translate(langDict, 'btn.see', object);
@@ -34,7 +34,7 @@ function formatDefaultButtonName(type, langDict, object = []) {
     }
 }
 
-async function loadArticles(lang, langDict) {
+async function loadArticles(lang: string, langDict: Record<string, string> = {}) {
     const DATA = await loadJson('src/data/', 'database.json');
     if (!DATA.projects || !Array.isArray(DATA.projects)) return '<p>No projects found.</p>';
     

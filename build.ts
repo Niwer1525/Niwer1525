@@ -68,11 +68,11 @@ const MINIFIED_JS_OPTIONS = {
     define: { 'process.env.API_BASE_URL': JSON.stringify(API_BASE_URL) }
 };
 
-const logGeneratedPage = (lang, file) => {
+const logGeneratedPage = (lang: string, file: string) => {
     console.log(`✓ [${lang.toUpperCase()}] Generated ${path.join(lang === 'en' ? '' : lang, file)}`);
 };
 
-async function getScriptEntries(rootDir) {
+async function getScriptEntries(rootDir: string) {
     const entriesDir = path.join(rootDir, 'src/scripts/entries');
     const entries = await fs.readdir(entriesDir, { withFileTypes: true });
 
@@ -85,12 +85,12 @@ async function getScriptEntries(rootDir) {
         ]);
 }
 
-async function writeMinifiedHtml(file, html) {
+async function writeMinifiedHtml(file: string, html: string) {
     await fs.mkdir(path.dirname(file), { recursive: true });
     await fs.writeFile(file, await minify(html, MINIFY_OPTIONS), 'utf8');
 }
 
-async function processStaticFile(srcPath, destPath) {
+async function processStaticFile(srcPath: string, destPath: string) {
     const ext = path.extname(srcPath).toLowerCase();
 
     if (!['.html', '.css', '.js'].includes(ext)) return fs.copyFile(srcPath, destPath);
@@ -114,7 +114,7 @@ async function processStaticFile(srcPath, destPath) {
     return fs.writeFile(destPath, code, 'utf8');
 }
 
-async function processStaticFiles(srcDir, destDir) {
+async function processStaticFiles(srcDir: string, destDir: string) {
     const entries = await fs.readdir(srcDir, { withFileTypes: true });
     await fs.mkdir(destDir, { recursive: true });
 
@@ -128,7 +128,7 @@ async function processStaticFiles(srcDir, destDir) {
     }));
 }
 
-async function bundleScripts(rootDir, distDir) {
+async function bundleScripts(rootDir: string, distDir: string) {
     const outputDir = path.join(distDir, 'js');
     await fs.mkdir(outputDir, { recursive: true });
     const scriptEntries = await getScriptEntries(rootDir);
@@ -144,7 +144,7 @@ async function bundleScripts(rootDir, distDir) {
     }));
 }
 
-async function renderPage(page, lang, dict, outFolder) {
+async function renderPage(page: any, lang: string, dict: any, outFolder: string) {
     const { file, render, locale, data, children } = page;
     if (locale && !locale.includes(lang)) return;
 

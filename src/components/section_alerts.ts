@@ -1,6 +1,6 @@
 import { translate } from '../utils.ts';
 
-export function sectionAlert(iconClass, title, message, actionButton = '') {
+export function sectionAlert(iconClass: string, title: string, message: string, actionButton = '') {
     return `
         <div class="alert-section">
             <div class="alert-content">
@@ -17,7 +17,7 @@ export function sectionAlert(iconClass, title, message, actionButton = '') {
     `;
 }
 
-export function purchaseAlert(langDict) {
+export function purchaseAlert(langDict: Record<string, string> = {}) {
     const actionButon = `
         <a href="/panel" class="button" onclick="showPopupAndSwitchTab('auth-popup', 'login')">
             ${translate(langDict, 'purchase_alert.action')} <i class="fa-solid fa-arrow-right"></i>

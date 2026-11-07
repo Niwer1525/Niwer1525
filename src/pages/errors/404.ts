@@ -1,7 +1,7 @@
 import { errorLayout } from '../../components/layout.ts';
 import { translate } from '../../utils.ts';
 
-export async function render(lang, langDict) {
+export async function render(lang: string, langDict: Record<string, string> = {}) {
 	const content = `
 		<div class="flex-center-wrap">
 			<h1>${translate(langDict, '404_title')}</h1>

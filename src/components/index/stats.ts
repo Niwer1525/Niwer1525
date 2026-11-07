@@ -12,7 +12,7 @@ function renderWakaFilters(languages) {
         `).join('');
 }
 
-function createStatCard(langDict, id, statistics) {
+function createStatCard(langDict: Record<string, string> = {}, id, statistics) {
     const VALUE = statistics[id] ?? 0;
 
     return `
@@ -23,7 +23,7 @@ function createStatCard(langDict, id, statistics) {
     `;
 }
 
-export async function stats(langDict, statistics) {
+export async function stats(langDict: Record<string, string> = {}, statistics) {
     const WAKA_GLOBAL_DATA = statistics.wakatime_global_stats?.data || {};
     const GITHUB_STATS = statistics.gh_stats?.data || statistics.gh_stats || {};
     const GITHUB_YEARS = Object.values(GITHUB_STATS.years || {});

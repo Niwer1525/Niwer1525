@@ -1,6 +1,6 @@
-import { translate, getAccessClassForType } from '../utils.ts';
+import { getAccessClassForType, translate } from '../utils.ts';
 
-function getHrefForPage(page, lang) {
+function getHrefForPage(page: string, lang: string) {
     const isDefaultLang = lang === 'en';
     switch (page) {
         case 'index': return isDefaultLang ? '/index.html' : `/${lang}/index.html`;
@@ -18,7 +18,7 @@ function getHrefForPage(page, lang) {
     }
 }
 
-function navigation(page, lang = 'en', langDict, buttons, additionalActionsContent = '') {
+function navigation(page: string, lang: Languages = Languages.EN, langDict: Record<string, string> = {}, buttons, additionalActionsContent = '') {
     return `
         <header id="top">
             <nav>
@@ -61,7 +61,7 @@ function navigation(page, lang = 'en', langDict, buttons, additionalActionsConte
     `;
 }
 
-export function defaultNavigation(page, lang = 'en', langDict) {
+export function defaultNavigation(page: string, lang = 'en', langDict: Record<string, string> = {}) {
     const indexUrl = getHrefForPage('index', lang);
     return navigation(page, lang, langDict, [
         { url: `${indexUrl}#presentation`, labelKey: 'btn.about' },
@@ -75,7 +75,7 @@ export function defaultNavigation(page, lang = 'en', langDict) {
     ]);
 }
 
-export function panelNavigation(page, lang = 'en', langDict) {
+export function panelNavigation(page: string, lang = 'en', langDict: Record<string, string> = {}) {
     return navigation(page, lang, langDict, [
         { url: getHrefForPage('index', lang), labelKey: 'btn.home' },
         { url: getHrefForPage('panel', lang), labelKey: 'btn.overview' },
@@ -96,7 +96,7 @@ export function panelNavigation(page, lang = 'en', langDict) {
     `);
 }
 
-export function jumpBar(langDict, hoverLabel = 'Sub Sections', title, jumpLinks = []) {
+export function jumpBar(langDict: Record<string, string>, hoverLabel = 'Sub Sections', title: string, jumpLinks = []) {
     return `
         <div class="jump-bar-container">
             <nav class="jump-bar" aria-label="${hoverLabel}">

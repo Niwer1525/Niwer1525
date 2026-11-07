@@ -1,6 +1,6 @@
 import { translate, escapeHtml, LANGUAGE_COLORS } from '../../utils.ts';
 
-function renderLanguageSummary(files) {
+function renderLanguageSummary(files: any[]) {
     const languageCounts = files.reduce((counts, file) => {
         const language = file.language?.trim() || 'Other';
         counts[language] = (counts[language] || 0) + 1;
@@ -25,7 +25,7 @@ function renderLanguageSummary(files) {
     };
 }
 
-function renderGist(gist) {
+function renderGist(gist: any) {
     const files = Object.values(gist.files || {});
     const description = gist.description || 'Untitled Gist';
     const date = new Date(gist.createdAt).toLocaleDateString('en-US', {
@@ -52,7 +52,7 @@ function renderGist(gist) {
     `;
 }
 
-export function gists(langDict, statistics) {
+export function gists(langDict: Record<string, string> = {}, statistics: any) {
   const GISTS = statistics?.gh_gists || [];
 
   return `

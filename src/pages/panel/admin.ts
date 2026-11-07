@@ -4,7 +4,7 @@ import { editPostModal } from '../../components/modals/edit_post_modal.ts';
 import { jumpBar } from '../../components/nav.ts';
 import { translate } from '../../utils.ts';
 
-export async function render(lang, langDict) {
+export async function render(lang: string, langDict: Record<string, string> = {}) {
     const content = `
         ${jumpBar(langDict, 'Admin Sections', translate(langDict, 'jumpbar.panel.admin.title'), [
             { id: 'sql', label: translate(langDict, 'jumpbar.panel.sql') },
