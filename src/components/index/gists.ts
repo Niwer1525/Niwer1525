@@ -1,7 +1,8 @@
 import { translate, escapeHtml, LANGUAGE_COLORS } from '../../utils.ts';
+import type { GistData, GistFile, StatisticsData } from '../../types.ts';
 
-function renderLanguageSummary(files: any[]) {
-    const languageCounts = files.reduce((counts, file) => {
+function renderLanguageSummary(files: GistFile[]) {
+    const languageCounts: Record<string, number> = files.reduce((counts: Record<string, number>, file) => {
         const language = file.language?.trim() || 'Other';
         counts[language] = (counts[language] || 0) + 1;
         return counts;
@@ -25,7 +26,7 @@ function renderLanguageSummary(files: any[]) {
     };
 }
 
-function renderGist(gist: any) {
+function renderGist(gist: GistData): string {
     const files = Object.values(gist.files || {});
     const description = gist.description || 'Untitled Gist';
     const date = new Date(gist.createdAt).toLocaleDateString('en-US', {
@@ -52,7 +53,7 @@ function renderGist(gist: any) {
     `;
 }
 
-export function gists(langDict: Record<string, string> = {}, statistics: any) {
+export function gists(langDict: Record<string, string> = {}, statistics: StatisticsData) {
   const GISTS = statistics?.gh_gists || [];
 
   return `

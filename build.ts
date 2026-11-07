@@ -3,6 +3,8 @@ import path from 'node:path';
 import { minify } from 'html-minifier-terser';
 import { bundle } from 'lightningcss';
 import { build as buildJs, transform as transformJs } from 'esbuild';
+import type { BuildOptions, TransformOptions } from 'esbuild';
+import type { BlogPost, LangDict } from './src/types.ts';
 
 /* Import page renderers */
 import { render as renderIndex } from './src/pages/index.ts';
@@ -31,14 +33,14 @@ const BUILD_CONTEXT = Object.freeze({
     apiBaseUrl: API_BASE_URL
 });
 
-const PAGES = [
+const PAGES: PageDefinition[] = [
     { file: 'index.html', render: renderIndex },
     { file: 'store.html', render: renderStore },
     {
         file: 'blog/index.html',
         render: renderBlog,
         data: fetchBlogPosts,
-        children: (posts, lang, dict) => posts.map(post => ({
+        children: (posts: BlogPost[] = [], lang: string, dict: LangDict) => posts.map((post: BlogPost) => ({
             file: `blog/${encodeURIComponent(post.slug)}.html`,
             render: () => renderBlogPost(post, lang, dict)
         }))
@@ -53,7 +55,7 @@ const PAGES = [
     { file: 'digital-id.html', render: renderDigitalId, locale: ['en'] }
 ];
 
-const JS_BUILD_OPTIONS = {
+const JS_BUILD_OPTIONS: BuildOptions = {
     bundle: true,
     minify: true,
     format: 'esm',
@@ -61,7 +63,7 @@ const JS_BUILD_OPTIONS = {
     write: false
 };
 
-const MINIFIED_JS_OPTIONS = {
+const MINIFIED_JS_OPTIONS: TransformOptions = {
     minify: true,
     format: 'esm',
     target: 'esnext',
@@ -72,7 +74,7 @@ const logGeneratedPage = (lang: string, file: string) => {
     console.log(`✓ [${lang.toUpperCase()}] Generated ${path.join(lang === 'en' ? '' : lang, file)}`);
 };
 
-async function getScriptEntries(rootDir: string) {
+async function getScriptEntries(rootDir: string): Promise<[string, string][]> {
     const entriesDir = path.join(rootDir, 'src/scripts/entries');
     const entries = await fs.readdir(entriesDir, { withFileTypes: true });
 
@@ -106,6 +108,7 @@ async function processStaticFile(srcPath: string, destPath: string) {
             entryPoints: [srcPath],
             define: MINIFIED_JS_OPTIONS.define
         });
+        if (!outputFiles?.[0]) throw new Error(`No output generated for ${srcPath}`);
         return fs.writeFile(destPath, outputFiles[0].text, 'utf8');
     }
 
@@ -139,12 +142,21 @@ async function bundleScripts(rootDir: string, distDir: string) {
             entryPoints: [path.join(rootDir, entry)],
             define: MINIFIED_JS_OPTIONS.define
         });
+        if (!outputFiles?.[0]) throw new Error(`No output generated for ${entry}`);
         await fs.writeFile(path.join(outputDir, `${name}.js`), outputFiles[0].text, 'utf8');
         console.log(`✓ Bundled ${name}.js`);
     }));
 }
 
-async function renderPage(page: any, lang: string, dict: any, outFolder: string) {
+interface PageDefinition {
+    file: string;
+    render: (lang: string, dict: LangDict, context?: typeof BUILD_CONTEXT, data?: BlogPost[]) => Promise<string> | string;
+    locale?: string[];
+    data?: (apiBaseUrl: string, lang: string) => Promise<BlogPost[]>;
+    children?: (posts: BlogPost[] | undefined, lang: string, dict: LangDict) => { file: string; render: () => Promise<string> | string }[];
+}
+
+async function renderPage(page: PageDefinition, lang: string, dict: LangDict, outFolder: string): Promise<void> {
     const { file, render, locale, data, children } = page;
     if (locale && !locale.includes(lang)) return;
 
@@ -156,7 +168,7 @@ async function renderPage(page: any, lang: string, dict: any, outFolder: string)
     logGeneratedPage(lang, file);
 
     if (!children) return;
-    await Promise.all(children(pageData, lang, dict).map(async child => {
+    await Promise.all(children(pageData, lang, dict).map(async (child) => {
         await writeMinifiedHtml(
             path.join(outFolder, child.file),
             await child.render()
@@ -194,12 +206,12 @@ async function build() {
 
     const outCssDir = path.join(distDir, 'assets');
     await fs.mkdir(outCssDir, { recursive: true });
-    await fs.writeFile(path.join(outCssDir, 'main.css'), cssBuffer.toString('utf8'), 'utf8');
+    await fs.writeFile(path.join(outCssDir, 'main.css'), Buffer.from(cssBuffer).toString('utf8'), 'utf8');
 
     console.log('✓ Build complete! Static assets and pages ready in ./dist');
 }
 
-build().catch((err) => {
+build().catch((err: unknown) => {
     console.error('Build process failed:', err);
     process.exit(1);
 });

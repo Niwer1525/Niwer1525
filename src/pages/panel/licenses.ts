@@ -1,8 +1,9 @@
+import type { LangDict } from '../../types.ts';
 import { panelLayout } from '../../components/layout.ts';
 import { createLicenseModal } from '../../components/modals/create_license_modal.ts';
 import { translate } from '../../utils.ts';
 
-function licenseRowTemplate(langDict) {
+function licenseRowTemplate(langDict: LangDict) {
     return `
         <template id="tmpl-license-row">
             <tr>
@@ -39,7 +40,7 @@ function licenseRowTemplate(langDict) {
     `;
 }
 
-export async function render(lang, langDict) {
+export async function render(lang: string, langDict: LangDict) {
     const content = `
         <section>
             <h2>${translate(langDict, "title.licenses")}</h2>

@@ -1,12 +1,13 @@
 import { marked } from 'marked';
 import { defaultLayout } from '../components/layout.ts';
 import { escapeHtml, translate, formatUrlLabel } from '../utils.ts';
+import type { BlogPost, BlogSource, LangDict } from '../types.ts';
 
-const blogPrefix = (lang) => (lang === 'en' ? '/blog/' : `/${lang}/blog/`);
+const blogPrefix = (lang: string): string => (lang === 'en' ? '/blog/' : `/${lang}/blog/`);
 
-function renderDate(val, lang) {
+function renderDate(val: string, lang: string): string {
     const d = new Date(val);
-    if(isNaN(d)) return escapeHtml(val || '')
+    if(isNaN(d.getTime())) return escapeHtml(val || '')
         
     return `
         <span class="text-secondary">
@@ -16,7 +17,7 @@ function renderDate(val, lang) {
     `;
 }
 
-function readingTime(minutes) {
+function readingTime(minutes: number | undefined): string {
     const n = Number(minutes);
     if(n < 0 || isNaN(n)) return '';
 
@@ -28,10 +29,10 @@ function readingTime(minutes) {
     `;
 }
 
-function sources(sources, lang) {
+function sources(sources: BlogSource[] | undefined, lang: string): string {
     if (!sources?.length) return '';
 
-    const list = sources.map(({ date, url = '', authors = [] }) => {
+    const list = sources.map(({ date, url = '', authors = [] }: BlogSource) => {
         const isHttp = /^https?:\/\//i.test(url);
         const displayLabel = isHttp ? formatUrlLabel(url, { onlyDomain: true }) : url;
         const escapeUrl = escapeHtml(url);
@@ -58,7 +59,7 @@ function sources(sources, lang) {
     return `<div class="article-info">${list}</div>`;
 }
 
-function card(post, lang, langDict) {
+function card(post: BlogPost, lang: string, langDict: LangDict): string {
     return `
         <article>
             <header><h2>${escapeHtml(post.title)}</h2></header>
@@ -74,14 +75,14 @@ function card(post, lang, langDict) {
         </article>`;
 }
 
-export async function fetchPosts(apiBaseUrl, lang) {
+export async function fetchPosts(apiBaseUrl: string, lang: string): Promise<BlogPost[]> {
     const res = await fetch(`${apiBaseUrl}/blog/posts?lang=${encodeURIComponent(lang)}`);
     if (!res.ok) throw new Error(`Could not fetch blog posts: ${res.statusText}`);
     const data = await res.json();
-    return Array.isArray(data) ? data : data.posts ?? [];
+    return (Array.isArray(data) ? data : (data as { posts?: BlogPost[] }).posts ?? []) as BlogPost[];
 }
 
-export function renderPost(post, lang = 'en', langDict = {}) {
+export function renderPost(post: BlogPost, lang = 'en', langDict: LangDict = {}): string {
     const slugUrl = `${blogPrefix(lang)}${encodeURIComponent(post.slug)}.html`;
 
     const sharedNotificationMessage = escapeHtml(translate(langDict, 'blog.link_copied'));
@@ -124,7 +125,7 @@ export function renderPost(post, lang = 'en', langDict = {}) {
 /**
  * Renders the blog page with a list of posts.
  */
-export function render(lang = 'en', langDict = {}, { apiBaseUrl = '' } = {}, posts = []) {
+export function render(lang = 'en', langDict: LangDict = {}, { apiBaseUrl = '' }: { apiBaseUrl?: string } = {}, posts: BlogPost[] = []): string {
     const postCards = posts.map(p => card(p, lang, langDict)).join('');
     const rssUrl = `${apiBaseUrl}/blog/rss?lang=${encodeURIComponent(lang)}`;
 

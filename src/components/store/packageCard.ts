@@ -1,15 +1,16 @@
 import { formatDefaultTitle, loadMd, translate } from '../../utils.ts';
 import { formatCurrency } from './catalogHelper.ts';
+import type { PackageData, StoreContext } from '../../types.ts';
 
-export async function renderPackageCard(pkg, { lang, langDict, defaultCurrency, catalogPaymentLink, stripePrices }) {
+export async function renderPackageCard(pkg: PackageData, { lang, langDict, defaultCurrency, catalogPaymentLink, stripePrices }: StoreContext): Promise<string> {
     const paymentLink = pkg.paymentLink || pkg.payment_link || catalogPaymentLink || '';
     if (!paymentLink) return '';
 
     const packageSlug = String(pkg.slug).replace(/-/g, '_');
     const productKey = Object.keys(stripePrices?.byProduct || {})
         .find(key => packageSlug === key || packageSlug.startsWith(`${key}_`));
-    const productPrices = stripePrices?.byProduct?.[productKey] || [];
-    const stripePrice = stripePrices?.byId?.[pkg.price_id]
+    const productPrices = productKey ? (stripePrices?.byProduct?.[productKey] || []) : [];
+    const stripePrice = (pkg.price_id ? stripePrices?.byId?.[pkg.price_id] : undefined)
         || productPrices.find(price => price.isDefault && !/developer/i.test(pkg.name || ''))
         || productPrices.sort((a, b) => a.amount - b.amount)[/developer/i.test(pkg.name || '') ? productPrices.length - 1 : 0];
     const price = formatCurrency(

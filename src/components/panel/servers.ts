@@ -1,3 +1,4 @@
+import type { LangDict } from '../../types.ts';
 import { translate } from '../../utils.ts';
 
 function cardTemplate() {
@@ -25,7 +26,7 @@ function cardTemplate() {
     `
 }
 
-export function servers(langDict) {
+export function servers(langDict: LangDict) {
     return `
         <section>
             <h2>${translate(langDict, 'title.servers')}</h2>

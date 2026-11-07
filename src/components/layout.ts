@@ -3,8 +3,20 @@ import { authModal } from './modals/auth_modal.ts';
 import { contactModal } from './modals/contact_modal.ts';
 import { defaultNavigation, panelNavigation } from './nav.ts';
 import { seasonal } from './seasonal.ts';
+import type { LangDict, SeasonalData } from '../types.ts';
 
-function addScripts(scripts: { file: string; [key: string]: unknown }[]) {
+interface LayoutOptions {
+    title?: string;
+    description?: string;
+    canonical?: string;
+    lang?: string;
+    body?: string;
+    headCss?: string[];
+    scripts?: string[];
+    headScripts?: string[];
+}
+
+function addScripts(scripts: { file: string; [key: string]: unknown }[]): string {
     return scripts.map(script => {
         const attrs = Object.entries(script)
             .filter(([key]) => key !== 'file')
@@ -14,13 +26,13 @@ function addScripts(scripts: { file: string; [key: string]: unknown }[]) {
     }).join('\n');
 }
 
-function addStylesheets(stylesheets: string[]) {
+function addStylesheets(stylesheets: string[]): string {
     return stylesheets
         .map(stylesheet => `<link rel="stylesheet" href="${stylesheet}">`)
         .join('\n');
 }
 
-function layout({ title = 'Default Title', description = '', canonical = '', lang = 'en', body = '', headCss = [], scripts = ['/js/public.js'], headScripts = [] }) {
+function layout({ title = 'Default Title', description = '', canonical = '', lang = 'en', body = '', headCss = [], scripts = ['/js/public.js'], headScripts = [] }: LayoutOptions): string {
     const SEASONAL = seasonal();
     return `
         <!DOCTYPE html>
@@ -54,7 +66,9 @@ function layout({ title = 'Default Title', description = '', canonical = '', lan
     `;
 }
 
-export function emptyLayout({ lang = 'en', langDict = [], title, description, canonical, content, headCss = [], scripts = [] }) {
+interface PageLayoutOptions extends LayoutOptions { page?: string; langDict?: LangDict; content?: string; }
+
+export function emptyLayout({ lang = 'en', langDict = {}, title, description, canonical, content = '', headCss = [], scripts = [] }: PageLayoutOptions): string {
     return layout({
         title,
         description,
@@ -70,7 +84,7 @@ export function emptyLayout({ lang = 'en', langDict = [], title, description, ca
     });
 }
 
-export function defaultLayout({ page, lang = 'en', langDict = [], title, description, canonical, content, headCss = [], scripts = ['/js/public.js'], headScripts = [] }) {
+export function defaultLayout({ page = 'index', lang = 'en', langDict = {}, title, description, canonical, content = '', headCss = [], scripts = ['/js/public.js'], headScripts = [] }: PageLayoutOptions): string {
     return layout({
         title,
         description,
@@ -90,7 +104,7 @@ export function defaultLayout({ page, lang = 'en', langDict = [], title, descrip
     });
 }
 
-export function panelLayout({ page, lang = 'en', langDict = [], title, description, canonical, content, headCss = [] }) {
+export function panelLayout({ page = 'panel', lang = 'en', langDict = {}, title, description, canonical, content = '', headCss = [] }: PageLayoutOptions): string {
     return layout({
         title,
         description,
@@ -110,7 +124,7 @@ export function panelLayout({ page, lang = 'en', langDict = [], title, descripti
     });
 }
 
-export function errorLayout({ lang = 'en', langDict = [], title, description, canonical, content, headCss = [] }) {
+export function errorLayout({ lang = 'en', langDict = {}, title, description, canonical, content = '', headCss = [] }: PageLayoutOptions): string {
     return layout({
         title,
         description,

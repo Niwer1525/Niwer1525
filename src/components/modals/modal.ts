@@ -1,6 +1,7 @@
 import { translate } from '../../utils.ts';
+import type { LangDict, ModalTab } from '../../types.ts';
 
-function tabNavigation(langDict, id, tabs = []) {
+function tabNavigation(langDict: LangDict, id: string, tabs: ModalTab[] = []) {
 	return `
 		<div class="modal-tabs" id="${id}-tabs">
 			${tabs.map(tab => `
@@ -12,7 +13,7 @@ function tabNavigation(langDict, id, tabs = []) {
 	`;
 }
 
-export function multiTabModal(langDict, id, largeModal = false, tabs = [], additionalContent = '') {
+export function multiTabModal(langDict: LangDict, id: string, largeModal = false, tabs: ModalTab[] = [], additionalContent = '') {
 	return `
 		<div id="${id}" class="modal-overlay">
 			<div class="modal ${largeModal ? 'large-modal' : ''}">
@@ -31,7 +32,7 @@ export function multiTabModal(langDict, id, largeModal = false, tabs = [], addit
 	`;
 }
 
-export function basicModal(langDict, id, largeModal = false, fromContent) {
+export function basicModal(langDict: LangDict, id: string, largeModal = false, fromContent = '') {
 	return `
 		<div id="${id}" class="modal-overlay">
 			<div class="modal ${largeModal ? 'large-modal' : ''}">

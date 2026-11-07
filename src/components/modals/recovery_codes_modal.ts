@@ -1,7 +1,8 @@
+import type { LangDict } from '../../types.ts';
 import { translate } from '../../utils.ts';
 import { basicModal } from './modal.ts';
 
-export function recoveryCodesModal(langDict) {
+export function recoveryCodesModal(langDict: LangDict) {
     return basicModal(langDict, 'recovery-codes-popup', false, `
         <h2>${translate(langDict, 'form.totp_recovery.title')}</h2>
         <p class="text-secondary">

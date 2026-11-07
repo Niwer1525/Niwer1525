@@ -1,4 +1,5 @@
 import { loadMd, loadJson, translate } from '../../utils.ts';
+import type { ProjectData } from '../../types.ts';
 
 /**
  * Appends an image or video element based on the project's properties.
@@ -7,7 +8,7 @@ import { loadMd, loadJson, translate } from '../../utils.ts';
  * @returns {string} - An HTML string representing either an iframe for a video or an img tag for an image.
  * @author Niwer
  */
-function appendImageOrVideo(project) {
+function appendImageOrVideo(project: ProjectData): string {
     if(!project.video_id && !project.image) return '';
 
     const USE_VIDEO_AS_PREV = project.video_id !== undefined;
@@ -25,7 +26,7 @@ function appendImageOrVideo(project) {
  * @returns  {string} - A formatted button name corresponding to the provided type, with a default fallback of "Read more".
  * @author Niwer
  */
-function formatDefaultButtonName(type: string, langDict: Record<string, string> = {}, object = []) {
+function formatDefaultButtonName(type: string, langDict: Record<string, string> = {}, object: string[] = []) {
     switch(type.toLowerCase()) {
         case 'read': return translate(langDict, 'btn.read', object);
         case 'see': return translate(langDict, 'btn.see', object);
@@ -38,7 +39,7 @@ async function loadArticles(lang: string, langDict: Record<string, string> = {})
     const DATA = await loadJson('src/data/', 'database.json');
     if (!DATA.projects || !Array.isArray(DATA.projects)) return '<p>No projects found.</p>';
     
-    const projectCards = await Promise.all(DATA.projects.map(async project => {
+    const projectCards = await Promise.all((DATA.projects as ProjectData[]).map(async (project: ProjectData) => {
         const projectDescription = await loadMd(`src/data/projects/${project.name}/`, `project_description_${lang}.md`);
         const projectTitle = translate(langDict, `project.title.${project.name}`);
         return `
@@ -57,7 +58,7 @@ async function loadArticles(lang: string, langDict: Record<string, string> = {})
                 </main>
                 <footer>
                     ${project.links && typeof project.links === 'object' ? Object.entries(project.links).map(([link, type]) => {
-                        const buttonName = formatDefaultButtonName(type, langDict, projectTitle);
+                        const buttonName = formatDefaultButtonName(type, langDict, [projectTitle]);
                         return `<a class="link-button" href="${link}" target="_blank" title="${buttonName}" rel="noopener noreferrer">
                                     ${buttonName}
                                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
@@ -72,7 +73,7 @@ async function loadArticles(lang: string, langDict: Record<string, string> = {})
     return projectCards.join('');
 }
 
-export async function projects(lang, langDict) {
+export async function projects(lang: string, langDict: Record<string, string>): Promise<string> {
     return `
         <section id="projects">
             <h2>${translate(langDict, 'title.projects')}</h2>

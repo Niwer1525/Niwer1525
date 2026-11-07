@@ -1,18 +1,20 @@
+import type { LangDict } from '../../types.ts';
 import { translate } from '../../utils.ts';
+import type { CategoryData, FilterPackage } from '../../types.ts';
 
-export function renderFilterPills(categories, visiblePackages, langDict) {
+export function renderFilterPills(categories: CategoryData[], visiblePackages: FilterPackage[], langDict: LangDict): string {
     const pillDefs = [
         { id: 'all', label: translate(langDict, 'store.all_categories') }
     ];
 
-    categories.forEach(cat => {
+    categories.forEach((cat: CategoryData) => {
         const catId = String(cat.id ?? cat.slug);
-        pillDefs.push({ id: catId, label: cat.name });
+        pillDefs.push({ id: catId, label: cat.name || catId });
 
         if (Array.isArray(cat.subcategories)) {
-            cat.subcategories.forEach(sub => {
+            cat.subcategories.forEach((sub: CategoryData) => {
                 const subId = String(sub.id ?? sub.slug);
-                pillDefs.push({ id: subId, label: sub.name });
+                pillDefs.push({ id: subId, label: sub.name || subId });
             });
         }
     });
@@ -20,7 +22,7 @@ export function renderFilterPills(categories, visiblePackages, langDict) {
     const pillsHtml = pillDefs.map(pill => {
         const count = pill.id === 'all'
             ? visiblePackages.length
-            : visiblePackages.filter(p => p.filterTags?.includes(pill.id)).length;
+            : visiblePackages.filter((p: FilterPackage) => p.filterTags?.includes(pill.id)).length;
 
         const isActive = pill.id === 'all' ? ' is-active' : '';
 

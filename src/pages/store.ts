@@ -3,6 +3,7 @@ import { loadJson, translate } from '../utils.ts';
 import { renderPackageCard } from '../components/store/packageCard.ts';
 import { jumpBar } from '../components/nav.ts';
 import { sectionAlert } from '../components/section_alerts.ts';
+import type { CategoryData, LangDict, StoreContext, JumpLink, PackageData } from '../types.ts';
 
 function slugify(value: string | number): string {
     return String(value)
@@ -15,8 +16,8 @@ function slugify(value: string | number): string {
 }
 
 // Recursive helper to render sections and collect anchor links
-async function renderCategorySections(node, parentPath, context, outLinks) {
-    const id = slugify(node.id ?? node.slug ?? node.name);
+async function renderCategorySections(node: CategoryData, parentPath: string, context: StoreContext, outLinks: JumpLink[]): Promise<string> {
+    const id = slugify(node.id ?? node.slug ?? node.name ?? 'category');
     const currentPath = parentPath ? `${parentPath}-${id}` : id;
     const sectionId = `section-${currentPath}`;
     const displayName = node.name || node.id || node.slug || id;
@@ -54,7 +55,7 @@ async function renderCategorySections(node, parentPath, context, outLinks) {
     return html;
 }
 
-async function fetchStripePrices(apiBaseUrl) {
+async function fetchStripePrices(apiBaseUrl: string): Promise<StoreContext['stripePrices']> {
     try {
         const response = await fetch(`${apiBaseUrl}/stripe_prices`);
         if (!response.ok) throw new Error(`Could not fetch Stripe prices: ${response.statusText}`);
@@ -63,8 +64,8 @@ async function fetchStripePrices(apiBaseUrl) {
         const prices = Array.isArray(payload) ? payload : payload.data;
         if (!Array.isArray(prices)) throw new Error('Stripe prices response does not contain a data array');
 
-        const byId = {};
-        const byProduct = {};
+        const byId: StoreContext['stripePrices']['byId'] = {};
+        const byProduct: StoreContext['stripePrices']['byProduct'] = {};
         for (const price of prices) {
             if (!price?.id || price.unit_amount == null) continue;
 
@@ -88,23 +89,23 @@ async function fetchStripePrices(apiBaseUrl) {
         return { byId, byProduct };
     } catch (error) {
         console.error('Error loading Stripe prices:', error);
-        return {};
+        return { byId: {}, byProduct: {} };
     }
 }
 
-export async function render(lang = 'en', langDict = {}, { apiBaseUrl = '' } = {}) {
+export async function render(lang = 'en', langDict: LangDict = {}, { apiBaseUrl = '' }: { apiBaseUrl?: string } = {}): Promise<string> {
     const catalog = await loadJson('src/data/', 'store_catalog.json');
-    const categories = Array.isArray(catalog.categories) ? catalog.categories : [];
+    const categories = Array.isArray(catalog.categories) ? catalog.categories as CategoryData[] : [];
     const stripePrices = await fetchStripePrices(apiBaseUrl);
     const context = {
         lang,
         langDict,
-        defaultCurrency: catalog.currency || 'EUR',
-        catalogPaymentLink: catalog.paymentLink || '',
+        defaultCurrency: typeof catalog.currency === 'string' ? catalog.currency : 'EUR',
+        catalogPaymentLink: typeof catalog.paymentLink === 'string' ? catalog.paymentLink : '',
         stripePrices
     };
 
-    const jumpLinks = [];
+    const jumpLinks: JumpLink[] = [];
     let sectionsHtml = '';
 
     for (const cat of categories) sectionsHtml += await renderCategorySections(cat, '', context, jumpLinks);

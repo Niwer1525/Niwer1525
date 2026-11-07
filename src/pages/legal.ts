@@ -1,8 +1,9 @@
+import type { LangDict } from '../types.ts';
 import { defaultLayout } from '../components/layout.ts';
 import { jumpBar } from '../components/nav.ts';
 import { loadMd, translate } from '../utils.ts';
 
-export async function render(lang, langDict) {
+export async function render(lang: string, langDict: LangDict): Promise<string> {
 	const legalDir = 'src/data/langs/' + lang + '/';
 	const copyrightHtml = await loadMd(legalDir, 'copyright_notice.md');
 	const tosHtml = await loadMd(legalDir, 'terms_of_service.md');

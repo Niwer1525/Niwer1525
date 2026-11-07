@@ -1,4 +1,5 @@
 import { getAccessClassForType, translate } from '../utils.ts';
+import type { JumpLink, LangDict, NavButton } from '../types.ts';
 
 function getHrefForPage(page: string, lang: string) {
     const isDefaultLang = lang === 'en';
@@ -18,7 +19,7 @@ function getHrefForPage(page: string, lang: string) {
     }
 }
 
-function navigation(page: string, lang: Languages = Languages.EN, langDict: Record<string, string> = {}, buttons, additionalActionsContent = '') {
+function navigation(page: string, lang = 'en', langDict: LangDict = {}, buttons: NavButton[], additionalActionsContent = '') {
     return `
         <header id="top">
             <nav>
@@ -32,7 +33,7 @@ function navigation(page: string, lang: Languages = Languages.EN, langDict: Reco
                 <ul id="nav-links">
                     <!-- Navigation buttons -->
                     ${buttons.map(button => `
-                        <li id="${button.id || ''}" class="${getAccessClassForType(button.accessType)}"><a href="${button.url}" ${button.onClick ? `onclick="${button.onClick}"` : ''}>${translate(langDict, button.labelKey)}</a></li>
+                    <li id="${button.id || ''}" class="${getAccessClassForType(button.accessType || '')}"><a href="${button.url}" ${button.onClick ? `onclick="${button.onClick}"` : ''}>${translate(langDict, button.labelKey)}</a></li>
                     `).join('')}
 
                     <!-- Theme Toggle and Language Selection -->
@@ -61,7 +62,7 @@ function navigation(page: string, lang: Languages = Languages.EN, langDict: Reco
     `;
 }
 
-export function defaultNavigation(page: string, lang = 'en', langDict: Record<string, string> = {}) {
+export function defaultNavigation(page: string, lang = 'en', langDict: LangDict = {}) {
     const indexUrl = getHrefForPage('index', lang);
     return navigation(page, lang, langDict, [
         { url: `${indexUrl}#presentation`, labelKey: 'btn.about' },
@@ -75,7 +76,7 @@ export function defaultNavigation(page: string, lang = 'en', langDict: Record<st
     ]);
 }
 
-export function panelNavigation(page: string, lang = 'en', langDict: Record<string, string> = {}) {
+export function panelNavigation(page: string, lang = 'en', langDict: LangDict = {}) {
     return navigation(page, lang, langDict, [
         { url: getHrefForPage('index', lang), labelKey: 'btn.home' },
         { url: getHrefForPage('panel', lang), labelKey: 'btn.overview' },
@@ -96,7 +97,7 @@ export function panelNavigation(page: string, lang = 'en', langDict: Record<stri
     `);
 }
 
-export function jumpBar(langDict: Record<string, string>, hoverLabel = 'Sub Sections', title: string, jumpLinks = []) {
+export function jumpBar(langDict: LangDict, hoverLabel = 'Sub Sections', title: string, jumpLinks: JumpLink[] = []) {
     return `
         <div class="jump-bar-container">
             <nav class="jump-bar" aria-label="${hoverLabel}">

@@ -1,3 +1,4 @@
+import type { LangDict } from '../../types.ts';
 import { panelLayout } from '../../components/layout.ts';
 import { deleteAccountModal } from '../../components/modals/delete_account_modal.ts';
 import { editProfileModal } from '../../components/modals/edit_profile_modal.ts';
@@ -6,7 +7,7 @@ import { totpModal } from '../../components/modals/totp_setup_modal.ts';
 import { jumpBar } from '../../components/nav.ts';
 import { translate } from '../../utils.ts';
 
-function profileDetailTemplte(langDict) {
+function profileDetailTemplte(langDict: LangDict) {
     return `
         <template id="tmpl-profile-detail">
             <article>
@@ -41,7 +42,7 @@ function entitlementTemplte() {
     `;
 }
 
-export async function render(lang, langDict) {
+export async function render(lang: string, langDict: LangDict) {
     const content = `
         ${jumpBar(langDict, 'User Profile Sections', translate(langDict, 'jumpbar.panel.profile.title'), [
             { id: 'user-products', label: translate(langDict, 'jumpbar.panel.profile.products') },

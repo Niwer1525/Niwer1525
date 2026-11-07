@@ -1,7 +1,8 @@
+import type { LangDict } from '../../types.ts';
 import { translate } from '../../utils.ts';
 import { multiTabModal } from './modal.ts';
 
-function login(langDict) {
+function login(langDict: LangDict): string {
 	return `
 		<h2>${translate(langDict, "form.auth.login.title")}</h2>
 		<label>
@@ -19,7 +20,7 @@ function login(langDict) {
 	`;
 }
 
-function twoFactorAuth(langDict) {
+function twoFactorAuth(langDict: LangDict): string {
 	return `
 		<form id="totp-login-form" class="hidden">
 			<h2>${translate(langDict, "form.auth.2fa.title")}</h2>
@@ -38,7 +39,7 @@ function twoFactorAuth(langDict) {
 	`
 }
 
-function register(langDict) {
+function register(langDict: LangDict): string {
 	return `
 		<h2>${translate(langDict, "form.auth.register.title")}</h2>
 		<label>
@@ -64,7 +65,7 @@ function register(langDict) {
 	`;
 }
 
-export function authModal(langDict) {
+export function authModal(langDict: LangDict) {
 	return multiTabModal(langDict, 'auth-popup', false, [
 		{ id: 'login', titleKey: 'modal.login', content: login(langDict), isActive: true },
 		{ id: 'register', titleKey: 'modal.register', content: register(langDict) }

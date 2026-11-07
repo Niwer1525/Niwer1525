@@ -1,6 +1,7 @@
 import { translate } from '../utils.ts';
+import type { LangDict, SeasonalData } from '../types.ts';
 
-export function footer(lang = 'en', langDict: Record<string, string> = {}, seasonal = {}) {
+export function footer(lang = 'en', langDict: LangDict = {}, seasonal: SeasonalData = { background: '', glow: '', emoji: '' }) {
   const legalUrl = lang === 'en' ? '/legal.html' : `/${lang}/legal.html`;
   return `
     <div id="seasonal-bg" class="seasonal-bg" aria-hidden="true">${seasonal.background || ''}</div>

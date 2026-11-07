@@ -1,6 +1,7 @@
 import { translate, escapeHtml, LANGUAGE_COLORS } from '../../utils.ts';
+import type { LanguageStat, StatisticsData } from '../../types.ts';
 
-function renderWakaFilters(languages) {
+function renderWakaFilters(languages: LanguageStat[]): string {
     return languages
         .filter(language => LANGUAGE_COLORS[language.name])
         .sort((a, b) => b.percent - a.percent)
@@ -12,7 +13,7 @@ function renderWakaFilters(languages) {
         `).join('');
 }
 
-function createStatCard(langDict: Record<string, string> = {}, id, statistics) {
+function createStatCard(langDict: Record<string, string> = {}, id: string, statistics: Record<string, number>): string {
     const VALUE = statistics[id] ?? 0;
 
     return `
@@ -23,19 +24,19 @@ function createStatCard(langDict: Record<string, string> = {}, id, statistics) {
     `;
 }
 
-export async function stats(langDict: Record<string, string> = {}, statistics) {
-    const WAKA_GLOBAL_DATA = statistics.wakatime_global_stats?.data || {};
-    const GITHUB_STATS = statistics.gh_stats?.data || statistics.gh_stats || {};
-    const GITHUB_YEARS = Object.values(GITHUB_STATS.years || {});
-    const WAKA_START_YEAR = WAKA_GLOBAL_DATA.range?.start ? new Date(WAKA_GLOBAL_DATA.range.start).getFullYear() : 2023;
+export async function stats(langDict: Record<string, string> = {}, statistics: StatisticsData): Promise<string> {
+    const WAKA_GLOBAL_DATA = (statistics.wakatime_global_stats as { data?: Record<string, unknown> } | undefined)?.data as Record<string, unknown> || {};
+    const GITHUB_STATS = ((statistics.gh_stats as { data?: Record<string, unknown> } | undefined)?.data || statistics.gh_stats || {}) as Record<string, unknown>;
+    const GITHUB_YEARS = Object.values((GITHUB_STATS.years || {}) as Record<string, { total_combined?: number; issues?: number; pull_requests?: number }>);
+    const WAKA_START_YEAR = (WAKA_GLOBAL_DATA.range as { start?: string } | undefined)?.start ? new Date((WAKA_GLOBAL_DATA.range as { start: string }).start).getFullYear() : 2023;
     const CODING_HOURS = Math.floor(Number(WAKA_GLOBAL_DATA.total_seconds || 0) / 3600);
     const NORMALIZED_GITHUB_STATS = {
         contributions: GITHUB_YEARS.reduce((total, year) => total + (year.total_combined || 0), 0),
         total_issues: GITHUB_YEARS.reduce((total, year) => total + (year.issues || 0), 0),
         total_prs: GITHUB_YEARS.reduce((total, year) => total + (year.pull_requests || 0), 0),
-        total_stars: GITHUB_STATS.all_time_stars || 0
+        total_stars: Number(GITHUB_STATS.all_time_stars || 0)
     };
-    const WAKA_LANGUAGES = statistics.wakatime_individual_stats?.data?.languages || [];
+    const WAKA_LANGUAGES = (statistics.wakatime_individual_stats as { data?: { languages?: LanguageStat[] } } | undefined)?.data?.languages || [];
     const WAKA_DATA_JSON = JSON.stringify(WAKA_LANGUAGES).replace(/</g, '\\u003c');
 
     return `
@@ -48,7 +49,7 @@ export async function stats(langDict: Record<string, string> = {}, statistics) {
                         <span id="coding_time">
                         ${CODING_HOURS}h
                         </span>
-                        <p>${translate(langDict, 'github_stats.coding_time', `Coding Time Since <span id="coding_time_start_date">${WAKA_START_YEAR}</span>`)}</p>
+                        <p>${translate(langDict, 'github_stats.coding_time', [`Coding Time Since <span id="coding_time_start_date">${WAKA_START_YEAR}</span>`])}</p>
                         <i class="top-right-external-link fa-solid fa-arrow-up-right-from-square"></i>
                     </a>
                 </div>

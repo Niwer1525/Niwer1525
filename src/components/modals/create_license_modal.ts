@@ -1,7 +1,8 @@
+import type { LangDict } from '../../types.ts';
 import { translate } from '../../utils.ts';
 import { basicModal } from './modal.ts';
 
-export function createLicenseModal(langDict) {
+export function createLicenseModal(langDict: LangDict) {
   return basicModal(langDict, 'create-license-popup', false, `
     <h2>${translate(langDict, "form.license.title")}</h2>
     <label>

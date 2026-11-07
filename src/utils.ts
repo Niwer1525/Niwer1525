@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 import { marked } from 'marked';
 
 export const DEFAULT_LANGUAGE_COLOR = '#cccccc';
-export const LANGUAGE_COLORS = {
+export const LANGUAGE_COLORS: Record<string, string> = {
     JSON: '#292929',
     Shell: '#89e051',
     Markdown: '#083fa1',

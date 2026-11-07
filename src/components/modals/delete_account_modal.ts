@@ -1,9 +1,10 @@
+import type { LangDict } from '../../types.ts';
 import { translate } from '../../utils.ts';
 import { basicModal } from './modal.ts';
 
 const CONFIRMATION_PHRASE = 'DELETE MY ACCOUNT';
 
-export function deleteAccountModal(langDict) {
+export function deleteAccountModal(langDict: LangDict) {
     return basicModal(langDict, 'delete-account-popup', false, `
         <h2>
             <i class="fa-solid fa-triangle-exclamation text-danger"></i>

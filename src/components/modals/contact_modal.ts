@@ -1,7 +1,8 @@
+import type { LangDict } from '../../types.ts';
 import { translate } from '../../utils.ts';
 import { basicModal } from './modal.ts';
 
-export function contactModal(langDict) {
+export function contactModal(langDict: LangDict) {
   return basicModal(langDict, 'contact-popup', false, `
     <input type="hidden" name="access_key" value="f18de961-019b-4e2a-ad3d-dffbb5136e1f">
     <h2>${translate(langDict, 'form.contact.title')}</h2>

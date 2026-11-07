@@ -1,7 +1,8 @@
+import type { LangDict } from '../../types.ts';
 import { panelLayout } from '../../components/layout.ts';
 import { translate } from '../../utils.ts';
 
-function repositoryTemplate(langDict) {
+function repositoryTemplate(langDict: LangDict) {
     return `
         <template id="tmpl-download-repo">
             <section class="download-repository">
@@ -27,7 +28,7 @@ function repositoryTemplate(langDict) {
     `
 }
 
-function assetRowTemplate(langDict) {
+function assetRowTemplate(langDict: LangDict) {
     return `
         <template id="tmpl-download-row">
             <tr>
@@ -45,7 +46,7 @@ function assetRowTemplate(langDict) {
     `
 }
 
-export async function render(lang, langDict) {
+export async function render(lang: string, langDict: LangDict) {
     const content = `
         <section>
             <h2>${translate(langDict, "title.downloads")}</h2>

@@ -1,8 +1,9 @@
+import type { LangDict } from '../../types.ts';
 import { translate } from '../../utils.ts';
 import { basicModal } from './modal.ts';
 import { textEditorToolbar } from '../text_editor_toolbar.ts';
 
-export function editPostModal(langDict) {
+export function editPostModal(langDict: LangDict) {
 	return basicModal(langDict, 'edit-post-popup', true, `
 		<h2>${translate(langDict, 'form.edit_post.title')}</h2>
 		<input type="hidden" name="post_id" id="editPostId">

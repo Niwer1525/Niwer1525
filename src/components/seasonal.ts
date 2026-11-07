@@ -5,8 +5,17 @@ const SVGS = {
     purpleEgg: '<svg viewBox="0 0 160 200" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><path d="M80 15 C35 15, 20 95, 20 135 C20 175, 48 190, 80 190 C112 190, 140 175, 140 135 C140 95, 125 15, 80 15 Z" fill="#9d4edd"/><path d="M24 105 L50 85 L80 105 L110 85 L136 105 L139 125 L110 105 L80 125 L50 105 L21 125 Z" fill="#e0aaff"/><circle cx="80" cy="60" r="8" fill="#ff9e00"/><circle cx="55" cy="150" r="10" fill="#ff9e00"/><circle cx="105" cy="150" r="10" fill="#ff9e00"/></svg>',
     egg: '<svg viewBox="0 0 160 200" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><path d="M80 15 C35 15, 20 95, 20 135 C20 175, 48 190, 80 190 C112 190, 140 175, 140 135 C140 95, 125 15, 80 15 Z" fill="#b7e4c7"/><path d="M22 100 Q 80 120, 138 100 L 140 130 Q 80 150, 20 130 Z" fill="#f8f9fa"/><circle cx="80" cy="60" r="12" fill="#ffafcc"/><circle cx="80" cy="60" r="4" fill="#ffd166"/><circle cx="50" cy="160" r="10" fill="#ffafcc"/><circle cx="50" cy="160" r="3" fill="#ffd166"/><circle cx="110" cy="160" r="10" fill="#ffafcc"/><circle cx="110" cy="160" r="3" fill="#ffd166"/></svg>'
 };
+type SeasonItem = [string, string, string, string, string, string, string, boolean];
+interface Season {
+    glow: string;
+    emoji: string;
+    from?: [number, number];
+    to?: [number, number];
+    dayOfYear?: number;
+    items: SeasonItem[];
+}
 
-const SEASONS = {
+const SEASONS: Record<string, Season> = {
     halloween: {
         glow: 'rgba(255, 123, 0, 0.7)', emoji: '🎃',
         from: [10, 20], to: [11, 2],
@@ -41,9 +50,9 @@ const SEASONS = {
     }
 };
 
-function activeSeason(date = new Date()) {
+function activeSeason(date = new Date()): (Season & { name: string }) | null {
     const startOfYear = new Date(date.getFullYear(), 0, 1);
-    const dayOfYear = Math.floor((date - startOfYear) / 86400000) + 1;
+    const dayOfYear = Math.floor((date.getTime() - startOfYear.getTime()) / 86400000) + 1;
     for (const [name, season] of Object.entries(SEASONS)) {
         if (season.dayOfYear === dayOfYear) return { name, ...season };
         if (!season.from || !season.to) continue;
@@ -54,7 +63,7 @@ function activeSeason(date = new Date()) {
     return null;
 }
 
-export function seasonal(date = new Date()) {
+export function seasonal(date = new Date()): { background: string; glow: string; emoji: string } {
     const season = activeSeason(date);
     if (!season) return { background: '', glow: '', emoji: '' };
 
@@ -72,7 +81,7 @@ export function seasonal(date = new Date()) {
         ]).map(line => `<div>${line}</div>`).join('')}</div></div>
     ` : '';
     const items = season.items.map(([svg, width, height, left, right, top, rotate, clickable]) => `
-        <div class="seasonal-svg${clickable ? ' seasonal-clickable' : ''}" style="width:${width};height:${height};${left ? `left:${left};` : ''}${right ? `right:${right};` : ''}top:${top};transform:rotate(${rotate});">${SVGS[svg]}</div>
+        <div class="seasonal-svg${clickable ? ' seasonal-clickable' : ''}" style="width:${width};height:${height};${left ? `left:${left};` : ''}${right ? `right:${right};` : ''}top:${top};transform:rotate(${rotate});">${SVGS[svg as keyof typeof SVGS]}</div>
     `).join('');
 
     return {

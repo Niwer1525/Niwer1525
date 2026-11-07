@@ -1,8 +1,9 @@
+import type { LangDict } from '../../types.ts';
 import { translate } from '../../utils.ts';
 import { basicModal } from './modal.ts';
 import { textEditorToolbar } from '../text_editor_toolbar.ts';
 
-export function createPostModal(langDict) {
+export function createPostModal(langDict: LangDict) {
 	return basicModal(langDict, 'create-post-popup', true, `
 		<h2>${translate(langDict, 'form.create_post.title')}</h2>
 		<label>

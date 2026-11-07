@@ -1,7 +1,8 @@
+import type { LangDict } from '../../types.ts';
 import { translate } from '../../utils.ts';
 import { basicModal } from './modal.ts';
 
-export function editProfileModal(langDict) {
+export function editProfileModal(langDict: LangDict) {
 	return basicModal(langDict, 'edit-profile-popup', false, `
 		<h2>${translate(langDict, 'form.edit_profile.title')}</h2>
 		<label>

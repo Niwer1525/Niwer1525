@@ -4,8 +4,9 @@ import { gists } from '../components/index/gists.ts';
 import { stats } from '../components/index/stats.ts';
 import { defaultLayout } from '../components/layout.ts';
 import { translate } from '../utils.ts';
+import type { LangDict, RenderContext, StatisticsData } from '../types.ts';
 
-async function fetchStatistics(apiBaseUrl) {
+async function fetchStatistics(apiBaseUrl: string): Promise<StatisticsData> {
     try {
         const RESPONSE = await fetch(`${apiBaseUrl}/statistics`);
         if (!RESPONSE.ok) throw new Error(`Could not fetch statistics: ${RESPONSE.statusText}`);
@@ -16,7 +17,7 @@ async function fetchStatistics(apiBaseUrl) {
     }
 }
 
-export async function render(lang, langDict, { apiBaseUrl = '' } = {}) {
+export async function render(lang: string, langDict: LangDict, { apiBaseUrl = '' }: RenderContext = {}): Promise<string> {
 	const STATISTICS = await fetchStatistics(apiBaseUrl);
 
 	const content = `

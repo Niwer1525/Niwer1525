@@ -1,7 +1,8 @@
+import type { LangDict } from '../../types.ts';
 import { translate } from '../../utils.ts';
 import { basicModal } from './modal.ts';
 
-export function totpModal(langDict) {
+export function totpModal(langDict: LangDict) {
 	return basicModal(langDict, 'totp-setup-popup', false, `
 		<h2>${translate(langDict, 'form.totp_setup.title')}</h2>
 		<p class="text-secondary">${translate(langDict, 'form.totp_setup.description')}</p>

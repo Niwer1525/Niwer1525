@@ -1,8 +1,9 @@
+import type { LangDict } from '../types.ts';
 import { panelLayout } from '../components/layout.ts';
 import { servers } from '../components/panel/servers.ts';
 import { purchaseAlert } from '../components/section_alerts.ts';
 
-export async function render(lang, langDict) {
+export async function render(lang: string, langDict: LangDict): Promise<string> {
 	return panelLayout({
 		page: 'panel',
 		lang,

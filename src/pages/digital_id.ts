@@ -1,6 +1,7 @@
+import type { LangDict } from '../types.ts';
 import { emptyLayout } from '../components/layout.ts';
 
-function createBubble(iconClass, link, text) {
+function createBubble(iconClass: string, link: string, text: string): string {
 	return `
 		<div class="bubble">
 			<div class="bubble-content">
@@ -11,7 +12,7 @@ function createBubble(iconClass, link, text) {
 	`;
 }
 
-export async function render(lang, langDict) {
+export async function render(lang: string, langDict: LangDict): Promise<string> {
 	const content = `
 		<section class="bubbles-container">
 			${createBubble('fa-solid fa-globe', 'https://niwer.dev', 'niwer.dev')}
