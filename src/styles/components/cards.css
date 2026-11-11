@@ -113,6 +113,11 @@ article {
     position: relative;
     backdrop-filter: var(--backdrop-filter);
     text-align: justify;
+    
+    /* Should improve performance with backdrop-filter */
+    contain: paint layout;
+    will-change: transform;
+    transform: translateZ(0);
 }
 
 article:hover {
