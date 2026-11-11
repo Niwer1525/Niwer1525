@@ -1,4 +1,4 @@
-const API_BASE = process.env.API_BASE_URL || 'https://panel.niwer.dev';
+export const API_BASE = process.env.API_BASE_URL || 'https://panel.niwer.dev';
 
 export async function apiRequest(path, options = {}) {
     const headers = new Headers(options.headers || {});

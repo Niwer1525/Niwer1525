@@ -1,6 +1,7 @@
-import { createNotification } from '../utils/toast.js';
 import { formatProductId } from '../main.js';
 import { api } from '../panel.js';
+import { API_BASE } from '../utils/api.js';
+import { createNotification } from '../utils/toast.js';
 
 /**
  * Sets up a server card with the provided data.
@@ -67,14 +68,34 @@ export async function loadPublicServers() {
  * @param {*} param1 - An object containing download properties such as releaseName, isPreRelease, assetName, description, repo, and assetId.
  * @returns {HTMLElement} The populated row element.
  */
-function setupDownloadRow(root, { releaseName, isPreRelease, assetName, description, repo, assetId }) {
+function setupDownloadRow(root, { releaseName, isPreRelease, description, repo, assets }) {
     root.querySelector('.row-release').textContent = releaseName;
     root.querySelector('.row-prerelease').textContent = isPreRelease ? 'Yes' : 'No';
-    root.querySelector('.row-asset').textContent = assetName;
     root.querySelector('.row-desc').textContent = description;
 
+    const select = root.querySelector('.asset-selector');
     const link = root.querySelector('.download-link');
-    if (link) link.href = `/download?product=${encodeURIComponent(repo)}&assetName=${encodeURIComponent(assetName)}&assetId=${assetId}`;
+
+    const updateLink = (asset) => {
+        if (!asset || !link) return;
+        link.href = `${API_BASE}/download?product=${encodeURIComponent(repo)}&assetName=${encodeURIComponent(asset.name)}&assetId=${asset.id}`;
+    };
+
+    // Populate dropdown with all assets in this release
+    assets.forEach(asset => {
+        const option = document.createElement('option');
+        option.value = asset.id;
+        option.textContent = asset.name;
+        select.appendChild(option);
+    });
+
+    if (assets.length > 0) updateLink(assets[0]); // Default to first asset
+
+    // Update link whenever the user picks another asset
+    select.addEventListener('change', () => {
+        const selected = assets.find(a => String(a.id) === select.value);
+        updateLink(selected);
+    });
 
     return root;
 }
@@ -106,18 +127,18 @@ export async function loadDownloads() {
             (data.releases || []).forEach(rel => {
                 const tag = rel.tagName || rel.tag_name;
                 const desc = tagMap.get(tag) || rel.body || '-';
+                const assets = (rel.assets || []).filter(a => a?.name);
 
-                (rel.assets || []).filter(a => a?.name).forEach(a => {
-                    const rowNode = setupDownloadRow(rowTmpl.content.cloneNode(true), {
-                        releaseName: rel.name || tag || 'Unreleased',
-                        isPreRelease: Boolean(rel.prerelease),
-                        assetName: a.name,
-                        description: desc !== '-' ? desc : (a.body || '-'),
-                        repo,
-                        assetId: a.id
-                    });
-                    rowsFragment.append(rowNode);
+                if (assets.length === 0) return;
+
+                const rowNode = setupDownloadRow(rowTmpl.content.cloneNode(true), {
+                    releaseName: rel.name || tag || 'Unreleased',
+                    isPreRelease: Boolean(rel.prerelease),
+                    description: desc,
+                    repo,
+                    assets
                 });
+                rowsFragment.append(rowNode);
             });
 
             if (rowsFragment.children.length > 0) tbody.append(rowsFragment);

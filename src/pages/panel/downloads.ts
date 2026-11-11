@@ -34,7 +34,9 @@ function assetRowTemplate(langDict: LangDict) {
             <tr>
                 <td class="row-release"></td>
                 <td class="row-prerelease"></td>
-                <td class="row-asset"></td>
+                <td class="row-asset">
+                    <select class="asset-selector form-select"></select>
+                </td>
                 <td class="row-desc"></td>
                 <td class="download-action">
                     <a class="button download-link" title="Download" target="_blank">

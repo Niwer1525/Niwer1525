@@ -36,7 +36,7 @@
             "name": "wayz",
             "image": "niwer_engine/wayz.webp",
             "links": { "https://www.youtube.com/watch?v=ovDb41z2TuQ&list=PL2uFPy064gi_Rz8ndkNubAYFySzAdpvOt": "see" },
-            "tags": ["java", "fabric", "gradle" ]
+            "tags": ["java", "fabric", "gradle", "niwer's glsl obfuscator", "lumen" ]
         },
         {
             "name": "wayz_launcher",
@@ -48,7 +48,7 @@
             "name": "armo",
             "image": "armo/armo.webp",
             "links": { "https://modrinth.com/resourcepack/3d-military-police-armor": "see" },
-            "tags": ["java", "spigot", "glsl", "maven", "glsl_obfuscator", "lumen" ]
+            "tags": ["csharp", "java", "spigot", "glsl", "maven", "niwer's glsl obfuscator", "lumen" ]
         },
         {
             "name": "dynamic_smoke_particles",
@@ -71,7 +71,7 @@
         {
             "name": "glsl_obfuscator",
             "links": { "https://git.niwer.dev/glsl_obfuscator": "read" },
-            "tags": ["java", "gradle"]
+            "tags": ["java", "CI/CD", "gradle", "maven", "csharp", "rust"]
         },
         {
             "name": "open_vanilla",

@@ -53,3 +53,24 @@ tr:hover td {
 .blog-sources-list small {
     color: var(--text-secondary);
 }
+
+/* Ensure the asset cell has room and doesn't get squeezed */
+.download-repository td.row-asset {
+    min-width: 200px;
+    max-width: 260px;
+}
+.download-repository select.asset-selector {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.45rem;
+    font-size: 0.875rem;
+    background: var(--surface-glass-hover);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.download-repository select.asset-selector:focus {
+    border-color: var(--accent-color);
+}

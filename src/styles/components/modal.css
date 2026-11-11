@@ -164,6 +164,9 @@ input, textarea, select {
     font-size: 1rem;
     outline: none;
 }
+select {
+    cursor: pointer;
+}
 
 /* Required inputs */
 label:has(:required)::after {
@@ -216,15 +219,6 @@ label:has(:required) {
     justify-content: center;
     flex-wrap: wrap;
 }
-
-/* input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    display: none;
-}
-input[type="number"]::-moz-number-spin-up, 
-input[type="number"]::-moz-number-spin-down {
-    display: none;
-} */
 
 /* TOTP Code Input */
 .totp-code {
