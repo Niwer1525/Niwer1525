@@ -160,7 +160,9 @@ body>main {
 section {
     margin-bottom: 6rem;
     animation: fadeIn 0.8s ease-out forwards;
-    opacity: 0; 
+    opacity: 0;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 500px; /* Estimates height to avoid scrollbar jumping */
 }
 section[id] {
     scroll-margin-top: calc(var(--nav-height) + 4.5rem);

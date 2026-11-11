@@ -16,7 +16,8 @@
     --scrollbar-bg: rgba(255, 255, 255, 0.1);
     --scrollbar-thumb: #333;
     --scrollbar-thumb-hover: #555;
-    --backdrop-filter: blur(12px);
+    /* --backdrop-filter: blur(12px); */
+    --backdrop-filter: none;
     
     /* Accent */
     --accent-color: #d8b4fe;
