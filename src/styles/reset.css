@@ -1,5 +1,7 @@
 *, *::before, *::after {
     box-sizing: inherit;
+    scrollbar-color: var(--accent-color) var(--scrollbar-bg);
+    scrollbar-width: thin;
 }
 
 html {

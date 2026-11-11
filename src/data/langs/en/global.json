@@ -133,7 +133,6 @@
     "form.create_post.sources.add": "Add source",
     "form.edit_post.title": "Edit Post",
     "form.edit_post.description.scheduled_at": "Schedule the post for a future date and time. Leave blank to publish immediately.",
-    "form.edit_post.sources.title": "Sources",
     "form.edit_post.sources.description": "Add the date, URL, and optional authors for each source.",
     "form.edit_post.sources.add": "Add source",
     "form.edit_post.action": "Save Changes",

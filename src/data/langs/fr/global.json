@@ -131,7 +131,6 @@
     "form.create_post.sources.add": "Ajouter une source",
     "form.edit_post.title": "Modifier l'article",
     "form.edit_post.description.scheduled_at": "Planifiez l'article pour une date et une heure futures. Laissez vide pour publier immédiatement.",
-    "form.edit_post.sources.title": "Sources",
     "form.edit_post.sources.description": "Ajoutez la date, l'URL et les auteurs facultatifs de chaque source.",
     "form.edit_post.sources.add": "Ajouter une source",
     "form.edit_post.action": "Enregistrer les modifications",
