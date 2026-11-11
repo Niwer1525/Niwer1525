@@ -31,8 +31,8 @@
     list-style-type: disc;
 }
 .text-content blockquote {
-    background: var(--footer-bg);
-    backdrop-filter: var(--backdrop-filter);
+    background: var(--surface-glass);
+    border: 1px solid var(--border-color);
     border-left: 3px solid var(--accent-color);
     border-radius: 0.45rem;
     padding: 0.25rem 1rem;

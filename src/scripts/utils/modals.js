@@ -13,7 +13,10 @@ const getModal = (id) => document.getElementById(id);
  * @param {string} id - The ID of the project element to append the media to.
  * @author Niwer
  */
-export function showPopup(id) { getModal(id).style.display = "flex"; }
+export function showPopup(id) {
+    getModal(id).style.display = "flex";
+    document.body.classList.add('no-scroll');
+}
 window.showPopup = showPopup;
 
 export function switchTab(modalId, tabId) {
@@ -47,7 +50,10 @@ window.showPopupAndSwitchTab = window.showPopupAndSwitchTab = showPopupAndSwitch
  * @param {string} id - The ID of the contact popup element to hide.
  * @author Niwer
  */
-export function hidePopup(id) { getModal(id).style.display = "none"; }
+export function hidePopup(id) {
+    getModal(id).style.display = "none";
+    document.body.classList.remove('no-scroll');
+}
 window.hidePopup = hidePopup;
 
 export function closeModals() {

@@ -12,7 +12,6 @@ button, .button {
     font-weight: 500;
     cursor: pointer;
     transition: all var(--transition-speed);
-    backdrop-filter: var(--backdrop-filter);
     font-family: inherit;
     text-decoration: none;
 }

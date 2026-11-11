@@ -111,13 +111,7 @@ article {
     flex-direction: column;
     transition: all var(--transition-speed);
     position: relative;
-    backdrop-filter: var(--backdrop-filter);
     text-align: justify;
-    
-    /* Should improve performance with backdrop-filter */
-    contain: paint layout;
-    will-change: transform;
-    transform: translateZ(0);
 }
 
 article:hover {
@@ -277,7 +271,6 @@ article footer {
 
 .alert-section {
     background: var(--surface-glass);
-    backdrop-filter: var(--backdrop-filter);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     padding: 1rem 1.5rem;

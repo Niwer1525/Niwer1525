@@ -26,6 +26,10 @@ body {
         radial-gradient(circle at 15% 50%, rgba(120, 40, 200, 0.08), transparent 25%),
         radial-gradient(circle at 85% 30%, rgba(120, 40, 200, 0.05), transparent 25%); */
 }
+body.no-scroll {
+    overflow: hidden;
+    scrollbar-gutter: stable;  /* Prevents layout shift if a scrollbar disappears */
+}
 
 h1, h2, h3, h4 {
     margin: 0 0 1rem 0;
