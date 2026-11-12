@@ -85,7 +85,7 @@ async function loadBlogPosts() {
                 <td class="no-wrap">${escapeHtml(post.lang)}</td>
                 <td class="no-wrap">${escapeHtml(post.title)}</td>
                 <td class="no-wrap">${escapeHtml(post.summary)}</td>
-                <td class="blog-sources-cell">${renderBlogSources(post.sources)}</td>
+                <td class="no-wrap blog-sources-cell">${renderBlogSources(post.sources)}</td>
                 <td class="no-wrap">${escapeHtml(post.status)}</td>
                 <td class="no-wrap">${escapeHtml(post.published_at || 'N/A')}</td>
                 <td class="no-wrap">${escapeHtml(post.created_at)}</td>
@@ -115,19 +115,61 @@ async function loadBlogPosts() {
             const date = escapeHtml(source?.date || '');
             const url = String(source?.url || '');
             const authors = Array.isArray(source?.authors) ? source.authors.filter(Boolean).join(', ') : '';
-            let link = escapeHtml(url);
+            let link = escapeHtml(formatUrlLabel(url));
 
             try {
                 const parsedUrl = new URL(url);
-                if (['http:', 'https:'].includes(parsedUrl.protocol)) {
-                    link = `<a href="${escapeHtml(parsedUrl.href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(parsedUrl.href)}</a>`;
-                }
+                if (['http:', 'https:'].includes(parsedUrl.protocol))
+                    link = `
+                        <a href="${escapeHtml(parsedUrl.href)}" title="${escapeHtml(parsedUrl.href)}" target="_blank" rel="noopener noreferrer">
+                            ${escapeHtml(formatUrlLabel(url))}
+                        </a>
+                    `;
             } catch {
                 // Display malformed source URLs as text.
             }
 
             return `<li><span>${date}</span> ${link}${authors ? `<small>${escapeHtml(authors)}</small>` : ''}</li>`;
         }).join('')}</ul>`;
+    }
+}
+
+/**
+ * Formats a URL string into a more readable label, optionally limiting its length and/or returning only the domain.
+ * 
+ * @param {*} urlString The URL string to format. 
+ * @param {*} param1 An object containing optional parameters:
+ *   - maxLength: The maximum length of the returned label. Defaults to 45 characters.
+ *   - onlyDomain: A boolean indicating whether to return only the domain part of the URL. Defaults to false.
+ * @returns A formatted label for the URL, which may be truncated or limited to the domain based on the provided options.
+ */
+function formatUrlLabel(urlString, { maxLength = 45, onlyDomain = false } = {}) {
+    try {
+        // Ensure scheme exists so new URL() parses bare domains like "statbel.fgov.be"
+        const normalized = /^https?:\/\//i.test(urlString) ? urlString : `https://${urlString}`;
+        const parsed = new URL(normalized);
+        const domain = parsed.hostname.replace(/^www\./i, '');
+
+        if (onlyDomain) return domain;
+
+        const path = (parsed.pathname === '/' ? '' : parsed.pathname) + parsed.search;
+        if (!path) return domain;
+
+        const fullDisplay = `${domain}${path}`;
+        if (fullDisplay.length <= maxLength) return fullDisplay;
+
+        const remainingSpace = maxLength - domain.length - 3; // 3 chars for "…"
+        if (remainingSpace > 6) return `${domain}${path.slice(0, remainingSpace)}…`;
+
+        return domain;
+    } catch {
+        if (onlyDomain) {
+            // Best-effort extraction without protocol
+            const clean = urlString.replace(/^https?:\/\//i, '').replace(/^www\./i, '');
+            return clean.split(/[\/?#]/)[0];
+        }
+
+        return urlString.length > maxLength ? `${urlString.slice(0, maxLength - 1)}…` : urlString;
     }
 }
 
