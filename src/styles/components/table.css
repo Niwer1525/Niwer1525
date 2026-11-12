@@ -12,17 +12,19 @@ table {
     text-align: left;
     background: var(--menu-bg);
 }
-th, td {
+td, th {
     padding: 1rem;
-    border-bottom: 1px solid var(--border-color);
+    font-size: 0.85rem;
 }
 th {
-    font-weight: 600;
-    color: var(--text-secondary);
-    font-size: 0.85rem;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    background: var(--surface-glass);
+    white-space: nowrap;
+}
+td.no-wrap {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
 }
 tr:last-child td {

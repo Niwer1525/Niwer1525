@@ -58,7 +58,7 @@ async function loadTableData() {
 
         head.innerHTML = `<tr>${data.columns.map((c) => `<th>${escapeHtml(c)}</th>`).join('')}</tr>`;
         body.innerHTML = data.rows.map((row) =>
-            `<tr>${data.columns.map((c) => `<td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis;" title="${escapeHtml(formatVal(row[c]))}">${escapeHtml(formatVal(row[c]))}</td>`).join('')}</tr>`
+            `<tr>${data.columns.map((c) => `<td class="no-wrap" title="${escapeHtml(formatVal(row[c]))}">${escapeHtml(formatVal(row[c]))}</td>`).join('')}</tr>`
         ).join('');
     } catch (e) {
         console.error('Error loading table data:', e);
@@ -81,16 +81,16 @@ async function loadBlogPosts() {
 
         body.innerHTML = posts.map((post) => `
             <tr>
-                <td>${escapeHtml(post.slug)}</td>
-                <td>${escapeHtml(post.lang)}</td>
-                <td>${escapeHtml(post.title)}</td>
-                <td>${escapeHtml(post.summary)}</td>
+                <td class="no-wrap">${escapeHtml(post.slug)}</td>
+                <td class="no-wrap">${escapeHtml(post.lang)}</td>
+                <td class="no-wrap">${escapeHtml(post.title)}</td>
+                <td class="no-wrap">${escapeHtml(post.summary)}</td>
                 <td class="blog-sources-cell">${renderBlogSources(post.sources)}</td>
-                <td>${escapeHtml(post.status)}</td>
-                <td>${escapeHtml(post.published_at || 'N/A')}</td>
-                <td>${escapeHtml(post.created_at)}</td>
-                <td>${escapeHtml(post.updated_at)}</td>
-                <td>
+                <td class="no-wrap">${escapeHtml(post.status)}</td>
+                <td class="no-wrap">${escapeHtml(post.published_at || 'N/A')}</td>
+                <td class="no-wrap">${escapeHtml(post.created_at)}</td>
+                <td class="no-wrap">${escapeHtml(post.updated_at)}</td>
+                <td class="no-wrap">
                     ${post.status.toUpperCase() !== 'DELETED' ? `
                         <button onclick="prepareEditBlogPost('${escapeHtml(post.id)}', '${escapeHtml(post.slug)}')">
                             <i class="fa-solid fa-pen-to-square"></i>
