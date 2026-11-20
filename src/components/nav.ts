@@ -72,7 +72,7 @@ export function defaultNavigation(page: string, lang = 'en', langDict: LangDict 
         { url: `${indexUrl}#gists`, labelKey: 'btn.gists' },
         { url: getHrefForPage('store', lang), labelKey: 'btn.store' },
         { url: getHrefForPage('blog', lang), labelKey: 'btn.blog' },
-        { url: '#', labelKey: 'btn.contact', onClick: "showPopup('contact-popup')" }
+        { url: '#links', labelKey: 'btn.contact', onClick: "showPopup('contact-popup')" }
     ]);
 }
 
