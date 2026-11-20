@@ -1,6 +1,6 @@
 ### 1. Website Usage
 
-By accessing the **niwer.dev** domain and its associated subdomains (including, but not limited to, `panel.niwer.dev`, `git.niwer.dev`, `modrinth.niwer.dev`, `wakatime.niwer.dev`), you agree to use them strictly for lawful purposes in compliance with these terms.
+By accessing the **niwer.dev** domain and its associated subdomains (including, but not limited to, `panel.niwer.dev`, `git.niwer.dev`, `wakatime.niwer.dev`), you agree to use them strictly for lawful purposes in compliance with these terms.
 
 You are strictly prohibited from attempting to compromise infrastructure security, bypassing authentication mechanisms, or using automated scrapers, bots, or scripts to extract data without explicit prior authorization.
 

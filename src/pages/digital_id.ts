@@ -19,9 +19,7 @@ export async function render(lang: string, langDict: LangDict): Promise<string> 
 			${createBubble('fa-brands fa-github', 'https://git.niwer.dev', 'git.niwer.dev')}
 			${createBubble('fa-regular fa-file-code', 'https://gist.niwer.dev', 'gist.niwer.dev')}
 			${createBubble('fa-solid fa-clock', 'https://wakatime.niwer.dev', 'wakatime.niwer.dev')}
-			${createBubble('fa-brands fa-stack-overflow', 'https://stackoverflow.niwer.dev', 'stackoverflow.niwer.dev')}
 			${createBubble('fa-brands fa-youtube', 'https://youtube.niwer.dev', 'youtube.niwer.dev')}
-			${createBubble('fa-solid fa-box', 'https://modrinth.niwer.dev', 'modrinth.niwer.dev')}
 			${createBubble('fa-solid fa-envelope', 'mailto:contact@niwer.dev', 'contact@niwer.dev')}
 			${createBubble('fa-solid fa-star', 'https://sponsor.niwer.dev', 'sponsor.niwer.dev')}
 		</section>

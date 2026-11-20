@@ -1,6 +1,6 @@
 ### 1. Utilisation du site web
 
-En accédant au domaine **niwer.dev** et à ses sous-domaines associés (notamment `panel.niwer.dev`, `git.niwer.dev`, `modrinth.niwer.dev`, `wakatime.niwer.dev`), vous acceptez de les utiliser exclusivement à des fins légales et conformes aux présentes conditions. 
+En accédant au domaine **niwer.dev** et à ses sous-domaines associés (notamment `panel.niwer.dev`, `git.niwer.dev`, `wakatime.niwer.dev`), vous acceptez de les utiliser exclusivement à des fins légales et conformes aux présentes conditions. 
 
 Il vous est formellement interdit de tenter de perturber le bon fonctionnement ou la sécurité de l'infrastructure, de contourner les mesures d'authentification ou d'utiliser des robots, scrapers ou scripts automatisés pour extraire des données sans autorisation expresse.
 
