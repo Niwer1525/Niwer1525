@@ -43,6 +43,12 @@ nav > ul > li > a::after {
     transition: width 0.3s ease;
 }
 nav > ul > li > a:hover::after { width: 100%; }
+svg.wakatime {
+    width: 19px;
+    height: 19px;
+    color: var(--text-secondary);
+    fill: var(--text-secondary);
+}
 
 .languages-grid {
     display: flex;

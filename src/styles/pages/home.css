@@ -28,6 +28,7 @@
     will-change: transform, border-radius;
     transform: translateZ(0);
     animation: float 6s ease-in-out infinite, morph 12s ease-in-out infinite;
+    will-change: transform, border-radius;
     flex-shrink: 0;
 }
 

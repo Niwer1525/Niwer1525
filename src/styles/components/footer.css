@@ -43,6 +43,7 @@
     white-space: nowrap;
     padding: 10px;
     animation: infiniteScroll 5s linear infinite;
+    will-change: transform
 }
 /* Light theme adjustments */
 [data-theme="light"] .code-stream {
@@ -111,6 +112,7 @@ footer p {
     font-size: 1.5rem;
     z-index: 999;
     animation: float 3s ease-in-out infinite;
+    will-change: transform;
 }
 .back-to-top {
     display: inline-flex;

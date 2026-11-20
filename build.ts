@@ -27,7 +27,35 @@ const MINIFY_OPTIONS = {
     minifyJS: true
 };
 
-const API_BASE_URL = process.env.API_BASE_URL || (process.env.NODE_ENV === 'production' ? 'https://panel.niwer.dev' : 'http://localhost:17070');
+const LOCAL_URL = 'http://localhost:17070';
+const PROD_URL = 'https://panel.niwer.dev';
+
+let resolvedUrlPromise: Promise<string> | null = null;
+
+function getApiBaseUrl() {
+    if (process.env.API_BASE_URL) return Promise.resolve(process.env.API_BASE_URL);
+    if (!resolvedUrlPromise) {
+        resolvedUrlPromise = (async () => {
+            try {
+                // Probe localhost with a short 500ms timeout
+                const response = await fetch(LOCAL_URL, { // TODO: Use a lightweight endpoint like `${LOCAL_URL}/health`
+                    method: 'HEAD',
+                    signal: AbortSignal.timeout(500),
+                });
+
+                if (response) return LOCAL_URL; // Any HTTP response proves the local server is running
+            } catch {
+                // Network error (ECONNREFUSED) or timeout means localhost isn't running
+            }
+
+            return PROD_URL;
+        })();
+    }
+
+    return resolvedUrlPromise;
+}
+
+const API_BASE_URL = await getApiBaseUrl();
 
 const BUILD_CONTEXT = Object.freeze({
     apiBaseUrl: API_BASE_URL
