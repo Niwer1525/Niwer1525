@@ -1,42 +1,21 @@
-# Hello there
+# 🇬🇧 Hello there!
 
-## About me
-- My name is Erwin AKA Niwer
+My name is **Erwin**, also known under the alias **Niwer**.
 
-- I've spent years on my computer creating projects, learning programmation by myself
+A passionate self-taught software engineer, I design and build software, explore new technologies, and share my knowledge.
+- **Portfolio:** [niwer.dev](https://niwer.dev)
+- **Contact:** [contact@niwer.dev](mailto:contact@niwer.dev)
 
-- Want to learn more? Check out my [Portfolio](https://niwer.dev)
+Feel free to reach out by email if you would like to collaborate on a project!
 
-- [![wakatime](https://wakatime.com/badge/user/6e76cd44-0f28-4a63-8aa4-fdacc7db9439.svg)](https://wakatime.com/@6e76cd44-0f28-4a63-8aa4-fdacc7db9439)
+<br>
 
-## Skills
-<!-- My beloved ones -->
-- My favorite :<br><br>
-![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
-![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E) 
-![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
-<!-- Other "less known" languages -->
-- Other known languages:<br><br>
-![PHP](https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white)
-<!-- API, tools and libs -->
-- API, Libraries & Tools :<br><br>
-![Gradle](https://img.shields.io/badge/gradle-%2307405e.svg?style=for-the-badge&logo=gradle&logoColor=white)
-![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
-![three.js](https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=three.js&logoColor=white)
-![OpenGL](https://img.shields.io/badge/OpenGL-%23FFFFFF.svg?style=for-the-badge&logo=opengl)
-![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
-![MySQL](https://img.shields.io/badge/mysql-%2307405e.svg?style=for-the-badge&logo=mysql&logoColor=white)
-![PhpMyAdmin](https://img.shields.io/badge/phpmyadmin-%2307405e.svg?style=for-the-badge&logo=phpmyadmin&logoColor=white)
-![Docker](https://img.shields.io/badge/docker-%2307405e.svg?style=for-the-badge&logo=docker&logoColor=white)
-<!-- Other skills -->
-- Other skills :
-   - IT Technician
-   - Basics of Networking
-   - Linux/Unix, Windows CLI
+# 🇫🇷 Bonjour !
 
-## Gists
-Besides my main repositories, I also maintain several gists. You can find them [here](https://gist.niwer.dev)
+Je m'appelle **Erwin**, également connu sous le pseudonyme **Niwer**.
 
-## Contact
-[![email](https://img.shields.io/badge/Email-D14836?logo=gmail&logoColor=white)](https://niwer.dev/#links)
+Ingénieur logiciel autodidacte et passionné, je conçois et développe des logiciels, j'explore de nouvelles technologies et je partage mes connaissances.
+- **Portfolio:** [niwer.dev](https://niwer.dev)
+- **Contact:** [contact@niwer.dev](mailto:contact@niwer.dev)
+
+N'hésitez pas à me contacter par e-mail si vous souhaitez collaborer sur un projet !
